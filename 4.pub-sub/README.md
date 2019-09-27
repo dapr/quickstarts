@@ -21,12 +21,12 @@ Actions allows us to deploy the same microservices from our local machines to th
 
 ### Prerequisites to Run Locally
 
-- [Actions CLI with Actions initialized](/../../#Install-as-standalone)
+- [Actions CLI with Actions initialized](https://github.com/actionscore/actions#install-as-standalone)
 - [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this sample with one or both microservices
 
 ### Prerequisites to Run in Kubernetes
 
-- [Actions enabled Kubernetes cluster](/../../#Install-on-Kubernetes)
+- [Actions enabled Kubernetes cluster](https://github.com/actionscore/actions#install-on-kubernetes)
 
 ## Run Locally
 
@@ -96,10 +96,10 @@ To run the same sample in Kubernetes, we'll need to first set up a Redis store a
 
 Actions uses pluggable message buses to enable pub-sub, in this case we'll use Redis Streams (enabled in Redis version 5 and above). We'll install Redis into our cluster using helm, but keep in mind that you could use whichever Redis host you like, as long as the version is greater than 5.
 
-1. Follow [these steps](../../docs/components/redis.md#Creating-a-Redis-Cache-in-your-Kubernetes-Cluster-using-Helm) to create a Redis store using Helm. 
+1. Follow [these steps](https://github.com/actionscore/docs/blob/master/concepts/components/redis.md#creating-a-redis-cache-in-your-kubernetes-cluster-using-helm) to create a Redis store using Helm. 
    > **Note**: Currently the version of Redis supported by Azure Redis Cache is less than 5, so using Azure Redis Cache will not work.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. Don't worry about applying the `redis.yaml`, as it will be covered in the next step. 
-   > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/actionscore/actions/blob/master/docs/components/secrets.md) instructions to securely manage your secrets.
+   > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/actionscore/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
 
 ### Deploy Assets
 
