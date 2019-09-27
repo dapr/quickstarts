@@ -6,14 +6,14 @@ This tutorial will get you up and running with Actions in a Kubernetes cluster. 
 
 ## Step 1 - Setup Actions on your Kubernetes Cluster
 
-The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](/../../#install-on-kubernetes) to deploy Actions to it.
+The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/actionscore/actions#install-on-kubernetes) to deploy Actions to it.
 
 
 ## Step 2 - Create and Configure a State Store
 
 Actions can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc.) to persist and retrieve state. For this demo, we'll use Redis.
 
-1. Follow [these steps](../../docs/components/redis.md#Creating-a-Redis-Store) to create a Redis store.
+1. Follow [these steps](https://github.com/actionscore/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. 
     > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/actionscore/actions/blob/master/docs/components/secrets.md) instructions to securely manage your secrets.
 3. Apply the `redis.yaml` file: `kubectl apply -f ./deploy/redis.yaml` and observe that your state store was successfully configured!
