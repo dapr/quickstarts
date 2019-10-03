@@ -1,6 +1,6 @@
 # Dapr Bindings Sample
 
-In this sample, we'll create two microservices, one with an input binding and another with an output binding. We'll bind to Kafka and Event Hubs, but note that there are a myriad of components that Dapr can bind to - see Dapr components <INSERT_LINK_HERE>. 
+In this sample, we'll create two microservices, one with an input binding and another with an output binding. We'll bind to Kafka and Event Hubs, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://github.com/dapr/docs/tree/master/concepts/bindings)). 
 
 This sample includes two microservices:
 - Node.js microservice that utilizes an input binding
@@ -12,19 +12,19 @@ The bindings connect to Kafka, allowing us to push messages into a Kafka instanc
 
 This sample also includes a manifest for using Azure Event Hubs to demonstrate how we can simply swap one component out for another.
 
-Actions allows us to deploy the same microservices from our local machines to Kubernetes. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes).
+Dapr allows us to deploy the same microservices from our local machines to Kubernetes. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes).
 
 ## Prerequisites
 
 ### Prerequisites to Run Locally
 
-- [Actions CLI with Actions initialized](https://github.com/actionscore/actions#install-as-standalone)
+- [Dapr CLI with Dapr initialized](https://github.com/dapr/dapr#install-as-standalone)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Python 3.4 or greater](https://www.python.org/)
 
 ### Prerequisites to Run in Kubernetes
 
-- [Actions enabled Kubernetes cluster](https://github.com/actionscore/actions#install-on-kubernetes)
+- [Dapr enabled Kubernetes cluster](https://github.com/dapr/actions#install-on-kubernetes)
 
 ## Run Locally
 
@@ -70,14 +70,14 @@ Now that you have Kafka running locally on your machine, we'll need to run our m
 
 1. Navigate to Node subscriber directory in your CLI: `cd node`
 2. Install dependencies: `npm install`
-3. Run Node subscriber app with Actions: `actions run --app-id node --app-port 3000 node app.js`
+3. Run Node subscriber app with Dapr: `actions run --app-id node --app-port 3000 node app.js`
 
 ### Run Python Microservice with Output Binding
 
 Next, we'll run the Python microservice that uses output bindings
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd python`
-2. Run Python subscriber app with Actions: `actions run --app-id python-subscriber --app-port 5000 python app.py`
+2. Run Python subscriber app with Dapr: `actions run --app-id python-subscriber --app-port 5000 python app.py`
     
 ### Observe Logs
 
