@@ -1,0 +1,13 @@
+apiVersion: actions.io/v1alpha1
+kind: Component
+metadata:
+  name: sith
+spec:
+  type: bindings.kafka
+  metadata:
+  - name: topics
+    value: sith
+  - name: brokers
+    value: localhost:9092
+  - name: consumerGroup
+    value: group1
