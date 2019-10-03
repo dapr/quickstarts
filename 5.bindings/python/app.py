@@ -2,7 +2,7 @@ import time
 import requests
 import os
 
-actions_url = "http://localhost:5000/v1.0/bindings/sith"
+actions_url = "http://localhost:5000/v1.0/bindings/sample-topic"
 n = 0
 while True:
     n += 1

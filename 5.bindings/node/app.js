@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 const port = 3000;
 
 
-app.post('/sith', (req, res) => {
+app.post('/sample-topic', (req, res) => {
     console.log("Hello from Kafka!");
     console.log(req.body);
     res.status(200).send();

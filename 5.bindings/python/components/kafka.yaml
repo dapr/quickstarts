@@ -1,11 +1,11 @@
 apiVersion: actions.io/v1alpha1
 kind: Component
 metadata:
-  name: sith
+  name: sample-topic
 spec:
   type: bindings.kafka
   metadata:
   - name: brokers
     value: localhost:9092
   - name: publishTopic
-    value: sith
+    value: sample-topic
