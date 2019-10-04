@@ -31,9 +31,9 @@ Each of the services will spin up a pod with two containers: one for your servic
 ```bash
 
 NAME                                    READY     STATUS    RESTARTS   AGE
-dapr-assigner-5c5bfb956f-ppgqr          1/1       Running   0          5d
-dapr-operator-b9fc5578b-htxsm           1/1       Running   0          5d
-dapr-db749bff9-kpkn6                    2/2       Running   0          2m
+dapr-operator-775c97497c-p92mf          1/1       Running   0          134m
+dapr-placement-58c7d5f9cf-l9wcv         1/1       Running   0          134m
+dapr-sidecar-injector-5879986bdc-nwdps  1/1       Running   0          134m
 calculator-front-end-7c549cc84d-m24cb   2/2       Running   0          3m
 divideapp-6d85b88cb4-vh7nz              2/2       Running   0          1m
 multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
@@ -44,8 +44,9 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 
     ```bash
     NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
-    dapr-api                      ClusterIP      10.0.25.74     <none>          80/TCP             5d
-    dapr-assigner                 ClusterIP      10.0.189.88    <none>          80/TCP             5d
+    dapr-api                      ClusterIP      10.103.71.22   <none>          80/TCP             135m
+    dapr-placement                ClusterIP      10.103.53.127  <none>          80/TCP             135m
+    dapr-sidecar-injector         ClusterIP      10.104.220.35  <none>          443/TCP            135m
     addapp-action                 ClusterIP      10.0.1.170     <none>          80/TCP,50001/TCP   2m
     calculator-front-end          LoadBalancer   10.0.155.131   40.80.152.125   80:32633/TCP       3m
     calculator-front-end-action   ClusterIP      10.0.230.219   <none>          80/TCP,50001/TCP   3m
