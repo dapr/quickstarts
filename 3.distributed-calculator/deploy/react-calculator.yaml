@@ -30,13 +30,13 @@ spec:
       labels:
         app: calculator-front-end
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "calculator-front-end"
-        actions.io/port: "8080"
+        dapr.io/enabled: "true"
+        dapr.io/id: "calculator-front-end"
+        dapr.io/port: "8080"
     spec:
       containers:
       - name: calculator-front-end
-        image: actionscore.azurecr.io/samples/react-calculator
+        image: actionscore.azurecr.io/dapr_samples/react-calculator
         ports:
         - containerPort: 8080
         imagePullPolicy: Always
