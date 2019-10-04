@@ -1,30 +1,30 @@
 # Hello Kubernetes
 
-This tutorial will get you up and running with Actions in a Kubernetes cluster. We'll be deploying a python app that generates messages and a Node app that consumes and persists them. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying a python app that generates messages and a Node app that consumes and persists them. The following architecture diagram illustrates the components that make up this sample: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.jpg)
 
-## Step 1 - Setup Actions on your Kubernetes Cluster
+## Step 1 - Setup Dapr on your Kubernetes Cluster
 
-The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/actionscore/actions#install-on-kubernetes) to deploy Actions to it.
+The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/dapr/dapr#install-on-kubernetes) to deploy Dapr to it.
 
 
 ## Step 2 - Create and Configure a State Store
 
-Actions can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc.) to persist and retrieve state. For this demo, we'll use Redis.
+Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc.) to persist and retrieve state. For this demo, we'll use Redis.
 
-1. Follow [these steps](https://github.com/actionscore/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create a Redis store.
+1. Follow [these steps](https://github.com/dapr/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. 
-    > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/actionscore/actions/blob/master/docs/components/secrets.md) instructions to securely manage your secrets.
+    > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/dapr/blob/master/docs/components/secrets.md) instructions to securely manage your secrets.
 3. Apply the `redis.yaml` file: `kubectl apply -f ./deploy/redis.yaml` and observe that your state store was successfully configured!
 
 ```bash
-component.actions.io "statestore" configured
+component.dapr.io "statestore" configured
 ```
 
 ## Step 3 - Understand the Code
 
-Now that we've setup actions and state, let's take a look at our services. Navigate to the Node.js app in the Kubernetes sample: `cd samples/2.hello-kubernetes/node.js`.
+Now that we've setup Dapr and state, let's take a look at our services. Navigate to the Node.js app in the Kubernetes sample: `cd samples/2.hello-kubernetes/node.js`.
 
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers.
 
@@ -41,7 +41,7 @@ app.post('/neworder', (req, res) => {
         value: data
     }];
 
-    fetch(`${actionsUrl}/state`, {
+    fetch(`${daprUrl}/state`, {
         method: "POST",
         body: JSON.stringify(state),
         headers: {
@@ -74,7 +74,7 @@ We also expose a GET endpoint, `/order`:
 
 ```js
 app.get('/order', (_req, res) => {
-    fetch(`${actionsUrl}/state/order`)
+    fetch(`${daprUrl}/state/order`)
         .then((response) => {
             return response.json();
         }).then((orders) => {
@@ -85,17 +85,17 @@ app.get('/order', (_req, res) => {
 
 This calls out to our Redis cache to grab the latest value of the "order" key, which effectively allows our Node.js app to be _stateless_. 
 
-## Step 4 - Deploy the Node.js App with the Actions Sidecar
+## Step 4 - Deploy the Node.js App with the Dapr Sidecar
 
 ```
 kubectl apply -f ./deploy/node.yaml
 ```
 
-This will deploy our Node.js app to Kubernetes. The Actions control plane will automatically inject the Actions sidecar to our Pod. If you take a look at the ```node.yaml``` file, you will see how Actions is enabled for that deployment:
+This will deploy our Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to our Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
 
-```actions.io/enabled: true``` - this tells the Action control plane to inject a sidecar to this deployment.
+```dapr.io/enabled: true``` - this tells the Action control plane to inject a sidecar to this deployment.
 
-```actions.io/id: nodeapp``` - this assigns a unique id or name to the Action, so it can be sent messages to and communicated with by other Actions.
+```dapr.io/id: nodeapp``` - this assigns a unique id or name to the Action, so it can be sent messages to and communicated with by other Dapr.
 
 You'll also see the container image that we're deploying. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
@@ -113,20 +113,20 @@ You can also export it to a variable:
 export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
 ```
 
-## Step 5 - Deploy the Python App with the Actions Sidecar
+## Step 5 - Deploy the Python App with the Dapr Sidecar
 Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/2.hello-kubernetes/python/app.py`.
 
-At a quick glance, this is a basic python app that posts JSON messages to ```localhost:3500```, which is the default listening port for Actions. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
+At a quick glance, this is a basic python app that posts JSON messages to ```localhost:3500```, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
 
 ```python
-actions_url = "http://localhost:3500/v1.0/invoke/nodeapp/method/neworder"
+dapr_url = "http://localhost:3500/v1.0/invoke/nodeapp/method/neworder"
 n = 0
 while True:
     n += 1
     message = {"data": {"orderId": n}}
 
     try:
-        response = requests.post(actions_url, json=message)
+        response = requests.post(dapr_url, json=message)
     except Exception as e:
         print(e)
 
@@ -187,7 +187,7 @@ This will spin down each resource defined by the .yaml files in the `deploy` dir
 
 ## Next Steps
 
-Now that you're successfully working with actions, you probably want to update the sample code to fit your scenario. The Node.js and Python apps that make up this sample are deployed from container images hosted on a private [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/). To create new images with updated code, you'll first need to install docker on your machine. Next, follow these steps:
+Now that you're successfully working with Dapr, you probably want to update the sample code to fit your scenario. The Node.js and Python apps that make up this sample are deployed from container images hosted on a private [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/). To create new images with updated code, you'll first need to install docker on your machine. Next, follow these steps:
 
 1. Update Node or Python code as you see fit!
 2. Navigate to the directory of the app you want to build a new image for.
@@ -195,4 +195,4 @@ Now that you're successfully working with actions, you probably want to update t
 4. Once your image has built you can see it on your machines by running `docker images`.
 5. To publish your docker image to docker hub (or another registry), first login: `docker login`. Then run`docker publish <YOUR IMAGE NAME>`.
 6. Update your .yaml file to reflect the new image name.
-7. Deploy your updated actions enabled app: `kubectl apply -f <YOUR APP NAME>.yaml`.
+7. Deploy your updated Dapr enabled app: `kubectl apply -f <YOUR APP NAME>.yaml`.
