@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
       - name: python
-        image: actionscore.azurecr.io/samples/pythonapp
+        image: actionscore.azurecr.io/dapr_samples/pythonapp
