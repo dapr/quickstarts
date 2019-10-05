@@ -14,13 +14,13 @@ spec:
       labels:
         app: add
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "addapp"
-        actions.io/port: "6000"
+        dapr.io/enabled: "true"
+        dapr.io/id: "addapp"
+        dapr.io/port: "6000"
     spec:
       containers:
       - name: add
-        image: actionscore.azurecr.io/samples/go-adder
+        image: actionscore.azurecr.io/dapr_samples/go-adder
         ports:
         - containerPort: 6000
         imagePullPolicy: Always
