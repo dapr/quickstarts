@@ -7,7 +7,7 @@ import sys
 app = flask.Flask(__name__)
 CORS(app)
 
-@app.route('/actions/subscribe', methods=['GET'])
+@app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
     return jsonify(['A','C'])
 

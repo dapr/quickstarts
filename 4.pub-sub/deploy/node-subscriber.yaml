@@ -14,13 +14,13 @@ spec:
       labels:
         app: node-subscriber
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "node-subscriber"
-        actions.io/port: "3000"
+        dapr.io/enabled: "true"
+        dapr.io/id: "node-subscriber"
+        dapr.io/port: "3000"
     spec:
       containers:
       - name: node-subscriber
-        image: actionscore.azurecr.io/samples/node-subscriber
+        image: actionscore.azurecr.io/dapr_samples/node-subscriber
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

@@ -30,13 +30,13 @@ spec:
       labels:
         app: node
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "nodeapp"
-        actions.io/port: "3000"
+        dapr.io/enabled: "true"
+        dapr.io/id: "nodeapp"
+        dapr.io/port: "3000"
     spec:
       containers:
       - name: node
-        image: actionscore.azurecr.io/samples/nodeapp
+        image: actionscore.azurecr.io/dapr_samples/nodeapp
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

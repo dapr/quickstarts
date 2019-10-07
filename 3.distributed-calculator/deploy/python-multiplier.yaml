@@ -14,13 +14,13 @@ spec:
       labels:
         app: multiply
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "multiplyapp"
-        actions.io/port: "5000"
+        dapr.io/enabled: "true"
+        dapr.io/id: "multiplyapp"
+        dapr.io/port: "5000"
     spec:
       containers:
       - name: multiply
-        image: actionscore.azurecr.io/samples/python-multiplier
+        image: actionscore.azurecr.io/dapr_samples/python-multiplier
         ports:
         - containerPort: 5000
         imagePullPolicy: Always

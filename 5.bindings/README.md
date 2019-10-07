@@ -129,4 +129,3 @@ Now that you've run the sample locally and/or in Kubernetes, let's unpack how th
 
 
 ### Python Output Binding Microservice
-

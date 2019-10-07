@@ -1,8 +1,8 @@
 # Hello World
 
-This tutorial will demonstrate how to get Actions running locally on your machine. We'll be deploying a Node.js app that subscribes to order messages and persists them. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will demonstrate how to get Dapr running locally on your machine. We'll be deploying a Node.js app that subscribes to order messages and persists them. The following architecture diagram illustrates the components that make up this sample: 
 
-![Architecture Diagram](./img/Architecture_Diagram.jpg)
+![Architecture Diagram](./img/Architecture_Diagram.png)
 
 ## Prerequisites
 This sample requires you to have the following installed on your machine:
@@ -10,20 +10,20 @@ This sample requires you to have the following installed on your machine:
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
 - [Postman](https://www.getpostman.com/) [Optional]
 
-## Step 1 - Setup Actions 
+## Step 1 - Setup Dapr 
 
-Follow [instructions](https://github.com/actionscore/actions#install-as-standalone) to download the Actions CLI and initialize Actions.
+Follow [instructions](https://github.com/dapr/dapr#install-as-standalone) to download the Dapr CLI and initialize Dapr.
 
 ## Step 2 - Understand the Code
 
-Now that we've locally set up actions and cloned the repo, let's navigate to the Hello World sample: `cd samples/1.hello-world`.
+Now that we've locally set up Dapr and cloned the repo, let's navigate to the Hello World sample: `cd samples/1.hello-world`.
 
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the `stateUrl` at the top of the file: 
 
 ```js
-const stateUrl = `http://localhost:${process.env.ACTIONS_PORT}/v1.0/state`;
+const stateUrl = `http://localhost:${process.env.DAPR_PORT}/v1.0/state`;
 ```
-When we use the Actions CLI, it creates an environment variable for the Actions port, which defaults to 3500. We'll be using this in step 3 when we POST messages to to our system.
+When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to to our system.
 
 Next, let's take a look at the ```neworder``` handler:
 
@@ -71,7 +71,7 @@ We also expose a GET endpoint, `/order`:
 
 ```js
 app.get('/order', (_req, res) => {
-    fetch(`${actionsUrl}/state/order`)
+    fetch(`${daprUrl}/state/order`)
         .then((response) => {
             return response.json();
         }).then((orders) => {
@@ -82,24 +82,24 @@ app.get('/order', (_req, res) => {
 
 This calls out to our Redis cache to grab the latest value of the "order" key, which effectively allows our Node.js app to be _stateless_. 
 
-> **Note**: If we only expected to have a single instance of the Node.js app, and didn't expect anything else to update "order", we instead could have kept a local version of our order state and returned that (reducing a call to our Redis store). We would then create a `/state` POST endpoint, which would allow actions to initialize our app's state when it starts up. In that case, our Node.js app would be _stateful_.
+> **Note**: If we only expected to have a single instance of the Node.js app, and didn't expect anything else to update "order", we instead could have kept a local version of our order state and returned that (reducing a call to our Redis store). We would then create a `/state` POST endpoint, which would allow Dapr to initialize our app's state when it starts up. In that case, our Node.js app would be _stateful_.
 
-## Step 3 - Run the Node.js App with Actions
+## Step 3 - Run the Node.js App with Dapr
 
 1. Install dependencies: `npm install`. This will install `express` and `body-parser`, dependencies that are shown in our `package.json`.
 
-2. Run Node.js app with Actions: `actions run --app-id mynode --app-port 3000 --port 3500 node app.js`. This should output text that looks like the following, along with logs:
+2. Run Node.js app with Dapr: `dapr run --app-id mynode --app-port 3000 --port 3500 node app.js`. This should output text that looks like the following, along with logs:
 
 ```
-Starting Actions with id mynode on port 3500
-You're up and running! Both Actions and your app logs will appear here.
+Starting Dapr with id mynode on port 3500
+You're up and running! Both Dapr and your app logs will appear here.
 ...
 ```
-> **Note**:  The Actions `--port` parameter with the `run` command is optional, and if not supplied, a random available port is used.
+> **Note**:  The Dapr `--port` parameter with the `run` command is optional, and if not supplied, a random available port is used.
 
 ## Step 4 - Post Messages to your Service
 
-Now that Actions and our Node.js app are running, let's POST messages against it.
+Now that Dapr and our Node.js app are running, let's POST messages against it.
 
 You can do this using `curl` with:
 
@@ -133,14 +133,14 @@ This invokes the `/order` route, which calls out to our Redis store for the late
 
 ## Step 6 - Cleanup
 
-To stop your services from running, simply stop the "actions run" process. Alternatively, you can spin down each of your services with the Actions CLI "stop" command. For example, to spin down your Node service, run: 
+To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down your Node service, run: 
 
 ```bash
-actions stop --app-id mynode
+dapr stop --app-id mynode
 ```
 
-To see that services have stopped running, run `actions list`, noting that your service no longer appears!
+To see that services have stopped running, run `dapr list`, noting that your service no longer appears!
 
 ## Next Steps
 
-Now that you've gotten Actions running locally on your machine, see the [Hello Kubernetes](../2.hello-kubernetes) to get set up in Kubernetes!
+Now that you've gotten Dapr running locally on your machine, see the [Hello Kubernetes](../2.hello-kubernetes) to get set up in Kubernetes!

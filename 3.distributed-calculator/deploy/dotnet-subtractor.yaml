@@ -14,13 +14,13 @@ spec:
       labels:
         app: subtract
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "subtractapp"
-        actions.io/port: "80"
+        dapr.io/enabled: "true"
+        dapr.io/id: "subtractapp"
+        dapr.io/port: "80"
     spec:
       containers:
       - name: subtract
-        image: actionscore.azurecr.io/samples/dotnet-subtractor
+        image: actionscore.azurecr.io/dapr_samples/dotnet-subtractor
         ports:
         - containerPort: 80
         imagePullPolicy: Always

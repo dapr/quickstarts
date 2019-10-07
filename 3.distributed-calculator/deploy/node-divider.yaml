@@ -14,13 +14,13 @@ spec:
       labels:
         app: divide
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "divideapp"
-        actions.io/port: "4000"
+        dapr.io/enabled: "true"
+        dapr.io/id: "divideapp"
+        dapr.io/port: "4000"
     spec:
       containers:
       - name: divide
-        image: actionscore.azurecr.io/samples/node-divider
+        image: actionscore.azurecr.io/dapr_samples/node-divider
         ports:
         - containerPort: 4000
         imagePullPolicy: Always
