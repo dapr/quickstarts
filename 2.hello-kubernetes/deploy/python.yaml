@@ -14,9 +14,9 @@ spec:
       labels:
         app: python
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "pythonapp"
+        dapr.io/enabled: "true"
+        dapr.io/id: "pythonapp"
     spec:
       containers:
       - name: python
-        image: actionscore.azurecr.io/samples/pythonapp
+        image: actionscore.azurecr.io/dapr_samples/pythonapp

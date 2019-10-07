@@ -14,13 +14,13 @@ spec:
       labels:
         app: python-subscriber
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "python-subscriber"
-        actions.io/port: "5000"
+        dapr.io/enabled: "true"
+        dapr.io/id: "python-subscriber"
+        dapr.io/port: "5000"
     spec:
       containers:
       - name: python-subscriber
-        image: actionscore.azurecr.io/samples/python-subscriber
+        image: actionscore.azurecr.io/dapr_samples/python-subscriber
         ports:
         - containerPort: 5000
         imagePullPolicy: Always

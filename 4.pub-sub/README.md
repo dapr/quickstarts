@@ -1,6 +1,6 @@
-# Actions Pub-Sub Sample
+# Dapr Pub-Sub Sample
 
-In this sample, we'll create a publisher microservice and two subscriber microservices to demonstrate how Actions enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. See [Why Pub-Sub](#why-pub-sub) to understand when this pattern might be a good choice for your software architecture.
+In this sample, we'll create a publisher microservice and two subscriber microservices to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. See [Why Pub-Sub](#why-pub-sub) to understand when this pattern might be a good choice for your software architecture.
 
 This sample includes one publisher:
 
@@ -11,78 +11,78 @@ and two subscribers:
 - Node.js subscriber
 - Python subscriber
 
-Actions uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case we'll use Redis Streams (enabled in Redis versions => 5). The following architecture diagram illustrates how components interconnect locally:
+Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case we'll use Redis Streams (enabled in Redis versions => 5). The following architecture diagram illustrates how components interconnect locally:
 
-![Architecture Diagram](./img/Local_Architecture_Diagram.JPG)
+![Architecture Diagram](./img/Local_Architecture_Diagram.png)
 
-Actions allows us to deploy the same microservices from our local machines to the cloud. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes). 
+Dapr allows us to deploy the same microservices from our local machines to the cloud. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes). 
 
 ## Prerequisites
 
 ### Prerequisites to Run Locally
 
-- [Actions CLI with Actions initialized](https://github.com/actionscore/actions#install-as-standalone)
+- [Dapr CLI with Dapr initialized](https://github.com/dapr/dapr#install-as-standalone)
 - [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this sample with one or both microservices
 
 ### Prerequisites to Run in Kubernetes
 
-- [Actions enabled Kubernetes cluster](https://github.com/actionscore/actions#install-on-kubernetes)
+- [Dapr enabled Kubernetes cluster](https://github.com/dapr/dapr#install-on-kubernetes)
 
 ## Run Locally
 
-In order to run the pub/sub sample locally, we need to run each of our microservices with Actions. We'll start by running our messages subscribers. 
+In order to run the pub/sub sample locally, we need to run each of our microservices with Dapr. We'll start by running our messages subscribers. 
 
 > **Note**: These instructions deploy a Node subscriber and a Python subscriber, but if you don't have either Node or Python, feel free to run just one.
 
-### Run Node Message Subscriber with Actions
+### Run Node Message Subscriber with Dapr
 
 1. Navigate to Node subscriber directory in your CLI: `cd node-subscriber`
 2. Install dependencies: `npm install`
-3. Run Node subscriber app with Actions: `actions run --app-id node-subscriber --app-port 3000 node app.js`
+3. Run Node subscriber app with Dapr: `dapr run --app-id node-subscriber --app-port 3000 node app.js`
     
     We assign `app-id`, which can be whatever unique identifier we like. We also assign `app-port`, which is the port that our Node application is running on. Finally, we pass the command to run our app: `node app.js`
 
-### Run Python Message Subscriber with Actions
+### Run Python Message Subscriber with Dapr
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd python_subscriber`
 2. Install dependencies: `pip install -r requirements.txt`
-3. Run Python subscriber app with Actions: `actions run --app-id python-subscriber --app-port 5000 python app.py`
+3. Run Python subscriber app with Dapr: `dapr run --app-id python-subscriber --app-port 5000 python app.py`
     
     We assign `app-id`, which can be whatever unique identifier we like. We also assign `app-port`, which is the port that our Node application is running on. Finally, we pass the command to run our app: `python app.py`
 
 ### Use the CLI to Publish Messages to Subscribers
 
-The Actions CLI provides a mechanism to publish messages for testing purposes. Let's test that our subscribers are listening!
+The Dapr CLI provides a mechanism to publish messages for testing purposes. Let's test that our subscribers are listening!
 
-1. Use Actions CLI to publish a message:
+1. Use Dapr CLI to publish a message:
    
     * Linux/Mac:
     ```bash
-    actions publish --topic A --payload '{ "message": "This is a test" }'
+    dapr publish --topic A --payload '{ "message": "This is a test" }'
     ```
     * Windows
     ```bash
-    actions publish --topic A --payload "{ \"message\": \"This is a test\" }"
+    dapr publish --topic A --payload "{ \"message\": \"This is a test\" }"
     ```
     Both our Node.js and Python subscribers subscribe to topic A and log when they receive a message. Note that logs are showing up in the console window where we ran each one: 
     
     ```bash
-        [0m?[94;1m== APP == Topic A: { id: '5780e2ca-f526-4839-92e5-a0a30aff829a', source: 'react-form', type: 'com.actions.event.sent', specversion: '0.3',data: { message: 'this is a test' } }
+        [0m?[94;1m== APP == Topic A: { id: '5780e2ca-f526-4839-92e5-a0a30aff829a', source: 'react-form', type: 'com.dapr.event.sent', specversion: '0.3',data: { message: 'this is a test' } }
     ```
 
 2. **Optional**: If you're running both the Node and Python apps, try publishing a message of topic B. You'll notice that only the Node app will receive this message. We'll discuss how these microservices are subscribing to specific topics in [How it Works](#How-it-Works).
 
-### Run the React Front End with Actions
+### Run the React Front End with Dapr
 
-Now let's run our React front end with Actions. Our front end will publish different kinds of messages that our subscribers will pick up.
+Now let's run our React front end with Dapr. Our front end will publish different kinds of messages that our subscribers will pick up.
 
 1. Open a new CLI window and navigate to the react-form directory: `cd react-form`
-2. Run the React front end app with Actions: `actions run --app-id react-form --app-port 8080 npm run buildandstart`. This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Actions logs.
+2. Run the React front end app with Dapr: `dapr run --app-id react-form --app-port 8080 npm run buildandstart`. This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Dapr logs.
 3. Open the browser and navigate to "http://localhost:8080/". You should see a form with a dropdown for message type and message text: 
 
 ![Form Screenshot](./img/Form_Screenshot.JPG)
 
-4. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Actions. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
+4. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
 
 5. If you want to deploy this same application to Kubernetes, move onto the next step. Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
 
@@ -90,16 +90,16 @@ Now let's run our React front end with Actions. Our front end will publish diffe
 
 To run the same sample in Kubernetes, we'll need to first set up a Redis store and then deploy our microservices. We'll be using the same microservices, but ultimately our architecture is a bit different: 
 
-![Architecture Diagram](./img/K8s_Architecture_Diagram.JPG)
+![Architecture Diagram](./img/K8s_Architecture_Diagram.png)
 
 ### Setting up a Redis Store
 
-Actions uses pluggable message buses to enable pub-sub, in this case we'll use Redis Streams (enabled in Redis version 5 and above). We'll install Redis into our cluster using helm, but keep in mind that you could use whichever Redis host you like, as long as the version is greater than 5.
+Dapr uses pluggable message buses to enable pub-sub, in this case we'll use Redis Streams (enabled in Redis version 5 and above). We'll install Redis into our cluster using helm, but keep in mind that you could use whichever Redis host you like, as long as the version is greater than 5.
 
-1. Follow [these steps](https://github.com/actionscore/docs/blob/master/concepts/components/redis.md#creating-a-redis-cache-in-your-kubernetes-cluster-using-helm) to create a Redis store using Helm. 
+1. Follow [these steps](https://github.com/dapr/docs/blob/master/concepts/components/redis.md#creating-a-redis-cache-in-your-kubernetes-cluster-using-helm) to create a Redis store using Helm. 
    > **Note**: Currently the version of Redis supported by Azure Redis Cache is less than 5, so using Azure Redis Cache will not work.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. Don't worry about applying the `redis.yaml`, as it will be covered in the next step. 
-   > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/actionscore/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
+   > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
 
 ### Deploy Assets
 
@@ -141,14 +141,14 @@ Now that you've run the sample locally and/or in Kubernetes, let's unpack how th
 Navigate to the `node-subscriber` directory and open `app.js`, the code for our Node.js subscriber. Here we're exposing three  API endpoints using `express`. The first is a GET endpoint: 
 
 ```js
-app.get('/actions/subscribe', (_req, res) => {
+app.get('/dapr/subscribe', (_req, res) => {
     res.json([
         'A',
         'B'
     ]);
 });
 ```
-This tells actions what topics we want to subscribe to. When deployed (locally or in Kubernetes), Actions will call out to my service to determine if it's subscribing to anything - this is how we tell it! The other two endpoints are POST endpoints:
+This tells Dapr what topics we want to subscribe to. When deployed (locally or in Kubernetes), Dapr will call out to my service to determine if it's subscribing to anything - this is how we tell it! The other two endpoints are POST endpoints:
 
 ```js
 app.post('/A', (req, res) => {
@@ -169,11 +169,11 @@ These handle messages of each topic type coming through. Note that we simply log
 Navigate to the `python-subscriber` directory and open `app.py`, the code for our Python subscriber. As with our Node.js subscriber, we're exposing three API endpoints, this time using `flask`. The first is a GET endpoint: 
 
 ```python
-@app.route('/actions/subscribe', methods=['GET'])
+@app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
     return jsonify(['A','C'])
 ```
-Again, this is how we tell Actions what topics we want to subscribe to. In this case, we're subscribing to topics "A" and "C". We handle  messages of those topics with our other two routes:
+Again, this is how we tell Dapr what topics we want to subscribe to. In this case, we're subscribing to topics "A" and "C". We handle  messages of those topics with our other two routes:
 
 ```python
 @app.route('/A', methods=['POST'])
@@ -218,26 +218,26 @@ Upon submission of the form, we send the aggregated JSON data to our server:
 
 #### Server
 
-Our server is a basic express application that exposes a POST endpoint: `/publish`. This takes the requests from our client and publishes them against Actions. We use `body-parser` to parse the JSON out of the incoming requests:
+Our server is a basic express application that exposes a POST endpoint: `/publish`. This takes the requests from our client and publishes them against Dapr. We use `body-parser` to parse the JSON out of the incoming requests:
 
 ```js
 app.use(bodyParser.json());
 ```
 
-This allows us to determine which topic to publish our message with. To publish messages against Actions, our URL needs to look like: `http://localhost:<ACTIONS_URL>/publish/<TOPIC>`, so our `publish` endpoint builds a URL and posts our JSON against it: 
+This allows us to determine which topic to publish our message with. To publish messages against Dapr, our URL needs to look like: `http://localhost:<DAPR_URL>/publish/<TOPIC>`, so our `publish` endpoint builds a URL and posts our JSON against it: 
 
 ```js
-const publishUrl = `${actionsUrl}/publish/${req.body.messageType}`;
+const publishUrl = `${daprUrl}/publish/${req.body.messageType}`;
 request( { uri: publishUrl, method: 'POST', json: req.body } );
 ```
 
-Note how the `actionsUrl` determines what port Actions live on: 
+Note how the `daprUrl` determines what port Dapr live on: 
 
 ```js
-const actionsUrl = `http://localhost:${process.env.ACTIONS_PORT || 3500}/v1.0`;
+const daprUrl = `http://localhost:${process.env.DAPR_PORT || 3500}/v1.0`;
 ```
 
-By default, Actions live on 3500, but if we're running Actions locally and set it to a different port (using the `--port` flag in the CLI `run` command), then that port will be injected into our application as an environment variable.
+By default, Dapr live on 3500, but if we're running Dapr locally and set it to a different port (using the `--port` flag in the CLI `run` command), then that port will be injected into our application as an environment variable.
 
 Our server also hosts the React application itself by forwarding all other requests to our built client code:
 

@@ -1,7 +1,7 @@
 {
   "name": "node-subscriber",
   "version": "1.0.0",
-  "description": "A subscriber microservice in the Actions pub-sub sample",
+  "description": "A subscriber microservice in the Dapr pub-sub sample",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

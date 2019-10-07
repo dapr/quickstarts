@@ -6,7 +6,7 @@ app.use(bodyParser.json());
 
 const port = 3000;
 
-app.get('/actions/subscribe', (_req, res) => {
+app.get('/dapr/subscribe', (_req, res) => {
     res.json([
         'A',
         'B'
