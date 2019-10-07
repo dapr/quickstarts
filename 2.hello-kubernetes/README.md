@@ -2,7 +2,7 @@
 
 This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying a python app that generates messages and a Node app that consumes and persists them. The following architecture diagram illustrates the components that make up this sample: 
 
-![Architecture Diagram](./img/Architecture_Diagram.jpg)
+![Architecture Diagram](./img/Architecture_Diagram.png)
 
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
