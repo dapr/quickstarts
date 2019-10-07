@@ -1,0 +1,13 @@
+apiVersion: actions.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-topic
+spec:
+  type: bindings.kafka
+  metadata:
+  - name: topics
+    value: sample-topic
+  - name: brokers
+    value: localhost:9092
+  - name: consumerGroup
+    value: group1
