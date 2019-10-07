@@ -1,1 +1,1 @@
-# Actions Bindings Sample
+# Dapr Bindings Sample

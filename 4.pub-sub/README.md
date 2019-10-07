@@ -13,7 +13,7 @@ and two subscribers:
 
 Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case we'll use Redis Streams (enabled in Redis versions => 5). The following architecture diagram illustrates how components interconnect locally:
 
-![Architecture Diagram](./img/Local_Architecture_Diagram.JPG)
+![Architecture Diagram](./img/Local_Architecture_Diagram.png)
 
 Dapr allows us to deploy the same microservices from our local machines to the cloud. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes). 
 
@@ -90,7 +90,7 @@ Now let's run our React front end with Dapr. Our front end will publish differen
 
 To run the same sample in Kubernetes, we'll need to first set up a Redis store and then deploy our microservices. We'll be using the same microservices, but ultimately our architecture is a bit different: 
 
-![Architecture Diagram](./img/K8s_Architecture_Diagram.JPG)
+![Architecture Diagram](./img/K8s_Architecture_Diagram.png)
 
 ### Setting up a Redis Store
 

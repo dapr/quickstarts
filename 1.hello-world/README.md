@@ -2,7 +2,7 @@
 
 This tutorial will demonstrate how to get Dapr running locally on your machine. We'll be deploying a Node.js app that subscribes to order messages and persists them. The following architecture diagram illustrates the components that make up this sample: 
 
-![Architecture Diagram](./img/Architecture_Diagram.jpg)
+![Architecture Diagram](./img/Architecture_Diagram.png)
 
 ## Prerequisites
 This sample requires you to have the following installed on your machine:
