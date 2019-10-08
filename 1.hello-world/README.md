@@ -16,7 +16,14 @@ Follow [instructions](https://github.com/dapr/dapr#install-as-standalone) to dow
 
 ## Step 2 - Understand the Code
 
-Now that we've locally set up Dapr and cloned the repo, let's navigate to the Hello World sample: `cd samples/1.hello-world`.
+Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World sample: 
+
+```bash
+git clone https://github.com/dapr/samples.git
+cd samples/1.hello-world
+# THIS NEEDS TO BE TESTED
+```
+
 
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the `stateUrl` at the top of the file: 
 
