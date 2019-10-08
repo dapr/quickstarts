@@ -11,7 +11,7 @@ The front-end application consists of a server and a client written in [React](h
 Kudos to [ahfarmer](https://github.com/ahfarmer) whose [React calculator](https://github.com/ahfarmer/calculator) 
 sample was used for the client. The following architecture diagram illustrates the components that make up this sample: 
 
-![Architecture Diagram](./img/Architecture_Diagram.jpg)
+![Architecture Diagram](./img/Architecture_Diagram.png)
 
 ## Prerequisites
 
