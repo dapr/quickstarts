@@ -18,13 +18,13 @@ Dapr allows us to deploy the same microservices from our local machines to Kuber
 
 ### Prerequisites to Run Locally
 
-- [Dapr CLI with Dapr initialized](https://github.com/dapr/dapr#install-as-standalone)
+- [Dapr CLI with Dapr initialized](https://github.com/dapr/docs/tree/master/getting-started#installing-dapr-in-standalone-mode)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Python 3.4 or greater](https://www.python.org/)
 
 ### Prerequisites to Run in Kubernetes
 
-- [Dapr enabled Kubernetes cluster](https://github.com/dapr/actions#install-on-kubernetes)
+- [Dapr enabled Kubernetes cluster](https://github.com/dapr/docs/tree/master/getting-started#installing-dapr-on-a-kubernetes-cluster)
 
 ## Run Locally
 
@@ -70,14 +70,14 @@ Now that you have Kafka running locally on your machine, we'll need to run our m
 
 1. Navigate to Node subscriber directory in your CLI: `cd node`
 2. Install dependencies: `npm install`
-3. Run Node subscriber app with Dapr: `actions run --app-id node --app-port 3000 node app.js`
+3. Run Node subscriber app with Dapr: `dapr run --app-id node --app-port 3000 node app.js`
 
 ### Run Python Microservice with Output Binding
 
 Next, we'll run the Python microservice that uses output bindings
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd python`
-2. Run Python subscriber app with Dapr: `actions run --app-id python-subscriber --app-port 5000 python app.py`
+2. Run Python subscriber app with Dapr: `dapr run --app-id python-subscriber python app.py`
     
 ### Observe Logs
 
@@ -105,11 +105,19 @@ Next, we'll run the Python microservice that uses output bindings
 
 ## Run in Kubernetes
 
+Placeholder.
+
 ### Setting up a Kafka in Kubernetes
+
+Placeholder.
 
 ### Deploy Assets
 
+Placeholder.
+
 ### Observe Logs
+
+Placeholder.
 
 ### Cleanup
 
@@ -127,5 +135,8 @@ Now that you've run the sample locally and/or in Kubernetes, let's unpack how th
 
 ### Node Input Binding Microservice
 
+Placeholder.
 
 ### Python Output Binding Microservice
+
+Placeholder.
