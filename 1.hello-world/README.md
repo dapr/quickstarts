@@ -12,7 +12,7 @@ This sample requires you to have the following installed on your machine:
 
 ## Step 1 - Setup Dapr 
 
-Follow [instructions](https://github.com/dapr/dapr#install-as-standalone) to download the Dapr CLI and initialize Dapr.
+Follow [instructions](https://github.com/dapr/cli) to download and install the Dapr CLI and initialize Dapr.
 
 ## Step 2 - Understand the Code
 
