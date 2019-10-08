@@ -21,7 +21,7 @@ Now that we've locally set up Dapr and cloned the repo, let's navigate to the He
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the `stateUrl` at the top of the file: 
 
 ```js
-const stateUrl = `http://localhost:${process.env.DAPR_PORT}/v1.0/state`;
+const stateUrl = `http://localhost:${process.env.DAPR_HTTP_PORT}/v1.0/state`;
 ```
 When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to to our system.
 

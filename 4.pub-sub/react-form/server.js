@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const port = 8080;
-const daprUrl = `http://localhost:${process.env.DAPR_PORT || 3500}/v1.0`;
+const daprUrl = `http://localhost:${process.env.DAPR_HTTP_PORT || 3500}/v1.0`;
 
 app.post('/publish', (req, res) => {
   console.log("Publishing: ", req.body);
