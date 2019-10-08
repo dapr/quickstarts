@@ -40,7 +40,7 @@ multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
 subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 ```
 
-6. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
+5. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
 
     ```bash
     NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
