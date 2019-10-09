@@ -111,10 +111,17 @@ Now that we've set up the Redis store, we can deploy our assets.
 2. Run `kubectl apply -f .` which will deploy our publisher and two subscriber microservices. It will also apply the redis configuration we set up in the last step.
 3. Run `kubectl get pods` to see each pod being provisioned.
 4. Run `kubectl get svc -w` to get the external IP exposed by our `react-form` microservice. This may take a minute.
+   > **Note:** Minikube user cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
 
 ### Use the Sample
 
 1. Copy the external IP from the last step into your browser and observe the same React form that we saw locally!
+
+    **For Minikube user**, execute the below command to open calculator on your browser
+    ```
+    $ minikube service react-form
+    ```
+
 2. Create and submit messages of different types.
 3. To see the logs generated from your subscribers, first run `kubectl get pods` to get the pod names for each subscriber. Then run `kubectl logs <POD NAME> <CONTAINER NAME>`. For example, I can see the logs for my `node-subscriber` service by running: 
 
