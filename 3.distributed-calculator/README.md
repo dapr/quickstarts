@@ -58,11 +58,11 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 
     Each service ending in "-dapr" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
 
-    > **Note:** Minikube user cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
+    > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
 
 7. Take the external IP address for `calculator-front-end` and drop it in your browser and voilà! You have a working distributed calculator!
 
-    **For Minikube user**, execute the below command to open calculator on your browser
+    **For Minikube users**, execute the below command to open calculator on your browser
     ```
     $ minikube service calculator-front-end
     ```
