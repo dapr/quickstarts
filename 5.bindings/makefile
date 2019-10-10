@@ -13,7 +13,7 @@ DOCKERFILE:=Dockerfile
 SAMPLE_APPS:=$(foreach ITEM,$(APPS),$(DOCKER_IMAGE_PREFIX)$(ITEM))
 build: $(SAMPLE_APPS)
 
-# Generate builds for dapr binaries for the target
+# Generate docker image build targets
 # Params:
 # $(1): app name
 # $(2): tag name
@@ -31,7 +31,7 @@ $(foreach ITEM,$(APPS),$(eval $(call genDockerImageBuild,$(ITEM),$(SAMPLE_VERSIO
 PUSH_SAMPLE_APPS:=$(foreach ITEM,$(APPS),push-$(DOCKER_IMAGE_PREFIX)$(ITEM))
 push: $(PUSH_SAMPLE_APPS)
 
-# Generate builds for dapr binaries for the target
+# Generate docker image push targets
 # Params:
 # $(1): app name
 # $(2): tag name
@@ -41,5 +41,5 @@ push-$(DOCKER_IMAGE_PREFIX)$(1):
 	$(DOCKER) push $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(2)
 endef
 
-# Generate docker image build targets
+# Generate docker image push targets
 $(foreach ITEM,$(APPS),$(eval $(call genDockerImagePush,$(ITEM),$(SAMPLE_VERSION))))
