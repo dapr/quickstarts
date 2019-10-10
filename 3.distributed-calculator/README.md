@@ -40,7 +40,7 @@ multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
 subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 ```
 
-6. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
+5. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
 
     ```bash
     NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
@@ -58,7 +58,14 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 
     Each service ending in "-dapr" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
 
+    > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
+
 7. Take the external IP address for `calculator-front-end` and drop it in your browser and voilà! You have a working distributed calculator!
+
+    **For Minikube users**, execute the below command to open calculator on your browser
+    ```
+    $ minikube service calculator-front-end
+    ```
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
