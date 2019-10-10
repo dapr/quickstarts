@@ -105,11 +105,81 @@ Next, we'll run the Python microservice that uses output bindings
 
 ## Run in Kubernetes
 
-Placeholder.
-
 ### Setting up a Kafka in Kubernetes
 
-Placeholder.
+1. Make sure that you installed helm tiller on your cluster
+2. Install Kafka via helm
+```
+$ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+$ helm repo update
+$ helm install --name dapr-kafka --namespace kafka incubator/kafka --set replicas=1
+
+==> v1/StatefulSet
+NAME        READY  AGE
+dapr-kafka  0/3    0s
+
+==> v1beta1/PodDisruptionBudget
+NAME                  MIN AVAILABLE  MAX UNAVAILABLE  ALLOWED DISRUPTIONS  AGE
+dapr-kafka-zookeeper  N/A            1                0                    0s
+
+==> v1beta1/StatefulSet
+NAME                  READY  AGE
+dapr-kafka-zookeeper  0/3    0s
+
+
+NOTES:
+### Connecting to Kafka from inside Kubernetes
+
+You can connect to Kafka by running a simple pod in the K8s cluster like this with a configuration like this:
+
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: testclient
+    namespace: kafka
+  spec:
+    containers:
+    - name: kafka
+      image: confluentinc/cp-kafka:5.0.1
+      command:
+        - sh
+        - -c
+        - "exec tail -f /dev/null"
+
+Once you have the testclient pod above running, you can list all kafka
+topics with:
+
+  kubectl -n kafka exec testclient -- kafka-topics --zookeeper dapr-kafka-zookeeper:2181 --list
+
+To create a new topic:
+
+  kubectl -n kafka exec testclient -- kafka-topics --zookeeper dapr-kafka-zookeeper:2181 --topic test1 --create --partitions 1 --replication-factor 1
+
+To listen for messages on a topic:
+
+  kubectl -n kafka exec -ti testclient -- kafka-console-consumer --bootstrap-server dapr-kafka:9092 --topic test1 --from-beginning
+
+To stop the listener session above press: Ctrl+C
+
+To start an interactive message producer session:
+  kubectl -n kafka exec -ti testclient -- kafka-console-producer --broker-list dapr-kafka-headless:9092 --topic test1
+
+To create a message in the above session, simply type the message and press "enter"
+To end the producer session try: Ctrl+C
+
+If you specify "zookeeper.connect" in configurationOverrides, please replace "dapr-kafka-zookeeper:2181" with the value of "zookeeper.connect", or you will get error.
+```
+
+3. Wait until kafka pods are running
+```
+$ kubectl -n kafka get pods -w
+NAME                     READY   STATUS    RESTARTS   AGE
+dapr-kafka-0             1/1     Running   0          2m7s
+dapr-kafka-zookeeper-0   1/1     Running   0          2m57s
+dapr-kafka-zookeeper-1   1/1     Running   0          2m13s
+dapr-kafka-zookeeper-2   1/1     Running   0          109s
+```
+
 
 ### Deploy Assets
 
