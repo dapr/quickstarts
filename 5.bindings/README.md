@@ -108,7 +108,7 @@ Next, we'll run the Python microservice that uses output bindings
 ### Setting up a Kafka in Kubernetes
 
 1. Make sure that you installed helm tiller on your cluster
-2. Install Kafka via helm
+2. Install Kafka via [incubator/kafka helm chart](https://github.com/helm/charts/tree/master/incubator/kafka)
 ```
 $ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 $ helm repo update
