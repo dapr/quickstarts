@@ -1,3 +1,8 @@
+// ------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+// ------------------------------------------------------------
+
 import React from 'react';
 import { MessageForm } from './MessageForm';
 import { Nav } from './Nav';
