@@ -1,12 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: nodeapp
+  name: bindings-nodeapp
   labels:
-    app: node
+    app: bindingsnodeapp
 spec:
   selector:
-    app: node
+    app: bindingsnodeapp
   ports:
   - protocol: TCP
     port: 80
@@ -17,26 +17,26 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodeapp
+  name: bindings-nodeapp
   labels:
-    app: node
+    app: bindingsnodeapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: node
+      app: bindingsnodeapp
   template:
     metadata:
       labels:
-        app: node
+        app: bindingsnodeapp
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "nodeapp"
-        actions.io/port: "3000"
+        dapr.io/enabled: "true"
+        dapr.io/id: "bindings-nodeapp"
+        dapr.io/port: "3000"
     spec:
       containers:
       - name: node
-        image: actionscore.azurecr.io/samples/bindings/nodeapp
+        image: docker.io/daprio/sample_bindings_nodeapp
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
