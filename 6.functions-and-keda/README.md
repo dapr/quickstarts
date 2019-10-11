@@ -1,6 +1,6 @@
 # DAPR, Azure Functions, and KEDA
 
-This sample shows DAPR being used with Azure Functions and KEDA to create a ployglot Functions-as-a-Service application which leverages DAPR pub/sub. In it, a Python function is triggered by a message created in an Azure storage queue. This function then publishes that message to the rest of the system. A C# function and a JavaScript function have both registered to receive this event and will process it accordingly.
+This sample shows DAPR being used with Azure Functions and KEDA to create a ployglot Functions-as-a-Service application which leverages DAPR pub/sub. In it, a Python function is triggered by a message created in an Azure storage queue. This function then interacts with Dapr to publish that message to two subscribers: A C# and Javascript function that receive the event and process it accordingly.
 
 ## Run the sample
 
