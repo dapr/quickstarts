@@ -23,12 +23,12 @@ Dapr allows us to deploy the same microservices from our local machines to the c
 
 ### Prerequisites to Run Locally
 
-- [Dapr CLI with Dapr initialized](https://github.com/dapr/dapr#install-as-standalone)
+- [Dapr CLI with Dapr initialized](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md)
 - [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this sample with one or both microservices
 
 ### Prerequisites to Run in Kubernetes
 
-- [Dapr enabled Kubernetes cluster](https://github.com/dapr/dapr#install-on-kubernetes)
+- [Dapr enabled Kubernetes cluster](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
 
 ## Run Locally
 

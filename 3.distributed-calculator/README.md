@@ -15,7 +15,7 @@ sample was used for the client. The following architecture diagram illustrates t
 
 ## Prerequisites
 
-In order to run this sample, you'll need to have an Dapr-enabled Kubernetes cluster. Follow [these instructions](https://github.com/dapr/dapr/#install-on-kubernetes) to set this up.
+In order to run this sample, you'll need to have an Dapr-enabled Kubernetes cluster. Follow [these instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to set this up.
 
 ## Running the Sample
 
