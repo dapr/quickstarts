@@ -6,7 +6,7 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'
 
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
-The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/dapr/dapr#install-on-kubernetes) to deploy Dapr to it.
+The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/dapr/dapr/tree/master/charts/dapr-operator) to deploy Dapr to it.
 
 
 ## Step 2 - Create and Configure a State Store
