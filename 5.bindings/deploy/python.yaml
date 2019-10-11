@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pythonapp
+  name: bindings-pythonapp
   labels:
-    app: python
+    app: bindingspythonapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: python
+      app: bindingspythonapp
   template:
     metadata:
       labels:
-        app: python
+        app: bindingspythonapp
       annotations:
-        actions.io/enabled: "true"
-        actions.io/id: "pythonapp"
+        dapr.io/enabled: "true"
+        dapr.io/id: "bindings-pythonapp"
     spec:
       containers:
       - name: python
-        image: actionscore.azurecr.io/samples/bindings/pythonapp
+        image: docker.io/daprio/sample_bindings_pythonapp
