@@ -24,7 +24,7 @@ Dapr allows us to deploy the same microservices from our local machines to Kuber
 
 ### Prerequisites to Run in Kubernetes
 
-- [Dapr enabled Kubernetes cluster](https://github.com/dapr/docs/blob/master/getting-started/setup-dapr.md#installing-dapr-on-a-kubernetes-cluster)
+- [Dapr enabled Kubernetes cluster](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
 
 ## Run Locally
 
