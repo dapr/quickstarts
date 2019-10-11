@@ -1,0 +1,23 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+  metadata:
+  - name: "redisHost"
+    value: "REPLACE_HOST"
+  - name: "redisPassword"
+    value: "REPLACE_SECRET"
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.redis
+  metadata:
+  - name: "redisHost"
+    value: "REPLACE_HOST"
+  - name: "redisPassword"
+    value: "REPLACE_SECRET"
