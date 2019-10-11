@@ -268,27 +268,40 @@ helm del --purge dapr-kafka
 
 Now that you've run the sample locally and/or in Kubernetes, let's unpack how this all works. Our app is broken up into input binding app and output binding app:
 
-### Node Input binding app
+### Kafka Bindings yaml
 
-Before looking at the code, see the [Kafka bindings component yaml](./nodeapp/components/kafka_bindings.yaml) which specifies consumer topic name, kafka brokers, and consumerGroup for input bindings.
+Before looking at the application code, let's see the Kafka bindings component yamls([nodeapp](./nodeapp/components/kafka_bindings.yaml), [pythonapp](./pythonapp/components/kafka_bindings.yaml), and [Kubernetes](./deploy/kafka_bindings.yaml)), which specify `brokers` for Kafka connection, `topics` and `consumerGroup` for consumer, and `publishTopic` for publisher topic.
+
+> See the howtos in [references](#references) for the details on input and output bindings
+
+
+This configuration yaml creates `sample-topic` component to set up Kafka input and output bindings through the Kafka `sample` topic. 
 
 ```yaml
-apiVersion: actions.io/v1alpha1
+apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: sample-topic
 spec:
   type: bindings.kafka
   metadata:
+  # Kafka broker connection setting
+  - name: brokers
+    value: [kafka broker address]
+  # consumer configuration: topic and consumer group
   - name: topics
     value: sample
-  - name: brokers
-    value: localhost:9092
   - name: consumerGroup
     value: group1
+  # publisher configuration: topic
+  - name: publishTopic
+    value: sample
 ```
 
-Navigate to the `nodeapp` directory and open `app.js`, the code for our Node.js input bindings sample app. Here we're exposing one API endpoint using `express`. The API name must be identical to the name of component which is specified in Kafka bindings component yaml. Then Dapr runtime will consume the event from `sample` topic and then send the POST request to Node app with the event payload.
+
+### Node Input binding app
+
+Navigate to the `nodeapp` directory and open `app.js`, the code for our Node.js input bindings sample app. Here we're exposing one API endpoint using `express`. The API name must be identical to the component name which is specified in Kafka bindings component yaml. Then Dapr runtime will consume the event from `sample` topic and then send the POST request to Node app with the event payload.
 
 ```js
 app.post('/sample-topic', (req, res) => {
@@ -300,23 +313,7 @@ app.post('/sample-topic', (req, res) => {
 
 ### Python Output binding app
 
-Before looking at the python code, see the [Kafka bindings component yaml](./pythonapp/components/kafka_bindings.yaml) which specifies topic name, Kafka brokers to publish the event for output bindings.
-
-```yaml
-apiVersion: actions.io/v1alpha1
-kind: Component
-metadata:
-  name: sample-topic
-spec:
-  type: bindings.kafka
-  metadata:
-  - name: brokers
-    value: localhost:9092
-  - name: publishTopic
-    value: sample
-```
-
-Navigate to the `pythonapp` directory and open `app.py`, the code for our output bindings sample app. This will POST `http://localhost:{}/v1.0/bindings/sample-topic` with the json payload to send the event every second and then Dapr runtime will send the event payload to `sample` topic which is specified in the above Kafka bindings component yaml.
+Navigate to the `pythonapp` directory and open `app.py`, the code for our output bindings sample app. This sends POST request to Dapr http endpoint `http://localhost:3500/v1.0/bindings/<output_bindings_name>` with the event payload every second. This app uses `sample-topic` bindings component name as `<output_bindings_name>`. Then Dapr runtime will send the event to `sample` topic which is specified in the above Kafka bindings component yaml.
 
 ```python
 dapr_url = "http://localhost:{}/v1.0/bindings/sample-topic".format(dapr_port)
@@ -335,7 +332,7 @@ while True:
     time.sleep(1)
 ```
 
-## Reference
+## References
 
 * [Howto - Create an event-driven app using input bindings](https://github.com/dapr/docs/tree/master/howto/trigger-app-with-input-binding)
 * [Howto - Send events to external systems using Output Bindings](https://github.com/dapr/docs/tree/master/howto/send-events-with-output-bindings)
