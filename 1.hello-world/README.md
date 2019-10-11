@@ -21,7 +21,6 @@ Now that we've locally set up Dapr, clone the repo, then navigate to the Hello W
 ```bash
 git clone https://github.com/dapr/samples.git
 cd samples/1.hello-world
-# THIS NEEDS TO BE TESTED
 ```
 
 
