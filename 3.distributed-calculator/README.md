@@ -47,18 +47,25 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
     dapr-api                      ClusterIP      10.103.71.22   <none>          80/TCP             135m
     dapr-placement                ClusterIP      10.103.53.127  <none>          80/TCP             135m
     dapr-sidecar-injector         ClusterIP      10.104.220.35  <none>          443/TCP            135m
-    addapp-action                 ClusterIP      10.0.1.170     <none>          80/TCP,50001/TCP   2m
+    addapp-dapr                   ClusterIP      10.0.1.170     <none>          80/TCP,50001/TCP   2m
     calculator-front-end          LoadBalancer   10.0.155.131   40.80.152.125   80:32633/TCP       3m
-    calculator-front-end-action   ClusterIP      10.0.230.219   <none>          80/TCP,50001/TCP   3m
-    divideapp-action              ClusterIP      10.0.240.3     <none>          80/TCP,50001/TCP   1m
+    calculator-front-end-dapr     ClusterIP      10.0.230.219   <none>          80/TCP,50001/TCP   3m
+    divideapp-dapr                ClusterIP      10.0.240.3     <none>          80/TCP,50001/TCP   1m
     kubernetes                    ClusterIP      10.0.0.1       <none>          443/TCP            33d
-    multiplyapp-action            ClusterIP      10.0.217.211   <none>          80/TCP,50001/TCP   1m
-    subtractapp-action            ClusterIP      10.0.146.253   <none>          80/TCP,50001/TCP   2m
+    multiplyapp-dapr              ClusterIP      10.0.217.211   <none>          80/TCP,50001/TCP   1m
+    subtractapp-dapr              ClusterIP      10.0.146.253   <none>          80/TCP,50001/TCP   2m
     ```
 
-    Each service ending in "-action" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
+    Each service ending in "-dapr" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
+
+    > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
 
 7. Take the external IP address for `calculator-front-end` and drop it in your browser and voilà! You have a working distributed calculator!
+
+    **For Minikube users**, execute the below command to open calculator on your browser
+    ```
+    $ minikube service calculator-front-end
+    ```
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
@@ -104,7 +111,7 @@ Each service in this sample is written in a different programming language, but 
 
 ### Service Invocation
 
-When our front-end server calls the respective operation services (see `server.js` code below), it doesn't need to know what IP address they live at or how they were built. Instead it calls their local action side-car by name, which knows how to invoke the method on the service, taking advantage of the platform’s service discovery mechanism, in this case Kubernetes DNS resolution.
+When our front-end server calls the respective operation services (see `server.js` code below), it doesn't need to know what IP address they live at or how they were built. Instead it calls their local dapr side-car by name, which knows how to invoke the method on the service, taking advantage of the platform’s service discovery mechanism, in this case Kubernetes DNS resolution.
 
 The code below shows calls to the “add” and “subtract” services via the Dapr URLs:
 ```js
