@@ -68,17 +68,18 @@ a minute   22/tcp, 2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp   kafka-docker_zoo
 
 Now that you have Kafka running locally on your machine, we'll need to run our microservices. We'll start by running the Node microservice that uses input bindings:
 
-1. Navigate to Node subscriber directory in your CLI: `cd node`
+1. Navigate to Node subscriber directory in your CLI: `cd nodeapp`
 2. Install dependencies: `npm install`
-3. Run Node subscriber app with Dapr: `dapr run --app-id node --app-port 3000 node app.js`
+3. Run Node sample app with Dapr: `dapr run --app-id bindings-nodeapp --app-port 3000 node app.js`
 
 ### Run Python Microservice with Output Binding
 
 Next, we'll run the Python microservice that uses output bindings
 
-1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd python`
-2. Run Python subscriber app with Dapr: `dapr run --app-id python-subscriber python app.py`
-    
+1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd pythonapp`
+2. Install dependencies: `pip install requests`
+3. Run Python sample app with Dapr: `dapr run --app-id bindings-pythonapp python app.py`
+
 ### Observe Logs
 
 1. Observe the Python logs, which demonstrate our successful output binding with Kafka:
