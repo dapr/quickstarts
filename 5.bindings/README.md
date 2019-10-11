@@ -180,33 +180,85 @@ dapr-kafka-zookeeper-1   1/1     Running   0          2m13s
 dapr-kafka-zookeeper-2   1/1     Running   0          109s
 ```
 
+4. Create sample topic
+
+```bash
+# Deploy kafka test client
+$ kubectl apply -f ./kafka_testclient.yaml
+# Create sample topic
+$ kubectl -n kafka exec testclient -- kafka-topics --zookeeper dapr-kafka-zookeeper:2181 --topic sample --create --partitions 1 --replication-factor 1
+```
 
 ### Deploy Assets
 
-Placeholder.
+Now that we've set up the Kafka binding, we can deploy our assets.
+
+1. In your CLI window, navigate to the deploy directory
+2. Run `kubectl apply -f .` which will deploy our bindings-nodeapp and bindings-pythonapp microservices. It will also apply the kafka bindings component configuration we set up in the last step.
+3. Run `kubectl get pods -w` to see each pod being provisioned.
+
 
 ### Observe Logs
 
-Placeholder.
+1. Observe the Python app logs, which demonstrate our successful output binding with Kafka:
+
+```bash
+# Get Pod ID for bindings-pythonapp
+$ kubectl get pods
+NAME                                    READY   STATUS        RESTARTS   AGE
+bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
+bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
+dapr-operator-86cddcfcb7-v2zjp          1/1     Running       0          6h6m
+dapr-placement-5d6465f8d5-pz2qt         1/1     Running       0          6h6m
+dapr-sidecar-injector-dc489d7bc-k2h4q   1/1     Running       0          6h6m
+# Get the log from bindings-pythonapp
+$ kubectl logs bindings-pythonapp-644489969b-c8lg5
+...
+{'data': {'orderId': 240}}
+<Response [200]>
+{'data': {'orderId': 241}}
+<Response [200]>
+...
+```
+
+2. Observe the Node app logs, which demonstrate our successful input bining with Kafka: 
+
+```bash
+# Get Pod ID for bindings-nodeapp
+$ kubectl get pods
+NAME                                    READY   STATUS        RESTARTS   AGE
+bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
+bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
+dapr-operator-86cddcfcb7-v2zjp          1/1     Running       0          6h6m
+dapr-placement-5d6465f8d5-pz2qt         1/1     Running       0          6h6m
+dapr-sidecar-injector-dc489d7bc-k2h4q   1/1     Running       0          6h6m
+# Get the log from bindings-nodeapp pod
+$ kubectl logs bindings-nodeapp-699489b8b6-mqhrj node
+Node App listening on port 3000!
+...
+Hello from Kafka!
+{ orderId: 240 }
+Hello from Kafka!
+{ orderId: 241 }
+...
+```
 
 ### Cleanup
 
 Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 ```bash
+cd ./deploy
 kubectl delete -f .
 ```
 
-This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
+This will spin down each resource defined by the .yaml files in the `deploy` directory, including the kafka component.
 
-## How it Works
+Once you delete all samples apps, delete Kafka in the cluster.
 
-Now that you've run the sample locally and/or in Kubernetes, let's unpack how this all works. Our app is broken up into two subscribers and one publisher:
-
-### Node Input Binding Microservice
-
-Placeholder.
-
-### Python Output Binding Microservice
-
-Placeholder.
+```bash
+# move to sample root
+kubectl delete -f ./kafka_testclient.yaml
+# clean up kafka cluster
+helm del --purge dapr-kafka
+```

@@ -1,14 +1,14 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sample
+  name: sample-topic
 spec:
   type: bindings.kafka
   metadata:
   - name: topics
     value: sample
   - name: brokers
-    value: dapr-kafka:9092
+    value: dapr-kafka.kafka:9092
   - name: consumerGroup
     value: group1
   - name: publishTopic

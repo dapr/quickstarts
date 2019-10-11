@@ -14,7 +14,7 @@ while True:
     print(payload, flush=True)
     try:
         response = requests.post(dapr_url, json=payload)
-        print(response, flush=True)
+        print(response.text, flush=True)
 
     except Exception as e:
         print(e)
