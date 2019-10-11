@@ -30,32 +30,10 @@ Dapr allows us to deploy the same microservices from our local machines to Kuber
 
 ### Run Kafka Docker Container Locally
 
-In order to run the bindings sample locally, we'll need to run a Kafka container. We'll do this by following instructions on [this repo](https://github.com/wurstmeister/kafka-docker) to run Kafka in a docker container on your machine. We'll clone that repo, make a couple changes to a docker `yaml` file, and run `docker-compose` to run the container:
+In order to run the Kafka bindings sample locally, you will run the [Kafka broker server](https://github.com/wurstmeister/kafka-docker) in a docker container on your machine.
 
-1. Clone `kafka-docker` repo: `git clone https://github.com/wurstmeister/kafka-docker`
-2. Open the `docker-compose-single-broker.yml` file and update `KAFKA_ADVERTISED_HOST_NAME` to be 127.0.0.1 and `KAFKA_CREATE_TOPICS` to be "sample:1:1":
-
-```yaml
-version: '2'
-services:
-  zookeeper:
-    image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
-  kafka:
-    build: .
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
-      KAFKA_CREATE_TOPICS: "sample:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-```
-
-3. Run `docker-compose -f ./docker-compose-single-broker.yml up -d` to run the container locally
-4. Run `docker ps` to see the container running locally: 
+1. Run `docker-compose -f ./docker-compose-single-kafka.yml up -d` to run the container locally
+2. Run `docker ps` to see the container running locally: 
 
 ```bash
 342d3522ca14        kafka-docker_kafka                      "start-kafka.sh"         14 hours ago        Up About
@@ -185,7 +163,7 @@ dapr-kafka-zookeeper-2   1/1     Running   0          109s
 
 ```bash
 # Deploy kafka test client
-$ kubectl apply -f ./kafka_testclient.yaml
+$ kubectl apply -f ./k8s_kafka_testclient.yaml
 # Create sample topic
 $ kubectl -n kafka exec testclient -- kafka-topics --zookeeper dapr-kafka-zookeeper:2181 --topic sample --create --partitions 1 --replication-factor 1
 ```
