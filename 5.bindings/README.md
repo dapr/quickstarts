@@ -263,3 +263,79 @@ kubectl delete -f ./kafka_testclient.yaml
 # clean up kafka cluster
 helm del --purge dapr-kafka
 ```
+
+## How it Works
+
+Now that you've run the sample locally and/or in Kubernetes, let's unpack how this all works. Our app is broken up into input binding app and output binding app:
+
+### Node Input binding app
+
+Before looking at the code, see the [Kafka bindings component yaml](./nodeapp/components/kafka_bindings.yaml) which specifies consumer topic name, kafka brokers, and consumerGroup for input bindings.
+
+```yaml
+apiVersion: actions.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-topic
+spec:
+  type: bindings.kafka
+  metadata:
+  - name: topics
+    value: sample
+  - name: brokers
+    value: localhost:9092
+  - name: consumerGroup
+    value: group1
+```
+
+Navigate to the `nodeapp` directory and open `app.js`, the code for our Node.js input bindings sample app. Here we're exposing one API endpoint using `express`. The API name must be identical to the name of component which is specified in Kafka bindings component yaml. Then Dapr runtime will consume the event from `sample` topic and then send the POST request to Node app with the event payload.
+
+```js
+app.post('/sample-topic', (req, res) => {
+    console.log("Hello from Kafka!");
+    console.log(req.body);
+    res.status(200).send();
+});
+```
+
+### Python Output binding app
+
+Before looking at the python code, see the [Kafka bindings component yaml](./pythonapp/components/kafka_bindings.yaml) which specifies topic name, Kafka brokers to publish the event for output bindings.
+
+```yaml
+apiVersion: actions.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-topic
+spec:
+  type: bindings.kafka
+  metadata:
+  - name: brokers
+    value: localhost:9092
+  - name: publishTopic
+    value: sample
+```
+
+Navigate to the `pythonapp` directory and open `app.py`, the code for our output bindings sample app. This will POST `http://localhost:{}/v1.0/bindings/sample-topic` with the json payload to send the event every second and then Dapr runtime will send the event payload to `sample` topic which is specified in the above Kafka bindings component yaml.
+
+```python
+dapr_url = "http://localhost:{}/v1.0/bindings/sample-topic".format(dapr_port)
+n = 0
+while True:
+    n += 1
+    payload = { "data": {"orderId": n}}
+    print(payload, flush=True)
+    try:
+        response = requests.post(dapr_url, json=payload)
+        print(response.text, flush=True)
+
+    except Exception as e:
+        print(e)
+
+    time.sleep(1)
+```
+
+## Reference
+
+* [Howto - Create an event-driven app using input bindings](https://github.com/dapr/docs/tree/master/howto/trigger-app-with-input-binding)
+* [Howto - Send events to external systems using Output Bindings](https://github.com/dapr/docs/tree/master/howto/send-events-with-output-bindings)

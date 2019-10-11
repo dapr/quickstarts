@@ -5,7 +5,9 @@ metadata:
 spec:
   type: bindings.kafka
   metadata:
+  - name: topics
+    value: sample
   - name: brokers
     value: localhost:9092
-  - name: publishTopic
-    value: sample-topic
+  - name: consumerGroup
+    value: group1
