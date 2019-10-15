@@ -47,13 +47,13 @@ az role assignment create --assignee $CLIENT_ID --role acrpull --scope $ACR_ID
 az acr login -n $registryName
 
 
-# Install Dapr
+# Install DAPR
 Write-Host
-Write-Host "Installing Dapr on $clusterName..."
+Write-Host "Installing DAPR on $clusterName..."
 dapr init --kubernetes
 
 Write-Host
-Write-Host "Installing Redis as the Dapr state store on $clusterName..."
+Write-Host "Installing Redis as the DAPR state store on $clusterName..."
 helm install stable/redis --name redis --set image.tag=5.0.5-debian-9-r104 --set rbac.create=true
 Start-Sleep -Seconds 60
 
