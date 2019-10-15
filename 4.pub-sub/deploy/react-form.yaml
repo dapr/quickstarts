@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: react-form
-        image: actionscore.azurecr.io/dapr_samples/react-form
+        image: dapriosamples/pubsub-react-form
         ports:
         - containerPort: 8080
         imagePullPolicy: Always

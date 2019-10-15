@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: python-subscriber
-        image: actionscore.azurecr.io/dapr_samples/python-subscriber
+        image: dapriosamples/pubsub-python-subscriber
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
