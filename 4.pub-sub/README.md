@@ -47,7 +47,7 @@ In order to run the pub/sub sample locally, we need to run each of our microserv
 ### Run Python Message Subscriber with Dapr
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd python_subscriber`
-2. Install dependencies: `pip install -r requirements.txt`
+2. Install dependencies: `pip install -r requirements.txt` or `python -m pip install -r requirements.txt`
 3. Run Python subscriber app with Dapr: `dapr run --app-id python-subscriber --app-port 5000 python app.py`
     
     We assign `app-id`, which can be whatever unique identifier we like. We also assign `app-port`, which is the port that our Node application is running on. Finally, we pass the command to run our app: `python app.py`
