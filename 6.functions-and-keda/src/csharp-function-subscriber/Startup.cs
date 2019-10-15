@@ -1,9 +1,9 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(DAPR.Sample.Startup))]
+[assembly: FunctionsStartup(typeof(Dapr.Sample.Startup))]
 
-namespace DAPR.Sample {
+namespace Dapr.Sample {
     public class Startup : FunctionsStartup
     {
         public override void Configure(IFunctionsHostBuilder builder)

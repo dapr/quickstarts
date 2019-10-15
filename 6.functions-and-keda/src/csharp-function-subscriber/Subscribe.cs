@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace DAPR.Sample
+namespace Dapr.Sample
 {
     public class Subscribe
     {
