@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
       - name: python
-        image: docker.io/daprio/sample_bindings_pythonapp
+        image: docker.io/dapriosamples/bindings-pythonapp
