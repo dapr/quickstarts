@@ -23,7 +23,7 @@ component.dapr.io "statestore" configured
 
 ## Step 3 - Understand the Code
 
-Now that we've setup Dapr and state, let's take a look at our services. Navigate to the Node.js app in the Kubernetes sample: `cd samples/2.hello-kubernetes/node.js`.
+Now that we've setup Dapr and state, let's take a look at our services. Navigate to the Node.js app in the Kubernetes sample: `cd samples/2.hello-kubernetes/node`.
 
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers.
 
