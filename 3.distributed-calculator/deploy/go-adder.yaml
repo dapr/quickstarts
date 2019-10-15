@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: add
-        image: actionscore.azurecr.io/dapr_samples/go-adder
+        image: dapriosamples/distributed-calculator-go
         ports:
         - containerPort: 6000
         imagePullPolicy: Always

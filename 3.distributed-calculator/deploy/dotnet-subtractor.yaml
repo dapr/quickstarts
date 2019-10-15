@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: subtract
-        image: actionscore.azurecr.io/dapr_samples/dotnet-subtractor
+        image: dapriosamples/distributed-calculator-csharp
         ports:
         - containerPort: 80
         imagePullPolicy: Always
