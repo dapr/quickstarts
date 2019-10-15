@@ -1,6 +1,6 @@
-# DAPR, Azure Functions, and KEDA
+# Dapr, Azure Functions, and KEDA
 
-This sample shows DAPR being used with Azure Functions and KEDA to create a ployglot Functions-as-a-Service application which leverages DAPR pub/sub. In it, a Python function is triggered by a message created in an Azure storage queue. This function then interacts with Dapr to publish that message to two subscribers: A C# and Javascript function that receive the event and process it accordingly.
+This sample shows Dapr being used with Azure Functions and KEDA to create a ployglot Functions-as-a-Service application which leverages Dapr pub/sub. In it, a Python function is triggered by a message created in an Azure storage queue. This function then interacts with Dapr to publish that message to two subscribers: A C# and Javascript function that receive the event and process it accordingly.
 
 ## Run the sample
 
@@ -8,7 +8,7 @@ This sample shows DAPR being used with Azure Functions and KEDA to create a ploy
 
 Setting up this sample requires you to have several components installed:
 
-- [Install the DAPR CLI](https://github.com/dapr/cli)
+- [Install the Dapr CLI](https://github.com/dapr/cli)
 - [Install Docker](https://docs.docker.com/install/)
 - [Install kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Install Helm](https://github.com/helm/helm)
@@ -50,15 +50,15 @@ Once the sample script has completed, run the following command to see what pods
 kubectl get pods -w
 ```
 
-You should see that there are three pods for DAPR infrastructure, as well as some Redis pods. You'll also see two pods for the function projects: one for C#, and one for JavaScript. The Python function project should not be visible, and this is because it has scaled to zero using KEDA. We'll see this pod momentarily. The `-w` flag in the command we ran means that the view will update as new pods become available.
+You should see that there are three pods for Dapr infrastructure, as well as some Redis pods. You'll also see two pods for the function projects: one for C#, and one for JavaScript. The Python function project should not be visible, and this is because it has scaled to zero using KEDA. We'll see this pod momentarily. The `-w` flag in the command we ran means that the view will update as new pods become available.
 
 Navigate to the [Azure portal](https://portal.azure.com), and find the resource group based on the name you provided earlier. You should see all three of the resouces mentioned earlier.
 
 Select the Storage account, and then it's "Storage Explorer (Preview)" option in the left-hand navigation. Select "Queues" and then "items". Click "Add message," provide your message text, and hit "OK."
 
-If you head back to the terminal where you are running the `kubectl get pods -w` command, you should see a new pod enter the `ContainerCreating` state. This is the Python function app, being scaled out because KEDA saw a message sitting in the queue. Note that there are two containers created - one of them is the DAPR sidecar!
+If you head back to the terminal where you are running the `kubectl get pods -w` command, you should see a new pod enter the `ContainerCreating` state. This is the Python function app, being scaled out because KEDA saw a message sitting in the queue. Note that there are two containers created - one of them is the Dapr sidecar!
 
-The Python function will consume the message from the queue and then use DAPR to publish a message that both the C# and Javascript apps have registered themselves to consume. You can check the logs for these apps to see them process the message. To do this, copy the name of the pod from the `kubectl get pods` command and run a `kubectl logs` command, as shown below:
+The Python function will consume the message from the queue and then use Dapr to publish a message that both the C# and Javascript apps have registered themselves to consume. You can check the logs for these apps to see them process the message. To do this, copy the name of the pod from the `kubectl get pods` command and run a `kubectl logs` command, as shown below:
 
 ```powershell
 kubectl logs csharp-function-subscriber-7b874cd7f9-bqgsj csharp-function-subscriber
