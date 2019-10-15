@@ -1,7 +1,7 @@
-DOCKER_IMAGE_PREFIX ?=sample_bindings_
+DOCKER_IMAGE_PREFIX ?=bindings-
 APPS                ?=nodeapp pythonapp
 
-SAMPLE_REGISTRY     ?=docker.io/daprio
+SAMPLE_REGISTRY     ?=docker.io/dapriosamples
 SAMPLE_VERSION      ?=latest
 
 # Docker image build and push setting

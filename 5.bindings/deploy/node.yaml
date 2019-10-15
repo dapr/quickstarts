@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: docker.io/daprio/sample_bindings_nodeapp
+        image: docker.io/dapriosamples/bindings-nodeapp
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
