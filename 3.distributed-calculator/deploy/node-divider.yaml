@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: divide
-        image: actionscore.azurecr.io/dapr_samples/node-divider
+        image: dapriosamples/distributed-calculator-node
         ports:
         - containerPort: 4000
         imagePullPolicy: Always
