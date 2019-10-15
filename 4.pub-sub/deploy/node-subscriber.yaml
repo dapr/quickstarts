@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: node-subscriber
-        image: actionscore.azurecr.io/dapr_samples/node-subscriber
+        image: dapriosamples/pubsub-node-subscriber
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
