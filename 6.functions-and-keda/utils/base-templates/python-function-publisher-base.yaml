@@ -1,0 +1,76 @@
+kind: Secret
+metadata:
+  name: python-function-publisher
+  namespace: default
+data:
+  AzureWebJobsStorage: CONNECTION_STRING_B64
+  FUNCTIONS_WORKER_RUNTIME: cHl0aG9u
+apiVersion: v1
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: python-function-publisher
+  labels:
+    app: python-function-publisher
+spec:
+  selector:
+    app: python-function-publisher
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-function-publisher
+  labels:
+    app: python-function-publisher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-function-publisher
+  template:
+    metadata:
+      labels:
+        app: python-function-publisher
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/id: "python-function-publisher"
+        dapr.io/port: "80"
+    spec:
+      containers:
+      - name: python-function-publisher
+        image: IMAGE_NAME
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+            name: python-function-publisher
+---
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: python-function-publisher
+  namespace: default
+  labels:
+    deploymentName: python-function-publisher
+spec:
+  scaleTargetRef:
+    deploymentName: python-function-publisher
+  triggers:
+  - type: azure-queue
+    metadata:
+      name: myQueueItem
+      type: queueTrigger
+      direction: in
+      queueName: items
+      queueLength: "1"
+      connection: AzureWebJobsStorage
+---
