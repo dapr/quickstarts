@@ -19,14 +19,18 @@ In order to run this sample, you'll need to have an Dapr-enabled Kubernetes clus
 
 ## Running the Sample
 
-1. Navigate to the deploy directory in this sample directory: `cd deploy`
-2. Follow [these instructions](https://github.com/dapr/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create and configure a Redis store
-3. Deploy all of your resources: `kubectl apply -f .`. 
+1. Clone the sample repository
+   ```bash
+   git clone https://github.com/dapr/samples.git
+   ```
+2. Navigate to the deploy directory in this sample directory: `cd deploy`
+3. Follow [these instructions](https://github.com/dapr/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create and configure a Redis store
+4. Deploy all of your resources: `kubectl apply -f .`. 
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for our front-end, which allows us to connect to it externally.
 
-4. Wait until your pods are in a running state: `kubectl get pods -w`
+5. Wait until your pods are in a running state: `kubectl get pods -w`
 
 ```bash
 
@@ -40,7 +44,7 @@ multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
 subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 ```
 
-5. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
+6. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
 
     ```bash
     NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE

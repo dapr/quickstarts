@@ -4,6 +4,12 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
+
+## Prerequisites
+This sample requires you to have the following installed on your machine:
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster), [AKS](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster) and [GKE](https://cloud.google.com/kubernetes-engine/)
+  
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to deploy Dapr to it.
@@ -23,7 +29,12 @@ component.dapr.io "statestore" configured
 
 ## Step 3 - Understand the Code
 
-Now that we've setup Dapr and state, let's take a look at our services. Navigate to the Node.js app in the Kubernetes sample: `cd samples/2.hello-kubernetes/node`.
+Now that we've setup Dapr and state, let's take a look at our services. Clone the sample repository:
+```bash
+git clone https://github.com/dapr/samples.git
+```
+
+ Navigate to the Node.js app in the Kubernetes sample: `cd samples/2.hello-kubernetes/node`.
 
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers.
 

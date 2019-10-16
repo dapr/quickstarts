@@ -10,3 +10,8 @@ This repository contains a series of samples that highlight Dapr capabilities. T
 | [4.pub-sub](./4.pub-sub)                | Demonstrates how we use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
 | [5.bindings](./5.bindings)            | Demonstrates how we use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
 | [6.functions-and-keda](./6.functions-and-keda) | Demonstrates use of Dapr pub/sub from Azure Functions, as well as composition with KEDA. |
+
+To get started with the samples, clone this repository and follow instructions in each sample:
+```bash
+git clone https://github.com/dapr/samples.git
+```
