@@ -8,7 +8,7 @@ This sample includes two microservices:
 
 The bindings connect to Kafka, allowing us to push messages into a Kafka instance (from our Python microservice) and receive message from that instance (from our Node microservice) without having to know where the instance is hosted. Instead, we connect through our sidecars using the Dapr API. See architecture diagram to see how our components interconnect locally:
 
-![Architecture Diagram](./img/Bindings_Standalone.jpg)
+![Architecture Diagram](./img/Bindings_Standalone.png)
 
 This sample also includes a manifest for using Azure Event Hubs to demonstrate how we can simply swap one component out for another.
 
