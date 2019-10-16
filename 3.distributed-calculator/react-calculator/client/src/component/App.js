@@ -15,7 +15,7 @@ export default class App extends React.Component {
     const savedState = await this.getState();
     if (savedState) {
       console.log("Rehydrating State:");
-      console.log(savedState);
+      console.log(JSON.stringify(savedState));
       this.setState(savedState);
     }
   }
@@ -28,7 +28,7 @@ export default class App extends React.Component {
 
   persistState = (value) => {
     console.log(`Persisting State:`);
-    console.log(value);
+    console.log(JSON.stringify(value));
 
     const state = [{ 
       key: "calculatorState", 
