@@ -4,7 +4,7 @@ This sample shows Dapr being used with Azure Functions and KEDA to create a ploy
 
 ## Run the sample
 
-### Requirements
+### Prerequisites
 
 Setting up this sample requires you to have several components installed:
 
@@ -15,6 +15,12 @@ Setting up this sample requires you to have several components installed:
 - [Install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 - [Install PowerShell Core 6](https://github.com/PowerShell/PowerShell)
 - [Install the Azure Functions Core Tools](https://docs.microsoft.com/azure/azure-functions/functions-run-local#v2)
+
+### Clone the sample repository
+Clone this sample repository to your local machine:
+```bash
+git clone https://github.com/dapr/samples.git
+```
 
 ### Run the setup script
 

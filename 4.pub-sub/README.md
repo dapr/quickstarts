@@ -36,6 +36,12 @@ In order to run the pub/sub sample locally, we need to run each of our microserv
 
 > **Note**: These instructions deploy a Node subscriber and a Python subscriber, but if you don't have either Node or Python, feel free to run just one.
 
+### Clone the sample repository
+Clone this sample repository to your local machine:
+```bash
+git clone https://github.com/dapr/samples.git
+```
+
 ### Run Node Message Subscriber with Dapr
 
 1. Navigate to Node subscriber directory in your CLI: `cd node-subscriber`

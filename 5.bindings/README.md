@@ -28,6 +28,12 @@ Dapr allows us to deploy the same microservices from our local machines to Kuber
 
 ## Run Locally
 
+### Clone the sample repository
+Clone this sample repository to your local machine:
+```bash
+git clone https://github.com/dapr/samples.git
+```
+
 ### Run Kafka Docker Container Locally
 
 In order to run the Kafka bindings sample locally, you will run the [Kafka broker server](https://github.com/wurstmeister/kafka-docker) in a docker container on your machine.
