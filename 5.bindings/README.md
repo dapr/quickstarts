@@ -77,7 +77,7 @@ Next, we'll run the Python microservice that uses output bindings
 [0m?[94;1m== APP == <Response [200]>
 ```
 
-2. Observe the Node logs, which demonstrate our successful input bining with Kafka: 
+2. Observe the Node logs, which demonstrate our successful input binding with Kafka: 
 
 ```bash
 [0m?[94;1m== APP == { orderId: 1 }
