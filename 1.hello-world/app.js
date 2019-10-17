@@ -10,7 +10,8 @@ require('isomorphic-fetch');
 const app = express();
 app.use(bodyParser.json());
 
-const stateUrl = `http://localhost:${process.env.DAPR_HTTP_PORT}/v1.0/state`;
+const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
 const port = 3000;
 
 app.get('/order', (_req, res) => {
