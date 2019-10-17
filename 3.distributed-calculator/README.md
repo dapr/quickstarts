@@ -111,7 +111,7 @@ This sample demonstrates how we use Dapr as a programming model for simplifying 
 
 ### Polyglot Programming
 
-Each service in this sample is written in a different programming language, but they're used together in the same larger application. Dapr itself is langauge agnostic - none of our services have to include any dependency in order to work with Dapr. This empowers developers to build each service however they want, using the best language for the job or for a particular dev team.
+Each service in this sample is written in a different programming language, but they're used together in the same larger application. Dapr itself is language agnostic - none of our services have to include any dependency in order to work with Dapr. This empowers developers to build each service however they want, using the best language for the job or for a particular dev team.
 
 ### Service Invocation
 
