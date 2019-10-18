@@ -14,6 +14,15 @@ This sample requires you to have the following installed on your machine:
 
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to deploy Dapr to it.
 
+```
+$ dapr init --kubernetes
+ℹ️  Note: this installation is recommended for testing purposes. For production environments, please use Helm
+
+⌛  Making the jump to hyperspace...
+✅  Deploying the Dapr Operator to your cluster...
+✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
+```
+
 ## Step 2 - Create and Configure a State Store
 
 Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc.) to persist and retrieve state. For this demo, we'll use Redis.
