@@ -6,6 +6,6 @@ spec:
   type: pubsub.redis
   metadata:
   - name: redisHost
-    value: redis-master:6379
+    value: YOUR_REDIS_HOST_HERE:6379
   - name: redisPassword
-    value: LV6H5mL9wh
+    value: YOUR_REDIS_KEY_HERE
