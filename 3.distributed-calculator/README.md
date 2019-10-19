@@ -119,7 +119,7 @@ When our front-end server calls the respective operation services (see `server.j
 
 The code below shows calls to the “add” and “subtract” services via the Dapr URLs:
 ```js
-const daprUrl = `http://localhost:3500/v1.0/invoke`;
+const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 
 app.post('/calculate/add', async (req, res) => {
   const addUrl = `${daprUrl}/addapp/method/add`;
@@ -142,7 +142,7 @@ Dapr side-cars provide state management. In this sample, we persist our calculat
 Take a look at `server.js` in the `react-calculator` directory. Note that it exposes two state endpoints for our React client to get and set state: the GET `/state` endpoint and the POST `/persist` endpoint. Both forward client calls to the Dapr state endpoint: 
 
 ```js
-const stateUrl = "http://localhost:3500/v1.0/state";
+const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
 ```
 
 Our client persists state by simply POSTing JSON key-value pairs (see `react-calculator/client/src/component/App.js`): 
