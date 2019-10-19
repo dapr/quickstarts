@@ -7,9 +7,7 @@ import time
 import requests
 import os
 
-dapr_port = os.getenv("DAPR_HTTP_PORT")
-if dapr_port is None:
-    dapr_port = 3500
+dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
 
 dapr_url = "http://localhost:{}/v1.0/bindings/sample-topic".format(dapr_port)
 n = 0
