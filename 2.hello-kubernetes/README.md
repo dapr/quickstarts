@@ -98,7 +98,7 @@ This calls out to our Redis cache to grab the latest value of the "order" key, w
 ## Step 4 - Deploy the Node.js App with the Dapr Sidecar
 
 ```
-kubectl apply -f ./deploy/node.yaml
+kubectl apply -f ../deploy/node.yaml
 ```
 
 This will deploy our Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to our Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
