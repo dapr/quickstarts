@@ -113,7 +113,7 @@ You can do this using `curl` with:
 curl -XPOST -d @sample.json http://localhost:3500/v1.0/invoke/mynode/method/neworder
 ```
 
-You can also do this using Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+You can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 [sample.http](sample.http)
 ```http
@@ -151,7 +151,7 @@ or using Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudi
 GET http://localhost:3500/v1.0/invoke/mynode/method/order
 ```
 
-Or use the Postman GUI
+or use the Postman GUI
 
 ![Postman Screenshot 2](./img/postman2.jpg)
 
