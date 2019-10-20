@@ -77,7 +77,7 @@ We also expose a GET endpoint, `/order`:
 
 ```js
 app.get('/order', (_req, res) => {
-    fetch(`${daprUrl}/state/order`)
+    fetch(`${stateUrl}/order`)
         .then((response) => {
             return response.json();
         }).then((orders) => {
