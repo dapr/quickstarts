@@ -144,7 +144,7 @@ Now, let's just make sure that our order was successfully persisted to our state
 curl http://localhost:3500/v1.0/invoke/mynode/method/order
 ```
 
-or using Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+or using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 [sample.http](sample.http)
 ```http
