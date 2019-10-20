@@ -27,7 +27,7 @@ cd samples/1.hello-world
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the `stateUrl` at the top of the file: 
 
 ```js
-const stateUrl = `http://localhost:${process.env.DAPR_HTTP_PORT}/v1.0/state`;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
 ```
 When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to to our system.
 
@@ -77,7 +77,7 @@ We also expose a GET endpoint, `/order`:
 
 ```js
 app.get('/order', (_req, res) => {
-    fetch(`${daprUrl}/state/order`)
+    fetch(`${stateUrl}/order`)
         .then((response) => {
             return response.json();
         }).then((orders) => {
@@ -105,7 +105,7 @@ You're up and running! Both Dapr and your app logs will appear here.
 
 ## Step 4 - Post Messages to your Service
 
-Now that Dapr and our Node.js app are running, let's POST messages against it.
+Now that Dapr and our Node.js app are running, let's POST messages against it. **Note**: here we're POSTing against port 3500 - if you used a different port, be sure to update your URL accordingly.
 
 You can do this using `curl` with:
 
@@ -138,7 +138,7 @@ In your terminal window, you should see logs indicating that the message was rec
 
 ## Step 5 - Confirm Successful Persistence
 
-Now, let's just make sure that our order was successfully persisted to our state store. Create a GET request against: `http://localhost:3500/v1.0/invoke/mynode/method/order`
+Now, let's just make sure that our order was successfully persisted to our state store. Create a GET request against: `http://localhost:3500/v1.0/invoke/mynode/method/order`. **Note**: Again, be sure to reflect the right port if you chose a port other than 3500.
 
 ```sh
 curl http://localhost:3500/v1.0/invoke/mynode/method/order

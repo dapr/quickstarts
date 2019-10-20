@@ -107,7 +107,7 @@ This calls out to our Redis cache to grab the latest value of the "order" key, w
 ## Step 4 - Deploy the Node.js App with the Dapr Sidecar
 
 ```
-kubectl apply -f ./deploy/node.yaml
+kubectl apply -f ../deploy/node.yaml
 ```
 
 This will deploy our Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to our Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
@@ -135,12 +135,11 @@ export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalanc
 ```
 
 ## Step 5 - Deploy the Python App with the Dapr Sidecar
-Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/2.hello-kubernetes/python/app.py`.
+Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/2.hello-kubernetes/python` and open `app.py`.
 
-At a quick glance, this is a basic python app that posts JSON messages to ```localhost:3500```, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
+At a quick glance, this is a basic python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
 
 ```python
-dapr_url = "http://localhost:3500/v1.0/invoke/nodeapp/method/neworder"
 n = 0
 while True:
     n += 1
