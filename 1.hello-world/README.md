@@ -113,6 +113,19 @@ You can do this using `curl` with:
 curl -XPOST -d @sample.json http://localhost:3500/v1.0/invoke/mynode/method/neworder
 ```
 
+You can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+
+[sample.http](sample.http)
+```http
+POST http://localhost:3500/v1.0/invoke/mynode/method/neworder
+
+{
+  "data": {
+    "orderId": "42"
+  } 
+}
+```
+
 Or you can use the Postman GUI
 
 Open Postman and create a POST request against `http://localhost:3500/v1.0/invoke/mynode/method/neworder`
@@ -131,7 +144,14 @@ Now, let's just make sure that our order was successfully persisted to our state
 curl http://localhost:3500/v1.0/invoke/mynode/method/order
 ```
 
-Or use the Postman GUI
+or using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+
+[sample.http](sample.http)
+```http
+GET http://localhost:3500/v1.0/invoke/mynode/method/order
+```
+
+or use the Postman GUI
 
 ![Postman Screenshot 2](./img/postman2.jpg)
 
