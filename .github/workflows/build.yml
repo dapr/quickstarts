@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Parse release version and set REL_VERSION
-          run: python ./.github/scripts/get_release_version.py
+        run: python ./.github/scripts/get_release_version.py
       - name: Build docker image
         run: |
           SAMPLE_LIST=(2.hello-kubernetes 3.distributed-calculator 4.pub-sub 5.bindings)
