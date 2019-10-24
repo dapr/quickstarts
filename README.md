@@ -6,6 +6,16 @@
 
 This repository contains a series of samples that highlight Dapr capabilities. The first sample demonstrates how we run Dapr in standalone mode, while the second highlights how we run the same application in Kubernetes. Each subsequent sample includes instructions for running both in standalone and in Kubernetes.
 
+## Supported Dapr Runtime version
+
+Dapr is currently under community development with preview releases.  The master branch includes breaking changes, therefore ensure that you're running the samples with the right version of Dapr runtime.
+
+| Dapr Sample Version  | Dapr Runtime Version |
+|:--------------------:|:--------------------:|
+| [v0.1.0](https://github.com/dapr/samples/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
+
+## Samples
+
 | Sample                   | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [1.hello-world](./1.hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
@@ -19,11 +29,3 @@ To get started with the samples, clone this repository and follow instructions i
 ```bash
 git clone https://github.com/dapr/samples.git
 ```
-
-## Supported Dapr Runtime version
-
-Dapr is currently under community development in preview phase and master branch include breaking changes. Therefore, please ensure that you're running samples with the right version of Dapr Runtime version.
-
-| Dapr Sample Version  | Dapr Runtime Version |
-|:--------------------:|:--------------------:|
-| [v0.1.0](https://github.com/dapr/samples/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
