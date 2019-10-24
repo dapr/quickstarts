@@ -2,7 +2,7 @@ DOCKER_IMAGE_PREFIX ?=distributed-calculator-
 APPS                ?=node python go csharp react-calculator
 
 SAMPLE_REGISTRY     ?=docker.io/dapriosamples
-SAMPLE_VERSION      ?=edge
+REL_VERSION         ?=edge
 
 # Add latest tag if LATEST_RELEASE is true
 LATEST_RELEASE ?=
@@ -28,7 +28,7 @@ $(DOCKER_IMAGE_PREFIX)$(1):
 endef
 
 # Generate docker image build targets
-$(foreach ITEM,$(APPS),$(eval $(call genDockerImageBuild,$(ITEM),$(SAMPLE_VERSION))))
+$(foreach ITEM,$(APPS),$(eval $(call genDockerImageBuild,$(ITEM),$(REL_VERSION))))
 
 # push docker image to the registry
 .PHONY: push
@@ -50,4 +50,4 @@ endif
 endef
 
 # Generate docker image push targets
-$(foreach ITEM,$(APPS),$(eval $(call genDockerImagePush,$(ITEM),$(SAMPLE_VERSION))))
+$(foreach ITEM,$(APPS),$(eval $(call genDockerImagePush,$(ITEM),$(REL_VERSION))))
