@@ -2,7 +2,10 @@ DOCKER_IMAGE_PREFIX ?=hello-k8s-
 APPS                ?=node python
 
 SAMPLE_REGISTRY     ?=docker.io/dapriosamples
-SAMPLE_VERSION      ?=latest
+SAMPLE_VERSION      ?=edge
+
+# Add latest tag if LATEST_RELEASE is true
+LATEST_RELEASE ?=
 
 # Docker image build and push setting
 DOCKER:=docker
@@ -39,6 +42,10 @@ define genDockerImagePush
 .PHONY: push-$(DOCKER_IMAGE_PREFIX)$(1)
 push-$(DOCKER_IMAGE_PREFIX)$(1):
 	$(DOCKER) push $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(2)
+ifeq ($(LATEST_RELEASE),true)
+	$(DOCKER) tag $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(2) $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):latest
+	$(DOCKER) push $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):latest
+endif
 endef
 
 # Generate docker image push targets

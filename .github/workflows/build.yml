@@ -1,0 +1,49 @@
+name: samples
+
+on:
+  push:
+    branches:
+      - master
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - release-*
+
+jobs:
+  build:
+    name: Build and push docker images
+    runs-on: ubuntu-latest
+    env:
+      SAMPLE_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Parse release version and set REL_VERSION
+          run: python ./.github/scripts/get_release_version.py
+      - name: Build docker image
+        run: |
+          SAMPLE_LIST=(2.hello-kubernetes 3.distributed-calculator 4.pub-sub 5.bindings)
+
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make build
+            popd
+          done
+      - name: docker login
+        if: github.event_name != 'pull_request'
+          run: |
+            docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
+      - name: publish image to dockerhub
+        if: github.event_name != 'pull_request'
+        run: |
+          SAMPLE_LIST=(2.hello-kubernetes 3.distributed-calculator 4.pub-sub 5.bindings)
+
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make push
+            popd
+          done
