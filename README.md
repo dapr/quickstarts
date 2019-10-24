@@ -18,7 +18,7 @@ To get started with the samples, clone this repository and follow instructions i
 git clone https://github.com/dapr/samples.git
 ```
 
-## Supported Dapr Runtime
+## Supported Dapr Runtime version
 
 Dapr is currently under community development in preview phase and each release could include breaking changes. Therefore, make sure that you're running samples with the right version of Dapr Runtime version.
 
