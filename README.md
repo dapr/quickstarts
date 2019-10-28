@@ -1,6 +1,6 @@
 # Dapr Samples
 
-[![Build Status](https://github.com/dapr/samples/workflows/samples/badge.svg)](https://github.com/dapr/samples/actions?workflow=samples)
+[![Build Status](https://github.com/dapr/samples/workflows/samples/badge.svg?event=push&branch=master)](https://github.com/dapr/samples/actions?workflow=samples)
 [![Join the chat at https://gitter.im/Dapr/samples](https://badges.gitter.im/Dapr/samples.svg)](https://gitter.im/Dapr/samples?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
