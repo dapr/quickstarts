@@ -88,6 +88,14 @@ Next, we'll run the Python microservice that uses output bindings
 [0m?[94;1m== APP == Hello from Kafka!
 ```
 
+### Cleanup
+
+Once you're done using the sample locally, you can spin down your local Kafka Docker Container by running:
+
+```bash
+docker-compose -f ./docker-compose-single-kafka.yml down
+```
+
 ## Run in Kubernetes
 
 ### Setting up a Kafka in Kubernetes
