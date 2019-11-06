@@ -29,7 +29,7 @@ In the `app.js` you'll find a simple `express` application, which exposes a few 
 ```js
 const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
 ```
-When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to to our system.
+When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system.
 
 Next, let's take a look at the ```neworder``` handler:
 
