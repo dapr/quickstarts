@@ -94,14 +94,16 @@ This calls out to our Redis cache to grab the latest value of the "order" key, w
 
 1. Install dependencies: `npm install`. This will install `express` and `body-parser`, dependencies that are shown in our `package.json`.
 
-2. Run Node.js app with Dapr: `dapr run --app-id mynode --app-port 3000 --port 3500 node app.js`. **Note**: the port the app runs on is configurable and can be determined by the developer. Our Node app happens to run on port 3000. The command should output text that looks like the following, along with logs:
+2. Run Node.js app with Dapr: `dapr run --app-id mynode --app-port 3000 --port 3500 node app.js`. 
+
+The command should output text that looks like the following, along with logs:
 
 ```
 Starting Dapr with id mynode on port 3500
 You're up and running! Both Dapr and your app logs will appear here.
 ...
 ```
-> **Note**:  The Dapr `--port` parameter with the `run` command is optional, and if not supplied, a random available port is used.
+> **Note**: the `--app-port` (the port the app runs on) is configurable. Our Node app happens to run on port 3000, but we could configure it to run on any other port. Also note that the Dapr `--port` parameter is optional, and if not supplied, a random available port is used.
 
 ## Step 4 - Post Messages to your Service
 
