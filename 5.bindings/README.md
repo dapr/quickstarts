@@ -288,6 +288,8 @@ spec:
   # publisher configuration: topic
   - name: publishTopic
     value: sample
+  - name: authRequired
+    value: "false"
 ```
 
 
