@@ -17,9 +17,16 @@ const port = 3000;
 app.get('/order', (_req, res) => {
     fetch(`${stateUrl}/order`)
         .then((response) => {
-            return response.json();
+            if (!response.ok) {
+                throw "Could not get state.";
+            }
+
+            return response.text();
         }).then((orders) => {
             res.send(orders);
+        }).catch((error) => {
+            console.log(error);
+            res.status(500).send({message: error});
         });
 });
 
@@ -40,10 +47,16 @@ app.post('/neworder', (req, res) => {
             "Content-Type": "application/json"
         }
     }).then((response) => {
-        console.log((response.ok) ? "Successfully persisted state" : "Failed to persist state");
-    });
+        if (!response.ok) {
+            throw "Failed to persist state.";
+        }
 
-    res.status(200).send();
+        console.log("Successfully persisted state.");
+        res.status(200).send();
+    }).catch((error) => {
+        console.log(error);
+        res.status(500).send({message: error});
+    });
 });
 
 app.listen(port, () => console.log(`Node App listening on port ${port}!`));
