@@ -29,7 +29,7 @@ Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cass
 
 1. Follow [these steps](https://github.com/dapr/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. 
-    > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/dapr/blob/master/docs/components/secrets.md) instructions to securely manage your secrets.
+    > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
 3. Apply the `redis.yaml` file: `kubectl apply -f ./deploy/redis.yaml` and observe that your state store was successfully configured!
 
 ```bash
