@@ -1,6 +1,6 @@
 # Hello World
 
-This tutorial will demonstrate how to get Dapr running locally on your machine. We'll be deploying a Node.js app that subscribes to order messages and persists them. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will demonstrate how to get Dapr running locally on your machine. We'll be deploying a Node.js app that subscribes to order messages and persists them. Later on, we'll deploy a Python app to act as the publisher. The following architecture diagram illustrates the components that make up this sample: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -8,6 +8,7 @@ This tutorial will demonstrate how to get Dapr running locally on your machine. 
 This sample requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
+- [Python 3.x](https://www.python.org/downloads/)
 - [Postman](https://www.getpostman.com/) [Optional]
 
 ## Step 1 - Setup Dapr 
@@ -107,12 +108,12 @@ This calls out to our Redis cache to grab the latest value of the "order" key, w
 
 1. Install dependencies: `npm install`. This will install `express` and `body-parser`, dependencies that are shown in our `package.json`.
 
-2. Run Node.js app with Dapr: `dapr run --app-id mynode --app-port 3000 --port 3500 node app.js`. 
+2. Run Node.js app with Dapr: `dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js`. 
 
 The command should output text that looks like the following, along with logs:
 
 ```
-Starting Dapr with id mynode on port 3500
+Starting Dapr with id nodeapp. HTTP Port: 3500. gRPC Port: 9165
 You're up and running! Both Dapr and your app logs will appear here.
 ...
 ```
@@ -125,14 +126,14 @@ Now that Dapr and our Node.js app are running, let's POST messages against it. *
 You can do this using `curl` with:
 
 ```sh
-curl -XPOST -d @sample.json http://localhost:3500/v1.0/invoke/mynode/method/neworder
+curl -XPOST -d @sample.json http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
 
 You can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 [sample.http](sample.http)
 ```http
-POST http://localhost:3500/v1.0/invoke/mynode/method/neworder
+POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 
 {
   "data": {
@@ -143,27 +144,27 @@ POST http://localhost:3500/v1.0/invoke/mynode/method/neworder
 
 Or you can use the Postman GUI
 
-Open Postman and create a POST request against `http://localhost:3500/v1.0/invoke/mynode/method/neworder`
+Open Postman and create a POST request against `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`
 ![Postman Screenshot](./img/postman1.jpg)
 In your terminal window, you should see logs indicating that the message was received and state was updated:
 ```bash
 == APP == Got a new order! Order ID: 42
-== APP == Successfully persisted state
+== APP == Successfully persisted state.
 ```
 
 ## Step 5 - Confirm Successful Persistence
 
-Now, let's just make sure that our order was successfully persisted to our state store. Create a GET request against: `http://localhost:3500/v1.0/invoke/mynode/method/order`. **Note**: Again, be sure to reflect the right port if you chose a port other than 3500.
+Now, let's just make sure that our order was successfully persisted to our state store. Create a GET request against: `http://localhost:3500/v1.0/invoke/nodeapp/method/order`. **Note**: Again, be sure to reflect the right port if you chose a port other than 3500.
 
 ```sh
-curl http://localhost:3500/v1.0/invoke/mynode/method/order
+curl http://localhost:3500/v1.0/invoke/nodeapp/method/order
 ```
 
 or using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 [sample.http](sample.http)
 ```http
-GET http://localhost:3500/v1.0/invoke/mynode/method/order
+GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
 ```
 
 or use the Postman GUI
@@ -172,15 +173,71 @@ or use the Postman GUI
 
 This invokes the `/order` route, which calls out to our Redis store for the latest data. Observe the expected result!
 
-## Step 6 - Cleanup
+## Step 7 - Run the Python App with Dapr
 
-To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down your Node service, run: 
+Let's take a look at our Python App to see how another application can invoke the Node App via Dapr without being aware of the destination's hostname or port. In the `app.py` file we can find the endpoint definition to call the Node App via Dapr.
 
-```bash
-dapr stop --app-id mynode
+```python
+dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
+dapr_url = "http://localhost:{}/v1.0/invoke/nodeapp/method/neworder".format(dapr_port)
+```
+It is important to notice the Node App's name (`nodeapp`) in the URL, it will allow Dapr to redirect the request to the right API endpoint. This name needs to match the name used to run the Node App earlier in this exercise.
+
+The code block below shows how the Python App will incrementally post a new orderId every second, or print an exception if the post call fails.
+```python
+n = 0
+while True:
+    n += 1
+    message = {"data": {"orderId": n}}
+
+    try:
+        response = requests.post(dapr_url, json=message)
+    except Exception as e:
+        print(e)
+
+    time.sleep(1)
 ```
 
-To see that services have stopped running, run `dapr list`, noting that your service no longer appears!
+Now we can open a **new** command line terminal and go to the `1.hello-world` directory.
+
+1. Install dependencies via `pip install requests` or `pip3 install requests`, depending on your local setup.
+
+2. Start the Python App with Dapr: `dapr run --app-id pythonapp python app.py` or `dapr run --app-id pythonapp python3 app.py`
+
+3. If all went well, the **other** terminal, running the Node App, should log entries like these:
+
+```
+Got a new order! Order ID: 1
+Successfully persisted state
+Got a new order! Order ID: 2
+Successfully persisted state
+Got a new order! Order ID: 3
+Successfully persisted state
+```
+
+4. Now, we perform a GET request a few times and see how the orderId changes every second (enter it into the web browser, use Postman, or curl):
+
+```http
+GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
+```
+```json
+{
+    "orderId": 3
+}
+```
+
+> **Note**: we did not run `dapr init` in the **second** command line terminal because dapr was already setup on your local machine initially, running this command again would fail.
+
+## Step 6 - Cleanup
+
+To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new command line terminal: 
+
+```bash
+dapr stop --app-id nodeapp
+dapr stop --app-id pythonapp
+```
+
+To see that services have stopped running, run `dapr list`, noting that your services no longer appears!
 
 ## Next Steps
 

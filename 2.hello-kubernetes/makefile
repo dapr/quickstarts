@@ -14,7 +14,16 @@ DOCKERFILE:=Dockerfile
 .PHONY: build
 
 SAMPLE_APPS:=$(foreach ITEM,$(APPS),$(DOCKER_IMAGE_PREFIX)$(ITEM))
-build: $(SAMPLE_APPS)
+build: copy $(SAMPLE_APPS)
+
+# copy app files from 1.hello-world
+copy:
+	mkdir -p python/.dockerfiles
+	mkdir -p node/.dockerfiles
+	cp ../1.hello-world/app.py python/.dockerfiles/
+	cp ../1.hello-world/app.js node/.dockerfiles/
+	cp ../1.hello-world/package.json node/.dockerfiles/
+	cp ../1.hello-world/package-lock.json node/.dockerfiles/
 
 # Generate docker image build targets
 # Params:

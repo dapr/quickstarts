@@ -1,6 +1,6 @@
 FROM node:8-alpine
-WORKDIR /usr/src/app
-COPY . .
+WORKDIR /app
+COPY .dockerfiles .
 RUN npm install
 EXPOSE 3000
 CMD [ "node", "app.js" ]
