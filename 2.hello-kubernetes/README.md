@@ -1,6 +1,6 @@
 # Hello Kubernetes
 
-This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying a python app that generates messages and a Node app that consumes and persists them. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying the same applications from [Hello World](../1.hello-world). To recap, the Python App generates messages and the Node app consumes and persists them. The following architecture diagram illustrates the components that make up this sample: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -36,75 +36,7 @@ Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cass
 component.dapr.io "statestore" configured
 ```
 
-## Step 3 - Understand the Code
-
-Now that we've setup Dapr and state, let's take a look at our services. Clone the sample repository:
-```bash
-git clone https://github.com/dapr/samples.git
-```
-
- Navigate to the Node.js app in the Kubernetes sample: `cd samples/2.hello-kubernetes/node`.
-
-In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers.
-
-Let's take a look at the ```neworder``` handler:
-
-```js
-app.post('/neworder', (req, res) => {
-    const data = req.body.data;
-    const orderId = data.orderId;
-    console.log("Got a new order! Order ID: " + orderId);
-
-    const state = [{
-        key: "order",
-        value: data
-    }];
-
-    fetch(`${daprUrl}/state`, {
-        method: "POST",
-        body: JSON.stringify(state),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then((response) => {
-        console.log((response.ok) ? "Successfully persisted state" : "Failed to persist state");
-    });
-
-    res.status(200).send();
-});
-```
-
-Here we're exposing an endpoint that will receive and handle `neworder` messages. We first log the incoming message, and then persist the order ID to our Redis store by posting a state array to the `/state` endpoint.
-
-Alternatively, we could have persisted our state by simply returning it with our response object:
-
-```js
-res.json({
-        state: [{
-            key: "order",
-            value: order
-        }]
-    })
-```
-
-We chose to avoid this approach, as it doesn't allow us to verify if our message successfully persisted.
-
-We also expose a GET endpoint, `/order`:
-
-```js
-app.get('/order', (_req, res) => {
-    fetch(`${daprUrl}/state/order`)
-        .then((response) => {
-            return response.json();
-        }).then((orders) => {
-            res.send(orders);
-        });
-});
-```
-
-This calls out to our Redis cache to grab the latest value of the "order" key, which effectively allows our Node.js app to be _stateless_. 
-
-## Step 4 - Deploy the Node.js App with the Dapr Sidecar
+## Step 3 - Deploy the Node.js App with the Dapr Sidecar
 
 ```
 kubectl apply -f ../deploy/node.yaml
@@ -134,7 +66,7 @@ You can also export it to a variable:
 export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
 ```
 
-## Step 5 - Deploy the Python App with the Dapr Sidecar
+## Step 4 - Deploy the Python App with the Dapr Sidecar
 Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/2.hello-kubernetes/python` and open `app.py`.
 
 At a quick glance, this is a basic python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
@@ -164,7 +96,7 @@ Now let's just wait for the pod to be in ```Running``` state:
 kubectl get pods --selector=app=python -w
 ```
 
-## Step 6 - Observe Messages
+## Step 5 - Observe Messages
 
 Now that we have our Node.js and python applications deployed, let's watch messages come through.<br>
 Get the logs of our Node.js app:
@@ -184,7 +116,7 @@ Got a new order! Order ID: 3
 Successfully persisted state
 ```
 
-## Step 7 - Confirm Successful Persistence
+## Step 6 - Confirm Successful Persistence
 
 Hit the Node.js app's order endpoint to get the latest order. Grab the external IP address that we saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
 
@@ -195,7 +127,7 @@ curl $NODE_APP/order
 
 You should see the latest JSON in response!
 
-## Step 8 - Cleanup
+## Step 7 - Cleanup
 
 Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
