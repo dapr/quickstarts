@@ -123,7 +123,7 @@ Now that we've set up the Redis store, we can deploy our assets.
 
 1. Copy the external IP from the last step into your browser and observe the same React form that we saw locally!
 
-    **For Minikube users**, execute the below command to open calculator on your browser
+    **For Minikube users**, execute the below command to open `react-form` in your browser
     ```
     $ minikube service react-form
     ```
