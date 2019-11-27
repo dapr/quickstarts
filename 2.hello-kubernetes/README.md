@@ -8,7 +8,7 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'
 ## Prerequisites
 This sample requires you to have the following installed on your machine:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster), [AKS](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster) and [GKE](https://cloud.google.com/kubernetes-engine/)
+- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster), [AKS](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster) or [GKE](https://cloud.google.com/kubernetes-engine/)
   
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
