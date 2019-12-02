@@ -131,7 +131,7 @@ First, let's POST the message by using Dapr cli in a new command line terminal:
 
 Windows
 ```sh
-dapr send --app-id nodeapp --method neworder --payload '{\"data\": { \"orderId\": \"41\" } }'
+dapr send --app-id nodeapp --method neworder --payload "{\"data\": { \"orderId\": \"41\" } }"
 ```
 
 Linux or MacOS
