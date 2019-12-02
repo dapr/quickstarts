@@ -129,12 +129,12 @@ Now that Dapr and our Node.js app are running, let's POST messages against it, u
 
 First, let's POST the message by using Dapr cli in a new command line terminal:
 
-Windows CMD
+Windows Command Prompt
 ```sh
 dapr send --app-id nodeapp --method neworder --payload "{\"data\": { \"orderId\": \"41\" } }"
 ```
 
-Windows PpowerShell
+Windows PowerShell
 ```sh
 dapr send --app-id nodeapp --method neworder --payload '{\"data\": { \"orderId\": \"41\" } }'
 ```
