@@ -1,8 +1,12 @@
 # Hello World
 
-This tutorial will demonstrate how to get Dapr running locally on your machine. We'll be deploying a Node.js app that subscribes to order messages and persists them. Later on, we'll deploy a Python app to act as the publisher. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will demonstrate how to get Dapr running locally on your machine. We'll be deploying a Node.js app that subscribes to order messages and persists them. The following architecture diagram illustrates the components that make up the first part sample: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
+
+Later on, we'll deploy a Python app to act as the publisher. The architecture diagram below shows the addition of the new component:
+
+![Architecture Diagram Final](./img/Architecture_Diagram_B.png)
 
 ## Prerequisites
 This sample requires you to have the following installed on your machine:
@@ -121,15 +125,32 @@ You're up and running! Both Dapr and your app logs will appear here.
 
 ## Step 4 - Post Messages to your Service
 
-Now that Dapr and our Node.js app are running, let's POST messages against it. **Note**: here we're POSTing against port 3500 - if you used a different port, be sure to update your URL accordingly.
+Now that Dapr and our Node.js app are running, let's POST messages against it, using different tools. **Note**: here we're POSTing against port 3500 - if you used a different port, be sure to update your URL accordingly.
 
-You can do this using `curl` with:
+First, let's POST the message by using Dapr cli in a new command line terminal:
+
+Windows Command Prompt
+```sh
+dapr send --app-id nodeapp --method neworder --payload "{\"data\": { \"orderId\": \"41\" } }"
+```
+
+Windows PowerShell
+```sh
+dapr send --app-id nodeapp --method neworder --payload '{\"data\": { \"orderId\": \"41\" } }'
+```
+
+Linux or MacOS
+```sh
+dapr send --app-id nodeapp --method neworder --payload '{"data": { "orderId": "41" } }'
+```
+
+Now, we can also do this using `curl` with:
 
 ```sh
 curl -XPOST -d @sample.json http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
 
-You can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+Or, we can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 [sample.http](sample.http)
 ```http
@@ -142,7 +163,7 @@ POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 }
 ```
 
-Or you can use the Postman GUI
+Last but not least, we can use the Postman GUI.
 
 Open Postman and create a POST request against `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`
 ![Postman Screenshot](./img/postman1.jpg)
@@ -173,7 +194,7 @@ or use the Postman GUI
 
 This invokes the `/order` route, which calls out to our Redis store for the latest data. Observe the expected result!
 
-## Step 7 - Run the Python App with Dapr
+## Step 6 - Run the Python App with Dapr
 
 Let's take a look at our Python App to see how another application can invoke the Node App via Dapr without being aware of the destination's hostname or port. In the `app.py` file we can find the endpoint definition to call the Node App via Dapr.
 
@@ -228,7 +249,7 @@ GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
 
 > **Note**: we did not run `dapr init` in the **second** command line terminal because dapr was already setup on your local machine initially, running this command again would fail.
 
-## Step 6 - Cleanup
+## Step 7 - Cleanup
 
 To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new command line terminal: 
 
