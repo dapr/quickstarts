@@ -39,14 +39,14 @@ component.dapr.io "statestore" configured
 ## Step 3 - Deploy the Node.js App with the Dapr Sidecar
 
 ```
-kubectl apply -f ../deploy/node.yaml
+kubectl apply -f ./deploy/node.yaml
 ```
 
 This will deploy our Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to our Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
 
 ```dapr.io/enabled: true``` - this tells the Dapr control plane to inject a sidecar to this deployment.
 
-```dapr.io/id: nodeapp``` - this assigns a unique id or name to the Dapr, so it can be sent messages to and communicated with by other Dapr.
+```dapr.io/id: nodeapp``` - this assigns a unique id or name to the Dapr, so it can be sent messages to and communicated with by other Dapr apps.
 
 You'll also see the container image that we're deploying. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
