@@ -132,10 +132,12 @@ You should see the latest JSON in response!
 Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 ```bash
-kubectl delete -f .
+kubectl delete -f ./deploy/
 ```
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
+
+NOTE: _You will need to manually cleanup the state store you created as part of [Step 2](#step-2---create-and-configure-a-state-store)._
 
 ## Next Steps
 
