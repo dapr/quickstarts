@@ -32,9 +32,10 @@ cd samples/1.hello-world
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the `stateUrl` at the top of the file: 
 
 ```js
-const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
+const stateStoreName = `statestore`;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state` + stateStoreName;
 ```
-When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system.
+When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system. The stateStateName is the name of the state store being used which is configured in the yaml file under components.
 
 Next, let's take a look at the ```neworder``` handler:
 
@@ -69,7 +70,7 @@ app.post('/neworder', (req, res) => {
 });
 ```
 
-Here we're exposing an endpoint that will receive and handle `neworder` messages. We first log the incoming message, and then persist the order ID to our Redis store by posting a state array to the `/state` endpoint.
+Here we're exposing an endpoint that will receive and handle `neworder` messages. We first log the incoming message, and then persist the order ID to our Redis store by posting a state array to the `/state/<state-store-name>` endpoint.
 
 Alternatively, we could have persisted our state by simply returning it with our response object:
 
