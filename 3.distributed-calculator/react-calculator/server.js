@@ -8,7 +8,8 @@ const port = 8080;
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
-const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
+const stateStoreName = `statestore`;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 
 /**
 The following routes forward requests (using pipe) from our React client to our dapr-enabled services. Our Dapr sidecar lives on localhost:<daprPort>. We invoke other Dapr enabled services by calling /v1.0/invoke/<DAPR_ID>/method/<SERVICE'S_ROUTE>.

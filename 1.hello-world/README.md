@@ -32,8 +32,7 @@ cd samples/1.hello-world
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the `stateUrl` at the top of the file: 
 
 ```js
-const stateStoreName = `statestore`;
-const stateUrl = `http://localhost:${daprPort}/v1.0/state` + stateStoreName;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 ```
 When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system. The stateStoreName is the name of the state store being used which is configured in the yaml file under components.
 
