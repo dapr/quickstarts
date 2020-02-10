@@ -105,7 +105,7 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 ```
 $ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 $ helm repo update
-$ helm install --name dapr-kafka --namespace kafka incubator/kafka --set replicas=1
+$ helm install dapr-kafka incubator/kafka --namespace kafka --set replicas=1
 
 ==> v1/StatefulSet
 NAME        READY  AGE
@@ -205,7 +205,7 @@ dapr-operator-86cddcfcb7-v2zjp          1/1     Running       0          6h6m
 dapr-placement-5d6465f8d5-pz2qt         1/1     Running       0          6h6m
 dapr-sidecar-injector-dc489d7bc-k2h4q   1/1     Running       0          6h6m
 # Get the log from bindings-pythonapp
-$ kubectl logs bindings-pythonapp-644489969b-c8lg5
+$ kubectl logs bindings-pythonapp-644489969b-c8lg5 python
 ...
 {'data': {'orderId': 240}}
 <Response [200]>
@@ -251,7 +251,7 @@ Once you delete all samples apps, delete Kafka in the cluster.
 
 ```bash
 # move to sample root
-kubectl delete -f ./kafka_testclient.yaml
+kubectl delete -f ./k8s_kafka_testclient.yaml
 # clean up kafka cluster
 helm del --purge dapr-kafka
 ```
