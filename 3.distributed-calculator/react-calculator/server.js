@@ -8,6 +8,8 @@ const port = 8080;
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
+
+// The name of the state store is configured here: https://github.com/dapr/samples/blob/v0.3.0/3.distributed-calculator/deploy/redis.yaml#L4 
 const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 

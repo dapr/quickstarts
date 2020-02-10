@@ -34,7 +34,17 @@ In the `app.js` you'll find a simple `express` application, which exposes a few 
 ```js
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 ```
-When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system. The stateStoreName is the name of the state store being used which is configured in the yaml file under components.
+When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system. The `stateStoreName` is the name of the state store being used which is configured in the yaml file under components.
+
+```yml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  # The name of state store is configured here
+  name: statestore
+spec:
+...
+```
 
 Next, let's take a look at the ```neworder``` handler:
 
