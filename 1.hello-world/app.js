@@ -11,7 +11,8 @@ const app = express();
 app.use(bodyParser.json());
 
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
-const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
+const stateStoreName = `statestore`;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 const port = 3000;
 
 app.get('/order', (_req, res) => {
