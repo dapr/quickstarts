@@ -26,15 +26,15 @@ helm install --name my-release stable/nginx-ingress
 1. Clone the sample repo, then navigate to the middleware sample:
 ```bash
 git clone https://github.com/dapr/samples.git
-cd samples/7.middleware
+cd samples/7.middleware/echoapp
 ```
-2. Examine the ```app.js``` file. You'll see this is a simple Node.js Express web server with a single ```/echo``` route that returns the ```authorization``` header and the ```text``` parameter client passes in:
+1. Examine the ```app.js``` file. You'll see this is a simple Node.js Express web server with a single ```/echo``` route that returns the ```authorization``` header and the ```text``` parameter client passes in:
 
 ```javascript
 app.get('/echo', (req, res) => {
     var text = req.query.text;
     console.log("Echoing: " + text);
-    res.send("Access token: " + req.headers["authorization"] + " Text: " + text)    
+    res.send("Access token: " + req.headers["authorization"] + " Text: " + text)
 });
 ```
 3. Build the Docker container:

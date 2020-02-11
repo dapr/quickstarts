@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: echo
-        image: <your Docker image tag>
+        image: dapriosamples/middleware-echoapp
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
