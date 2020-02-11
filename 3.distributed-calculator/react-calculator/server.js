@@ -9,7 +9,8 @@ const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 
-// The name of the state store is configured here: https://github.com/dapr/samples/blob/v0.3.0/3.distributed-calculator/deploy/redis.yaml#L4 
+// The name of the state store is specified in the components yaml file. 
+// For this sample, state store name is specified in the file at: https://github.com/dapr/samples/blob/master/2.hello-kubernetes/deploy/redis.yaml#L4
 const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 
