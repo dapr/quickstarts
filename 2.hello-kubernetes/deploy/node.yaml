@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: dapriosamples/hello-k8s-node
+        image: dapriosamples/hello-k8s-node:0.4.0
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
