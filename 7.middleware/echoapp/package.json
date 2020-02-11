@@ -1,5 +1,5 @@
 {
-  "name": "node_server",
+  "name": "echoapp",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
