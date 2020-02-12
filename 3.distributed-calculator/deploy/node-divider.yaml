@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: divide
-        image: dapriosamples/distributed-calculator-node
+        image: dapriosamples/distributed-calculator-node:0.4.0
         ports:
         - containerPort: 4000
         imagePullPolicy: Always
