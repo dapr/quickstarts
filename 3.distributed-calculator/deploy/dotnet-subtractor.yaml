@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: subtract
-        image: dapriosamples/distributed-calculator-csharp
+        image: dapriosamples/distributed-calculator-csharp:0.4.0
         ports:
         - containerPort: 80
         imagePullPolicy: Always
