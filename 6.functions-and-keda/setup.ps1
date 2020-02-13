@@ -30,9 +30,6 @@ Write-Host
 Write-Host "Creating AKS cluster $clusterName..."
 az aks create -g $groupName -n $clusterName --generate-ssh-keys
 az aks get-credentials -n $clusterName -g $groupName
-kubectl apply -f $setupFolder/helm-rbac.yaml
-helm init --service-account tiller
-
 
 # ACR
 Write-Host
@@ -54,7 +51,7 @@ dapr init --kubernetes
 
 Write-Host
 Write-Host "Installing Redis as the Dapr state store on $clusterName..."
-helm install stable/redis --name redis --set image.tag=5.0.5-debian-9-r104 --set rbac.create=true
+helm install redis stable/redis --set rbac.create=true
 Start-Sleep -Seconds 60
 
 $redisHost= $(kubectl get service redis-master -o=custom-columns=IP:.spec.clusterIP --no-headers=true) + ":6379"
