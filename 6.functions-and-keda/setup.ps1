@@ -4,6 +4,7 @@ $pythonName = "python-function-publisher"
 $dotnetName = "csharp-function-subscriber"
 $javascriptName = "javascript-function-subscriber"
 $sourceFolder = "./src"
+$tag = "0.4.0"
 
 $pythonFolder = "$sourceFolder/$pythonName"
 $dotnetFolder = "$sourceFolder/$dotnetName"
@@ -85,28 +86,28 @@ $trimmedConnectionString = $CONNECTION_STRING -replace "`"", ""
 $encodedConnectionString = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($trimmedConnectionString))
 
 (Get-Content $setupFolder/python-function-publisher-base.yaml) `
-| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$pythonName"}  `
+| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$pythonName:$tag"}  `
 | Foreach-Object {$_ -replace "CONNECTION_STRING_B64", $encodedConnectionString}  `
 | Set-Content $deployFolder/python-function-publisher.yaml
                                           
-docker build -t "$registryName.azurecr.io/$pythonName" $pythonFolder  
-docker push "$registryName.azurecr.io/$pythonName"              
+docker build -t "$registryName.azurecr.io/$pythonName:$tag" $pythonFolder  
+docker push "$registryName.azurecr.io/$pythonName:$tag"          
 
 (Get-Content $setupFolder/csharp-function-subscriber-base.yaml) `
-| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$dotnetName"}  `
+| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$dotnetName:$tag"}  `
 | Foreach-Object {$_ -replace "CONNECTION_STRING_B64", $encodedConnectionString}  `
 | Set-Content $deployFolder/csharp-function-subscriber.yaml
                                         
-docker build -t "$registryName.azurecr.io/$dotnetName" $dotnetFolder  
-docker push "$registryName.azurecr.io/$dotnetName"
+docker build -t "$registryName.azurecr.io/$dotnetName:$tag" $dotnetFolder  
+docker push "$registryName.azurecr.io/$dotnetName:$tag"
 
 (Get-Content $setupFolder/javascript-function-subscriber-base.yaml) `
-| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$javascriptName"}  `
+| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$javascriptName:$tag"}  `
 | Foreach-Object {$_ -replace "CONNECTION_STRING_B64", $encodedConnectionString}  `
 | Set-Content $deployFolder/javascript-function-subscriber.yaml
 
-docker build -t "$registryName.azurecr.io/$javascriptName" $javascriptFolder  
-docker push "$registryName.azurecr.io/$javascriptName"
+docker build -t "$registryName.azurecr.io/$javascriptName:$tag" $javascriptFolder  
+docker push "$registryName.azurecr.io/$javascriptName:$tag"
 
 # Deploy
 Write-Host
