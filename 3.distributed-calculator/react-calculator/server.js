@@ -8,7 +8,11 @@ const port = 8080;
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
-const stateUrl = `http://localhost:${daprPort}/v1.0/state`;
+
+// The name of the state store is specified in the components yaml file. 
+// For this sample, state store name is specified in the file at: https://github.com/dapr/samples/blob/master/2.hello-kubernetes/deploy/redis.yaml#L4
+const stateStoreName = `statestore`;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 
 /**
 The following routes forward requests (using pipe) from our React client to our dapr-enabled services. Our Dapr sidecar lives on localhost:<daprPort>. We invoke other Dapr enabled services by calling /v1.0/invoke/<DAPR_ID>/method/<SERVICE'S_ROUTE>.

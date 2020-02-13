@@ -1,26 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: addapp
+  name: echoapp
   labels:
-    app: add
+    app: echo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: add
+      app: echo
   template:
     metadata:
       labels:
-        app: add
+        app: echo
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "addapp"
-        dapr.io/port: "6000"
+        dapr.io/id: "echoapp"
+        dapr.io/port: "3000"
+        dapr.io/config: "pipeline"
     spec:
       containers:
-      - name: add
-        image: dapriosamples/distributed-calculator-go:0.4.0
+      - name: echo
+        image: dapriosamples/middleware-echoapp:0.4.0
         ports:
-        - containerPort: 6000
+        - containerPort: 3000
         imagePullPolicy: Always
