@@ -4,7 +4,7 @@ $pythonName = "python-function-publisher"
 $dotnetName = "csharp-function-subscriber"
 $javascriptName = "javascript-function-subscriber"
 $sourceFolder = "./src"
-$tag = "0.4.0"
+$tag = "edge"
 
 $pythonFolder = "$sourceFolder/$pythonName"
 $dotnetFolder = "$sourceFolder/$dotnetName"
