@@ -105,7 +105,7 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 ```
 $ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 $ helm repo update
-$ helm install --name dapr-kafka --namespace kafka incubator/kafka --set replicas=1
+$ helm install dapr-kafka incubator/kafka --namespace kafka --set replicas=1
 
 ==> v1/StatefulSet
 NAME        READY  AGE

@@ -1,5 +1,5 @@
-DOCKER_IMAGE_PREFIX ?=hello-k8s-
-APPS                ?=node python
+DOCKER_IMAGE_PREFIX ?=middleware-
+APPS                ?=echoapp
 
 SAMPLE_REGISTRY     ?=docker.io/dapriosamples
 REL_VERSION         ?=edge
