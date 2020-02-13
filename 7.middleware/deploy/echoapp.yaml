@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: echo
-        image: dapriosamples/middleware-echoapp:0.4.0
+        image: dapriosamples/middleware-echoapp:edge
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

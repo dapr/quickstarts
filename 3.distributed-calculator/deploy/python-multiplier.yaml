@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: multiply
-        image: dapriosamples/distributed-calculator-python:0.4.0
+        image: dapriosamples/distributed-calculator-python:edge
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
