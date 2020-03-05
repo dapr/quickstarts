@@ -1,26 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: subtractapp
+  name: echoapp
   labels:
-    app: subtract
+    app: echo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: subtract
+      app: echo
   template:
     metadata:
       labels:
-        app: subtract
+        app: echo
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "subtractapp"
-        dapr.io/port: "80"
+        dapr.io/id: "echoapp"
+        dapr.io/port: "3000"
+        dapr.io/config: "pipeline"
     spec:
       containers:
-      - name: subtract
-        image: dapriosamples/distributed-calculator-csharp:edge
+      - name: echo
+        image: dapriosamples/middleware-echoapp:edge
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         imagePullPolicy: Always
