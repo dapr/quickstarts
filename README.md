@@ -6,6 +6,10 @@
 
 This repository contains a series of samples that highlight Dapr capabilities. The first sample demonstrates how we run Dapr in standalone mode, while the second highlights how we run the same application in Kubernetes. Each subsequent sample includes instructions for running both in standalone and in Kubernetes.
 
+## Getting Started
+
+It is recommended to go through the samples via the [Getting Started](https://github.com/dapr/docs/tree/master/getting-started) instructions.
+
 ## Supported Dapr Runtime version
 
 Dapr is currently under community development with preview releases.  The master branch includes breaking changes, therefore ensure that you're running the samples with the right version of Dapr runtime.
@@ -29,7 +33,19 @@ Dapr is currently under community development with preview releases.  The master
 | [6. Functions-and-keda](./6.functions-and-keda) | Demonstrates use of Dapr pub/sub from Azure Functions, as well as composition with KEDA. |
 | [7. Middleware](./7.middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
 
+## SDKs
 
+Find SDK-specific samples in the links below:
+
+- **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
+  - **[Getting Started with .NET Actors](https://github.com/dapr/dotnet-sdk/blob/master/docs/get-started-dapr-actor.md)** - Tutorial for developing actor applications using the Dapr .NET SDK including  **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/samples/Actor)**
+  - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/samples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
+- **[Java SDK](https://github.com/dapr/java-sdk)**
+  - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http)** - Example for developing an actor application using the Java SDK.
+- **[Go SDK](https://github.com/dapr/go-sdk)**
+- **[Javascript SDK](https://github.com/dapr/js-sdk)**
+- **[Python SDK](https://github.com/dapr/python-sdk)**
+  
 To get started with the samples, clone this repository and follow instructions in each sample:
 ```bash
 git clone https://github.com/dapr/samples.git
