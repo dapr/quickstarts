@@ -24,7 +24,7 @@ In order to run this sample, you'll need to have an Dapr-enabled Kubernetes clus
    git clone https://github.com/dapr/samples.git
    ```
 2. Navigate to the deploy directory in this sample directory: `cd deploy`
-3. Follow [these instructions](https://github.com/dapr/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create and configure a Redis store
+3. Follow [these instructions](https://github.com/dapr/docs/blob/master/howto/setup-state-store/setup-redis.md) to create and configure a Redis store
 4. Deploy all of your resources: `kubectl apply -f .`. 
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
