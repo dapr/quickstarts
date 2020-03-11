@@ -48,13 +48,19 @@ docker push <container tag of your choice>
 
 In order for Dapr to acquire access token on your application's behalf, your application needs to be registered with the authorization server of your choice. 
 
-For example, to register with Google APIs, you should visit [Google APIs Console](https://console.developers.google.com) to register your application. You'll need to collect:
+For example, to register with Google APIs, you should visit [Google APIs Console](https://console.developers.google.com) to register your application:
 
-- Client ID
-- Client Secret
-- Scopes, such as "https://www.googleapis.com/auth/userinfo.email"
+1. Log in to [Google APIs Console](https://console.developers.google.com) using your Google account.
+2. If you don't have a project yet, you need to create a project first.
+3. On Google API Console, click on the **Credentials** link to the left. Then, click on the **CREATE CREDENTIAL** link at the top. And finally, click on the **OAuth client ID** option:
+   ![API console](img/google-console.png)
+4. Select the **Web application** type. Give a name to your account, and click on the **Create** button to create the client ID.
+5. Once the client ID is created, note down the **Client ID** and **Client Secret** - you'll need to enter these into the middleware configuration later.
+6. Edit the client ID settings and make sure http://dummy.com is added as one of the authorized redirect URIs:
+  ![Dummy.com](img/google-dummy.png)
   
-For this exercise, you'll set the ```Redirect URL``` to ```http://dummy.com```. This requires you to add a hostname entry to the computer on which you'll test out the scenario. In a production environment, you need to set the ```Redirect URL``` to the proper DNS name associated with your load balancer or ingress controller.
+> **NOTE:** For this exercise, you'll set the ```Redirect URL``` to ```http://dummy.com```. This requires you to add a hostname entry to the computer on which you'll test out the scenario. In a production environment, you need to set the ```Redirect URL``` to the proper DNS name associated with your load balancer or ingress controller.
+
 
 ## Step 3 - Define custom pipeline
 
