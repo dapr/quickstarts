@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
       - name: python
-        image: docker.io/dapriosamples/bindings-pythonapp:edge
+        image: docker.io/dapriosamples/bindings-pythonapp:0.5.0
