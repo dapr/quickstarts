@@ -12,6 +12,8 @@ Dapr is currently under community development with preview releases.  The master
 
 | Dapr Sample Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
+| [v0.5.0](https://github.com/dapr/samples/tree/v0.5.0) | [v0.5.0](https://github.com/dapr/dapr/tree/v0.5.0) |
+| [v0.4.0](https://github.com/dapr/samples/tree/v0.4.0) | [v0.4.0](https://github.com/dapr/dapr/tree/v0.4.0) |
 | [v0.3.0](https://github.com/dapr/samples/tree/v0.3.0) | [v0.3.0](https://github.com/dapr/dapr/tree/v0.3.0) |
 | [v0.2.0](https://github.com/dapr/samples/tree/v0.2.0) | [v0.2.0](https://github.com/dapr/dapr/tree/v0.2.0) |
 | [v0.1.0](https://github.com/dapr/samples/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
@@ -20,12 +22,14 @@ Dapr is currently under community development with preview releases.  The master
 
 | Sample                   | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [1.hello-world](./1.hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
-| [2.hello-kubernetes](./2.hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
-| [3.distributed-calculator](./3.distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
-| [4.pub-sub](./4.pub-sub)                | Demonstrates how we use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
-| [5.bindings](./5.bindings)            | Demonstrates how we use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
-| [6.functions-and-keda](./6.functions-and-keda) | Demonstrates use of Dapr pub/sub from Azure Functions, as well as composition with KEDA. |
+| [1. Hello-world](./1.hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
+| [2. Hello-kubernetes](./2.hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
+| [3. Distributed-calculator](./3.distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
+| [4. Pub-sub](./4.pub-sub)                | Demonstrates how we use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
+| [5. Bindings](./5.bindings)            | Demonstrates how we use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
+| [6. Functions-and-keda](./6.functions-and-keda) | Demonstrates use of Dapr pub/sub from Azure Functions, as well as composition with KEDA. |
+| [7. Middleware](./7.middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
+
 
 To get started with the samples, clone this repository and follow instructions in each sample:
 ```bash

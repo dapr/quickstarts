@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: node-subscriber
-        image: dapriosamples/pubsub-node-subscriber
+        image: dapriosamples/pubsub-node-subscriber:edge
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

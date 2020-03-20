@@ -9,10 +9,18 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'
 This sample requires you to have the following installed on your machine:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster), [AKS](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster) or [GKE](https://cloud.google.com/kubernetes-engine/)
+
+Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
+```
+git clone https://github.com/dapr/samples.git
+cd samples
+```
   
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
-The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). Once you have a cluster, follow [these steps](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to deploy Dapr to it.
+The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). 
+
+Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, look [here](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
 
 ```
 $ dapr init --kubernetes
@@ -25,11 +33,11 @@ $ dapr init --kubernetes
 
 ## Step 2 - Create and Configure a State Store
 
-Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc.) to persist and retrieve state. For this demo, we'll use Redis.
+Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc) to persist and retrieve state. For this demo, we'll use Redis.
 
-1. Follow [these steps](https://github.com/dapr/docs/blob/master/concepts/components/redis.md#creating-a-redis-store) to create a Redis store.
+1. Follow [these steps](https://github.com/dapr/docs/blob/master/howto/configure-redis/README.md) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. 
-    > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/components/secrets.md) instructions to securely manage your secrets.
+    > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/secrets/) instructions to securely manage your secrets.
 3. Apply the `redis.yaml` file: `kubectl apply -f ./deploy/redis.yaml` and observe that your state store was successfully configured!
 
 ```bash
@@ -46,7 +54,7 @@ This will deploy our Node.js app to Kubernetes. The Dapr control plane will auto
 
 ```dapr.io/enabled: true``` - this tells the Dapr control plane to inject a sidecar to this deployment.
 
-```dapr.io/id: nodeapp``` - this assigns a unique id or name to the Dapr, so it can be sent messages to and communicated with by other Dapr apps.
+```dapr.io/id: nodeapp``` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
 
 You'll also see the container image that we're deploying. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
@@ -98,7 +106,8 @@ kubectl get pods --selector=app=python -w
 
 ## Step 5 - Observe Messages
 
-Now that we have our Node.js and python applications deployed, let's watch messages come through.<br>
+Now that we have our Node.js and python applications deployed, let's watch messages come through.
+
 Get the logs of our Node.js app:
 
 ```
