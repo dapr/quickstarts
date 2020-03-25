@@ -1,6 +1,6 @@
 # Dapr Bindings Sample
 
-In this sample, we'll create two microservices, one with an input binding and another with an output binding. We'll bind to Kafka and Event Hubs, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://github.com/dapr/docs/tree/master/concepts/bindings)). 
+In this sample, we'll create two microservices, one with an input binding and another with an output binding. We'll bind to Kafka, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://github.com/dapr/docs/tree/master/concepts/bindings)). 
 
 This sample includes two microservices:
 - Node.js microservice that utilizes an input binding
@@ -10,7 +10,6 @@ The bindings connect to Kafka, allowing us to push messages into a Kafka instanc
 
 ![Architecture Diagram](./img/Bindings_Standalone.png)
 
-This sample also includes a manifest for using Azure Event Hubs to demonstrate how we can simply swap one component out for another.
 
 Dapr allows us to deploy the same microservices from our local machines to Kubernetes. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes).
 
