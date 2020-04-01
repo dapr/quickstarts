@@ -3,14 +3,13 @@
 # Licensed under the MIT License.
 # ------------------------------------------------------------
 
-# Install 1 replica for e2e test
 replicas: 1
 
 # Disable persistent storage
 persistence:
   enabled: false
 
-# Topic creation and configuration for dapr test
+# Topic creation and configuration for sample
 topics:
   - name: sample
     partitions: 1
