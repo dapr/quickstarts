@@ -1,6 +1,6 @@
 # OAuth Authorization
 
-This tutorial walks you through the steps of setting up the OAuth middleware to enable OAuth authorization on a Web API without modifying the application. This design seprates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/athorization providers without impacting the application code.
+This tutorial walks you through the steps of setting up the OAuth middleware to enable OAuth authorization on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
