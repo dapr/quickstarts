@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: python-subscriber
-        image: dapriosamples/pubsub-python-subscriber:0.6.0
+        image: dapriosamples/pubsub-python-subscriber:edge
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
