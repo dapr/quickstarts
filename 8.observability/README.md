@@ -1,6 +1,6 @@
 # Observability with Dapr
 
-This sample will explore the [observability](https://github.com/dapr/docs/tree/master/concepts/observability) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this sample you'll be enabling [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md) to an application without changing any application code or creating a dependency on any specific tracing system since Dapr uses [OpenTelemetry](https://opentelemetry.io/), a variety of systems can be used (here you'll be using [Zipkin](https://zipkin.io/)).
+This sample will explore the [observability](https://github.com/dapr/docs/blob/master/concepts/observability/README.md) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this sample you'll be enabling [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md) to an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenTelemetry](https://opentelemetry.io/), a variety of systems can be used (here you'll be using [Zipkin](https://zipkin.io/)).
 
 In this sample you will:
 
@@ -10,16 +10,16 @@ In this sample you will:
 
 ## Prerequisites
 
-This sample builds on top of the [distributed calculator](https://github.com/dapr/samples/blob/master/3.distributed-calculator/README.md) sample and so requires a Dapr installation on a Kubernetes cluster as well as a state store. If you have not done so for previous samples:
+This sample builds on top of the [distributed calculator](../3.distributed-calculator/README.md) sample and so requires a Dapr installation on a Kubernetes cluster as well as a state store. If you have not done so for previous samples:
 
 1. Clone this repo using `git clone https://github.com/dapr/samples.git`
 
-2. [Deploy Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
+2. [Install Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
 3. [Configure Redis](https://github.com/dapr/docs/tree/master/howto/configure-redis) as a state store for Dapr.
 
 ## Configure Dapr tracing in the cluster
 
-Review *./deploy/tracing.yaml*
+Review *./deploy/tracing.yaml*:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -39,13 +39,13 @@ This configuration definition will enable Dapr to do tracing. Deploy the configu
 
 ## Deploy Zipkin to the cluster and set it as the tracing provider
 
-In this sample Zipkin is used as the underlying tracing system. Examine [*./deploy/zipkin.yaml*](https://github.com/dapr/samples/blob/master/8.observability/deploy/zipkin.yaml) and see how it includes three sections:
+In this sample Zipkin is used as the underlying tracing system. Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes three sections:
 
 1. A **Deployment** for Zipkin using the *openzipkin/zipkin* docker image.
 2. A **Service** which will expose Zipkin internally as a ClusterIP in Kubernetes.
 3. A **Component** that defines Zipkin as the tracing provider for Dapr.
 
-Apply the YAML to your cluster by running:
+Deploy to your cluster by running:
 
 `kubectl apply -f ./deploy/zipkin.yaml`
 
@@ -53,7 +53,7 @@ Now that Zipkin is deployed, you can access the Zipkin UI by creating a tunnel t
 
 `kubectl port-forward svc/zipkin 9411:9411`
 
-On your browser go to (http://localhost:9411)[http://localhost:9411]. You should be able to see the Zipkin dashboard.
+On your browser go to [http://localhost:9411](http://localhost:9411). You should be able to see the Zipkin dashboard.
 
 ## Instrument the application for tracing and deploy it
 
@@ -89,7 +89,7 @@ Now got to the Zipkin dashboard by running:
 
 `kubectl port-forward svc/zipkin 9411:9411`
 
-And browsing to (http://localhost:9411)[http://localhost:9411]. Click the search button to view tracing coming from the application:
+And browsing to [http://localhost:9411](http://localhost:9411). Click the search button to view tracing coming from the application:
 
 ![Zipkin](./img/zipkin-1.png)
 
@@ -117,8 +117,8 @@ Now you can see which specific call was delayed (via the `data` field. Here it's
 
 `kubectl delete -f deploy\tracing.yaml -f deploy\zipkin.yaml`
 
-## More Resources:
+## Additional Resources:
 
-- More on [observability](https://github.com/dapr/docs/tree/master/concepts/observability).
-- More on how Dapr does [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md).
+- Learn more on [observability](https://github.com/dapr/docs/tree/master/concepts/observability).
+- Learn more on how Dapr does [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md).
 - As an alternative to Zipkin see [how to configure tracing with Application Insights](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing/azure-monitor.md).  
