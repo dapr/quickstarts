@@ -85,7 +85,7 @@ Now go to the calculator UI and perform several calculations. Make sure to use a
 
 `9 + 3 * 2 / 4 - 1 =`
 
-Now got to the Zipkin dashboard by running:
+Now go to the Zipkin dashboard by running:
 
 `kubectl port-forward svc/zipkin 9411:9411`
 
@@ -119,6 +119,6 @@ Now you can see which specific call was delayed (via the `data` field. Here it's
 
 ## Additional Resources:
 
-- Learn more on [observability](https://github.com/dapr/docs/tree/master/concepts/observability).
-- Learn more on how Dapr does [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md).
+- Learn more about [observability](https://github.com/dapr/docs/tree/master/concepts/observability).
+- Learn more about how Dapr does [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md).
 - As an alternative to Zipkin see [how to configure tracing with Application Insights](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing/azure-monitor.md).  
