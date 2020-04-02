@@ -17,6 +17,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/id: "multiplyapp"
         dapr.io/port: "5000"
+        dapr.io/config: "tracing"
     spec:
       containers:
       - name: multiply

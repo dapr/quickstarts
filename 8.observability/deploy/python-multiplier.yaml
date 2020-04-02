@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: subtractapp
+  name: multiplyapp
   labels:
-    app: subtract
+    app: multiply
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: subtract
+      app: multiply
   template:
     metadata:
       labels:
-        app: subtract
+        app: multiply
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "subtractapp"
-        dapr.io/port: "80"
+        dapr.io/id: "multiplyapp"
+        dapr.io/port: "5000"
         dapr.io/config: "tracing"
     spec:
       containers:
-      - name: subtract
-        image: dapriosamples/distributed-calculator-csharp:edge
+      - name: multiply
+        image: orizohar/distributed-calculator-slow-python:edge
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         imagePullPolicy: Always

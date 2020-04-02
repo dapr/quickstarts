@@ -33,6 +33,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/id: "calculator-front-end"
         dapr.io/port: "8080"
+        dapr.io/config: "tracing"
     spec:
       containers:
       - name: calculator-front-end
