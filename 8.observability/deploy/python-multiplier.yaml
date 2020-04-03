@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: multiply
-        image: orizohar/distributed-calculator-slow-python:edge
+        image: dapriosamples/distributed-calculator-slow-python:edge
         ports:
         - containerPort: 5000
         imagePullPolicy: Always

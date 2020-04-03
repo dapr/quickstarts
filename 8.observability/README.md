@@ -73,11 +73,13 @@ Note you did not introduce any dependency on Zipkin into the calculator app code
 
 Now deploy the distributed calculator application to your cluster following the instructions found in sample [3.distributed-calculator](https://github.com/dapr/samples/blob/master/3.distributed-calculator/README.md) and have the application running on a Kubernetes cluster. See that you can browse to the calculator UI via a browser.
 
-> **Note:** If the distributed calculator is already running on your cluster you will need to redeploy it for the tracing enablement to take effect.
+> **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing enablement to take effect. You can do so by running:
+
+> `kubectl rollout restart deployment/addapp deployment/calculator-front-end deployment/divideapp  deployment/multiplyapp  deployment/subtractapp`
 
 ## Discover and troubleshoot a performance issue using Zipkin
 
-To show how observability can help discover and troubleshoot issues on a distributed application, you'll update one of the services in the calculator app. Run the following to apply a new version of the python-multiplier service:
+To show how observability can help discover and troubleshoot issues on a distributed application, you'll update one of the services in the calculator app. This updated version will simulate a performance degradation in the multiply operation of the calculator that you will then investigate using the traces emitted by the Dapr sidecar. Run the following to apply a new version of the python-multiplier service:
 
 `kubectl apply -f ./deploy/python-multiplier.yaml`
 
@@ -120,5 +122,5 @@ Now you can see which specific call was delayed (via the `data` field. Here it's
 ## Additional Resources:
 
 - Learn more about [observability](https://github.com/dapr/docs/tree/master/concepts/observability).
-- Learn more about how Dapr does [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md).
+- Learn more on how Dapr does [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md).
 - As an alternative to Zipkin see [how to configure tracing with Application Insights](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing/azure-monitor.md).  
