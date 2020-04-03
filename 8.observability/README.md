@@ -75,7 +75,7 @@ Now deploy the distributed calculator application to your cluster following the 
 
 > **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing enablement to take effect. You can do so by running:
 
-> `kubectl rollout restart deployment/addapp deployment/calculator-front-end deployment/divideapp  deployment/multiplyapp  deployment/subtractapp`
+> `kubectl rollout restart deployment addapp calculator-front-end divideapp multiplyapp subtractapp`
 
 ## Discover and troubleshoot a performance issue using Zipkin
 
