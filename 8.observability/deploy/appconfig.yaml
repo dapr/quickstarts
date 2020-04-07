@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
 metadata:
-  name: tracing
+  name: appconfig
 spec:
   tracing:
     enabled: true

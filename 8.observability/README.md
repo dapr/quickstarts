@@ -2,7 +2,7 @@
 
 This sample explores the [observability](https://github.com/dapr/docs/blob/master/concepts/observability/README.md) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this sample you'll be enabling [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenTelemetry](https://opentelemetry.io/), a variety of observability tools can be used to view and capture the traces.  In this sampple you'll be using [Zipkin](https://zipkin.io/).
 
-In this sample you will;
+In this sample you will:
 
 - Deploy Zipkin and configure it as a tracing provider for Dapr in Kubernetes.
 - Instrument an application for tracing and then deploy it.
@@ -10,16 +10,16 @@ In this sample you will;
 
 ## Prerequisites
 
-This sample builds on the [distributed calculator](../3.distributed-calculator/README.md) sample and requires Dapr to be installed on a Kubernetes cluster along with state store. It is suggested to go through the distributed calculator sample before this one, which sets you up ready for this sample. If you have not done this then;
+This sample builds on the [distributed calculator](../3.distributed-calculator/README.md) sample and requires Dapr to be installed on a Kubernetes cluster along with state store. It is suggested to go through the distributed calculator sample before this one, which sets you up ready for this sample. If you have not done this then:
 
-1. Clone this repo using `git clone https://github.com/dapr/samples.git`
+1. Clone this repo using `git clone https://github.com/dapr/samples.git` and go to the directory named */8.obervability*
 
 2. [Install Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
 3. [Configure Redis](https://github.com/dapr/docs/tree/master/howto/configure-redis) as a state store for Dapr.
 
 ## Configure Dapr tracing in the cluster
 
-Review the Dapr configuration file *./deploy/tracing.yaml* below:
+Review the Dapr configuration file *./deploy/appconfig.yaml* below:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -35,7 +35,25 @@ spec:
 
 This configuration file enables Dapr tracing. Deploy the configuration by running:
 
-`kubectl apply -f ./deploy/tracing.yaml`
+```bash
+kubectl apply -f ./deploy/appconfig.yaml
+```
+
+You can see that now a new Dapr configuration which enables tracing has been added. Run the command:
+
+```bash
+dapr configurations --kubernetes
+```
+
+You should see output that looks like this:
+
+```bash
+  NAME       TRACING-ENABLED  MTLS-ENABLED  MTLS-WORKLOAD-TTL  MTLS-CLOCK-SKEW  
+  appconfig  true             false                                             
+  default    false            true          24h                15m              
+```
+
+You can see that `appconfig` has `TRACING-ENABLED` set to `true`.
 
 ## Deploy Zipkin to the cluster and set it as the tracing provider
 
@@ -47,17 +65,21 @@ In this sample Zipkin is used for tracing. Examine [*./deploy/zipkin.yaml*](./de
 
 Deploy Zipkin to your cluster by running:
 
-`kubectl apply -f ./deploy/zipkin.yaml`
+```bash
+kubectl apply -f ./deploy/zipkin.yaml
+```
 
 Now that Zipkin is deployed, you can access the Zipkin UI by creating a tunnel to the internal Zipkin service you just created by running:
 
-`kubectl port-forward svc/zipkin 9411:9411`
+```bash
+kubectl port-forward svc/zipkin 9411:9411
+```
 
 On your browser go to [http://localhost:9411](http://localhost:9411). You should be able to see the Zipkin dashboard.
 
 ## Instrument the application for tracing and deploy it
 
-To instrument a service for tracing with Dapr, no code changes are required, Dapr handles all of the tracing using the Dapr side-car. All that is needed is to add the Dapr annotation for the configuration (which enables tracing) in the applicaton deployment yaml along with the other Dapr annotations. The configuration annotation looks like this:
+To instrument a service for tracing with Dapr, no code changes are required, Dapr handles all of the tracing using the Dapr side-car. All that is needed is to add the Dapr annotation for the configuration you deployed earlier (which enables tracing) in the application deployment yaml along with the other Dapr annotations. The configuration annotation looks like this:
 
 ```yaml
 ...
@@ -81,7 +103,9 @@ Now deploy the distributed calculator application to your cluster following the 
 
 To show how observability can help discover and troubleshoot issues on a distributed application, you'll update one of the services in the calculator app. This updated version simulates a performance degradation in the multiply operation of the calculator that you can then investigate using the traces emitted by the Dapr sidecar. Run the following to apply a new version of the python-multiplier service:
 
-`kubectl apply -f ./deploy/python-multiplier.yaml`
+```bash
+kubectl apply -f ./deploy/python-multiplier.yaml
+```
 
 Now go to the calculator UI and perform several calculations. Make sure to use all operands. For example, do the following:
 
@@ -89,13 +113,15 @@ Now go to the calculator UI and perform several calculations. Make sure to use a
 
 Now go to the Zipkin dashboard by running:
 
-`kubectl port-forward svc/zipkin 9411:9411`
+```bash
+kubectl port-forward svc/zipkin 9411:9411
+```
 
 And browsing to [http://localhost:9411](http://localhost:9411). Click the search button to view tracing coming from the application:
 
 ![Zipkin](./img/zipkin-1.png)
 
-Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts all Dapr and application traffic and automatically injects correlation IDs to trace distributed transactions. You can see a lot of transactions are being captured including the regular health checks done by Kubernetes:
+Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts all Dapr and application traffic and automatically injects correlation IDs to trace events. You can see a lot of transactions are being captured including the regular health checks done by Kubernetes:
 
 ![Zipkin](./img/zipkin-2.png)
 
@@ -113,11 +139,15 @@ Now you can see which specific call was delayed via the `data` field (here it's 
 
 1. To remove the distributed calculator application from your cluster run:
 
-`kubectl delete -f ..\3.distributed-calculator\deploy`
+```bash
+kubectl delete -f ..\3.distributed-calculator\deploy
+```
 
 2. To remove the Zipkin installation and tracing configuration run:
 
-`kubectl delete -f deploy\tracing.yaml -f deploy\zipkin.yaml`
+```bash
+kubectl delete -f deploy\appconfig.yaml -f deploy\zipkin.yaml
+```
 
 ## Additional Resources:
 
