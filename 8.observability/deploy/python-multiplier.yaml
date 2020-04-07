@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: addapp
+  name: multiplyapp
   labels:
-    app: add
+    app: multiply
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: add
+      app: multiply
   template:
     metadata:
       labels:
-        app: add
+        app: multiply
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "addapp"
-        dapr.io/port: "6000"
+        dapr.io/id: "multiplyapp"
+        dapr.io/port: "5000"
         dapr.io/config: "appconfig"
     spec:
       containers:
-      - name: add
-        image: dapriosamples/distributed-calculator-go:edge
+      - name: multiply
+        image: dapriosamples/distributed-calculator-slow-python:edge
         ports:
-        - containerPort: 6000
+        - containerPort: 5000
         imagePullPolicy: Always
