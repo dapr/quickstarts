@@ -29,22 +29,14 @@ cd samples/1.hello-world
 ```
 
 
-In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the `stateUrl` at the top of the file: 
+In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the top of the file: 
 
 ```js
+const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 ```
-When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system. The `stateStoreName` is the name of the state store being used which is configured in the yaml file under components.
-
-```yml
-apiVersion: dapr.io/v1alpha1
-kind: Component
-metadata:
-  # The name of state store is configured here
-  name: statestore
-spec:
-...
-```
+When we use the Dapr CLI, it creates an environment variable for the Dapr port, which defaults to 3500. We'll be using this in step 3 when we POST messages to our system. The `stateStoreName` is the name given to the state store. We'll come back to that later on to see how that name is configured.
 
 Next, let's take a look at the ```neworder``` handler:
 
@@ -120,9 +112,19 @@ This calls out to our Redis cache to grab the latest value of the "order" key, w
 
 ## Step 3 - Run the Node.js App with Dapr
 
-1. Install dependencies: `npm install`. This will install `express` and `body-parser`, dependencies that are shown in our `package.json`.
+1. Install dependencies: 
 
-2. Run Node.js app with Dapr: `dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js`. 
+    ```sh
+    npm install
+    ```
+
+    This will install `express` and `body-parser`, dependencies that are shown in our `package.json`.
+
+2. Run Node.js app with Dapr: 
+
+    ```sh
+    dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js
+    ```
 
 The command should output text that looks like the following, along with logs:
 
@@ -132,6 +134,27 @@ You're up and running! Both Dapr and your app logs will appear here.
 ...
 ```
 > **Note**: the `--app-port` (the port the app runs on) is configurable. Our Node app happens to run on port 3000, but we could configure it to run on any other port. Also note that the Dapr `--port` parameter is optional, and if not supplied, a random available port is used.
+
+The `dapr run` command looks for a `components` directory which holds yaml definition files for components Dapr will be using at runtime. When running locally, if the directory is not found it is created with yaml files which provide default definitions for a local development environment (learn more about this flow [here](https://github.com/dapr/docs/blob/master/walkthroughs/darprun.md)). Review the `statestore.yaml` file in the `components` directory:
+
+```yml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+...
+```
+
+We can see the yaml file defined the state store to be Redis and is naming it `statestore`. This is the name which was used in `app.js` to make the call to the state store in our application: 
+
+```js
+const stateStoreName = `statestore`;
+const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
+```
+
+While in this sample we used the default yaml files, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
 
 ## Step 4 - Post Messages to your Service
 
@@ -231,31 +254,44 @@ while True:
 
 Now we can open a **new** command line terminal and go to the `1.hello-world` directory.
 
-1. Install dependencies via `pip install requests` or `pip3 install requests`, depending on your local setup.
+1. Depending on the Python version you are using, install dependencies
 
-2. Start the Python App with Dapr: `dapr run --app-id pythonapp python app.py` or `dapr run --app-id pythonapp python3 app.py`
+    For Python 2.x
+
+    ```sh
+    pip install requests
+    ```
+    Or  for Python 3.x
+    ```sh
+    pip3 install requests
+    ```
+
+2. Start the Python App with Dapr: 
+    ```bash
+    dapr run --app-id pythonapp python app.py` or `dapr run --app-id pythonapp python3 app.py`
+    ```
 
 3. If all went well, the **other** terminal, running the Node App, should log entries like these:
 
-```
-Got a new order! Order ID: 1
-Successfully persisted state
-Got a new order! Order ID: 2
-Successfully persisted state
-Got a new order! Order ID: 3
-Successfully persisted state
-```
+    ```
+    Got a new order! Order ID: 1
+    Successfully persisted state
+    Got a new order! Order ID: 2
+    Successfully persisted state
+    Got a new order! Order ID: 3
+    Successfully persisted state
+    ```
 
 4. Now, we perform a GET request a few times and see how the orderId changes every second (enter it into the web browser, use Postman, or curl):
 
-```http
-GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
-```
-```json
-{
-    "orderId": 3
-}
-```
+    ```http
+    GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
+    ```
+    ```json
+    {
+        "orderId": 3
+    }
+    ```
 
 > **Note**: we did not run `dapr init` in the **second** command line terminal because dapr was already setup on your local machine initially, running this command again would fail.
 
@@ -272,4 +308,7 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 
 ## Next Steps
 
-Now that you've gotten Dapr running locally on your machine, see the [Hello Kubernetes](../2.hello-kubernetes) to get set up in Kubernetes!
+Now that you've gotten Dapr running locally on your machine, consider these next steps:
+- See the [Hello Kubernetes](../2.hello-kubernetes) to get set up in Kubernetes.
+- Learn more about Dapr in the [Dapr overview](https://github.com/dapr/docs/blob/master/overview/README.md) documentation.
+- Explore Dapr concepts such as building blocks and components in the [Dapr concepts](https://github.com/dapr/docs/blob/master/concepts/README.md) documentation.
