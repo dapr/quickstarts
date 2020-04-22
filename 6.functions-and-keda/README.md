@@ -36,9 +36,10 @@ To run the script, first log into the Azure CLI:
 az login
 ```
 
-Then:
+Then ensure you are in the correct subfolder and run this script:
 
 ```powershell
+cd 6.functions-and-keda
 ./setup.ps1
 ```
 

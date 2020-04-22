@@ -49,7 +49,7 @@ export class MessageForm extends React.Component {
         <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label>Select Message Type</label>
-          <select value={this.state.messageType} className="custom-select custom-select-lg mb-3" name="messageType" onChange={this.handleInputChange} value={this.state.messageType}>
+          <select className="custom-select custom-select-lg mb-3" name="messageType" onChange={this.handleInputChange} value={this.state.messageType}>
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
