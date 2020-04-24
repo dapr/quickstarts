@@ -254,21 +254,16 @@ while True:
 
 Now we can open a **new** command line terminal and go to the `1.hello-world` directory.
 
-1. Depending on the Python version you are using, install dependencies
+1. Install dependencies:
 
-    For Python 2.x
-
-    ```sh
-    pip install requests
-    ```
-    Or  for Python 3.x
     ```sh
     pip3 install requests
     ```
 
 2. Start the Python App with Dapr: 
+
     ```bash
-    dapr run --app-id pythonapp python app.py` or `dapr run --app-id pythonapp python3 app.py`
+    dapr run --app-id pythonapp python3 app.py
     ```
 
 3. If all went well, the **other** terminal, running the Node App, should log entries like these:
