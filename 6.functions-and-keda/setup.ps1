@@ -30,7 +30,6 @@ az group create -n $groupName -l $location
 Write-Host
 Write-Host "Creating AKS cluster $clusterName..."
 az aks create -g $groupName -n $clusterName --generate-ssh-keys
-# The next line failed the first 2 times.
 az aks get-credentials -n $clusterName -g $groupName
 
 # ACR
@@ -67,12 +66,7 @@ $redisSecret = [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBas
 # Install KEDA
 Write-Host
 Write-Host "Installing KEDA on $clusterName..."
-
-#Using Helm 3.0 to install Keda
-helm repo add kedacore https://kedacore.github.io/charts
-helm repo update
-kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda
+func kubernetes install --namespace keda
 
 #### Application section
 
@@ -92,28 +86,28 @@ $trimmedConnectionString = $CONNECTION_STRING -replace "`"", ""
 $encodedConnectionString = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($trimmedConnectionString))
 
 (Get-Content $setupFolder/python-function-publisher-base.yaml) `
-| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/${pythonName}:$tag"}  `
+| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$pythonName:$tag"}  `
 | Foreach-Object {$_ -replace "CONNECTION_STRING_B64", $encodedConnectionString}  `
 | Set-Content $deployFolder/python-function-publisher.yaml
                                           
-docker build -t "$registryName.azurecr.io/${pythonName}:$tag" $pythonFolder  
-docker push "$registryName.azurecr.io/${pythonName}:$tag"          
+docker build -t "$registryName.azurecr.io/$pythonName:$tag" $pythonFolder  
+docker push "$registryName.azurecr.io/$pythonName:$tag"          
 
 (Get-Content $setupFolder/csharp-function-subscriber-base.yaml) `
-| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/${dotnetName}:$tag"}  `
+| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$dotnetName:$tag"}  `
 | Foreach-Object {$_ -replace "CONNECTION_STRING_B64", $encodedConnectionString}  `
 | Set-Content $deployFolder/csharp-function-subscriber.yaml
                                         
-docker build -t "$registryName.azurecr.io/${dotnetName}:$tag" $dotnetFolder  
-docker push "$registryName.azurecr.io/${dotnetName}:$tag"
+docker build -t "$registryName.azurecr.io/$dotnetName:$tag" $dotnetFolder  
+docker push "$registryName.azurecr.io/$dotnetName:$tag"
 
 (Get-Content $setupFolder/javascript-function-subscriber-base.yaml) `
-| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/${javascriptName}:$tag"}  `
+| Foreach-Object {$_ -replace "IMAGE_NAME", "$registryName.azurecr.io/$javascriptName:$tag"}  `
 | Foreach-Object {$_ -replace "CONNECTION_STRING_B64", $encodedConnectionString}  `
 | Set-Content $deployFolder/javascript-function-subscriber.yaml
 
-docker build -t "$registryName.azurecr.io/${javascriptName}:$tag" $javascriptFolder  
-docker push "$registryName.azurecr.io/${javascriptName}:$tag"
+docker build -t "$registryName.azurecr.io/$javascriptName:$tag" $javascriptFolder  
+docker push "$registryName.azurecr.io/$javascriptName:$tag"
 
 # Deploy
 Write-Host
