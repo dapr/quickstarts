@@ -180,7 +180,7 @@ dapr invoke --app-id nodeapp --method neworder --payload '{"data": { "orderId": 
 Now, we can also do this using `curl` with:
 
 ```sh
-curl -XPOST -d @sample.json http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
+curl -XPOST -d @sample.json -H "Content-Type:application/json" http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
 
 Or, we can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
