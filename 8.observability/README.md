@@ -1,6 +1,6 @@
 # Observability with Dapr
 
-This sample explores the [observability](https://github.com/dapr/docs/blob/master/concepts/observability/README.md) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this sample you'll be enabling [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenTelemetry](https://opentelemetry.io/), a variety of observability tools can be used to view and capture the traces.  In this sampple you'll be using [Zipkin](https://zipkin.io/).
+This sample explores the [observability](https://github.com/dapr/docs/blob/master/concepts/observability/README.md) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this sample you'll be enabling [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.  In this sampple you'll be using [Zipkin](https://zipkin.io/).
 
 In this sample you will:
 
@@ -28,9 +28,7 @@ metadata:
   name: appconfig
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
 ```
 
 This configuration file enables Dapr tracing. Deploy the configuration by running:
