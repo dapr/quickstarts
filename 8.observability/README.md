@@ -31,6 +31,9 @@ spec:
     samplingRate: "1"
 ```
 
+`samplingRate` is used to enable or disable the tracing. To disable the sampling rate ,
+set `samplingRate : "0"` in the configuration. The valid range of samplingRate is between 0 and 1 inclusive. The sampling rate determines whether a trace span should be sampled or not based on value. `samplingRate : "1"` will always sample the traces. By default, the sampling rate is 1 in 10,000
+
 This configuration file enables Dapr tracing. Deploy the configuration by running:
 
 ```bash
