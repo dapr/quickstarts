@@ -22,6 +22,9 @@ The first thing you need is an RBAC enabled Kubernetes cluster. This could be ru
 
 Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, look [here](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
 
+> Please note, that using the CLI does not support non-default namespaces.  
+> If you need a non-default namespace, Helm has to be used (see below).
+
 ```
 $ dapr init --kubernetes
 ℹ️  Note: this installation is recommended for testing purposes. For production environments, please use Helm
