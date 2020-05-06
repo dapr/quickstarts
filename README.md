@@ -36,6 +36,7 @@ Dapr is currently under community development with preview releases.  The master
 | [6. Functions-and-keda](./6.functions-and-keda) | Demonstrates use of Dapr pub/sub from Azure Functions, as well as composition with KEDA. |
 | [7. Middleware](./7.middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
 | [8. Observability](./8.observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
+| [9. Secret Store](./9.secretstore) | Demonstrates the use of Dapr Secrets API. |
 
 ## SDKs
 
