@@ -16,6 +16,7 @@ Dapr is currently under community development with preview releases.  The master
 
 | Dapr Sample Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
+| [v0.7.0](https://github.com/dapr/samples/tree/v0.7.0) | [v0.7.0](https://github.com/dapr/dapr/tree/v0.7.0) |
 | [v0.6.0](https://github.com/dapr/samples/tree/v0.6.0) | [v0.6.0](https://github.com/dapr/dapr/tree/v0.6.0) |
 | [v0.5.0](https://github.com/dapr/samples/tree/v0.5.0) | [v0.5.0](https://github.com/dapr/dapr/tree/v0.5.0) |
 | [v0.4.0](https://github.com/dapr/samples/tree/v0.4.0) | [v0.4.0](https://github.com/dapr/dapr/tree/v0.4.0) |

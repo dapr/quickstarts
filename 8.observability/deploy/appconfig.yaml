@@ -4,7 +4,6 @@ metadata:
   name: appconfig
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
+
     
