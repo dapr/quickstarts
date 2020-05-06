@@ -30,7 +30,6 @@ az group create -n $groupName -l $location
 Write-Host
 Write-Host "Creating AKS cluster $clusterName..."
 az aks create -g $groupName -n $clusterName --generate-ssh-keys
-# The next line failed the first 2 times.
 az aks get-credentials -n $clusterName -g $groupName
 
 # ACR
