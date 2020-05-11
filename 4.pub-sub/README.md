@@ -158,8 +158,14 @@ Navigate to the `node-subscriber` directory and open `app.js`, the code for our 
 ```js
 app.get('/dapr/subscribe', (_req, res) => {
     res.json([
-        'A',
-        'B'
+        {
+            topic: "A",
+            route: "A"
+        },
+        {
+            topic: "B",
+            route: "B"
+        }
     ]);
 });
 ```
@@ -186,9 +192,10 @@ Navigate to the `python-subscriber` directory and open `app.py`, the code for ou
 ```python
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
-    return jsonify(['A','C'])
+    subscriptions = [{'topic': 'A', 'route': 'A'}, {'topic': 'C', 'route': 'C'}]
+    return jsonify(subscriptions)
 ```
-Again, this is how we tell Dapr what topics we want to subscribe to. In this case, we're subscribing to topics "A" and "C". We handle  messages of those topics with our other two routes:
+Again, this is how we tell Dapr what topics we want to subscribe to. In this case, we're subscribing to topics "A" and "C". We handle messages of those topics with our other two routes:
 
 ```python
 @app.route('/A', methods=['POST'])
