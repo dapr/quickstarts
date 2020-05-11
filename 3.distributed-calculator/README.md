@@ -1,4 +1,4 @@
-# Kubernetes Distributed Calculator
+# Distributed Calculator
 
 This sample shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
 
@@ -9,7 +9,85 @@ This sample shows method invocation and state persistent capabilities of Dapr th
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/). 
 Kudos to [ahfarmer](https://github.com/ahfarmer) whose [React calculator](https://github.com/ahfarmer/calculator) 
-sample was used for the client. The following architecture diagram illustrates the components that make up this sample: 
+sample was used for the client.
+
+## Running locally
+
+We will be starting the four operator apps (add, subtract, multiply and divide) along with the dapr sidecar locally and then run the front end app which persists the state in a local redis state store.
+
+1. Add App - Open a terminal window and navigate to the go directory and follow the steps below:
+   - Install the gorilla/mux package: Run:
+      ```
+      go get -u github.com/gorilla/mux
+      ```
+    - Build the app. Run:
+      ```
+      go build app.go
+      ```
+    - Run dapr using the command:
+      ```
+      dapr run --app-id addapp --app-port 6000 --port 3503 ./app
+      ```
+2. Subtract App - Open a terminal window and navigate to the csharp directory and follow the steps below:
+    - Set environment variable to use non-default app port 7000
+      ```
+      Linux/Mac OS:
+      export ASPNETCORE_URLS=7000
+      
+      Windows:
+      set ASPNETCORE_URLS=7000
+      ```
+    - Build the app. Run:
+      ```
+      dotnet build
+      ```
+    - Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
+      ```
+      dapr run --app-id subtractapp --app-port 7000 --port 3504 dotnet Subtract.dll
+      ```
+3. Divide App - Open a terminal window and navigate to the node directory and start Dapr using the command below:
+    ```
+    dapr run --app-id divideapp --app-port 4000 --port 3502 node app.js
+    ```
+4. Multiply App - Open a terminal window and navigate to the python directory and follow the steps below:
+    - Install required packages
+      ```
+      pip3 install python-dotenv
+      pip3 install wheel
+      ```
+    - Set environment variable to use non-default app port 8000
+      ```
+      Linux/Mac OS:
+      export FLASK_RUN_PORT=8000
+
+      Windows:
+      set FLASK_RUN_PORT=5000
+      ```
+    - Start dapr using the command:
+      ```
+      dapr run --app-id multiplyapp --app-port 8000 --port 3501 flask run
+      ```
+5. Frontend Calculator app - Open a terminal window and navigate to the react-calculator directory and follow the steps below:
+    - Install the required modules
+      ```
+      npm install
+      npm run buildclient
+      ```
+    - Start Dapr using command below:
+      ```
+      dapr run --app-id frontendapp --app-port 5000 --port 3500 node server.js
+      ```
+6. Open a browser window and go to http://localhost:8080/. From here, you can enter the different operations.
+
+![Calculator Screenshot](./img/calculator-screenshot.JPG)
+
+7. Open your browser's console window (using F12 key) to see the logs produced as we use the calculator. Note that each time we click a button, we see logs that indicate state persistence and the different apps that are contacted to perform the operation. 
+
+
+
+## Running in Kubernetes environment
+
+The following architecture diagram illustrates the components that make up this sample: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
