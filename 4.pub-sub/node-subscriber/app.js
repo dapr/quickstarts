@@ -14,8 +14,14 @@ const port = 3000;
 
 app.get('/dapr/subscribe', (_req, res) => {
     res.json([
-        'A',
-        'B'
+        {
+            topic: "A",
+            route: "A"
+        },
+        {
+            topic: "B",
+            route: "B"
+        }
     ]);
 });
 
