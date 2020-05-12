@@ -32,10 +32,10 @@ We will be starting the four operator apps (add, subtract, multiply and divide) 
     - Set environment variable to use non-default app port 7000
       ```
       Linux/Mac OS:
-      export ASPNETCORE_URLS=7000
+      export ASPNETCORE_URLS="http://localhost:7000"
       
       Windows:
-      set ASPNETCORE_URLS=7000
+      set ASPNETCORE_URLS="http://localhost:7000"
       ```
     - Build the app. Run:
       ```
