@@ -45,15 +45,20 @@ We will be starting the four operator apps (add, subtract, multiply and divide) 
       ```
       dapr run --app-id subtractapp --app-port 7000 --port 3504 dotnet Subtract.dll
       ```
-3. Divide App - Open a terminal window and navigate to the node directory and start Dapr using the command below:
-    ```
-    dapr run --app-id divideapp --app-port 4000 --port 3502 node app.js
-    ```
+3. Divide App - Open a terminal window and navigate to the node directory and follow the steps below:
+    - Install dependencies by running the command:
+      ```
+      npm install
+      ```
+    - Start Dapr using the command below:
+      ```
+      dapr run --app-id divideapp --app-port 4000 --port 3502 node app.js
+      ```
 4. Multiply App - Open a terminal window and navigate to the python directory and follow the steps below:
     - Install required packages
       ```
-      pip3 install python-dotenv
       pip3 install wheel
+      pip3 install python-dotenv
       ```
     - Set environment variable to use non-default app port 8000
       ```
