@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package crypto;
+
+service Crypto {
+  rpc Encrypt (EncryptRequest) returns (EncryptResponse) {}  
+  rpc Decrypt (DecryptRequest) returns (DecryptResponse) {}  
+}
+
+message EncryptRequest {
+  string value = 1;
+}
+
+message EncryptResponse {
+    string encrypted = 1;
+}
+
+message DecryptRequest {
+    string value = 1;
+  }
+  
+message DecryptResponse {
+    string decrypted = 1;
+}

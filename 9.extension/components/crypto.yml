@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: cryptoextension
+spec:
+  type: custom.mycrypto
+  metadata:
+    - name: base
+      value: randompassphrase
+    - name: salt
+      value: s3cret
+    - name: bits
+      value: 256
