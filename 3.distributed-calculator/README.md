@@ -9,11 +9,34 @@ This sample shows method invocation and state persistent capabilities of Dapr th
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/). 
 Kudos to [ahfarmer](https://github.com/ahfarmer) whose [React calculator](https://github.com/ahfarmer/calculator) 
-sample was used for the client.
 
-## Running locally
 
-We will be starting the four operator apps (add, subtract, multiply and divide) along with the dapr sidecar locally and then run the front end app which persists the state in a local redis state store.
+The following architecture diagram illustrates the components that make up this sample: 
+
+![Architecture Diagram](./img/Architecture_Diagram.png)
+
+## Prerequisites for running the sample
+Clone the sample repository
+   ```bash
+   git clone https://github.com/dapr/samples.git
+   ```
+
+### - Run locally
+1. Install [Docker](https://www.docker.com/products/docker-desktop)
+2. Install [.Net Core SDK 3.1](https://dotnet.microsoft.com/download)
+3. Install [Dapr CLI](https://github.com/dapr/cli)
+4. Install [Go] https://golang.org/doc/install
+5. Install [Python3] https://www.python.org/downloads/
+6. Install [Npm] https://www.npmjs.com/get-npm
+7. Install [Node] https://nodejs.org/en/download/
+
+### - Run in Kubernetes environment
+1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to set this up.
+
+
+## Running the sample locally
+
+These instructions start the four calculator operator apps (add, subtract, multiply and divide) along with the dapr sidecar locally and then run the front end app which persists the state in a local redis state store.
 
 1. Add App - Open a terminal window and navigate to the go directory and follow the steps below:
    - Install the gorilla/mux package: Run:
@@ -84,36 +107,21 @@ We will be starting the four operator apps (add, subtract, multiply and divide) 
       ```
 6. Open a browser window and go to http://localhost:8080/. From here, you can enter the different operations.
 
-![Calculator Screenshot](./img/calculator-screenshot.JPG)
+    ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
 7. Open your browser's console window (using F12 key) to see the logs produced as we use the calculator. Note that each time we click a button, we see logs that indicate state persistence and the different apps that are contacted to perform the operation. 
 
 
 
-## Running in Kubernetes environment
-
-The following architecture diagram illustrates the components that make up this sample: 
-
-![Architecture Diagram](./img/Architecture_Diagram.png)
-
-## Prerequisites
-
-In order to run this sample, you'll need to have an Dapr-enabled Kubernetes cluster. Follow [these instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to set this up.
-
-## Running the Sample
-
-1. Clone the sample repository
-   ```bash
-   git clone https://github.com/dapr/samples.git
-   ```
-2. Navigate to the deploy directory in this sample directory: `cd deploy`
-3. Follow [these instructions](https://github.com/dapr/docs/blob/master/howto/setup-state-store/setup-redis.md) to create and configure a Redis store
-4. Deploy all of your resources: `kubectl apply -f .`. 
+## Running the sample Kubernetes environment
+1. Navigate to the deploy directory in this sample directory: `cd deploy`
+2. Follow [these instructions](https://github.com/dapr/docs/blob/master/howto/setup-state-store/setup-redis.md) to create and configure a Redis store
+3. Deploy all of your resources: `kubectl apply -f .`. 
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for our front-end, which allows us to connect to it externally.
 
-5. Wait until your pods are in a running state: `kubectl get pods -w`
+4. Wait until your pods are in a running state: `kubectl get pods -w`
 
 ```bash
 
@@ -127,7 +135,7 @@ multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
 subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 ```
 
-6. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
+5. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
 
     ```bash
     NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
@@ -147,7 +155,7 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 
     > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
 
-7. Take the external IP address for `calculator-front-end` and drop it in your browser and voilà! You have a working distributed calculator!
+6. Take the external IP address for `calculator-front-end` and drop it in your browser and voilà! You have a working distributed calculator!
 
     **For Minikube users**, execute the below command to open calculator on your browser
     ```
@@ -156,7 +164,7 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-8. Open your browser's console window (using F12 key) to see the logs produced as we use the calculator. Note that each time we click a button, we see logs that indicate state persistence: 
+7. Open your browser's console window (using F12 key) to see the logs produced as we use the calculator. Note that each time we click a button, we see logs that indicate state persistence: 
 
 ```js
 Persisting State:
@@ -180,11 +188,19 @@ Our client code calls to an Express server, which routes our calls through Dapr 
 
 ## Cleanup
 
-Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+### Local setup cleanup
+- Stop all running applications (dapr stop --app-id {application id})
+- Uninstall node modules by navigating to the node directory and run:
+  ```
+  npm uninstall
+  ```
 
-```bash
-kubectl delete -f .
-```
+### Kubernetes environment cleanup
+- Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+
+  ```bash
+  kubectl delete -f .
+  ```
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
 
