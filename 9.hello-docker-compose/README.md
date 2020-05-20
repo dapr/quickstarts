@@ -1,6 +1,6 @@
 # Dapr with Docker-Compose
 
-This sample demonstrates how to get Dapr running locally with Docker Compose. This uses the same sample applications as the `1.hello-world` sample, please review those docs for further information on the applicaiton architecture.
+This sample demonstrates how to get Dapr running locally with Docker Compose. This uses the same applications as the `1.hello-world` sample, please review those docs for further information on the applicaiton architecture.
 
 ## Prerequisites
 Clone this repo using `git clone https://github.com/dapr/samples.git` and go to the directory named */9.hello-docker-compose*
@@ -85,19 +85,18 @@ networks:
 ### Services
 This Docker Compose defintion has the following containerized services:
 - `nodeapp`        // The node app
-- `nodeapp-dapr`   // Dapr sidecar for the node app
+- `nodeapp-dapr`   // The node app dapr sidecar
 - `pythonapp`      // The python app
-- `pythonapp-dapr` // Dapr sidecar for the python app
+- `pythonapp-dapr` // The python app dapr sidecar
 - `placement`      // Dapr's placement service
 - `redis`          // Redis
 
 ### Networking
 Each of these services will be deployed to the `hello-dapr` docker network and have it's own IP on that network.
-The `nodeapp-dapr` and `pythonapp-dapr` services are sharing a network namespace with their associated app service
-by using a service `network_mode`.
+The `nodeapp-dapr` and `pythonapp-dapr` services are sharing a network namespace with their associated app service by using [`network_mode`](https://docs.docker.com/compose/compose-file/#network_mode).
 This means that the app and the sidecars will be able to communicate over their localhost interface.
 
-> Ports still need to be bound on the host machine, therefore, we use alternative ports to avoid conflict.
+> Ports still need to be bound on the host machine, therefore, we use alternative ports from the dapr defaults to avoid conflict.
 
 ### Volumes
 In order to get Dapr to load the redis statestore and messagebus components, we need to mount the 
