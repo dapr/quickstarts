@@ -13,7 +13,7 @@ services:
     networks:
       - hello-dapr
   nodeapp-dapr:
-    image: "dotjson/daprd:mdns"
+    image: "daprio/daprd:edge"
     command: ["./daprd",
      "-app-id", "nodeapp",
      "-app-port", "3000",
@@ -35,8 +35,10 @@ services:
     networks:
       - hello-dapr
   pythonapp-dapr:
-    image: "dotjson/daprd:mdns"
-    command: ["./daprd", "-app-id", "pythonapp", "-placement-address", "placement:50006"]
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "pythonapp",
+    "-placement-address", "placement:50006"]
     volumes:
       - "./components/:/components"
     depends_on:
