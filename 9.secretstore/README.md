@@ -1,6 +1,6 @@
 # Secrets API
 
-This tutorial will help you write a node app to access secrets stored in a Secret Store using the Dapr Secrets API.
+This tutorial will help you write a node app to access secrets stored in a Secret Store using the Dapr Secrets API. For this sample, we will be using Kubernetes secret store
 
 
 
@@ -9,7 +9,7 @@ This sample requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster), [AKS](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster) or [GKE](https://cloud.google.com/kubernetes-engine/)
+- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-minikube.md), [AKS](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-aks.md)
 - [Postman](https://www.getpostman.com/) [Optional]
 
 Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
@@ -40,7 +40,7 @@ $ dapr init --kubernetes
 
 Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, we'll use Kubernetes. For other secret stores, you can follow the instructions at https://github.com/dapr/docs/tree/master/howto/setup-secret-store
 
-1. Add your secret to a file ./secret
+1. Add your secret to a file ./secret. For example, if your password is "abcd", then the contents of ./secret should be "abcd"
 2. Create the secret in the Kubernetes secret store. Note, the name of our secret here is "mysecret" and will be used in a later step.
     ```
     kubectl create secret generic mysecret --from-file ./secret
@@ -51,7 +51,7 @@ Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key 
     ```
    You can see the output as below where the secret is stored in the secret store in Base64 encoded format
    ```
-    % k get secret mysecret -o yaml
+    % kubectl get secret mysecret -o yaml
         apiVersion: v1
         data:
         secret: eHl6OTg3Ngo=
@@ -90,7 +90,11 @@ Once you have an external IP, save it.
 You can also export it to a variable:
 
 ```
+Linux/MacOS
 export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
+
+Windows
+for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
 ```
 
 ## Step 4 - Access the secret
