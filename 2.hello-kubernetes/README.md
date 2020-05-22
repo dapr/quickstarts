@@ -74,7 +74,11 @@ Once you have an external IP, save it.
 You can also export it to a variable:
 
 ```
+Linux/MacOS
 export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
+
+Windows
+for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
 ```
 
 ## Step 4 - Deploy the Python App with the Dapr Sidecar
