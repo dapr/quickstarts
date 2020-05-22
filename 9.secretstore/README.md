@@ -1,6 +1,6 @@
-# Secrets API
+# Secrets Store
 
-This tutorial will help you write a node app to access secrets stored in a Secret Store using the Dapr Secrets API. For this sample, we will be using Kubernetes secret store
+This tutorial will help you write a node app to access secrets stored in a Secret Store using the Dapr Secrets API. For this sample, you will be using Kubernetes secret store
 
 
 
@@ -149,6 +149,6 @@ If you want to update the node app, you could do so by following the steps below
 
 
 ## Related Links
-- Overview of Secret Store: https://kubernetes.io/docs/concepts/configuration/secret/
-- Setup a Secret Store: https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md
-- Code Snippets in different programming languages: https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md
+- [Overview of Secret Store](https://kubernetes.io/docs/concepts/configuration/secret/)
+- [Setup a Secret Store](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md)
+- [Code Snippets in different programming languages](https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md)
