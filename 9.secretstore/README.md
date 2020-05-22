@@ -38,7 +38,7 @@ $ dapr init --kubernetes
 
 ## Step 2 - Configure a Secret in the Secret Store
 
-Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, we'll use Kubernetes. For other secret stores, you can follow the instructions at https://github.com/dapr/docs/tree/master/howto/setup-secret-store
+Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, we'll use Kubernetes. For other secret stores, refer to https://github.com/dapr/docs/tree/master/howto/setup-secret-store and follow these instructions.
 
 1. Add your secret to a file ./secret. For example, if your password is "abcd", then the contents of ./secret should be "abcd"
 2. Create the secret in the Kubernetes secret store. Note, the name of our secret here is "mysecret" and will be used in a later step.
@@ -75,7 +75,7 @@ kubectl apply -f ./deploy/node.yaml
 
 This will deploy our Node.js app to Kubernetes.
 
-You'll also see the container image that we're deploying. If you want to update the code and deploy a new image, see **Next Steps** section. 
+You'll also see the container image that is being deployed. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
 This deployment provisions an External IP.
 Wait until the IP is visible: (may take a few minutes)
@@ -106,9 +106,9 @@ The output should be your base64 encoded secret
 
 ## Step 5 - Observe Logs
 
-Now that we have our Node.js, let's watch messages come through.
+Now that the Node.js pp is running, let's watch messages come through.
 
-Get the logs of our Node.js app:
+Get the logs of the Node.js app:
 
 ```
 kubectl logs --selector=app=node -c node
@@ -146,3 +146,9 @@ If you want to update the node app, you could do so by following the steps below
 5. To publish your docker image to docker hub (or another registry), first login: `docker login`. Then run`docker push <YOUR IMAGE NAME>`.
 6. Update your .yaml file to reflect the new image name.
 7. Deploy your updated Dapr enabled app: `kubectl apply -f node.yaml`.
+
+
+## Related Links
+- Overview of Secret Store: https://kubernetes.io/docs/concepts/configuration/secret/
+- Setup a Secret Store: https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md
+- Code Snippets in different programming languages: https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md
