@@ -1,6 +1,6 @@
 # Secrets API
 
-This tutorial will help you write a node app to access secrets stored in a Secret Store using the Dapr Secrets API. For this sample, we will be using Kubernetes secret store
+This tutorial shows you how to use the Dapr secrets API to access secrets from secret stores. This sample uses a Node application to access a Kubernetes secret store.
 
 
 
@@ -77,7 +77,7 @@ This will deploy our Node.js app to Kubernetes.
 
 You'll also see the container image that is being deployed. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
-This deployment provisions an External IP.
+This deployment provisions an external IP.
 Wait until the IP is visible: (may take a few minutes)
 
 ```
@@ -106,7 +106,7 @@ The output should be your base64 encoded secret
 
 ## Step 5 - Observe Logs
 
-Now that the Node.js pp is running, let's watch messages come through.
+Now that the node app is running, let's watch messages come through.
 
 Get the logs of the Node.js app:
 
@@ -137,7 +137,7 @@ This will spin down the node app.
 
 ## Next Steps
 
-If you want to update the node app, you could do so by following the steps below:
+If you want to update the node app, you can do the following:
 
 1. Update Node code as you see fit!
 2. Navigate to the node app directory you want to build a new image for.
