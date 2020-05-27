@@ -1,4 +1,4 @@
 {
   // Run Bash script in .devcontainer directory
-  "postCreateCommand": "/bin/bash ./.devcontainer/dapr-setup.sh",
+  "postCreateCommand": "/bin/bash .devcontainer/dapr-setup.sh",
 }
