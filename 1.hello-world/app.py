@@ -18,6 +18,6 @@ while True:
     try:
         response = requests.post(dapr_url, json=message)
     except Exception as e:
-        print(e)
+        print(e, flush=True)
 
     time.sleep(1)
