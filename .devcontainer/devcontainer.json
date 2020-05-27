@@ -1,4 +1,4 @@
 {
   // Run Bash script in .devcontainer directory
-  "postCreateCommand": "wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash"," && dapr init",
+  "postCreateCommand": "/bin/bash ./.devcontainer/post-create.sh",
 }
