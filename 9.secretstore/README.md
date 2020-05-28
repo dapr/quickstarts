@@ -1,4 +1,4 @@
-# Secrets API
+# Secrets store
 
 This tutorial shows you how to use the Dapr secrets API to access secrets from secret stores. This sample uses a Node application to access a Kubernetes secret store.
 
@@ -38,7 +38,7 @@ $ dapr init --kubernetes
 
 ## Step 2 - Configure a Secret in the Secret Store
 
-Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, we'll use Kubernetes. For other secret stores, refer to https://github.com/dapr/docs/tree/master/howto/setup-secret-store and follow these instructions.
+Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, you'll use the [Kubernetes secret store](https://kubernetes.io/docs/concepts/configuration/secret/) (For instructions on other secret stores, please refer to [this documentation](https://github.com/dapr/docs/tree/master/howto/setup-secret-store)).
 
 1. Add your secret to a file ./secret. For example, if your password is "abcd", then the contents of ./secret should be "abcd"
 2. Create the secret in the Kubernetes secret store. Note, the name of our secret here is "mysecret" and will be used in a later step.
@@ -89,11 +89,15 @@ kubectl get svc nodeapp
 Once you have an external IP, save it.
 You can also export it to a variable:
 
-```
-Linux/MacOS
-export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
+**Linux/MacOS**:
 
-Windows
+```
+export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
+```
+
+**Windows**:
+
+```
 for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
 ```
 
@@ -149,6 +153,7 @@ If you want to update the node app, you can do the following:
 
 
 ## Related Links
-- Overview of Secret Store: https://kubernetes.io/docs/concepts/configuration/secret/
-- Setup a Secret Store: https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md
-- Code Snippets in different programming languages: https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md
+- [Secret store overview](https://kubernetes.io/docs/concepts/configuration/secret/)
+- [Secret store API reference](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md)
+- [Setup a secret store](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md)
+- [Code snippets in different programming languages](https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md)
