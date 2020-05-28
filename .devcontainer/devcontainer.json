@@ -1,4 +1,10 @@
+/* Contents of {repository-root}/.devcontainer/devcontainer.json */
+
 {
+  // Install dapr extension
+  "extensions": [
+      "ms-azuretools.vscode-dapr"
+  ],
   // Run Bash script in .devcontainer directory
   "postCreateCommand": "/bin/bash .devcontainer/dapr-setup.sh",
 }
