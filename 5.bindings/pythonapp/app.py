@@ -20,6 +20,6 @@ while True:
         print(response, flush=True)
 
     except Exception as e:
-        print(e)
+        print(e, flush=True)
 
     time.sleep(1)
