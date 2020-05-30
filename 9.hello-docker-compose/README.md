@@ -3,7 +3,7 @@
 This sample demonstrates how to get Dapr running locally with Docker Compose. This uses the same applications as the `1.hello-world` sample, please review those docs for further information on the applicaiton architecture.
 
 ## Prerequisites
-Clone this repo using `git clone https://github.com/dapr/samples.git` and go to the directory named */9.hello-docker-compose*
+Clone this repo using `git clone https://github.com/dapr/samples.git` and go to the directory named */10.hello-docker-compose*
 
 - [Docker](https://docs.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
@@ -92,20 +92,20 @@ This Docker Compose defintion has the following containerized services:
 - `redis`          // Redis
 
 ### Networking
-Each of these services will be deployed to the `hello-dapr` docker network and have it's own IP on that network.
+Each of these services is deployed to the `hello-dapr` docker network and have their own IP on that network.
 The `nodeapp-dapr` and `pythonapp-dapr` services are sharing a network namespace with their associated app service by using [`network_mode`](https://docs.docker.com/compose/compose-file/#network_mode).
-This means that the app and the sidecars will be able to communicate over their localhost interface.
+This means that the app and the sidecars are able to communicate over their localhost interface.
 
 > Ports still need to be bound on the host machine, therefore, we use alternative ports from the dapr defaults to avoid conflict.
 
 ### Volumes
-In order to get Dapr to load the redis statestore and messagebus components, we need to mount the 
+In order to get Dapr to load the redis statestore and pubsub components, you need to mount the 
 `./components` directory to the default working directory. These component definitions have been modified
-to talk to redis using a DNS name `redis` rather than localhost. This will resolve on the docker network to
+to talk to redis using a DNS name `redis` rather than localhost. This resolves on the docker network to
 the IP of the container running redis at runtime.
 
 ## Deploy the Docker Compose Definition
-To deploy the above `docker-compose.yml` you can run:
+To deploy the above `docker-compose.yml` run:
 ```
 make run
 ```
@@ -114,9 +114,9 @@ or natively:
 docker-compose up
 ```
 > If you want to change the dapr docker image used in the deployment, you can
-  set the env var `DAPR_IMAGE` and this will be used instead. This will generate
-  a `docker-compose.override.yml` file that you will want to remove when no longer
-  needed.
+  set the env var `DAPR_IMAGE` and this image is used instead. This generates
+  a `docker-compose.override.yml` file that you need to remove when no longer
+  required.
 
 ## Clean up
 
@@ -127,4 +127,4 @@ docker-compose down
 
 ## Additional Resources:
 
-TBD
+[Overview of Docker Compose](https://docs.docker.com/compose/)
