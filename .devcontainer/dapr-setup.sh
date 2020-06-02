@@ -6,5 +6,5 @@ wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O 
 # Initialize Dapr
 sudo dapr init
 
-# Linux typically has wget installed
+# Install Go
 wget -q -O - https://raw.githubusercontent.com/canha/golang-tools-install-script/master/goinstall.sh | bash
