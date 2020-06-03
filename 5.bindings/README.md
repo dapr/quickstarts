@@ -53,7 +53,7 @@ Now that you have Kafka running locally on your machine, we'll need to run our m
 
 1. Navigate to Node subscriber directory in your CLI: `cd nodeapp`
 2. Install dependencies: `npm install`
-3. Run Node sample app with Dapr: `dapr run --app-id bindings-nodeapp --app-port 3000 node app.js`
+3. Run Node sample app with Dapr: `dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ../components`
 
 ### Run Python Microservice with Output Binding
 
@@ -61,7 +61,7 @@ Next, we'll run the Python microservice that uses output bindings
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd pythonapp`
 2. Install dependencies: `pip install requests`
-3. Run Python sample app with Dapr: `dapr run --app-id bindings-pythonapp python app.py`
+3. Run Python sample app with Dapr: `dapr run --app-id bindings-pythonapp python app.py --components-path ./components`
 
 ### Observe Logs
 
