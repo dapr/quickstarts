@@ -271,7 +271,7 @@ app.get('*', function (_req, res) {
 
 ## Why Pub-Sub?
 
-Developers use a pub-sub messaging pattern to achieve high scalability and looser coupling.
+Developers use a pub-sub messaging pattern to achieve high scalability and loose coupling.
 
 ### Scalability
 

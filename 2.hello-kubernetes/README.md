@@ -8,7 +8,7 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'
 ## Prerequisites
 This sample requires you to have the following installed on your machine:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster), [AKS](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#setup-cluster) or [GKE](https://cloud.google.com/kubernetes-engine/)
+- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-minikube.md), [AKS](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-aks.md) or [GKE](https://cloud.google.com/kubernetes-engine/)
 
 Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
 ```
@@ -74,7 +74,11 @@ Once you have an external IP, save it.
 You can also export it to a variable:
 
 ```
+Linux/MacOS
 export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
+
+Windows
+for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
 ```
 
 ## Step 4 - Deploy the Python App with the Dapr Sidecar
