@@ -83,17 +83,17 @@ These instructions start the four calculator operator apps (add, subtract, multi
       pip3 install wheel
       pip3 install python-dotenv
       ```
-    - Set environment variable to use non-default app port 8000
+    - Set environment variable to use non-default app port 5000
       ```
       Linux/Mac OS:
-      export FLASK_RUN_PORT=8000
+      export FLASK_RUN_PORT=5000
 
       Windows:
       set FLASK_RUN_PORT=5000
       ```
     - Start dapr using the command:
       ```
-      dapr run --app-id multiplyapp --app-port 8000 --port 3501 flask run
+      dapr run --app-id multiplyapp --app-port 5000 --port 3501 flask run
       ```
 5. Frontend Calculator app - Open a terminal window and navigate to the react-calculator directory and follow the steps below:
     - Install the required modules
@@ -103,7 +103,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
     - Start Dapr using command below:
       ```
-      dapr run --app-id frontendapp --app-port 5000 --port 3500 node server.js
+      dapr run --app-id frontendapp --app-port 8080 --port 3500 node server.js
       ```
 6. Open a browser window and go to http://localhost:8080/. From here, you can enter the different operations.
 
