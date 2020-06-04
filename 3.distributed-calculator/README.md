@@ -25,10 +25,10 @@ Clone the sample repository
 1. Install [Docker](https://www.docker.com/products/docker-desktop)
 2. Install [.Net Core SDK 3.1](https://dotnet.microsoft.com/download)
 3. Install [Dapr CLI](https://github.com/dapr/cli)
-4. Install [Go] https://golang.org/doc/install
-5. Install [Python3] https://www.python.org/downloads/
-6. Install [Npm] https://www.npmjs.com/get-npm
-7. Install [Node] https://nodejs.org/en/download/
+4. Install [Go](https://golang.org/doc/install)
+5. Install [Python3](https://www.python.org/downloads/)
+6. Install [Npm](https://www.npmjs.com/get-npm)
+7. Install [Node](https://nodejs.org/en/download/)
 
 ### - Run in Kubernetes environment
 1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to set this up.
