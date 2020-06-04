@@ -135,7 +135,7 @@ You're up and running! Both Dapr and your app logs will appear here.
 ```
 > **Note**: the `--app-port` (the port the app runs on) is configurable. Our Node app happens to run on port 3000, but we could configure it to run on any other port. Also note that the Dapr `--port` parameter is optional, and if not supplied, a random available port is used.
 
-The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components` which holds yaml definition files for components Dapr will be using at runtime. When running locally, the yaml files which provide default definitions for a local development environment are placed in this default components directory (learn more about this flow [here](https://github.com/dapr/docs/blob/master/walkthroughs/darprun.md)). Review the `statestore.yaml` file in the `components` directory:
+The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components` which holds yaml definition files for components Dapr will be using at runtime. When running locally, the yaml files which provide default definitions for a local development environment are placed in this default components directory (learn more about this flow [here](https://github.com/dapr/docs/blob/master/walkthroughs/daprrun.md)). Review the `statestore.yaml` file in the `components` directory:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
