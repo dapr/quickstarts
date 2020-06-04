@@ -16,8 +16,8 @@ while True:
     message = {"data": {"orderId": n}}
 
     try:
-        response = requests.post(dapr_url, json=message)
+        response = requests.post(dapr_url, json=message, timeout=5)
     except Exception as e:
-        print(e)
+        print(e, flush=True)
 
     time.sleep(1)
