@@ -85,42 +85,43 @@ networks:
 ### Services
 This Docker Compose defintion has the following containerized services:
 - `nodeapp`        // The node app
-- `nodeapp-dapr`   // The node app dapr sidecar
+- `nodeapp-dapr`   // The node app Dapr sidecar
 - `pythonapp`      // The python app
-- `pythonapp-dapr` // The python app dapr sidecar
+- `pythonapp-dapr` // The python app Dapr sidecar
 - `placement`      // Dapr's placement service
 - `redis`          // Redis
 
 ### Networking
-Each of these services is deployed to the `hello-dapr` docker network and have their own IP on that network.
+Each of these services is deployed to the `hello-dapr` Docker network and have their own IP on that network.
 The `nodeapp-dapr` and `pythonapp-dapr` services are sharing a network namespace with their associated app service by using [`network_mode`](https://docs.docker.com/compose/compose-file/#network_mode).
 This means that the app and the sidecars are able to communicate over their localhost interface.
 
-> Ports still need to be bound on the host machine, therefore, we use alternative ports from the dapr defaults to avoid conflict.
+> Ports are still bound on the host machine, therefore, we need to ensure we avoid port conflicts.
 
 ### Volumes
 In order to get Dapr to load the redis statestore and pubsub components, you need to mount the 
 `./components` directory to the default working directory. These component definitions have been modified
-to talk to redis using a DNS name `redis` rather than localhost. This resolves on the docker network to
-the IP of the container running redis at runtime.
+to talk to redis using a DNS name `redis` rather than localhost. This resolves on the Docker network to
+the IP of the container running redis.
 
 ## Deploy the Docker Compose Definition
-To deploy the above `docker-compose.yml` run:
+To deploy the above `docker-compose.yml` you can run:
 ```
 make run
 ```
-or natively:
+> If you want to change the Dapr Docker image used in the deployment, you can
+  set the env var `DAPR_IMAGE` and run `make run`. This generates
+  a `docker-compose.override.yml` file using your custom image. If you want
+  to revert to the default Dapr Docker image, you'll need to remove this file.
+
+altentiavely, you can just use Docker Compose directly:
 ```
 docker-compose up
 ```
-> If you want to change the dapr docker image used in the deployment, you can
-  set the env var `DAPR_IMAGE` and this image is used instead. This generates
-  a `docker-compose.override.yml` file that you need to remove when no longer
-  required.
 
 ## Clean up
 
-To tear down the Docker Compose deployment, you can run;
+To tear down the Docker Compose deployment, you can run:
 ```
 docker-compose down
 ```
