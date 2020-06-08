@@ -232,7 +232,7 @@ This invokes the `/order` route, which calls out to our Redis store for the late
 Let's take a look at our Python App to see how another application can invoke the Node App via Dapr without being aware of the destination's hostname or port. In the `app.py` file we can find the endpoint definition to call the Node App via Dapr.
 
 ```python
-dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
+dapr_port = os.getenv("DAPR_HTTP_PORT", 3501)
 dapr_url = "http://localhost:{}/v1.0/invoke/nodeapp/method/neworder".format(dapr_port)
 ```
 It is important to notice the Node App's name (`nodeapp`) in the URL, it will allow Dapr to redirect the request to the right API endpoint. This name needs to match the name used to run the Node App earlier in this exercise.
@@ -263,7 +263,13 @@ Now we can open a **new** command line terminal and go to the `1.hello-world` di
 2. Start the Python App with Dapr: 
 
     ```bash
-    dapr run --app-id pythonapp python3 app.py
+    dapr run --app-id pythonapp --port 3501 python3 app.py
+    ```
+   
+   or (in case you get an error which says that python3 not found)
+   
+    ```
+    dapr run --app-id pythonapp --port 3501 python app.py
     ```
 
 3. If all went well, the **other** terminal, running the Node App, should log entries like these:
