@@ -58,7 +58,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       export ASPNETCORE_URLS="http://localhost:7000"
       
       Windows:
-      set ASPNETCORE_URLS="http://localhost:7000"
+      set ASPNETCORE_URLS=http://localhost:7000
       ```
     - Build the app. Run:
       ```
