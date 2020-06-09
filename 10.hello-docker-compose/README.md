@@ -33,7 +33,8 @@ services:
      "-app-id", "nodeapp",
      "-app-port", "3000",
      "-placement-address", "placement:50006",
-     "-dapr-grpc-port", "50002"]
+     "-dapr-grpc-port", "50002",
+     "-components-path", "/components"]
     volumes:
         - "./components/:/components"
     depends_on:
@@ -53,7 +54,8 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "pythonapp",
-    "-placement-address", "placement:50006"]
+    "-placement-address", "placement:50006",
+    "-components-path", "/components"]
     volumes:
       - "./components/:/components"
     depends_on:
@@ -75,7 +77,7 @@ services:
   redis:
     image: "redis:alpine"
     ports:
-      - "6379:6379"
+      - "6379:6380"
     networks:
       - hello-dapr
 networks:
