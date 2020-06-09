@@ -72,6 +72,10 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes. Let'
     ```bash
     dapr publish --topic A --data "{ \"message\": \"This is a test\" }"
     ```
+    ```
+    Windows Powershell
+    dapr publish --topic A --data "{ message: This is a test }"
+    ```
     Both our Node.js and Python subscribers subscribe to topic A and log when they receive a message. Note that logs are showing up in the console window where we ran each one: 
     
     ```bash
