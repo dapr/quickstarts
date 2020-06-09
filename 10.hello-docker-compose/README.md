@@ -77,7 +77,7 @@ services:
   redis:
     image: "redis:alpine"
     ports:
-      - "6379:6380"
+      - "6380:6379"
     networks:
       - hello-dapr
 networks:
