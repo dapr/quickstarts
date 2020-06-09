@@ -38,6 +38,7 @@ Dapr is currently under community development with preview releases.  The master
 | [7. Middleware](./7.middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
 | [8. Observability](./8.observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
 | [9. Secret Store](./9.secretstore) | Demonstrates the use of Dapr Secrets API. |
+| [10. Docker Compose](./10.hello-docker-compose) | how to get Dapr running locally with Docker Compose. |
 
 ## SDKs
 
