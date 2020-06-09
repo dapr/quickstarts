@@ -16,6 +16,7 @@ Dapr is currently under community development with preview releases.  The master
 
 | Dapr Sample Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
+| [v0.8.0](https://github.com/dapr/samples/tree/v0.8.0) | [v0.8.0](https://github.com/dapr/dapr/tree/v0.8.0) |
 | [v0.7.0](https://github.com/dapr/samples/tree/v0.7.0) | [v0.7.0](https://github.com/dapr/dapr/tree/v0.7.0) |
 | [v0.6.0](https://github.com/dapr/samples/tree/v0.6.0) | [v0.6.0](https://github.com/dapr/dapr/tree/v0.6.0) |
 | [v0.5.0](https://github.com/dapr/samples/tree/v0.5.0) | [v0.5.0](https://github.com/dapr/dapr/tree/v0.5.0) |
@@ -37,6 +38,7 @@ Dapr is currently under community development with preview releases.  The master
 | [7. Middleware](./7.middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
 | [8. Observability](./8.observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
 | [9. Secret Store](./9.secretstore) | Demonstrates the use of Dapr Secrets API. |
+| [10. Docker Compose](./10.hello-docker-compose) | how to get Dapr running locally with Docker Compose. |
 
 ## SDKs
 
