@@ -60,8 +60,8 @@ Now that you have Kafka running locally on your machine, we'll need to run our m
 Next, we'll run the Python microservice that uses output bindings
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd pythonapp`
-2. Install dependencies: `pip install requests`
-3. Run Python sample app with Dapr: `dapr run --app-id bindings-pythonapp python app.py --components-path ./components`
+2. Install dependencies: `pip3 install requests`
+3. Run Python sample app with Dapr: `dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components`
 
 ### Observe Logs
 
@@ -99,8 +99,7 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 
 ### Setting up a Kafka in Kubernetes
 
-1. Make sure that you installed helm tiller on your cluster
-2. Install Kafka via [incubator/kafka helm chart](https://github.com/helm/charts/tree/master/incubator/kafka)
+1. Install Kafka via [incubator/kafka helm chart](https://github.com/helm/charts/tree/master/incubator/kafka)
 ```
 $ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 $ helm repo update
@@ -108,7 +107,7 @@ $ kubectl create ns kafka
 $ helm install dapr-kafka incubator/kafka --namespace kafka -f ./kafka-non-persistence.yaml
 ```
 
-3. Wait until kafka pods are running
+2. Wait until kafka pods are running
 ```
 $ kubectl -n kafka get pods -w
 NAME                     READY   STATUS    RESTARTS   AGE
@@ -187,10 +186,8 @@ This will spin down each resource defined by the .yaml files in the `deploy` dir
 Once you delete all samples apps, delete Kafka in the cluster.
 
 ```bash
-# move to sample root
-kubectl delete -f ./k8s_kafka_testclient.yaml
 # clean up kafka cluster
-helm del --purge dapr-kafka
+helm uninstall dapr-kafka --namespace kafka
 ```
 
 ## How it Works
