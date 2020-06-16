@@ -66,7 +66,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
     - Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
       ```
-      dapr run --app-id subtractapp --app-port 7000 --port 3504 dotnet Subtract.dll
+      dapr run --app-id subtractapp --app-port 5000 --port 3504 dotnet Subtract.dll
       ```
 3. Divide App - Open a terminal window and navigate to the node directory and follow the steps below:
     - Install dependencies by running the command:
