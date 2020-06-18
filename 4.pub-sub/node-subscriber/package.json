@@ -1,6 +1,7 @@
 {
   "name": "node-subscriber",
   "version": "1.0.0",
+  "private": true,
   "description": "A subscriber microservice in the Dapr pub-sub sample",
   "main": "app.js",
   "scripts": {
