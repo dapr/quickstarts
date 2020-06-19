@@ -9,12 +9,12 @@ using Subtract.Models;
 
 namespace Subtract.Controllers
 {
-    [Route("[controller]")]
+    [Route("v1.0/[controller]")]
     [ApiController]
     public class SubtractController : ControllerBase
     {
 
-        //POST: /subtract
+        //POST: /v1.0/subtract
         [HttpPost]
         public decimal Subtract(Operands operands)
         {

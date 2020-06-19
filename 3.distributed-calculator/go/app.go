@@ -31,6 +31,6 @@ func add(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := mux.NewRouter()
 	
-	router.HandleFunc("/add", add).Methods("POST", "OPTIONS")
+	router.HandleFunc("/v1.0/add", add).Methods("POST", "OPTIONS")
 	log.Fatal(http.ListenAndServe(":6000", router))
 }

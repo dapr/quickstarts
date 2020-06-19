@@ -15,7 +15,7 @@ const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 const port = 3000;
 
-app.get('/order', (_req, res) => {
+app.get('/v1.0/order', (_req, res) => {
     fetch(`${stateUrl}/order`)
         .then((response) => {
             if (!response.ok) {
@@ -31,7 +31,7 @@ app.get('/order', (_req, res) => {
         });
 });
 
-app.post('/neworder', (req, res) => {
+app.post('/v1.0/neworder', (req, res) => {
     const data = req.body.data;
     const orderId = data.orderId;
     console.log("Got a new order! Order ID: " + orderId);
@@ -60,7 +60,7 @@ app.post('/neworder', (req, res) => {
     });
 });
 
-app.delete('/order/:id', (req, res) => {  
+app.delete('/v1.0/order/:id', (req, res) => {  
     const key = req.params.id;      
     console.log('Invoke Delete for ID ' + key);         
 

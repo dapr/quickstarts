@@ -12,7 +12,7 @@ const port = 4000;
 
 app.use(cors());
 
-app.post('/divide', (req, res) => {
+app.post('/v1.0/divide', (req, res) => {
   let args = req.body;
   const [operandOne, operandTwo] = [Number(args['operandOne']), Number(args['operandTwo'])];
   

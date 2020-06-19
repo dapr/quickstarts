@@ -12,7 +12,7 @@ import sys
 app = flask.Flask(__name__)
 CORS(app)
 
-@app.route('/multiply', methods=['POST'])
+@app.route('/v1.0/multiply', methods=['POST'])
 def multiply():
     content = request.json
     [operand_one, operand_two] = [float(content['operandOne']), float(content['operandTwo'])]
