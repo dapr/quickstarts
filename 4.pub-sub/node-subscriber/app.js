@@ -12,7 +12,7 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 
 const port = 3000;
 
-app.get('/dapr/subscribe', (_req, res) => {
+app.get('/v1.0/dapr/subscribe', (_req, res) => {
     res.json([
         {
             topic: "A",
@@ -25,12 +25,12 @@ app.get('/dapr/subscribe', (_req, res) => {
     ]);
 });
 
-app.post('/A', (req, res) => {
+app.post('/v1.0/A', (req, res) => {
     console.log("A: ", req.body);
     res.sendStatus(200);
 });
 
-app.post('/B', (req, res) => {
+app.post('/v1.0/B', (req, res) => {
     console.log("B: ", req.body);
     res.sendStatus(200);
 });
