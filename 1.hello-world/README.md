@@ -41,7 +41,7 @@ When we use the Dapr CLI, it creates an environment variable for the Dapr port, 
 Next, let's take a look at the ```neworder``` handler:
 
 ```js
-app.post('/neworder', (req, res) => {
+app.post('/v1.0/neworder', (req, res) => {
     const data = req.body.data;
     const orderId = data.orderId;
     console.log("Got a new order! Order ID: " + orderId);
@@ -71,7 +71,7 @@ app.post('/neworder', (req, res) => {
 });
 ```
 
-Here we're exposing an endpoint that will receive and handle `neworder` messages. We first log the incoming message, and then persist the order ID to our Redis store by posting a state array to the `/state/<state-store-name>` endpoint.
+Here we're exposing an endpoint that will receive and handle `/v1.0/neworder` messages. We first log the incoming message, and then persist the order ID to our Redis store by posting a state array to the `/state/<state-store-name>` endpoint.
 
 Alternatively, we could have persisted our state by simply returning it with our response object:
 
@@ -86,10 +86,10 @@ res.json({
 
 We chose to avoid this approach, as it doesn't allow us to verify if our message successfully persisted.
 
-We also expose a GET endpoint, `/order`:
+We also expose a GET endpoint, `/v1.0/order`:
 
 ```js
-app.get('/order', (_req, res) => {
+app.get('/v1.0/order', (_req, res) => {
     fetch(`${stateUrl}/order`)
         .then((response) => {
             if (!response.ok) {

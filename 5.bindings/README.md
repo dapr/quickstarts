@@ -232,7 +232,7 @@ spec:
 Navigate to the `nodeapp` directory and open `app.js`, the code for our Node.js input bindings sample app. Here we're exposing one API endpoint using `express`. The API name must be identical to the component name which is specified in Kafka bindings component yaml. Then Dapr runtime will consume the event from `sample` topic and then send the POST request to Node app with the event payload.
 
 ```js
-app.post('/sample-topic', (req, res) => {
+app.post('/v1.0/sample-topic', (req, res) => {
     console.log("Hello from Kafka!");
     console.log(req.body);
     res.status(200).send();

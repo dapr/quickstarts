@@ -160,7 +160,7 @@ Now that you've run the sample locally and/or in Kubernetes, let's unpack how th
 Navigate to the `node-subscriber` directory and open `app.js`, the code for our Node.js subscriber. Here we're exposing three  API endpoints using `express`. The first is a GET endpoint: 
 
 ```js
-app.get('/dapr/subscribe', (_req, res) => {
+app.get('/v1.0/dapr/subscribe', (_req, res) => {
     res.json([
         {
             topic: "A",
@@ -176,12 +176,12 @@ app.get('/dapr/subscribe', (_req, res) => {
 This tells Dapr what topics we want to subscribe to. When deployed (locally or in Kubernetes), Dapr will call out to my service to determine if it's subscribing to anything - this is how we tell it! The other two endpoints are POST endpoints:
 
 ```js
-app.post('/A', (req, res) => {
+app.post('/v1.0/A', (req, res) => {
     console.log("A: ", req.body);
     res.sendStatus(200);
 });
 
-app.post('/B', (req, res) => {
+app.post('/v1.0/B', (req, res) => {
     console.log("B: ", req.body);
     res.sendStatus(200);
 });
@@ -194,7 +194,7 @@ These handle messages of each topic type coming through. Note that we simply log
 Navigate to the `python-subscriber` directory and open `app.py`, the code for our Python subscriber. As with our Node.js subscriber, we're exposing three API endpoints, this time using `flask`. The first is a GET endpoint: 
 
 ```python
-@app.route('/dapr/subscribe', methods=['GET'])
+@app.route('/v1.0/dapr/subscribe', methods=['GET'])
 def subscribe():
     subscriptions = [{'topic': 'A', 'route': 'A'}, {'topic': 'C', 'route': 'C'}]
     return jsonify(subscriptions)
@@ -202,12 +202,12 @@ def subscribe():
 Again, this is how we tell Dapr what topics we want to subscribe to. In this case, we're subscribing to topics "A" and "C". We handle messages of those topics with our other two routes:
 
 ```python
-@app.route('/A', methods=['POST'])
+@app.route('/v1.0/A', methods=['POST'])
 def a_subscriber():
     print(f'A: {request.json}', flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
-@app.route('/C', methods=['POST'])
+@app.route('/v1.0/C', methods=['POST'])
 def c_subscriber():
     print(f'C: {request.json}', flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
