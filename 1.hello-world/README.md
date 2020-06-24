@@ -277,6 +277,8 @@ Now we can open a **new** command line terminal and go to the `1.hello-world` di
     Successfully persisted state
     ```
 
+> **Note**: Please refer [this](https://github.com/dapr/samples/issues/240) issue if you have trouble running python apps with dapr on windows.
+
 4. Now, we perform a GET request a few times and see how the orderId changes every second (enter it into the web browser, use Postman, or curl):
 
     ```http
