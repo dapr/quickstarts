@@ -1,6 +1,7 @@
 {
   "name": "node-divide",
   "version": "0.0.1",
+  "private": true,
   "description": "",
   "main": "app.js",
   "scripts": {

@@ -1,6 +1,7 @@
 {
   "name": "react-form",
   "version": "1.0.0",
+  "private": true,
   "description": "This project builds and serves the react form client along with the services that it depends on",
   "main": "server.js",
   "scripts": {
