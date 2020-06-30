@@ -82,12 +82,15 @@ for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loa
 ```
 
 ## Step 4 - Verify Service call using external IP 
-Let's check if we are able to call the service using the external IP. From a command prompt run: 
+To call the service using the extracted external IP, from a command prompt run: 
 
 ```bash
 $ curl $NODE_APP/ports
 {"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}
 ```
+
+> Note: This assumes that the external IP is available in the `NODE_APP` environment variable from the previous step.
+Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP. Then export it to an environment variable.
 
 Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this sample the HTTP Port is used for further communication with the Dapr sidecar. 
 
