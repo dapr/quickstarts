@@ -81,7 +81,20 @@ Windows
 for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
 ```
 
-## Step 4 - Deploy the Python App with the Dapr Sidecar
+## Step 4 - Verify Service call using external IP 
+To call the service using the extracted external IP, from a command prompt run: 
+
+```bash
+$ curl $NODE_APP/ports
+{"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}
+```
+
+> Note: This assumes that the external IP is available in the `NODE_APP` environment variable from the previous step.
+Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP. Then export it to an environment variable.
+
+Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this sample the HTTP Port is used for further communication with the Dapr sidecar. 
+
+## Step 5 - Deploy the Python App with the Dapr Sidecar
 Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/2.hello-kubernetes/python` and open `app.py`.
 
 At a quick glance, this is a basic python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
@@ -111,7 +124,7 @@ Now let's just wait for the pod to be in ```Running``` state:
 kubectl get pods --selector=app=python -w
 ```
 
-## Step 5 - Observe Messages
+## Step 6 - Observe Messages
 
 Now that we have our Node.js and python applications deployed, let's watch messages come through.
 
@@ -132,7 +145,7 @@ Got a new order! Order ID: 3
 Successfully persisted state
 ```
 
-## Step 6 - Confirm Successful Persistence
+## Step 7 - Confirm Successful Persistence
 
 Hit the Node.js app's order endpoint to get the latest order. Grab the external IP address that we saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
 
@@ -143,7 +156,7 @@ curl $NODE_APP/order
 
 You should see the latest JSON in response!
 
-## Step 7 - Cleanup
+## Step 8 - Cleanup
 
 Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
