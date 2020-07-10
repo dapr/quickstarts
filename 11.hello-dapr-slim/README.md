@@ -9,7 +9,7 @@ This sample requires you to have the following installed on your machine:
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
 - [Postman](https://www.getpostman.com/) [Optional]
 
-## Step 1 - Setup Dapr (Minimal Init)
+## Step 1 - Setup Dapr (Slim Init)
 
 Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#environment-setup) to download and install the Dapr CLI and initialize Dapr.
 
@@ -136,7 +136,7 @@ dapr stop --app-id nodeapp
 
 To see that services have stopped running, run `dapr list`, noting that your services no longer appears!
 
-## Minimal Init vs Default Init
+## Slim Init vs Default Init
 
 With the run of `dapr init --slim`, only the binaries `daprd` and `placement` are instaled in the system. In the normal default init, `dapr init` placement service is installed as a container and additional redis and zipkin containers are run for enabling state store and tracing, which requires Docker to be installed as a prerequisite. See [environment setup](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) for more information. The minimal init provides only limited functionaity unless you [configure](https://github.com/dapr/docs/tree/master/howto/configure-redis#Self-Hosted-Mode-without-Containers) a state store yourself.
 
