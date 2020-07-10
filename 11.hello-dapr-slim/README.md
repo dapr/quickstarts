@@ -138,9 +138,7 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 
 ## Minimal Init vs Default Init
 
-* With the run of `dapr init --slim`, only the binaries `daprd` and `placement` are instaled in the system. In the normal default init, `dapr init` placement service is installed as a container and additional redis and zipkin containers are run for enabling state store and tracing, which requires Docker to be installed as a prerequisite. See [environment setup](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) for more information.
-
-* The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`. On **minimal init** in self hosted mode, the default components folder is empty. While this sample does not use any components for defining state stores or pubsub, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
+With the run of `dapr init --slim`, only the binaries `daprd` and `placement` are instaled in the system. In the normal default init, `dapr init` placement service is installed as a container and additional redis and zipkin containers are run for enabling state store and tracing, which requires Docker to be installed as a prerequisite. See [environment setup](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) for more information. The minimal init provides only limited functionaity unless you [configure](https://github.com/dapr/docs/tree/master/howto/configure-redis#Self-Hosted-Mode-without-Containers) a state store yourself.
 
 
 ## Next Steps
