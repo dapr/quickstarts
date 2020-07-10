@@ -1,6 +1,6 @@
 # Hello World (Slim Init, without docker dependency)
 
-This tutorial will demonstrate how to get Dapr running locally on your machine without docker. You will be deploying a Node.js app that subscribes to order messages demostrating service invocation capability of Dapr. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will demonstrate how to get Dapr running locally on your machine without docker. You will be deploying a Node.js app that subscribes to order messages demonstrating service invocation capability of Dapr. The following architecture diagram illustrates the components that make up this sample: 
 
 ![Architecture Diagram](./img/Architecture_DiagramA.png)
 
