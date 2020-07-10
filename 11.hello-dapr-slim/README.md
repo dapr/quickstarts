@@ -1,4 +1,4 @@
-# Hello World (Minimal Init, without docker dependency)
+# Hello World (Slim Init, without docker dependency)
 
 This tutorial will demonstrate how to get Dapr running locally on your machine without docker. You will be deploying a Node.js app that subscribes to order messages demostrating service invocation capability of Dapr. The following architecture diagram illustrates the components that make up this sample: 
 
@@ -138,7 +138,7 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 
 ## Slim Init vs Default Init
 
-With the run of `dapr init --slim`, only the binaries `daprd` and `placement` are instaled in the system. In the normal default init, `dapr init` placement service is installed as a container and additional redis and zipkin containers are run for enabling state store and tracing, which requires Docker to be installed as a prerequisite. See [environment setup](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) for more information. The minimal init provides only limited functionaity unless you [configure](https://github.com/dapr/docs/tree/master/howto/configure-redis#Self-Hosted-Mode-without-Containers) a state store yourself.
+With the run of `dapr init --slim`, only the binaries `daprd` and `placement` are instaled in the system. In the normal default init, `dapr init` placement service is installed as a container and additional redis and zipkin containers are run for enabling state store and tracing, which requires Docker to be installed as a prerequisite. See [environment setup](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) for more information. The slim init provides only limited functionaity unless you [configure](https://github.com/dapr/docs/tree/master/howto/configure-redis#Self-Hosted-Mode-without-Containers) a state store yourself.
 
 
 ## Next Steps
