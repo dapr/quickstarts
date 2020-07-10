@@ -1,6 +1,6 @@
-# Hello World(without docker)
+# Hello World (Minimal Init, without docker dependency)
 
-This tutorial will demonstrate how to get Dapr running locally on your machine without docker. We'll be deploying a Node.js app that subscribes to order messages demostrating service invocation capability of Dapr. The following architecture diagram illustrates the components that make up the first part sample: 
+This tutorial will demonstrate how to get Dapr running locally on your machine without docker. You will be deploying a Node.js app that subscribes to order messages demostrating service invocation capability of Dapr. The following architecture diagram illustrates the components that make up this sample: 
 
 ![Architecture Diagram](./img/Architecture_DiagramA.png)
 
@@ -22,7 +22,6 @@ git clone https://github.com/dapr/samples.git
 cd samples/11.hello-dapr-slim
 ```
 
-
 In the `app.js` you'll find a simple `express` application, which exposes a single route and handler. First, let's take a look at the top of the file: 
 
 Let's take a look at the ```neworder``` handler:
@@ -32,7 +31,7 @@ app.post('/neworder', bodyParser.json(), (req, res) => {
     const data = req.body.data;
     const orderId = data.orderId;
     console.log("Got a new order! Order ID: " + orderId);
-    res.status(200).send("Got a new order! Oredr ID: " + orderId);
+    res.status(200).send("Got a new order! Order ID: " + orderId);
 });
 ```
 
@@ -62,10 +61,6 @@ You're up and running! Both Dapr and your app logs will appear here.
 ...
 ```
 > **Note**: the `--app-port` (the port the app runs on) is configurable. Our Node app happens to run on port 3000, but we could configure it to run on any other port. Also note that the Dapr `--port` parameter is optional, and if not supplied, a random available port is used.
-
-The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`. On initializing in self hosted mode without docker, the components folder is empty. 
-
-While in this sample we do not use any components for defining state stores or pubsub, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
 
 ## Step 4 - Post Messages to your Service
 
@@ -122,7 +117,7 @@ In your terminal window, you should see logs indicating that the message was rec
 Now, let's just make sure that our method definition was successfully invoked. The response should be 
 
 ```
-Got a new order! Oredr ID: 41
+Got a new order! Order ID: 41
 ```
 
 Additionally the log in the node application started with Dapr should be 
@@ -140,6 +135,13 @@ dapr stop --app-id nodeapp
 ```
 
 To see that services have stopped running, run `dapr list`, noting that your services no longer appears!
+
+## Minimal Init vs Default Init
+
+* With the run of `dapr init --slim`, only the binaries `daprd` and `placement` are instaled in the system. In the normal default init, `dapr init` placement service is installed as a container and additional redis and zipkin containers are run for enabling state store and tracing, which requires Docker to be installed as a prerequisite. See [environment setup](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md) for more information.
+
+* The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components`. On **minimal init** in self hosted mode, the default components folder is empty. While this sample does not use any components for defining state stores or pubsub, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
+
 
 ## Next Steps
 
