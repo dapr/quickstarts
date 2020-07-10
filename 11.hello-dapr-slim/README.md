@@ -9,13 +9,13 @@ This sample requires you to have the following installed on your machine:
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
 - [Postman](https://www.getpostman.com/) [Optional]
 
-## Step 1 - Setup Dapr 
+## Step 1 - Setup Dapr (Minimal Init)
 
 Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#environment-setup) to download and install the Dapr CLI and initialize Dapr.
 
 ## Step 2 - Understand the Code
 
-Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World sample: 
+Now that Dapr has been setup locally, clone the repo, then navigate to the Hello World sample: 
 
 ```bash
 git clone https://github.com/dapr/samples.git
@@ -35,7 +35,7 @@ app.post('/neworder', bodyParser.json(), (req, res) => {
 });
 ```
 
-Here we're exposing an endpoint that will receive and handle `neworder` messages. We log the incoming message, and respond with the same log.
+Here the endpoint `neworder`, will receive and handle messages. We log the incoming message, and respond with the same log.
 
 ## Step 3 - Run the Node.js App with Dapr
 
@@ -64,9 +64,9 @@ You're up and running! Both Dapr and your app logs will appear here.
 
 ## Step 4 - Post Messages to your Service
 
-Now that Dapr and our Node.js app are running, let's POST messages against it, using different tools. **Note**: here we're POSTing against port 3500 - if you used a different port, be sure to update your URL accordingly.
+Now that Dapr and the Node.js app are running, you can POST messages against it, using different tools. **Note**: here you are POSTing against port 3500 - if you used a different port, be sure to update your URL accordingly.
 
-First, let's POST the message by using Dapr cli in a new command line terminal:
+First, POST the message by using Dapr cli in a new command line terminal:
 
 Windows Command Prompt
 ```sh
@@ -83,13 +83,13 @@ Linux or MacOS
 dapr invoke --app-id nodeapp --method neworder --payload '{"data": { "orderId": "41" } }'
 ```
 
-Now, we can also do this using `curl` with:
+Now, you can also do this using `curl` with:
 
 ```sh
 curl -XPOST -d @sample.json -H "Content-Type:application/json" http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
 
-Or, we can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+Or, you can also do this using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 [sample.http](sample.http)
 ```http
@@ -102,7 +102,7 @@ POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 }
 ```
 
-Last but not least, we can use the Postman GUI.
+You can also use the Postman GUI.
 
 Open Postman and create a POST request against `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`
 ![Postman Screenshot](./img/postman1.jpg)
@@ -114,7 +114,7 @@ In your terminal window, you should see logs indicating that the message was rec
 
 ## Step 5 - Confirm Successful Service Invocation
 
-Now, let's just make sure that our method definition was successfully invoked. The response should be 
+Now, to make sure that our method definition was successfully invoked, verify that the the response is:
 
 ```
 Got a new order! Order ID: 41
