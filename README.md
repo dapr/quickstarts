@@ -55,5 +55,5 @@ Find SDK-specific samples in the links below:
   
 To get started with the samples, clone this repository and follow instructions in each sample:
 ```bash
-git clone https://github.com/dapr/samples.git
+git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
 ```

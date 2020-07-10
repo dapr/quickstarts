@@ -24,7 +24,7 @@ Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/e
 Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World sample: 
 
 ```bash
-git clone https://github.com/dapr/samples.git
+git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
 cd samples/1.hello-world
 ```
 

@@ -30,7 +30,7 @@ Dapr allows us to deploy the same microservices from our local machines to Kuber
 ### Clone the sample repository
 Clone this sample repository to your local machine:
 ```bash
-git clone https://github.com/dapr/samples.git
+git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
 ```
 
 ### Run Kafka Docker Container Locally

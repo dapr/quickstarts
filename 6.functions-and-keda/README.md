@@ -19,7 +19,7 @@ Setting up this sample requires you to have several components installed:
 ### Clone the sample repository
 Clone this sample repository to your local machine:
 ```bash
-git clone https://github.com/dapr/samples.git
+git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
 ```
 
 ### Run the setup script

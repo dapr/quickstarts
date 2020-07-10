@@ -14,7 +14,7 @@ This sample requires you to have the following installed on your machine:
 
 Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
 ```
-git clone https://github.com/dapr/samples.git
+git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
 cd samples
 ```
   

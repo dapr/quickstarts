@@ -18,7 +18,7 @@ The following architecture diagram illustrates the components that make up this 
 ## Prerequisites for running the sample
 Clone the sample repository
    ```bash
-   git clone https://github.com/dapr/samples.git
+   git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
    ```
 
 ### - Run locally
