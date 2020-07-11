@@ -16,7 +16,7 @@ This sample builds on the [distributed calculator](../3.distributed-calculator/R
 2. [Install Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
 3. [Configure Redis](https://github.com/dapr/docs/tree/master/howto/configure-redis) as a state store for Dapr.
 
-> **Note**: For supported tags see https://github.com/dapr/samples#supported-dapr-runtime-version. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
 ## Configure Dapr tracing in the cluster
 
 Review the Dapr configuration file *./deploy/appconfig.yaml* below:

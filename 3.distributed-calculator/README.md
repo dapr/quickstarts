@@ -20,7 +20,7 @@ Clone the sample repository
    ```bash
    git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
    ```
-> **Note**: For supported tags see https://github.com/dapr/samples#supported-dapr-runtime-version. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
 
 ### - Run locally
 1. Install [Docker](https://www.docker.com/products/docker-desktop)
