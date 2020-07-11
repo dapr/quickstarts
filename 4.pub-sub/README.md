@@ -39,8 +39,9 @@ In order to run the pub/sub sample locally, we need to run each of our microserv
 ### Clone the sample repository
 Clone this sample repository to your local machine:
 ```bash
-git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
 ```
+**Note**: For supported tags see https://github.com/dapr/samples#supported-dapr-runtime-version. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
 
 ### Run Node Message Subscriber with Dapr
 

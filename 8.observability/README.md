@@ -12,10 +12,11 @@ In this sample you will:
 
 This sample builds on the [distributed calculator](../3.distributed-calculator/README.md) sample and requires Dapr to be installed on a Kubernetes cluster along with state store. It is suggested to go through the distributed calculator sample before this one, which sets you up ready for this sample. If you have not done this then:
 
-1. Clone this repo using `git clone -b <dapr_version_tag> https://github.com/dapr/samples.git` and go to the directory named */8.obervability*
+1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git` and go to the directory named */8.obervability*
 
 2. [Install Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
 3. [Configure Redis](https://github.com/dapr/docs/tree/master/howto/configure-redis) as a state store for Dapr.
+**Note**: For supported tags see https://github.com/dapr/samples#supported-dapr-runtime-version. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
 
 ## Configure Dapr tracing in the cluster
 
