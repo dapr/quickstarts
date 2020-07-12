@@ -25,9 +25,10 @@ helm install --name my-release stable/nginx-ingress
 
 1. Clone the sample repo, then navigate to the middleware sample:
 ```bash
-git clone -b <dapr_version_tag> https://github.com/dapr/samples.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
 cd samples/7.middleware/echoapp
 ```
+> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
 1. Examine the ```app.js``` file. You'll see this is a simple Node.js Express web server with a single ```/echo``` route that returns the ```authorization``` header and the ```text``` parameter client passes in:
 
 ```javascript
