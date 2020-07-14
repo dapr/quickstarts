@@ -121,7 +121,7 @@ altentiavely, you can just use Docker Compose directly:
 docker-compose up
 ```
 
-If everything went well logs from nodeapp about successful persistence of orders shoulod appear:
+If everything went well logs from nodeapp about successful persistence of orders should appear:
 
 ```bash
 nodeapp_1         | Got a new order! Order ID: 1
