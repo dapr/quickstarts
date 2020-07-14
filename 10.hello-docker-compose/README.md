@@ -121,6 +121,16 @@ altentiavely, you can just use Docker Compose directly:
 docker-compose up
 ```
 
+For the successful run, logs from nodeapp should appear in order as follows:
+
+```bash
+nodeapp_1         | Got a new order! Order ID: 1
+nodeapp_1         | Successfully persisted state.
+nodeapp_1         | Got a new order! Order ID: 2
+nodeapp_1         | Successfully persisted state.
+nodeapp_1         | Got a new order! Order ID: 3
+```
+
 ## Clean up
 
 To tear down the Docker Compose deployment, you can run:
