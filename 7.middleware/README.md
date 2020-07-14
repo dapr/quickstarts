@@ -82,7 +82,7 @@ Next, you'll deploy the application and define an ingress rule that routes to th
 2. Deploy the application and the ingress rule:
 ```bash
 kubectl apply -f deploy/echoapp.yaml
-kubectl apply -f ingress.yaml
+kubectl apply -f deploy/ingress.yaml
 ```
 ## Step 5 - Test
 
