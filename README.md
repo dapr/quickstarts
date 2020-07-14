@@ -38,7 +38,8 @@ Dapr is currently under community development with preview releases.  The master
 | [7. Middleware](./7.middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
 | [8. Observability](./8.observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
 | [9. Secret Store](./9.secretstore) | Demonstrates the use of Dapr Secrets API. |
-| [10. Docker Compose](./10.hello-docker-compose) | how to get Dapr running locally with Docker Compose. |
+| [10. Docker Compose](./10.hello-docker-compose) | Demonstrates how to get Dapr running locally with Docker Compose. |
+| [11. Minimal Init (Dapr Slim)](./11.hello-dapr-slim) | Demonstrates how to run dapr locally, without a dependency on Docker. |
 
 ## SDKs
 
@@ -55,5 +56,6 @@ Find SDK-specific samples in the links below:
   
 To get started with the samples, clone this repository and follow instructions in each sample:
 ```bash
-git clone https://github.com/dapr/samples.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
 ```
+> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
