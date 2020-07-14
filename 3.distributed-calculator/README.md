@@ -18,8 +18,9 @@ The following architecture diagram illustrates the components that make up this 
 ## Prerequisites for running the sample
 Clone the sample repository
    ```bash
-   git clone https://github.com/dapr/samples.git
+   git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
    ```
+> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
 
 ### - Run locally
 1. Install [Docker](https://www.docker.com/products/docker-desktop)

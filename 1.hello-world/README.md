@@ -24,9 +24,10 @@ Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/e
 Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World sample: 
 
 ```bash
-git clone https://github.com/dapr/samples.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
 cd samples/1.hello-world
 ```
+> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
 
 
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the top of the file: 
