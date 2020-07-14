@@ -18,7 +18,7 @@ This tutorial walks you through the steps of setting up the OAuth middleware to 
 This sample uses Nginx as the ingress controller. You can use the following Helm chart to add Nginx to your cluster:
 
 ```bash
-helm install --name my-release stable/nginx-ingress
+helm install my-release stable/nginx-ingress
 ```
 
 ## Step 1 - Build the app container
@@ -41,8 +41,8 @@ app.get('/echo', (req, res) => {
 3. Build the Docker container:
 
 ```bash
-docker build -t <container tag of your choice> .
-docker push <container tag of your choice>
+docker build -t your_dockerhub_id/<container tag of your choice> .
+docker push your_dockerhub_id/<container tag of your choice>
 ```
 
 ## Step 2 - Register your application with the authorization server
@@ -68,8 +68,9 @@ For example, to register with Google APIs, you should visit [Google APIs Console
 To define a custom pipeline with the OAuth middleware, you need to create a middleware component definition as well as a configuration that defines the custom pipeline.
 
 1. Edit ```deploy\oauth2.yaml``` file to enter your ```client ID``` and ```client Secret```. You can leave everything else unchanged.
-2. Apply the manifests - ```oauth2.yaml``` defines the OAuth middleware and ```pipeline.yaml``` defines the custom pipeline:
+2. Change the directory to root and apply the manifests - ```oauth2.yaml``` defines the OAuth middleware and ```pipeline.yaml``` defines the custom pipeline:
 ```bash
+cd ..
 kubectl apply -f deploy/oauth2.yaml
 kubectl apply -f deploy/pipeline.yaml
 ```
