@@ -84,6 +84,12 @@ Next, you'll deploy the application and define an ingress rule that routes to th
 kubectl apply -f deploy/echoapp.yaml
 kubectl apply -f ingress.yaml
 ```
+
+>**Note:** minikube users have to enable ingress as it's not supported by default.
+```bash
+minikube addons enable ingress
+```
+
 ## Step 5 - Test
 
 1. Add a hostname entry to your local hosts file to allow the ```dummy.com``` to be resolved to the public IP associated with your ingress:
