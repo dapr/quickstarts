@@ -18,10 +18,10 @@ This tutorial walks you through the steps of setting up the OAuth middleware to 
 This sample uses Nginx as the ingress controller. You can use the following Helm chart to add Nginx to your cluster:
 
 ```bash
-helm install --name my-release stable/nginx-ingress
+helm install my-release stable/nginx-ingress
 ```
 
-## Step 1 - Build the app container
+## Step 1 - Clone the sample repository
 
 1. Clone the sample repo, then navigate to the middleware sample:
 ```bash
@@ -37,13 +37,6 @@ app.get('/echo', (req, res) => {
     console.log("Echoing: " + text);
     res.send("Access token: " + req.headers["authorization"] + " Text: " + text)
 });
-```
-3. Build the Docker container:
-
-```bash
-docker build -t <container tag of your choice> .
-docker push <container tag of your choice>
-```
 
 ## Step 2 - Register your application with the authorization server
 
@@ -68,8 +61,9 @@ For example, to register with Google APIs, you should visit [Google APIs Console
 To define a custom pipeline with the OAuth middleware, you need to create a middleware component definition as well as a configuration that defines the custom pipeline.
 
 1. Edit ```deploy\oauth2.yaml``` file to enter your ```client ID``` and ```client Secret```. You can leave everything else unchanged.
-2. Apply the manifests - ```oauth2.yaml``` defines the OAuth middleware and ```pipeline.yaml``` defines the custom pipeline:
+2. Change the directory to root and apply the manifests - ```oauth2.yaml``` defines the OAuth middleware and ```pipeline.yaml``` defines the custom pipeline:
 ```bash
+cd ..
 kubectl apply -f deploy/oauth2.yaml
 kubectl apply -f deploy/pipeline.yaml
 ```
@@ -77,18 +71,23 @@ kubectl apply -f deploy/pipeline.yaml
 ## Step 4 - Deploy the application
 Next, you'll deploy the application and define an ingress rule that routes to the ```-dapr``` service that gets automatically created when you deploy your pod. In this case, we are routing all traffic to the Dapr sidecar, which can reinforce various policies through middleware.
 
-1. Edit ```deploy/echoapp.yaml``` to update the Docker image to your image tag in step 1.
-2. Deploy the application and the ingress rule:
+1. Deploy the application and the ingress rule:
 ```bash
 kubectl apply -f deploy/echoapp.yaml
 kubectl apply -f deploy/ingress.yaml
 ```
+
+>**Note:** minikube users have to enable ingress as it's not supported by default.
+```bash
+minikube addons enable ingress
+```
+
 ## Step 5 - Test
 
-1. Add a hostname entry to your local hosts file to allow the ```dummy.com``` to be resolved to the public IP associated with your ingress:
+1. Add a hostname entry to your local hosts file(`/etc/hosts` in linux and `c:\windows\system32\drivers\etc\hosts` in windows) to allow the ```dummy.com``` to be resolved to the public IP associated with your ingress controller:
 
 ```bash
-<IP of your ingress> dummy.com
+<External IP of your ingress controller> dummy.com
 ```
 
 2. Open a browser and try to invoke the ```/echo``` API through Dapr:
@@ -101,3 +100,22 @@ http://dummy.com/v1.0/invoke/echoapp/method/echo?text=hello
 4. The browser redirects back to your application with the access token extracted from a (configurable) ```authorization``` header:
 
 ![Web Page](./img/webpage.png)
+
+## Step 6 - Cleanup
+
+1. Spin down kunernetes resources:
+```bash
+kubectl delete -f deploy/.
+```
+
+2. Delete Nginx ingress from the cluster:
+```bash
+helm uninstall my-release
+```
+
+3. Disable ingress addon:
+```bash
+minikube addons disable ingress
+```
+
+4. Delete the credential created in the authorization server.
