@@ -37,6 +37,7 @@ app.get('/echo', (req, res) => {
     console.log("Echoing: " + text);
     res.send("Access token: " + req.headers["authorization"] + " Text: " + text)
 });
+```
 
 ## Step 2 - Register your application with the authorization server
 
