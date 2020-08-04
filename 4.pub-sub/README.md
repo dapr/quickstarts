@@ -53,7 +53,7 @@ git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
 
 ### Run Python Message Subscriber with Dapr
 
-1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd python_subscriber`
+1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd python-subscriber`
 2. Install dependencies: `pip install -r requirements.txt` or `python -m pip install -r requirements.txt`
 3. Run Python subscriber app with Dapr: `dapr run --app-id python-subscriber --app-port 5000 python app.py`
     
