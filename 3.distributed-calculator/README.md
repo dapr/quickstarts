@@ -50,7 +50,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
     - Run dapr using the command:
       ```
-      dapr run --app-id addapp --app-port 6000 --port 3503 ./app
+      dapr run --app-id addapp --app-port 6000 --dapr-http-port3503 ./app
       ```
 2. Subtract App - Open a terminal window and navigate to the csharp directory and follow the steps below:
     - Set environment variable to use non-default app port 7000
@@ -67,7 +67,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
     - Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
       ```
-      dapr run --app-id subtractapp --app-port 7000 --port 3504 dotnet Subtract.dll
+      dapr run --app-id subtractapp --app-port 7000 --dapr-http-port3504 dotnet Subtract.dll
       ```
 3. Divide App - Open a terminal window and navigate to the node directory and follow the steps below:
     - Install dependencies by running the command:
@@ -76,7 +76,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
     - Start Dapr using the command below:
       ```
-      dapr run --app-id divideapp --app-port 4000 --port 3502 node app.js
+      dapr run --app-id divideapp --app-port 4000 --dapr-http-port3502 node app.js
       ```
 4. Multiply App - Open a terminal window and navigate to the python directory and follow the steps below:
     - Install required packages
@@ -94,7 +94,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
     - Start dapr using the command:
       ```
-      dapr run --app-id multiplyapp --app-port 5000 --port 3501 flask run
+      dapr run --app-id multiplyapp --app-port 5000 --dapr-http-port3501 flask run
       ```
 5. Frontend Calculator app - Open a terminal window and navigate to the react-calculator directory and follow the steps below:
     - Install the required modules
@@ -104,7 +104,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
     - Start Dapr using command below:
       ```
-      dapr run --app-id frontendapp --app-port 8080 --port 3500 node server.js
+      dapr run --app-id frontendapp --app-port 8080 --dapr-http-port3500 node server.js
       ```
 6. Open a browser window and go to http://localhost:8080/. From here, you can enter the different operations.
 

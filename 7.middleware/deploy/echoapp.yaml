@@ -15,8 +15,8 @@ spec:
         app: echo
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "echoapp"
-        dapr.io/port: "3000"
+        dapr.io/app-id: "echoapp"
+        dapr.io/app-port: "3000"
         dapr.io/config: "pipeline"
     spec:
       containers:

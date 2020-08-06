@@ -32,7 +32,7 @@ services:
     command: ["./daprd",
      "-app-id", "nodeapp",
      "-app-port", "3000",
-     "-placement-address", "placement:50006",
+     "-placement-host-address", "placement:50006",
      "-dapr-grpc-port", "50002",
      "-components-path", "/components"]
     volumes:
@@ -54,7 +54,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "pythonapp",
-    "-placement-address", "placement:50006",
+    "-placement-host-address", "placement:50006",
     "-components-path", "/components"]
     volumes:
       - "./components/:/components"

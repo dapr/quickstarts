@@ -15,7 +15,7 @@ spec:
         app: python
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "pythonapp"
+        dapr.io/app-id: "pythonapp"
     spec:
       containers:
       - name: python
