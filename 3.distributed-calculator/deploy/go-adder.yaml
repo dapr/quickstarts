@@ -15,8 +15,8 @@ spec:
         app: add
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "addapp"
-        dapr.io/port: "6000"
+        dapr.io/app-id: "addapp"
+        dapr.io/app-port: "6000"
         dapr.io/config: "appconfig"
     spec:
       containers:

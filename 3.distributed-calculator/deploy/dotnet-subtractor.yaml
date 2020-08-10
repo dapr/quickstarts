@@ -15,8 +15,8 @@ spec:
         app: subtract
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "subtractapp"
-        dapr.io/port: "80"
+        dapr.io/app-id: "subtractapp"
+        dapr.io/app-port: "80"
         dapr.io/config: "appconfig"
     spec:
       containers:
