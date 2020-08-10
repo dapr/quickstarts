@@ -15,7 +15,7 @@ spec:
         app: bindingspythonapp
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "bindings-pythonapp"
+        dapr.io/app-id: "bindings-pythonapp"
     spec:
       containers:
       - name: python
