@@ -58,7 +58,7 @@ This will deploy our Node.js app to Kubernetes. The Dapr control plane will auto
 
 ```dapr.io/enabled: true``` - this tells the Dapr control plane to inject a sidecar to this deployment.
 
-```dapr.io/id: nodeapp``` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
+```dapr.io/app-id: nodeapp``` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
 
 You'll also see the container image that we're deploying. If you want to update the code and deploy a new image, see **Next Steps** section. 
 

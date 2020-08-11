@@ -15,8 +15,8 @@ spec:
         app: multiply
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "multiplyapp"
-        dapr.io/port: "5000"
+        dapr.io/app-id: "multiplyapp"
+        dapr.io/app-port: "5000"
         dapr.io/config: "appconfig"
     spec:
       containers:

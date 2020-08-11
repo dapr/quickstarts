@@ -124,7 +124,7 @@ This calls out to our Redis cache to grab the latest value of the "order" key, w
 2. Run Node.js app with Dapr: 
 
     ```sh
-    dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js
+    dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 node app.js
     ```
 
 The command should output text that looks like the following, along with logs:
@@ -134,7 +134,7 @@ Starting Dapr with id nodeapp. HTTP Port: 3500. gRPC Port: 9165
 You're up and running! Both Dapr and your app logs will appear here.
 ...
 ```
-> **Note**: the `--app-port` (the port the app runs on) is configurable. Our Node app happens to run on port 3000, but we could configure it to run on any other port. Also note that the Dapr `--port` parameter is optional, and if not supplied, a random available port is used.
+> **Note**: the `--app-port` (the port the app runs on) is configurable. Our Node app happens to run on port 3000, but we could configure it to run on any other port. Also note that the Dapr `--app-port` parameter is optional, and if not supplied, a random available port is used.
 
 The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components` which holds yaml definition files for components Dapr will be using at runtime. When running locally, the yaml files which provide default definitions for a local development environment are placed in this default components directory (learn more about this flow [here](https://github.com/dapr/docs/blob/master/walkthroughs/daprrun.md)). Review the `statestore.yaml` file in the `components` directory:
 

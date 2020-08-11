@@ -264,7 +264,7 @@ Note how the `daprUrl` determines what port Dapr live on:
 const daprUrl = `http://localhost:${process.env.DAPR_HTTP_PORT || 3500}/v1.0`;
 ```
 
-By default, Dapr live on 3500, but if we're running Dapr locally and set it to a different port (using the `--port` flag in the CLI `run` command), then that port will be injected into our application as an environment variable.
+By default, Dapr live on 3500, but if we're running Dapr locally and set it to a different port (using the `--app-port` flag in the CLI `run` command), then that port will be injected into our application as an environment variable.
 
 Our server also hosts the React application itself by forwarding all other requests to our built client code:
 

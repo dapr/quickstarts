@@ -31,8 +31,8 @@ spec:
         app: react-form
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "react-form"
-        dapr.io/port: "8080"
+        dapr.io/app-id: "react-form"
+        dapr.io/app-port: "8080"
     spec:
       containers:
       - name: react-form
