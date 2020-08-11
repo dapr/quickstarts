@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: msgraphpipeline
+spec:
+  tracing:
+    enabled: true
+    expandParams: true
+    includeBody: true
+  httpPipeline:
+    handlers:
+    - type: middleware.http.oauth2clientcredentials
+      name: msgraphsp
