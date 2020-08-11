@@ -51,7 +51,7 @@ Here the endpoint `neworder`, will receive and handle messages. The handler logs
 2. Run Node.js app with Dapr: 
 
     ```sh
-    dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js
+    dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 node app.js
     ```
 
 The command should output text that looks like the following, along with logs:
@@ -61,7 +61,7 @@ Starting Dapr with id nodeapp. HTTP Port: 3500. gRPC Port: 9165
 You're up and running! Both Dapr and your app logs will appear here.
 ...
 ```
-> **Note**: the `--app-port` (the port the app runs on) is configurable. The Node app happens to run on port 3000, but you could configure it to run on any other port. Also note that the Dapr `--port` parameter is optional, and if not supplied, a random available port is used.
+> **Note**: the `--app-port` (the port the app runs on) is configurable. The Node app happens to run on port 3000, but you could configure it to run on any other port. Also note that the Dapr `--app-port` parameter is optional, and if not supplied, a random available port is used.
 
 ## Step 4 - Post Messages to your Service
 

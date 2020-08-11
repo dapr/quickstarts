@@ -38,6 +38,8 @@ app.get('/echo', (req, res) => {
     res.send("Access token: " + req.headers["authorization"] + " Text: " + text)
 });
 
+```
+
 ## Step 2 - Register your application with the authorization server
 
 In order for Dapr to acquire access token on your application's behalf, your application needs to be registered with the authorization server of your choice. 

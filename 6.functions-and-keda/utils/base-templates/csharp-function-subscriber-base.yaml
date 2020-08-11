@@ -23,8 +23,8 @@ spec:
         app: csharp-function-subscriber
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "csharp-function-subscriber"
-        dapr.io/port: "80"
+        dapr.io/app-id: "csharp-function-subscriber"
+        dapr.io/app-port: "80"
     spec:
       containers:
       - name: csharp-function-subscriber
