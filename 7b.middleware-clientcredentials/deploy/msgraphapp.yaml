@@ -1,3 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: msgraphapp-dapr
+  labels:
+    app: msgraph
+spec:
+  selector:
+    app: msgraph
+  clusterIP: None
+  type: ClusterIP
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,7 +34,7 @@ spec:
     spec:
       containers:
       - name: msgraph
-        image: dapriosamples/middleware-msgraphapp:edge
+        image: cse21.azurecr.io/msgraphapp:sample
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

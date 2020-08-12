@@ -124,7 +124,7 @@ kubectl run -i -t curlbox --image=curlimages/curl --restart=Never --command -- /
 
 2. Run the following command, exchange display name with an existing user in your AAD
 ```bash
-curl http://msgraphapp:3500/v1.0/invoke/msgraphapp/method/users?displayName=gildong%20hong
+curl http://msgraphapp-dapr:3500/v1.0/invoke/msgraphapp/method/users?displayName=gildong%20hong
 ```
 
 3. You should get a result similar to this
