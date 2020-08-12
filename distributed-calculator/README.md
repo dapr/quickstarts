@@ -1,6 +1,6 @@
 # Distributed Calculator
 
-This sample shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
+This quickstart shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
 
 - **Addition**: Go [mux](https://github.com/gorilla/mux) application
 - **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/1.0.x/) application
@@ -11,7 +11,7 @@ The front-end application consists of a server and a client written in [React](h
 Kudos to [ahfarmer](https://github.com/ahfarmer) whose [React calculator](https://github.com/ahfarmer/calculator) 
 
 
-The following architecture diagram illustrates the components that make up this sample: 
+The following architecture diagram illustrates the components that make up this quickstart: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -35,7 +35,7 @@ Clone the quickstarts repository
 1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to set this up.
 
 
-## Running the sample locally
+## Running the quickstart locally
 
 These instructions start the four calculator operator apps (add, subtract, multiply and divide) along with the dapr sidecar locally and then run the front end app which persists the state in a local redis state store.
 
@@ -114,8 +114,8 @@ These instructions start the four calculator operator apps (add, subtract, multi
 
 
 
-## Running the sample Kubernetes environment
-1. Navigate to the deploy directory in this sample directory: `cd deploy`
+## Running the quickstart in a Kubernetes environment
+1. Navigate to the deploy directory in this quickstart directory: `cd deploy`
 2. Follow [these instructions](https://github.com/dapr/docs/blob/master/howto/setup-state-store/setup-redis.md) to create and configure a Redis store
 3. Deploy all of your resources: `kubectl apply -f .`. 
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
@@ -197,7 +197,7 @@ Our client code calls to an Express server, which routes our calls through Dapr 
   ```
 
 ### Kubernetes environment cleanup
-- Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+- Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
   ```bash
   kubectl delete -f .
@@ -207,11 +207,11 @@ This will spin down each resource defined by the .yaml files in the `deploy` dir
 
 ## The Role of Dapr
 
-This sample demonstrates how we use Dapr as a programming model for simplifying the development of distributed systems. In this sample, Dapr is enabling polyglot programming, service discovery and simplified state management.
+This quickstart demonstrates how we use Dapr as a programming model for simplifying the development of distributed systems. In this quickstart, Dapr is enabling polyglot programming, service discovery and simplified state management.
 
 ### Polyglot Programming
 
-Each service in this sample is written in a different programming language, but they're used together in the same larger application. Dapr itself is language agnostic - none of our services have to include any dependency in order to work with Dapr. This empowers developers to build each service however they want, using the best language for the job or for a particular dev team.
+Each service in this quickstart is written in a different programming language, but they're used together in the same larger application. Dapr itself is language agnostic - none of our services have to include any dependency in order to work with Dapr. This empowers developers to build each service however they want, using the best language for the job or for a particular dev team.
 
 ### Service Invocation
 
@@ -237,7 +237,7 @@ Microservice applications are dynamic with scaling, updates and failures causing
 
 ### Simplified State Management
 
-Dapr sidecars provide state management. In this sample, we persist our calculator's state each time we click a new button. This means we can refresh the page, close the page or even take down our `calculator-front-end` pod, and still retain the same state when we next open it. Dapr adds a layer of indirection so that our app doesn't need to know where it's persisting state. It doesn't have to keep track of keys, handle retry logic or worry about state provider specific configuration. All it has to do is GET or POST against its Dapr sidecar's state endpoint: `http://localhost:3500/v1.0/state/${stateStoreName}`.
+Dapr sidecars provide state management. In this quickstart, we persist our calculator's state each time we click a new button. This means we can refresh the page, close the page or even take down our `calculator-front-end` pod, and still retain the same state when we next open it. Dapr adds a layer of indirection so that our app doesn't need to know where it's persisting state. It doesn't have to keep track of keys, handle retry logic or worry about state provider specific configuration. All it has to do is GET or POST against its Dapr sidecar's state endpoint: `http://localhost:3500/v1.0/state/${stateStoreName}`.
 
 Take a look at `server.js` in the `react-calculator` directory. Note that it exposes two state endpoints for our React client to get and set state: the GET `/state` endpoint and the POST `/persist` endpoint. Both forward client calls to the Dapr state endpoint: 
 

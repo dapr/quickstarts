@@ -21,7 +21,7 @@ Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/e
 
 ## Step 2 - Understand the Code
 
-Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World sample: 
+Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World quickstart: 
 
 ```bash
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git

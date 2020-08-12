@@ -4,7 +4,7 @@ This tutorial walks you through the steps of setting up the OAuth middleware to 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
-> **NOTE**: This sample uses Google Account as an example. 
+> **NOTE**: This quickstart uses Google Account as an example. 
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ This tutorial walks you through the steps of setting up the OAuth middleware to 
 - [Helm](https://github.com/helm/helm)
 - A working [Google Account](https://accounts.google.com)
 
-This sample uses Nginx as the ingress controller. You can use the following Helm chart to add Nginx to your cluster:
+This quickstart uses Nginx as the ingress controller. You can use the following Helm chart to add Nginx to your cluster:
 
 ```bash
 helm install my-release stable/nginx-ingress
@@ -23,10 +23,10 @@ helm install my-release stable/nginx-ingress
 
 ## Step 1 - Clone the sample repository
 
-1. Clone the sample repo, then navigate to the middleware sample:
+1. Clone the quickstarts repo, then navigate to the middleware quickstart:
 ```bash
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
-cd samples/middleware/echoapp
+cd quickstarts/middleware/echoapp
 ```
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 1. Examine the ```app.js``` file. You'll see this is a simple Node.js Express web server with a single ```/echo``` route that returns the ```authorization``` header and the ```text``` parameter client passes in:

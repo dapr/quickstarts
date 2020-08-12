@@ -1,8 +1,8 @@
-# Dapr Bindings Sample
+# Dapr Bindings
 
-In this sample, we'll create two microservices, one with an input binding and another with an output binding. We'll bind to Kafka, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://github.com/dapr/docs/tree/master/concepts/bindings)). 
+In this quickstart, we'll create two microservices, one with an input binding and another with an output binding. We'll bind to Kafka, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://github.com/dapr/docs/tree/master/concepts/bindings)). 
 
-This sample includes two microservices:
+This quickstart includes two microservices:
 - Node.js microservice that utilizes an input binding
 - Python microservice that utilizes an output binding
 
@@ -11,7 +11,7 @@ The bindings connect to Kafka, allowing us to push messages into a Kafka instanc
 ![Architecture Diagram](./img/Bindings_Standalone.png)
 
 
-Dapr allows us to deploy the same microservices from our local machines to Kubernetes. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes).
+Dapr allows us to deploy the same microservices from our local machines to Kubernetes. Correspondingly, this quickstart has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes).
 
 ## Prerequisites
 
@@ -36,7 +36,7 @@ git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 
 ### Run Kafka Docker Container Locally
 
-In order to run the Kafka bindings sample locally, you will run the [Kafka broker server](https://github.com/wurstmeister/kafka-docker) in a docker container on your machine.
+In order to run the Kafka bindings quickstart locally, you will run the [Kafka broker server](https://github.com/wurstmeister/kafka-docker) in a docker container on your machine.
 
 1. Run `docker-compose -f ./docker-compose-single-kafka.yml up -d` to run the container locally
 2. Run `docker ps` to see the container running locally: 
@@ -54,7 +54,7 @@ Now that you have Kafka running locally on your machine, we'll need to run our m
 
 1. Navigate to Node subscriber directory in your CLI: `cd nodeapp`
 2. Install dependencies: `npm install`
-3. Run Node sample app with Dapr: `dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ./components`
+3. Run Node quickstart app with Dapr: `dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ./components`
 
 ### Run Python Microservice with Output Binding
 
@@ -62,7 +62,7 @@ Next, we'll run the Python microservice that uses output bindings
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: `cd pythonapp`
 2. Install dependencies: `pip3 install requests`
-3. Run Python sample app with Dapr: `dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components`
+3. Run Python quickstart app with Dapr: `dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components`
 
 ### Observe Logs
 
@@ -90,7 +90,7 @@ Next, we'll run the Python microservice that uses output bindings
 
 ### Cleanup
 
-Once you're done using the sample locally, you can spin down your local Kafka Docker Container by running:
+Once you're done, you can spin down your local Kafka Docker Container by running:
 
 ```bash
 docker-compose -f ./docker-compose-single-kafka.yml down
@@ -175,7 +175,7 @@ Hello from Kafka!
 
 ### Cleanup
 
-Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 ```bash
 cd ./deploy
@@ -184,7 +184,7 @@ kubectl delete -f .
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the kafka component.
 
-Once you delete all samples apps, delete Kafka in the cluster.
+Once you delete all quickstart apps, delete Kafka in the cluster.
 
 ```bash
 # clean up kafka cluster
@@ -193,7 +193,7 @@ helm uninstall dapr-kafka --namespace kafka
 
 ## How it Works
 
-Now that you've run the sample locally and/or in Kubernetes, let's unpack how this all works. Our app is broken up into input binding app and output binding app:
+Now that you've run the quickstart locally and/or in Kubernetes, let's unpack how this all works. Our app is broken up into input binding app and output binding app:
 
 ### Kafka Bindings yaml
 
