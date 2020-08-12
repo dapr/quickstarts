@@ -307,6 +307,6 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 ## Next Steps
 
 Now that you've gotten Dapr running locally on your machine, consider these next steps:
-- See the [Hello Kubernetes](../2.hello-kubernetes) to get set up in Kubernetes.
+- See the [Hello Kubernetes](../hello-kubernetes) to get set up in Kubernetes.
 - Learn more about Dapr in the [Dapr overview](https://github.com/dapr/docs/blob/master/overview/README.md) documentation.
 - Explore Dapr concepts such as building blocks and components in the [Dapr concepts](https://github.com/dapr/docs/blob/master/concepts/README.md) documentation.

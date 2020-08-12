@@ -29,7 +29,7 @@ jobs:
             echo "##[set-env name=SAMPLE_REGISTRY;]$SAMPLE_REGISTRY"
           fi
   
-          SAMPLE_LIST=(2.hello-kubernetes 3.distributed-calculator 4.pub-sub 5.bindings 7.middleware 8.observability 9.secretstore 10.hello-docker-compose)
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore hello-docker-compose)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
@@ -44,7 +44,7 @@ jobs:
       - name: publish image to dockerhub
         if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(2.hello-kubernetes 3.distributed-calculator 4.pub-sub 5.bindings 7.middleware 8.observability 9.secretstore)
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
