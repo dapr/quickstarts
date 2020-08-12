@@ -9,7 +9,7 @@ Later on, we'll deploy a Python app to act as the publisher. The architecture di
 ![Architecture Diagram Final](./img/Architecture_Diagram_B.png)
 
 ## Prerequisites
-This sample requires you to have the following installed on your machine:
+This quickstart requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
 - [Python 3.x](https://www.python.org/downloads/)
@@ -21,13 +21,13 @@ Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/e
 
 ## Step 2 - Understand the Code
 
-Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World sample: 
+Now that we've locally set up Dapr, clone the repo, then navigate to the Hello World quickstart: 
 
 ```bash
-git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
-cd samples/1.hello-world
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
+cd quickstarts/hello-world
 ```
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 
 In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, let's take a look at the top of the file: 
@@ -155,7 +155,7 @@ const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 ```
 
-While in this sample we used the default yaml files, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
+While in this quickstart we used the default yaml files, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
 
 ## Step 4 - Post Messages to your Service
 
@@ -253,7 +253,7 @@ while True:
     time.sleep(1)
 ```
 
-Now we can open a **new** command line terminal and go to the `1.hello-world` directory.
+Now we can open a **new** command line terminal and go to the `hello-world` directory.
 
 1. Install dependencies:
 
@@ -278,7 +278,7 @@ Now we can open a **new** command line terminal and go to the `1.hello-world` di
     Successfully persisted state
     ```
 
-> **Note**: Please refer [this](https://github.com/dapr/samples/issues/240) issue if you have trouble running python apps with dapr on windows.
+> **Note**: Please refer [this](https://github.com/dapr/quickstarts/issues/240) issue if you have trouble running python apps with dapr on windows.
 
 4. Now, we perform a GET request a few times and see how the orderId changes every second (enter it into the web browser, use Postman, or curl):
 
@@ -307,6 +307,6 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 ## Next Steps
 
 Now that you've gotten Dapr running locally on your machine, consider these next steps:
-- See the [Hello Kubernetes](../2.hello-kubernetes) to get set up in Kubernetes.
+- See the [Hello Kubernetes](../hello-kubernetes) to get set up in Kubernetes.
 - Learn more about Dapr in the [Dapr overview](https://github.com/dapr/docs/blob/master/overview/README.md) documentation.
 - Explore Dapr concepts such as building blocks and components in the [Dapr concepts](https://github.com/dapr/docs/blob/master/concepts/README.md) documentation.

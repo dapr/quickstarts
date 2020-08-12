@@ -1,8 +1,8 @@
 # Observability with Dapr
 
-This sample explores the [observability](https://github.com/dapr/docs/blob/master/concepts/observability/README.md) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this sample you'll be enabling [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.  In this sampple you'll be using [Zipkin](https://zipkin.io/).
+This quickstart explores the [observability](https://github.com/dapr/docs/blob/master/concepts/observability/README.md) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this quickstart you'll be enabling [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.  In this sampple you'll be using [Zipkin](https://zipkin.io/).
 
-In this sample you will:
+In this quickstart you will:
 
 - Deploy Zipkin and configure it as a tracing provider for Dapr in Kubernetes.
 - Instrument an application for tracing and then deploy it.
@@ -10,13 +10,13 @@ In this sample you will:
 
 ## Prerequisites
 
-This sample builds on the [distributed calculator](../3.distributed-calculator/README.md) sample and requires Dapr to be installed on a Kubernetes cluster along with state store. It is suggested to go through the distributed calculator sample before this one, which sets you up ready for this sample. If you have not done this then:
+This quickstart builds on the [distributed calculator](../distributed-calculator/README.md) quickstart and requires Dapr to be installed on a Kubernetes cluster along with state store. It is suggested to go through the distributed calculator quickstart before this one. If you have not done this then:
 
-1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git` and go to the directory named */8.obervability*
+1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory named */8.obervability*
 2. [Install Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
 3. [Configure Redis](https://github.com/dapr/docs/tree/master/howto/configure-redis) as a state store for Dapr.
 
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 ## Configure Dapr tracing in the cluster
 
 Review the Dapr configuration file *./deploy/appconfig.yaml* below:
@@ -58,7 +58,7 @@ You can see that `appconfig` has `TRACING-ENABLED` set to `true`.
 
 ## Deploy Zipkin to the cluster and set it as the tracing provider
 
-In this sample Zipkin is used for tracing. Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes three sections:
+In this quickstart Zipkin is used for tracing. Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes three sections:
 
 1. A **Deployment** for Zipkin using the *openzipkin/zipkin* docker image.
 2. A **Service** which will expose Zipkin internally as a ClusterIP in Kubernetes.
@@ -90,11 +90,11 @@ annotations:
 ...
  ```
 
-For this sample, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/samples/blob/master/3.distributed-calculator/deploy/react-calculator.yaml#L36).
+For this quickstart, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/deploy/react-calculator.yaml#L36).
 
 Note you did not introduce any dependency on Zipkin into the calculator app code or deployment yaml files. The Zipkin Dapr component is configured to read tracing events and write these to an exporter.
 
-Now deploy the distributed calculator application to your cluster following the instructions found in sample [3.distributed-calculator](https://github.com/dapr/samples/blob/master/3.distributed-calculator/README.md). Then browse to the calculator UI.
+Now deploy the distributed calculator application to your cluster following the instructions found in the [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md) quickstart. Then browse to the calculator UI.
 
 > **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing to take effect. You can do so by running:
 

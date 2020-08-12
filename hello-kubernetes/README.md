@@ -1,21 +1,21 @@
 # Hello Kubernetes
 
-This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying the same applications from [Hello World](../1.hello-world). To recap, the Python App generates messages and the Node app consumes and persists them. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying the same applications from [Hello World](../1.hello-world). To recap, the Python App generates messages and the Node app consumes and persists them. The following architecture diagram illustrates the components that make up this quickstart: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
 
 ## Prerequisites
-This sample requires you to have the following installed on your machine:
+This quickstart requires you to have the following installed on your machine:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-minikube.md), [AKS](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-aks.md) or [GKE](https://cloud.google.com/kubernetes-engine/)
 
-Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
+Also, unless you have already done so, clone the repository with the quickstarts and ````cd```` into the right directory:
 ```
-git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
-cd samples
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
+cd quickstarts
 ```
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
   
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
@@ -41,7 +41,7 @@ Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cass
 
 1. Follow [these steps](https://github.com/dapr/docs/blob/master/howto/configure-redis/README.md) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. 
-    > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/secrets/) instructions to securely manage your secrets.
+    > **Note:** the `redis.yaml` file provided in this quickstart takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/secrets/) instructions to securely manage your secrets.
 3. Apply the `redis.yaml` file: `kubectl apply -f ./deploy/redis.yaml` and observe that your state store was successfully configured!
 
 ```bash
@@ -93,10 +93,10 @@ $ curl $NODE_APP/ports
 > Note: This assumes that the external IP is available in the `NODE_APP` environment variable from the previous step.
 Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP. Then export it to an environment variable.
 
-Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this sample the HTTP Port is used for further communication with the Dapr sidecar. 
+Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this quickstart the HTTP Port is used for further communication with the Dapr sidecar. 
 
 ## Step 5 - Deploy the Python App with the Dapr Sidecar
-Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/2.hello-kubernetes/python` and open `app.py`.
+Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
 
 At a quick glance, this is a basic python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
 
@@ -159,7 +159,7 @@ You should see the latest JSON in response!
 
 ## Step 8 - Cleanup
 
-Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 ```bash
 kubectl delete -f .
@@ -169,7 +169,7 @@ This will spin down each resource defined by the .yaml files in the `deploy` dir
 
 ## Next Steps
 
-Now that you're successfully working with Dapr, you probably want to update the sample code to fit your scenario. The Node.js and Python apps that make up this sample are deployed from container images hosted on a private [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/). To create new images with updated code, you'll first need to install docker on your machine. Next, follow these steps:
+Now that you're successfully working with Dapr, you probably want to update the quickstart code to fit your scenario. The Node.js and Python apps that make up this quickstart are deployed from container images hosted on a private [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/). To create new images with updated code, you'll first need to install docker on your machine. Next, follow these steps:
 
 1. Update Node or Python code as you see fit!
 2. Navigate to the directory of the app you want to build a new image for.

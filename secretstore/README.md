@@ -1,23 +1,23 @@
 # Secrets store
 
-This tutorial shows you how to use the Dapr secrets API to access secrets from secret stores. This sample uses a Node application to access a Kubernetes secret store.
+This tutorial shows you how to use the Dapr secrets API to access secrets from secret stores. This quickstart uses a Node application to access a Kubernetes secret store.
 
 
 
 ## Prerequisites
-This sample requires you to have the following installed on your machine:
+This quickstart requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-minikube.md), [AKS](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-aks.md)
 - [Postman](https://www.getpostman.com/) [Optional]
 
-Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
+Also, unless you have already done so, clone the repository with the quickstarts and ````cd```` into the right directory:
 ```
-git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
-cd samples
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
+cd quickstarts
 ```
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
   
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
@@ -132,7 +132,7 @@ In these logs, you can see that the node app is making a request to dapr to fetc
 
 ## Step 6 - Cleanup
 
-Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 ```bash
 kubectl delete -f ./deploy/node.yaml
