@@ -27,8 +27,8 @@ Dapr allows us to deploy the same microservices from our local machines to Kuber
 
 ## Run Locally
 
-### Clone the sample repository
-Clone this sample repository to your local machine:
+### Clone the quickstarts repository
+Clone this quickstarts repository to your local machine:
 ```bash
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 ```

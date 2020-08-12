@@ -9,7 +9,7 @@ Later on, we'll deploy a Python app to act as the publisher. The architecture di
 ![Architecture Diagram Final](./img/Architecture_Diagram_B.png)
 
 ## Prerequisites
-This sample requires you to have the following installed on your machine:
+This quickstart requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
 - [Python 3.x](https://www.python.org/downloads/)
@@ -25,7 +25,7 @@ Now that we've locally set up Dapr, clone the repo, then navigate to the Hello W
 
 ```bash
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
-cd samples/hello-world
+cd quickstarts/hello-world
 ```
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
@@ -155,7 +155,7 @@ const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 ```
 
-While in this sample we used the default yaml files, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
+While in this quickstart we used the default yaml files, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
 
 ## Step 4 - Post Messages to your Service
 

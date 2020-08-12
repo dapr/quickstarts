@@ -1,10 +1,10 @@
-# Dapr Pub-Sub Sample
+# Dapr Pub-Sub
 
-In this sample, we'll create a publisher microservice and two subscriber microservices to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. See [Why Pub-Sub](#why-pub-sub) to understand when this pattern might be a good choice for your software architecture.
+In this quickstart, we'll create a publisher microservice and two subscriber microservices to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. See [Why Pub-Sub](#why-pub-sub) to understand when this pattern might be a good choice for your software architecture.
 
 Visit [this](https://github.com/dapr/docs/tree/master/concepts/publish-subscribe-messaging) link for more information about Dapr and Pub-Sub.
 
-This sample includes one publisher:
+This quickstart includes one publisher:
 
 - React front-end message generator
 
@@ -17,14 +17,14 @@ Dapr uses pluggable message buses to enable pub-sub, and delivers messages to su
 
 ![Architecture Diagram](./img/Local_Architecture_Diagram.png)
 
-Dapr allows us to deploy the same microservices from our local machines to the cloud. Correspondingly, this sample has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes). 
+Dapr allows us to deploy the same microservices from our local machines to the cloud. Correspondingly, this quickstart has instructions for deploying this project [locally](#Run-Locally) or in [Kubernetes](#Run-in-Kubernetes). 
 
 ## Prerequisites
 
 ### Prerequisites to Run Locally
 
 - [Dapr CLI with Dapr initialized](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md)
-- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this sample with one or both microservices
+- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this quickstart with one or both microservices
 
 ### Prerequisites to Run in Kubernetes
 
@@ -32,12 +32,12 @@ Dapr allows us to deploy the same microservices from our local machines to the c
 
 ## Run Locally
 
-In order to run the pub/sub sample locally, we need to run each of our microservices with Dapr. We'll start by running our messages subscribers. 
+In order to run the pub/sub quickstart locally, we need to run each of our microservices with Dapr. We'll start by running our messages subscribers. 
 
 > **Note**: These instructions deploy a Node subscriber and a Python subscriber, but if you don't have either Node or Python, feel free to run just one.
 
-### Clone the sample repository
-Clone this sample repository to your local machine:
+### Clone the quickstarts repository
+Clone this quickstarts repository to your local machine:
 ```bash
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 ```
@@ -101,7 +101,7 @@ Now let's run our React front end with Dapr. Our front end will publish differen
 
 ## Run in Kubernetes
 
-To run the same sample in Kubernetes, we'll need to first set up a Redis store and then deploy our microservices. We'll be using the same microservices, but ultimately our architecture is a bit different: 
+To run the same code in Kubernetes, we'll need to first set up a Redis store and then deploy our microservices. We'll be using the same microservices, but ultimately our architecture is a bit different: 
 
 ![Architecture Diagram](./img/K8s_Architecture_Diagram.png)
 
@@ -112,7 +112,7 @@ Dapr uses pluggable message buses to enable pub-sub, in this case we'll use Redi
 1. Follow [these steps](https://github.com/dapr/docs/blob/master/howto/setup-state-store/setup-redis.md#creating-a-redis-cache-in-your-kubernetes-cluster-using-helm) to create a Redis store using Helm. 
    > **Note**: Currently the version of Redis supported by Azure Redis Cache is less than 5, so using Azure Redis Cache will not work.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. Don't worry about applying the `redis.yaml`, as it will be covered in the next step. 
-   > **Note:** the `redis.yaml` file provided in this sample takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/secrets) instructions to securely manage your secrets.
+   > **Note:** the `redis.yaml` file provided in this quickstart takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/secrets) instructions to securely manage your secrets.
 
 ### Deploy Assets
 
@@ -124,7 +124,7 @@ Now that we've set up the Redis store, we can deploy our assets.
 4. Run `kubectl get svc -w` to get the external IP exposed by our `react-form` microservice. This may take a minute.
    > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
 
-### Use the Sample
+### Use the Quickstart
 
 1. Copy the external IP from the last step into your browser and observe the same React form that we saw locally!
 
@@ -144,7 +144,7 @@ Now that we've set up the Redis store, we can deploy our assets.
 
 ### Cleanup
 
-Once you're done using the sample, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 ```bash
 kubectl delete -f .
@@ -154,7 +154,7 @@ This will spin down each resource defined by the .yaml files in the `deploy` dir
 
 ## How it Works
 
-Now that you've run the sample locally and/or in Kubernetes, let's unpack how this all works. Our app is broken up into two subscribers and one publisher:
+Now that you've run the quickstart locally and/or in Kubernetes, let's unpack how this all works. Our app is broken up into two subscribers and one publisher:
 
 ### Node Message Subscriber
 

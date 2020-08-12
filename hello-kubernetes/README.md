@@ -1,19 +1,19 @@
 # Hello Kubernetes
 
-This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying the same applications from [Hello World](../1.hello-world). To recap, the Python App generates messages and the Node app consumes and persists them. The following architecture diagram illustrates the components that make up this sample: 
+This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying the same applications from [Hello World](../1.hello-world). To recap, the Python App generates messages and the Node app consumes and persists them. The following architecture diagram illustrates the components that make up this quickstart: 
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
 
 ## Prerequisites
-This sample requires you to have the following installed on your machine:
+This quickstart requires you to have the following installed on your machine:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-minikube.md), [AKS](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-aks.md) or [GKE](https://cloud.google.com/kubernetes-engine/)
 
-Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
+Also, unless you have already done so, clone the repository with the quickstarts and ````cd```` into the right directory:
 ```
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
-cd samples
+cd quickstarts
 ```
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
   
