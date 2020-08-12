@@ -12,11 +12,11 @@ In this sample you will:
 
 This sample builds on the [distributed calculator](../3.distributed-calculator/README.md) sample and requires Dapr to be installed on a Kubernetes cluster along with state store. It is suggested to go through the distributed calculator sample before this one, which sets you up ready for this sample. If you have not done this then:
 
-1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git` and go to the directory named */8.obervability*
+1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory named */8.obervability*
 2. [Install Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
 3. [Configure Redis](https://github.com/dapr/docs/tree/master/howto/configure-redis) as a state store for Dapr.
 
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 ## Configure Dapr tracing in the cluster
 
 Review the Dapr configuration file *./deploy/appconfig.yaml* below:
@@ -90,11 +90,11 @@ annotations:
 ...
  ```
 
-For this sample, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/samples/blob/master/3.distributed-calculator/deploy/react-calculator.yaml#L36).
+For this sample, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/deploy/react-calculator.yaml#L36).
 
 Note you did not introduce any dependency on Zipkin into the calculator app code or deployment yaml files. The Zipkin Dapr component is configured to read tracing events and write these to an exporter.
 
-Now deploy the distributed calculator application to your cluster following the instructions found in sample [3.distributed-calculator](https://github.com/dapr/samples/blob/master/3.distributed-calculator/README.md). Then browse to the calculator UI.
+Now deploy the distributed calculator application to your cluster following the instructions found in sample [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md). Then browse to the calculator UI.
 
 > **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing to take effect. You can do so by running:
 

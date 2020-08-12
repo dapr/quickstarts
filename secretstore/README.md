@@ -14,10 +14,10 @@ This sample requires you to have the following installed on your machine:
 
 Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
 ```
-git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 cd samples
 ```
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
   
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 

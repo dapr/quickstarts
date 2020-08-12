@@ -12,10 +12,10 @@ This sample requires you to have the following installed on your machine:
 
 Also, unless you have already done so, clone the repository with the samples and ````cd```` into the right directory:
 ```
-git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 cd samples
 ```
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
   
 ## Step 1 - Setup Dapr on your Kubernetes Cluster
 
@@ -96,7 +96,7 @@ Minikube users cannot see the external IP. Instead, you can use `minikube servic
 Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this sample the HTTP Port is used for further communication with the Dapr sidecar. 
 
 ## Step 5 - Deploy the Python App with the Dapr Sidecar
-Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/2.hello-kubernetes/python` and open `app.py`.
+Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes sample: `cd samples/hello-kubernetes/python` and open `app.py`.
 
 At a quick glance, this is a basic python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
 
