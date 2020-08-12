@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msgraphapp
+  labels:
+    app: msgraph
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msgraph
+  template:
+    metadata:
+      labels:
+        app: msgraph
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/id: "msgraphapp"
+        dapr.io/port: "3000"
+        dapr.io/config: "msgraphpipeline"
+    spec:
+      containers:
+      - name: msgraph
+        image: dapriosamples/middleware-msgraphapp:edge
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
