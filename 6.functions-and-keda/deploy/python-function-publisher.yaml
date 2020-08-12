@@ -41,8 +41,8 @@ spec:
         app: python-function-publisher
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "python-function-publisher"
-        dapr.io/port: "80"
+        dapr.io/app-id: "python-function-publisher"
+        dapr.io/app-port: "80"
     spec:
       containers:
       - name: python-function-publisher

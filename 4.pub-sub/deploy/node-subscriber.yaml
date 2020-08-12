@@ -15,8 +15,8 @@ spec:
         app: node-subscriber
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "node-subscriber"
-        dapr.io/port: "3000"
+        dapr.io/app-id: "node-subscriber"
+        dapr.io/app-port: "3000"
     spec:
       containers:
       - name: node-subscriber

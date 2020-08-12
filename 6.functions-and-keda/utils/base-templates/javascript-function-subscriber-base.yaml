@@ -28,8 +28,8 @@ spec:
         app: javascript-function-subscriber
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "javascript-function-subscriber"
-        dapr.io/port: "80"
+        dapr.io/app-id: "javascript-function-subscriber"
+        dapr.io/app-port: "80"
     spec:
       containers:
       - name: javascript-function-subscriber

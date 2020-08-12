@@ -31,8 +31,8 @@ spec:
         app: bindingsnodeapp
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "bindings-nodeapp"
-        dapr.io/port: "3000"
+        dapr.io/app-id: "bindings-nodeapp"
+        dapr.io/app-port: "3000"
     spec:
       containers:
       - name: node
