@@ -29,7 +29,7 @@ jobs:
             echo "##[set-env name=SAMPLE_REGISTRY;]$SAMPLE_REGISTRY"
           fi
   
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore hello-docker-compose)
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
