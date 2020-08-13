@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pythonapp
+  labels:
+    app: python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python
+  template:
+    metadata:
+      labels:
+        app: python
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "pythonapp"
+    spec:
+      containers:
+      - name: python
+        image: dapriosamples/hello-k8s-python:edge

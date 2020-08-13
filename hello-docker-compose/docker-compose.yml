@@ -1,0 +1,69 @@
+version: '3'
+services:
+  ############################
+  # Node app + Dapr sidecar
+  ############################
+  nodeapp:
+    build: ./node
+    ports:
+      - "50002:50002"
+    depends_on:
+      - redis
+      - placement
+    networks:
+      - hello-dapr
+  nodeapp-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+     "-app-id", "nodeapp",
+     "-app-port", "3000",
+     "-placement-host-address", "placement:50006",
+     "-dapr-grpc-port", "50002",
+     "-components-path", "/components"]
+    volumes:
+        - "./components/:/components"
+    depends_on:
+      - nodeapp
+    network_mode: "service:nodeapp"
+  ############################
+  # Python app + Dapr sidecar
+  ############################
+  pythonapp:
+    build: ./python
+    depends_on:
+      - redis
+      - placement
+    networks:
+      - hello-dapr
+  pythonapp-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "pythonapp",
+    "-placement-host-address", "placement:50006",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - pythonapp
+    network_mode: "service:pythonapp"
+  ############################
+  # Dapr placement service
+  ############################
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+    networks:
+      - hello-dapr
+  ############################
+  # Redis state store
+  ############################
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6380:6379"
+    networks:
+      - hello-dapr
+networks:
+    hello-dapr:

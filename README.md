@@ -1,10 +1,10 @@
-# Dapr Samples
+# Dapr Quickstarts
 
-[![Build Status](https://github.com/dapr/samples/workflows/samples/badge.svg?event=push&branch=master)](https://github.com/dapr/samples/actions?workflow=samples)
+[![Build Status](https://github.com/dapr/quickstarts/workflows/samples/badge.svg?event=push&branch=master)](https://github.com/dapr/quickstarts/actions?workflow=samples)
 [![Join the chat at https://gitter.im/Dapr/samples](https://badges.gitter.im/Dapr/samples.svg)](https://gitter.im/Dapr/samples?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains a series of samples that highlight Dapr capabilities. The first sample demonstrates how we run Dapr in standalone mode, while the second highlights how we run the same application in Kubernetes. Each subsequent sample includes instructions for running both in standalone and in Kubernetes.
+This repository contains a collection of code samples that are aimed to get you started quickly with Dapr, each highlighting a different Dapr capability. The first quickstart to begin with is *hello-world*, it demonstrates how to run Dapr in standalone mode locally on your machine. If you are familiar with Kubernetes and want to see how to run the same application in Kubernetes, look for the *hello-kubernetes* quickstart. Each of the other quickstarts which explore different Dapr capabilities include instructions for running both in standalone and in Kubernetes.
 
 ## Getting Started
 
@@ -14,33 +14,30 @@ It is recommended to go through the samples via the [Getting Started](https://gi
 
 Dapr is currently under community development with preview releases.  The master branch includes breaking changes, therefore ensure that you're running the samples with the right version of Dapr runtime.
 
-| Dapr Sample Version  | Dapr Runtime Version |
+| Dapr Quickstart Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
-| [v0.9.0](https://github.com/dapr/samples/tree/v0.9.0) | [v0.9.0](https://github.com/dapr/dapr/tree/v0.9.0) |
-| [v0.8.0](https://github.com/dapr/samples/tree/v0.8.0) | [v0.8.0](https://github.com/dapr/dapr/tree/v0.8.0) |
-| [v0.7.0](https://github.com/dapr/samples/tree/v0.7.0) | [v0.7.0](https://github.com/dapr/dapr/tree/v0.7.0) |
-| [v0.6.0](https://github.com/dapr/samples/tree/v0.6.0) | [v0.6.0](https://github.com/dapr/dapr/tree/v0.6.0) |
-| [v0.5.0](https://github.com/dapr/samples/tree/v0.5.0) | [v0.5.0](https://github.com/dapr/dapr/tree/v0.5.0) |
-| [v0.4.0](https://github.com/dapr/samples/tree/v0.4.0) | [v0.4.0](https://github.com/dapr/dapr/tree/v0.4.0) |
-| [v0.3.0](https://github.com/dapr/samples/tree/v0.3.0) | [v0.3.0](https://github.com/dapr/dapr/tree/v0.3.0) |
-| [v0.2.0](https://github.com/dapr/samples/tree/v0.2.0) | [v0.2.0](https://github.com/dapr/dapr/tree/v0.2.0) |
-| [v0.1.0](https://github.com/dapr/samples/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
+| [v0.9.0](https://github.com/dapr/quickstarts/tree/v0.9.0) | [v0.9.0](https://github.com/dapr/dapr/tree/v0.9.0) |
+| [v0.8.0](https://github.com/dapr/quickstarts/tree/v0.8.0) | [v0.8.0](https://github.com/dapr/dapr/tree/v0.8.0) |
+| [v0.7.0](https://github.com/dapr/quickstarts/tree/v0.7.0) | [v0.7.0](https://github.com/dapr/dapr/tree/v0.7.0) |
+| [v0.6.0](https://github.com/dapr/quickstarts/tree/v0.6.0) | [v0.6.0](https://github.com/dapr/dapr/tree/v0.6.0) |
+| [v0.5.0](https://github.com/dapr/quickstarts/tree/v0.5.0) | [v0.5.0](https://github.com/dapr/dapr/tree/v0.5.0) |
+| [v0.4.0](https://github.com/dapr/quickstarts/tree/v0.4.0) | [v0.4.0](https://github.com/dapr/dapr/tree/v0.4.0) |
+| [v0.3.0](https://github.com/dapr/quickstarts/tree/v0.3.0) | [v0.3.0](https://github.com/dapr/dapr/tree/v0.3.0) |
+| [v0.2.0](https://github.com/dapr/quickstarts/tree/v0.2.0) | [v0.2.0](https://github.com/dapr/dapr/tree/v0.2.0) |
+| [v0.1.0](https://github.com/dapr/quickstarts/tree/v0.1.0) | [v0.1.0](https://github.com/dapr/dapr/tree/v0.1.0) |
 
-## Samples
+## Quickstarts
 
-| Sample                   | Description                                                                                                                                                                                    |
+| Quickstart                   | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [1. Hello-world](./1.hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
-| [2. Hello-kubernetes](./2.hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
-| [3. Distributed-calculator](./3.distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
-| [4. Pub-sub](./4.pub-sub)                | Demonstrates how we use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
-| [5. Bindings](./5.bindings)            | Demonstrates how we use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
-| [6. Functions-and-keda](./6.functions-and-keda) | Demonstrates use of Dapr pub/sub from Azure Functions, as well as composition with KEDA. |
-| [7. Middleware](./7.middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
-| [8. Observability](./8.observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
-| [9. Secret Store](./9.secretstore) | Demonstrates the use of Dapr Secrets API. |
-| [10. Docker Compose](./10.hello-docker-compose) | Demonstrates how to get Dapr running locally with Docker Compose. |
-| [11. Minimal Init (Dapr Slim)](./11.hello-dapr-slim) | Demonstrates how to run dapr locally, without a dependency on Docker. |
+| [1. Hello-world](./hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
+| [2. Hello-kubernetes](./hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
+| [3. Distributed-calculator](./distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
+| [4. Pub-sub](./pub-sub)                | Demonstrates how we use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
+| [5. Bindings](./bindings)            | Demonstrates how we use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
+| [6. Middleware](./middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
+| [7. Observability](./observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
+| [8. Secret Store](./secretstore) | Demonstrates the use of Dapr Secrets API. |
 
 ## SDKs
 
@@ -55,8 +52,8 @@ Find SDK-specific samples in the links below:
 - **[Javascript SDK](https://github.com/dapr/js-sdk)**
 - **[Python SDK](https://github.com/dapr/python-sdk)**
   
-To get started with the samples, clone this repository and follow instructions in each sample:
+To get started with the quickstarts, clone this repository and follow instructions in each sample:
 ```bash
-git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 ```
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
