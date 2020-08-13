@@ -4,7 +4,7 @@ This tutorial walks you through the steps of setting up the OAuth middleware to 
 
 ![Architecture Diagram](img/architecture_diagram.png)
 
-> **NOTE**: This sample uses Microsoft Identity Platform/Azure Active Directory and Microsoft Graph as an example. 
+> **NOTE**: This quickstart uses Microsoft Identity Platform/Azure Active Directory and Microsoft Graph as an example. 
 
 ## Prerequisites
 
@@ -16,14 +16,14 @@ This tutorial walks you through the steps of setting up the OAuth middleware to 
 - A working [Azure Active Directory] with Administrator rights, alternatively you can [create one](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-access-create-new-tenant)
 
 
-## Step 1 - Clone the sample repository
+## Step 1 - Clone the quickstart repository
 
-1. Clone the sample repo, then navigate to the middleware sample:
+1. Clone the quickstart repo, then navigate to the middleware quickstart:
 ```bash
-git clone [-b <dapr_version_tag>] https://github.com/dapr/samples.git
-cd samples/7b.middleware-clientcredentials/msgraphapp
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
+cd quickstarts/middleware-clientcredentials/msgraphapp
 ```
-> **Note**: See https://github.com/dapr/samples#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/samples.git` when using the edge version of dapr runtime.
+> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 2. Examine the ```app.js``` file. You'll see this is a simple Node.js Express web server with a single ```/users``` route that returns the Microsoft Graph API result based on the input query parameter ```displayName```. Also you can see that we will forward the token saved in the request header called `msgraph-token` as the `Authorization` header in the request towards the MS Graph API.
 
@@ -108,7 +108,7 @@ kubectl apply -f deploy/msgraphpipeline.yaml
 ## Step 4 - Deploy the application
 Next, you'll deploy the application. This example has no public ingress endpoint due to the confidentiallity of the returned data by the service. 
 
-> **NOTE:** In general this middleware component should be used to inject external service authentication tokens to your services, in order to use/pass them to the called external services. It is not meant for public endpoint authentication. Please see sample [7.middleware](../7.middleware/README.md) for intractive public endpoint authentication flow. 
+> **NOTE:** In general this middleware component should be used to inject external service authentication tokens to your services, in order to use/pass them to the called external services. It is not meant for public endpoint authentication. Please see quickstart [middleware](../middleware/README.md) for intractive public endpoint authentication flow. 
 
 1. Deploy the application:
 ```bash
@@ -144,4 +144,4 @@ kubectl delete pod curlbox
 ```
 3. Delete the credential created in the AAD.
 
-4. [Optional] Delete the AAD (if you created one just for this sample)
+4. [Optional] Delete the AAD (if you created one just for this quickstart)
