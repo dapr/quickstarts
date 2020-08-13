@@ -124,7 +124,7 @@ This calls out to our Redis cache to grab the latest value of the "order" key, w
 2. Run Node.js app with Dapr: 
 
     ```sh
-    dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 node app.js
+    dapr run --app-id nodeapp --app-port 3000 --port 3500 node app.js
     ```
 
 The command should output text that looks like the following, along with logs:
