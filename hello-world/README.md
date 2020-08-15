@@ -19,7 +19,7 @@ This quickstart requires you to have the following installed on your machine:
 
 Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#environment-setup) to download and install the Dapr CLI and initialize Dapr.
 
-## Step 2 - Understand the Code
+## Step 2 - Understand the code
 
 Now that Dapr is set up locally, clone the repo, then navigate to the Hello World quickstart: 
 
@@ -109,7 +109,7 @@ app.get('/order', (_req, res) => {
 
 This calls out to the Redis cache to retrieve the latest value of the "order" key, which effectively allows the Node.js app to be _stateless_. 
 
-## Step 3 - Run the Node.js App with Dapr
+## Step 3 - Run the Node.js app with Dapr
 
 1. Install dependencies: 
 
@@ -155,7 +155,7 @@ const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 
 While in this tutorial the default yaml files were used, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
 
-## Step 4 - Post Messages to your Service
+## Step 4 - Post messages to the service
 
 Now that Dapr and the Node.js app are running, you can send POST messages against it, using different tools. **Note**: here the POST message is sent to port 3500 - if you used a different port, be sure to update your URL accordingly.
 
@@ -205,7 +205,7 @@ In your terminal window, you should see logs indicating that the message was rec
 == APP == Successfully persisted state.
 ```
 
-## Step 5 - Confirm Successful Persistence
+## Step 5 - Confirm successful persistence
 
 Now, to verify the order was successfully persisted to the state store, create a GET request against: `http://localhost:3500/v1.0/invoke/nodeapp/method/order`. **Note**: Again, be sure to reflect the right port if you chose a port other than 3500.
 
@@ -226,7 +226,7 @@ or use the Postman GUI
 
 This invokes the `/order` route, which calls out to the Redis store for the latest data. Observe the expected result!
 
-## Step 6 - Run the Python App with Dapr
+## Step 6 - Run the Python app with Dapr
 
 Take a look at the Python App to see how another application can invoke the Node App via Dapr without being aware of the destination's hostname or port. In the `app.py` file you can find the endpoint definition to call the Node App via Dapr.
 
@@ -302,7 +302,7 @@ dapr stop --app-id pythonapp
 
 To see that services have stopped running, run `dapr list`, noting that your services no longer appears!
 
-## Next Steps
+## Next steps
 
 Now that you've gotten Dapr running locally on your machine, consider these next steps:
 - Explore additional quickstarts such as [pub-sub](../pub-sub), [bindings](../bindings) or the [distributed calculator app](..\distributed-calculator).

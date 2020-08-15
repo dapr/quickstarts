@@ -10,7 +10,7 @@ In this quickstart you will:
 
 ## Prerequisites
 
-This quickstart builds on the [distributed calculator](../distributed-calculator/README.md) quickstart and requires Dapr to be installed on a Kubernetes cluster along with state store. It is suggested to go through the distributed calculator quickstart before this one. If you have not done this then:
+This quickstart builds on the [distributed calculator](../distributed-calculator/README.md) quickstart and requires Dapr to be installed on a Kubernetes cluster along with a state store. It is suggested to go through the distributed calculator quickstart before this one. If you have not done this then:
 
 1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory named */8.obervability*
 2. [Install Dapr on Kubernetes](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster).
@@ -150,8 +150,12 @@ kubectl delete -f ..\3.distributed-calculator\deploy
 kubectl delete -f deploy\appconfig.yaml -f deploy\zipkin.yaml
 ```
 
-## Additional Resources:
+## Additional Resources
 
 - Learn more about [observability](https://github.com/dapr/docs/tree/master/concepts/observability).
 - Learn more on how Dapr does [distributed tracing](https://github.com/dapr/docs/tree/master/concepts/observability/traces.md).
-- As an alternative to Zipkin see [how to configure tracing with Application Insights](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing/azure-monitor.md).  
+- As an alternative to Zipkin see [how to configure tracing with Application Insights](https://github.com/dapr/docs/tree/master/howto/diagnose-with-tracing/azure-monitor.md).
+
+## Next steps
+
+- Explore additional [quickstarts](../README.md#quickstarts)
