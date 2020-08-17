@@ -88,15 +88,15 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes. Now,
    
     * Linux/Mac:
         ```bash
-        dapr publish --topic A --data '{ "message": "This is a test" }'
+        dapr publish --topic A --pubsub pubsub --data '{ "message": "This is a test" }'
         ```
     * Windows CMD
         ```bash
-        dapr publish --topic A --data "{ \"message\": \"This is a test\" }"
+        dapr publish --topic A --pubsub pubsub --data "{ \"message\": \"This is a test\" }"
         ```
     * Windows Powershell
         ```ps
-        dapr publish --topic A --data "{ message: This is a test }"
+        dapr publish --topic A --pubsub pubsub --data "{ message: This is a test }"
         ```
     Both Node.js and Python subscribers subscribe to topic A and log when they receive a message. Note that logs are showing up in the console window where you ran each one: 
     
@@ -205,17 +205,19 @@ Navigate to the `node-subscriber` directory and open `app.js`, the code for the 
 app.get('/dapr/subscribe', (_req, res) => {
     res.json([
         {
+            pubsubName: "pubsub",
             topic: "A",
             route: "A"
         },
         {
+            pubsubName: "pubsub",
             topic: "B",
             route: "B"
         }
     ]);
 });
 ```
-This tells Dapr what topics to subscribe to. When deployed (locally or in Kubernetes), Dapr will call out to the service to determine if it's subscribing to anything. The other two endpoints are POST endpoints:
+This tells Dapr what topics in which pubsub component to subscribe to. When deployed (locally or in Kubernetes), Dapr will call out to the service to determine if it's subscribing to anything. The other two endpoints are POST endpoints:
 
 ```js
 app.post('/A', (req, res) => {
@@ -238,10 +240,10 @@ Navigate to the `python-subscriber` directory and open `app.py`, the code for th
 ```python
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
-    subscriptions = [{'topic': 'A', 'route': 'A'}, {'topic': 'C', 'route': 'C'}]
+    subscriptions = [{'pubsubName': 'pubsub', 'topic': 'A', 'route': 'A'}, {'pubsubName': 'pubsub', 'topic': 'C', 'route': 'C'}]
     return jsonify(subscriptions)
 ```
-Again, this is how you tell Dapr what topics to subscribe to. In this case, subscribing to topics "A" and "C". Messages of those topics are handled with the other two routes:
+Again, this is how you tell Dapr what topics in which pubsub component to subscribe to. In this case, subscribing to topics "A" and "C" of pubsub component named 'pubsub'. Messages of those topics are handled with the other two routes:
 
 ```python
 @app.route('/A', methods=['POST'])
@@ -292,10 +294,10 @@ The server is a basic express application that exposes a POST endpoint: `/publis
 app.use(bodyParser.json());
 ```
 
-This allows us to determine which topic to publish the message with. To publish messages against Dapr, the URL needs to look like: `http://localhost:<DAPR_URL>/publish/<TOPIC>`, so the `publish` endpoint builds a URL and posts the JSON against it: 
+This allows us to determine which topic to publish the message with. To publish messages against Dapr, the URL needs to look like: `http://localhost:<DAPR_URL>/publish/<PUBSUB_NAME>/<TOPIC>`, so the `publish` endpoint builds a URL and posts the JSON against it: 
 
 ```js
-const publishUrl = `${daprUrl}/publish/${req.body.messageType}`;
+const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
 request( { uri: publishUrl, method: 'POST', json: req.body } );
 ```
 
