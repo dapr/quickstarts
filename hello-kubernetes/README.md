@@ -17,7 +17,7 @@ cd quickstarts
 ```
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
   
-## Step 1 - Setup Dapr on your Kubernetes Cluster
+## Step 1 - Setup Dapr on your Kubernetes cluster
 
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). 
 
@@ -35,7 +35,7 @@ $ dapr init --kubernetes
 ✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
 ```
 
-## Step 2 - Create and Configure a State Store
+## Step 2 - Create and configure a state store
 
 Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc) to persist and retrieve state. For this demo, we'll use Redis.
 
@@ -48,19 +48,19 @@ Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cass
 component.dapr.io "statestore" configured
 ```
 
-## Step 3 - Deploy the Node.js App with the Dapr Sidecar
+## Step 3 - Deploy the Node.js app with the Dapr sidecar
 
 ```
 kubectl apply -f ./deploy/node.yaml
 ```
 
-This will deploy our Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to our Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
+This will deploy the Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to the Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
 
 ```dapr.io/enabled: true``` - this tells the Dapr control plane to inject a sidecar to this deployment.
 
 ```dapr.io/app-id: nodeapp``` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
 
-You'll also see the container image that we're deploying. If you want to update the code and deploy a new image, see **Next Steps** section. 
+You'll also see the container image that you're deploying. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
 This deployment provisions an External IP.
 Wait until the IP is visible: (may take a few minutes)
@@ -95,10 +95,10 @@ Minikube users cannot see the external IP. Instead, you can use `minikube servic
 
 Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this quickstart the HTTP Port is used for further communication with the Dapr sidecar. 
 
-## Step 5 - Deploy the Python App with the Dapr Sidecar
-Next, let's take a quick look at our python app. Navigate to the python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
+## Step 5 - Deploy the Python app with the Dapr sidecar
+Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
 
-At a quick glance, this is a basic python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. We invoke our Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. Our message contains some `data` with an orderId that increments once per second:
+At a quick glance, this is a basic Python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. You can invoke the Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. The message contains some `data` with an orderId that increments once per second:
 
 ```python
 n = 0
@@ -114,22 +114,22 @@ while True:
     time.sleep(1)
 ```
 
-Let's deploy the python app to your Kubernetes cluster:
+Deploy the Python app to your Kubernetes cluster:
 ```
 kubectl apply -f ./deploy/python.yaml
 ```
 
-Now let's just wait for the pod to be in ```Running``` state:
+Now wait for the pod to be in ```Running``` state:
 
 ```
 kubectl get pods --selector=app=python -w
 ```
 
-## Step 6 - Observe Messages
+## Step 6 - Observe messages
 
-Now that we have our Node.js and python applications deployed, let's watch messages come through.
+Now that the Node.js and Python applications are deployed, watch messages come through:
 
-Get the logs of our Node.js app:
+Get the logs of the Node.js app:
 
 ```
 kubectl logs --selector=app=node -c node
@@ -146,9 +146,9 @@ Got a new order! Order ID: 3
 Successfully persisted state
 ```
 
-## Step 7 - Confirm Successful Persistence
+## Step 7 - Confirm successful persistence
 
-Hit the Node.js app's order endpoint to get the latest order. Grab the external IP address that we saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
+Call the Node.js app's order endpoint to get the latest order. Grab the external IP address that you saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
 
 ```
 curl $NODE_APP/order
@@ -167,9 +167,9 @@ kubectl delete -f .
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
 
-## Next Steps
+## Deploying your code
 
-Now that you're successfully working with Dapr, you probably want to update the quickstart code to fit your scenario. The Node.js and Python apps that make up this quickstart are deployed from container images hosted on a private [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/). To create new images with updated code, you'll first need to install docker on your machine. Next, follow these steps:
+Now that you're successfully working with Dapr, you probably want to update the code to fit your scenario. The Node.js and Python apps that make up this quickstart are deployed from container images hosted on a private [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/). To create new images with updated code, you'll first need to install docker on your machine. Next, follow these steps:
 
 1. Update Node or Python code as you see fit!
 2. Navigate to the directory of the app you want to build a new image for.
@@ -178,3 +178,9 @@ Now that you're successfully working with Dapr, you probably want to update the 
 5. To publish your docker image to docker hub (or another registry), first login: `docker login`. Then run`docker push <YOUR IMAGE NAME>`.
 6. Update your .yaml file to reflect the new image name.
 7. Deploy your updated Dapr enabled app: `kubectl apply -f <YOUR APP NAME>.yaml`.
+
+## Related links
+- [Guidelines for production ready deployments on Kubernetes](https://github.com/dapr/docs/tree/master/howto/deploy-k8s-prod)
+
+## Next steps
+- Explore additional [quickstarts](../README.md#quickstarts) and deploy them locally or on Kubernetes.

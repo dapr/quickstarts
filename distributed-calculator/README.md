@@ -1,4 +1,4 @@
-# Distributed Calculator
+# Distributed calculator
 
 This quickstart shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
 
@@ -9,7 +9,6 @@ This quickstart shows method invocation and state persistent capabilities of Dap
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/). 
 Kudos to [ahfarmer](https://github.com/ahfarmer) whose [React calculator](https://github.com/ahfarmer/calculator) 
-
 
 The following architecture diagram illustrates the components that make up this quickstart: 
 
@@ -110,7 +109,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
 
     ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-7. Open your browser's console window (using F12 key) to see the logs produced as we use the calculator. Note that each time we click a button, we see logs that indicate state persistence and the different apps that are contacted to perform the operation. 
+7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence and the different apps that are contacted to perform the operation. 
 
 
 
@@ -120,7 +119,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
 3. Deploy all of your resources: `kubectl apply -f .`. 
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
-Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for our front-end, which allows us to connect to it externally.
+Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for the front-end, which allows us to connect to it externally.
 
 4. Wait until your pods are in a running state: `kubectl get pods -w`
 
@@ -136,7 +135,7 @@ multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
 subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 ```
 
-5. Next, let's take a look at our services and wait until we have an external IP configured for our front-end: `kubectl get svc -w`
+5. Next, take a look at the services and wait until you have an external IP configured for the front-end: `kubectl get svc -w`
 
     ```bash
     NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
@@ -165,27 +164,27 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-7. Open your browser's console window (using F12 key) to see the logs produced as we use the calculator. Note that each time we click a button, we see logs that indicate state persistence: 
+7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
 
 ```js
 Persisting State:
 {total: "21", next: "2", operation: "x"}
 ```
 
-`total`, `next`, and `operation` reflect the three pieces of state a calculator needs to operate. Our app persists these to a Redis store (see [Simplified State Management](#simplified-state-management) section below). By persisting these, we can refresh the page or take down the front-end pod and still jump right back where we were. Let's try it! Enter something into the calculator and refresh the page. The calculator should have retained the state, and your console should read: 
+`total`, `next`, and `operation` reflect the three pieces of state a calculator needs to operate. The app persists these to a Redis store (see [Simplified State Management](#simplified-state-management) section below). By persisting these, you can refresh the page or take down the front-end pod and still jump right back where you were. Try it! Enter something into the calculator and refresh the page. The calculator should have retained the state, and the console should read: 
 
 ```js
 Rehydrating State:
 {total: "21", next: "2", operation: "x"}
 ```
 
-Also note that each time we enter a full equation (e.g. "126 ÷ 3 =") our logs indicate that we're calling our to a service: 
+Also note that each time you enter a full equation (e.g. "126 ÷ 3 =") the logs indicate that a call is made to the service: 
 
 ```js
 Calling divide service
 ```
 
-Our client code calls to an Express server, which routes our calls through Dapr to our back-end services. In this case we're calling the divide endpoint on our nodejs application.
+The client code calls to an Express server, which routes the calls through Dapr to the back-end services. In this case the divide endpoint is called on the nodejs application.
 
 ## Cleanup
 
@@ -207,15 +206,15 @@ This will spin down each resource defined by the .yaml files in the `deploy` dir
 
 ## The Role of Dapr
 
-This quickstart demonstrates how we use Dapr as a programming model for simplifying the development of distributed systems. In this quickstart, Dapr is enabling polyglot programming, service discovery and simplified state management.
+This quickstart demonstrates how to use Dapr as a programming model for simplifying the development of distributed systems. In this quickstart, Dapr is enabling polyglot programming, service discovery and simplified state management.
 
-### Polyglot Programming
+### Polyglot programming
 
-Each service in this quickstart is written in a different programming language, but they're used together in the same larger application. Dapr itself is language agnostic - none of our services have to include any dependency in order to work with Dapr. This empowers developers to build each service however they want, using the best language for the job or for a particular dev team.
+Each service in this quickstart is written in a different programming language, but they're used together in the same larger application. Dapr itself is language agnostic - none of the services have to include any dependency in order to work with Dapr. This empowers developers to build each service however they want, using the best language for the job or for a particular dev team.
 
-### Service Invocation
+### Service invocation
 
-When our front-end server calls the respective operation services (see `server.js` code below), it doesn't need to know what IP address they live at or how they were built. Instead it calls their local dapr side-car by name, which knows how to invoke the method on the service, taking advantage of the platform’s service discovery mechanism, in this case Kubernetes DNS resolution.
+When the front-end server calls the respective operation services (see `server.js` code below), it doesn't need to know what IP address they live at or how they were built. Instead it calls their local dapr side-car by name, which knows how to invoke the method on the service, taking advantage of the platform’s service discovery mechanism, in this case Kubernetes DNS resolution.
 
 The code below shows calls to the “add” and “subtract” services via the Dapr URLs:
 ```js
@@ -235,11 +234,13 @@ app.post('/calculate/subtract', async (req, res) => {
 
 Microservice applications are dynamic with scaling, updates and failures causing services to change their network endpoints. Dapr enables you to call service endpoints with a consistent URL syntax, utilizing the hosting platform’s service discovery capabilities to resolve the endpoint location.
 
-### Simplified State Management
+Learn more about Dapr [service invocation](https://github.com/dapr/docs/blob/master/concepts/service-invocation/README.md).
 
-Dapr sidecars provide state management. In this quickstart, we persist our calculator's state each time we click a new button. This means we can refresh the page, close the page or even take down our `calculator-front-end` pod, and still retain the same state when we next open it. Dapr adds a layer of indirection so that our app doesn't need to know where it's persisting state. It doesn't have to keep track of keys, handle retry logic or worry about state provider specific configuration. All it has to do is GET or POST against its Dapr sidecar's state endpoint: `http://localhost:3500/v1.0/state/${stateStoreName}`.
+### Simplified state management
 
-Take a look at `server.js` in the `react-calculator` directory. Note that it exposes two state endpoints for our React client to get and set state: the GET `/state` endpoint and the POST `/persist` endpoint. Both forward client calls to the Dapr state endpoint: 
+Dapr sidecars provide [state management](https://github.com/dapr/docs/blob/master/concepts/state-management/README.md). In this quickstart, the calculator's state is persisted each time a new button is clicked. This means a user can refresh the page, close the page or even take down the `calculator-front-end` pod, and still retain the same state when they next open it. Dapr adds a layer of indirection so that the app doesn't need to know where it's persisting state. It doesn't have to keep track of keys, handle retry logic or worry about state provider specific configuration. All it has to do is GET or POST against its Dapr sidecar's state endpoint: `http://localhost:3500/v1.0/state/${stateStoreName}`.
+
+Take a look at `server.js` in the `react-calculator` directory. Note that it exposes two state endpoints for the React client to get and set state: the GET `/state` endpoint and the POST `/persist` endpoint. Both forward client calls to the Dapr state endpoint: 
 
 ```js
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
@@ -261,3 +262,7 @@ Our client persists state by simply POSTing JSON key-value pairs (see `react-cal
       }
     });
 ```
+
+## Next Steps
+
+- Explore additional [quickstarts](../README.md#quickstarts).
