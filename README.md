@@ -4,15 +4,22 @@
 [![Join the chat at https://gitter.im/Dapr/samples](https://badges.gitter.im/Dapr/samples.svg)](https://gitter.im/Dapr/samples?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains a collection of code samples that are aimed to get you started quickly with Dapr, each highlighting a different Dapr capability. The first quickstart to begin with is *hello-world*, it demonstrates how to run Dapr in standalone mode locally on your machine. If you are familiar with Kubernetes and want to see how to run the same application in Kubernetes, look for the *hello-kubernetes* quickstart. Each of the other quickstarts which explore different Dapr capabilities include instructions for running both in standalone and in Kubernetes.
+This repository contains a collection of tutorials with code samples that are aimed to get you started quickly with Dapr, each highlighting a different Dapr capability. 
 
-## Getting Started
+## How to use this repository
 
-It is recommended to go through the samples via the [Getting Started](https://github.com/dapr/docs/tree/master/getting-started) instructions.
+If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://github.com/dapr/docs/tree/master/getting-started) instructions.
+
+This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it. 
+
+* A good place to start is the [hello-world](./hello-world) quickstart, it demonstrates how to run Dapr in standalone mode locally on your machine and demonstrates state management and service invocation in a simple application. 
+* Next, if you are familiar with Kubernetes and want to see how to run the same application in a Kubernetes environment, look for the *hello-kubernetes* quickstart. Other quickstarts such as *pub-sub*, *bindings* and the *distributed-calculator* quickstart explore different Dapr capabilities include instructions for running both locally and on Kubernetes and can be completed in any order. A full list of the quickstarts can be found [below](#quickstarts).
+* At anytime, you can explore the [Dapr documentation](https://github.com/dapr/docs) or [SDK specific samples](#sdks) and come back to try additional quickstarts. 
+* When you're done, consider exploring the [Dapr samples repository](https://github.com/dapr/samples) for additional code samples contributed by the community that show more advanced or specific usages of Dapr.
 
 ## Supported Dapr Runtime version
 
-Dapr is currently under community development with preview releases.  The master branch includes breaking changes, therefore ensure that you're running the samples with the right version of Dapr runtime.
+Dapr is currently under community development with preview releases. The master branch includes breaking changes, therefore ensure that you're running the samples with the right version of Dapr runtime.
 
 | Dapr Quickstart Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
@@ -30,14 +37,14 @@ Dapr is currently under community development with preview releases.  The master
 
 | Quickstart                   | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [1. Hello-world](./hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
-| [2. Hello-kubernetes](./hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
-| [3. Distributed-calculator](./distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
-| [4. Pub-sub](./pub-sub)                | Demonstrates how we use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
-| [5. Bindings](./bindings)            | Demonstrates how we use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
-| [6. Middleware](./middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
-| [7. Observability](./observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
-| [8. Secret Store](./secretstore) | Demonstrates the use of Dapr Secrets API. |
+| [Hello-world](./hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
+| [Hello-kubernetes](./hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
+| [Distributed-calculator](./distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
+| [Pub-sub](./pub-sub)                | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
+| [Bindings](./bindings)            | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
+| [Middleware](./middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
+| [Observability](./observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
+| [Secret Store](./secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
 
 ## SDKs
 

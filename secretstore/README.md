@@ -19,7 +19,7 @@ cd quickstarts
 ```
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
   
-## Step 1 - Setup Dapr on your Kubernetes Cluster
+## Step 1 - Setup Dapr on your Kubernetes cluster
 
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). 
 
@@ -37,12 +37,12 @@ $ dapr init --kubernetes
 ✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
 ```
 
-## Step 2 - Configure a Secret in the Secret Store
+## Step 2 - Configure a secret in the secret store
 
 Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, you'll use the [Kubernetes secret store](https://kubernetes.io/docs/concepts/configuration/secret/) (For instructions on other secret stores, please refer to [this documentation](https://github.com/dapr/docs/tree/master/howto/setup-secret-store)).
 
 1. Add your secret to a file ./secret. For example, if your password is "abcd", then the contents of ./secret should be "abcd"
-2. Create the secret in the Kubernetes secret store. Note, the name of our secret here is "mysecret" and will be used in a later step.
+2. Create the secret in the Kubernetes secret store. Note, the name of the secret here is "mysecret" and will be used in a later step.
     ```
     kubectl create secret generic mysecret --from-file ./secret
     ```
@@ -68,13 +68,13 @@ Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key 
     ```
 
 
-## Step 3 - Deploy the Node.js App with the Dapr Sidecar
+## Step 3 - Deploy the Node.js app with the Dapr sidecar
 
 ```
 kubectl apply -f ./deploy/node.yaml
 ```
 
-This will deploy our Node.js app to Kubernetes.
+This will deploy the Node.js app to Kubernetes.
 
 You'll also see the container image that is being deployed. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
@@ -111,7 +111,7 @@ The output should be your base64 encoded secret
 
 ## Step 5 - Observe Logs
 
-Now that the node app is running, let's watch messages come through.
+Now that the node app is running, watch messages come through.
 
 Get the logs of the Node.js app:
 
@@ -140,7 +140,7 @@ kubectl delete -f ./deploy/node.yaml
 
 This will spin down the node app.
 
-## Next Steps
+## Updating the Node app
 
 If you want to update the node app, you can do the following:
 
@@ -158,3 +158,7 @@ If you want to update the node app, you can do the following:
 - [Secret store API reference](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md)
 - [Setup a secret store](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md)
 - [Code snippets in different programming languages](https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md)
+
+## Next steps:
+
+- Explore additional [quickstarts](../README.md#quickstarts)

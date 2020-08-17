@@ -1,6 +1,6 @@
-# OAuth Authorization
+# Dapr Middleware (OAuth Authorization)
 
-This tutorial walks you through the steps of setting up the OAuth middleware to enable OAuth authorization on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
+This tutorial shows a real use case of the Dapr [middleware](https://github.com/dapr/docs/tree/master/concepts/middleware) building block. It walks you through the steps of setting up the OAuth middleware to enable OAuth authorization on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -76,7 +76,7 @@ kubectl apply -f deploy/pipeline.yaml
 
 ## Step 4 - Deploy the application
 
-Next, you'll deploy the application and define an ingress rule that routes to the ```-dapr``` service that gets automatically created when you deploy your pod. In this case, we are routing all traffic to the Dapr sidecar, which can reinforce various policies through middleware.
+Next, you'll deploy the application and define an ingress rule that routes to the ```-dapr``` service that gets automatically created when you deploy your pod. In this case, all traffic is routed to the Dapr sidecar, which can reinforce various policies through middleware.
 
 1. Deploy the application and the ingress rule:
 
@@ -132,3 +132,10 @@ minikube addons disable ingress
 ```
 
 4. Delete the credential created in the authorization server.
+
+## Related links
+- Learn more about [Dapr middleware](https://github.com/dapr/docs/tree/master/concepts/middleware)
+- How to [configure API authorization with OAuth](https://github.com/dapr/docs/blob/master/howto/authorization-with-oauth/README.md)
+
+## Next steps
+- Explore additional [quickstarts](../README.md#quickstarts)
