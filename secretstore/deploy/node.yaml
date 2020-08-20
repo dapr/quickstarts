@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: dapriosamples/secretstorenode:edge
+        image: dapriosamples/secretstorenode:0.10.0
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: add
-        image: dapriosamples/distributed-calculator-go:edge
+        image: dapriosamples/distributed-calculator-go:0.10.0
         ports:
         - containerPort: 6000
         imagePullPolicy: Always
