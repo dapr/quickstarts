@@ -305,7 +305,7 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 ## Next steps
 
 Now that you've gotten Dapr running locally on your machine, consider these next steps:
-- Explore additional quickstarts such as [pub-sub](../pub-sub), [bindings](../bindings) or the [distributed calculator app](..\distributed-calculator).
+- Explore additional quickstarts such as [pub-sub](../pub-sub), [bindings](../bindings) or the [distributed calculator app](../distributed-calculator).
 - Run this hello world application in Kubernetes via the [Hello Kubernetes](../hello-kubernetes) quickstart.
 - Learn more about Dapr in the [Dapr overview](https://github.com/dapr/docs/blob/master/overview/README.md) documentation.
 - Explore [Dapr concepts](https://github.com/dapr/docs/blob/master/concepts/README.md) such as building blocks and components in the Dapr documentation.
