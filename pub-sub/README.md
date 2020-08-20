@@ -64,7 +64,7 @@ git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: 
     ```bash
-        cd python_subscriber
+        cd python-subscriber
     ```
 2. Install dependencies: 
     ```bash
