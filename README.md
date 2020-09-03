@@ -64,4 +64,3 @@ To get started with the quickstarts, clone this repository and follow instructio
 ```bash
 git clone --depth=1 https://github.com/dapr/quickstarts.git
 ```
-> **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
