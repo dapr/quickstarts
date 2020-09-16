@@ -56,7 +56,8 @@ Find SDK-specific samples in the links below:
   - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/samples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
 - **[Java SDK](https://github.com/dapr/java-sdk)**
   - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http)** - Example for developing an actor application using the Java SDK.
-- **[Go SDK](https://github.com/dapr/go-sdk)**
+- **[Go SDK](https://github.com/dapr/go-sdk)** 
+  - **[Examples](https://github.com/dapr/go-sdk/tree/master/example#dapr-go-client-example)** for using client library to connect to Dapr API, and for how to create a Dapr application in either HTTP or gRPC using the go SDK.
 - **[Javascript SDK](https://github.com/dapr/js-sdk)**
 - **[Python SDK](https://github.com/dapr/python-sdk)**
   
