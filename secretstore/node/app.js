@@ -13,9 +13,10 @@ const app = express();
 app.use(bodyParser.json());
 
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
-const secretsUrl = `http://localhost:${daprPort}/v1.0/secrets`;
-const secretStoreName = 'kubernetes';
+const secretStoreName = process.env.SECRET_STORE; 
 const secretName = 'mysecret'
+
+const secretsUrl = `http://localhost:${daprPort}/v1.0/secrets`;
 
 const port = 3000;
 
@@ -25,7 +26,7 @@ app.get('/getsecret', (_req, res) => {
     fetch(url)
     .then(res => res.json())
     .then(json => {
-        let secretBuffer = new Buffer(json["secret"])
+        let secretBuffer = new Buffer(json["mysecret"])
         let encodedSecret = secretBuffer.toString('base64')
         console.log("Base64 encoded secret is: %s", encodedSecret)
         return res.send(encodedSecret)
