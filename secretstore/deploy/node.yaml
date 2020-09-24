@@ -37,6 +37,9 @@ spec:
       containers:
       - name: node
         image: dapriosamples/secretstorenode:edge
+        env:
+        - name: SECRET_STORE
+          value: "kubernetes"
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
