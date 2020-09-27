@@ -65,3 +65,6 @@ To get started with the quickstarts, clone this repository and follow instructio
 ```bash
 git clone --depth=1 https://github.com/dapr/quickstarts.git
 ```
+## Code of Conduct
+
+Please refer to our [Dapr Community Code of Conduct](https://github.com/dapr/community/blob/master/CODE-OF-CONDUCT.md)
