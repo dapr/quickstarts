@@ -14,7 +14,7 @@ CORS(app)
 
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
-    subscriptions = [{'pubsubName': 'pubsub', 'topic': 'A', 'route': 'A'}, {'pubsubName': 'pubsub', 'topic': 'C', 'route': 'C'}]
+    subscriptions = [{'pubsubname': 'pubsub', 'topic': 'A', 'route': 'A'}, {'pubsubname': 'pubsub', 'topic': 'C', 'route': 'C'}]
     return jsonify(subscriptions)
 
 @app.route('/A', methods=['POST'])

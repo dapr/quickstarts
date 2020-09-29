@@ -205,12 +205,12 @@ Navigate to the `node-subscriber` directory and open `app.js`, the code for the 
 app.get('/dapr/subscribe', (_req, res) => {
     res.json([
         {
-            pubsubName: "pubsub",
+            pubsubname: "pubsub",
             topic: "A",
             route: "A"
         },
         {
-            pubsubName: "pubsub",
+            pubsubname: "pubsub",
             topic: "B",
             route: "B"
         }
@@ -240,7 +240,7 @@ Navigate to the `python-subscriber` directory and open `app.py`, the code for th
 ```python
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
-    subscriptions = [{'pubsubName': 'pubsub', 'topic': 'A', 'route': 'A'}, {'pubsubName': 'pubsub', 'topic': 'C', 'route': 'C'}]
+    subscriptions = [{'pubsubname': 'pubsub', 'topic': 'A', 'route': 'A'}, {'pubsubname': 'pubsub', 'topic': 'C', 'route': 'C'}]
     return jsonify(subscriptions)
 ```
 Again, this is how you tell Dapr what topics in which pubsub component to subscribe to. In this case, subscribing to topics "A" and "C" of pubsub component named 'pubsub'. Messages of those topics are handled with the other two routes:
