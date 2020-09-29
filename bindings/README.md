@@ -171,14 +171,11 @@ Now that the Kafka binding is set up, deploy the assets.
       NAME                                    READY   STATUS        RESTARTS   AGE
       bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
       bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
-      dapr-operator-86cddcfcb7-v2zjp          1/1     Running       0          6h6m
-      dapr-placement-5d6465f8d5-pz2qt         1/1     Running       0          6h6m
-      dapr-sidecar-injector-dc489d7bc-k2h4q   1/1     Running       0          6h6m
     ```
 
-    Look for the name of the `binding-pythonapp` pod and run:
+    Look at the Python app logs by running:
     ```bash
-      kubectl logs bindings-pythonapp-644489969b-c8lg5 python
+      kubectl logs --selector app=bindingspythonapp -c python
     ```
 
     ```bash
@@ -202,15 +199,12 @@ Now that the Kafka binding is set up, deploy the assets.
       NAME                                    READY   STATUS        RESTARTS   AGE
       bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
       bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
-      dapr-operator-86cddcfcb7-v2zjp          1/1     Running       0          6h6m
-      dapr-placement-5d6465f8d5-pz2qt         1/1     Running       0          6h6m
-      dapr-sidecar-injector-dc489d7bc-k2h4q   1/1     Running       0          6h6m
     ```
 
-    Look for the name of `binding-nodeapp` pod and run:
+    Look at the Node app logs by running:
 
     ```bash
-      kubectl logs bindings-nodeapp-699489b8b6-mqhrj node
+      kubectl logs --selector app=bindingsnodeapp -c node
     ```
 
     The output should look like this:
