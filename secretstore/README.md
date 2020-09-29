@@ -27,7 +27,7 @@ cd quickstarts
   
 ## Run Locally
 
-### Step 1 - Setup Dapr in your local machine
+### Step 1 - Setup Dapr on your local machine
 
 Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#environment-setup) to download and install the Dapr CLI and initialize Dapr.
 
@@ -47,7 +47,7 @@ const secretStoreName = process.env.SECRET_STORE;
 const secretName = 'mysecret'
 ```
 
-The `secretStoreName` is read in from an environment variable where the value `kubernetes` is injected for a Kubernetes deployment and during local run, the environment variable must be set to `localsecretstore` value.
+The `secretStoreName` is read from an environment variable where the value `kubernetes` is injected for a Kubernetes deployment and for local development the environment variable must be set to `localsecretstore` value.
 
 Next take a look at the `getsecret` handler: 
 
@@ -66,9 +66,9 @@ app.get('/getsecret', (_req, res) => {
 });
 ```
 
-The code gets the the secret `mysecret` from the secret store and displays a Base64 encoded version of the secret.
+The code gets the the secret called `mysecret` from the secret store and displays a Base64 encoded version of the secret.
 
-In `secrets.json`, you'll find a secret `mysecret`.
+In `secrets.json` file, you'll find a secret `mysecret`.
 
 ```json
 {
@@ -76,7 +76,8 @@ In `secrets.json`, you'll find a secret `mysecret`.
 }
 ```
 
-In the components folder, there is a `local-secret-store.yaml` definition which defines a local secret store component to be used by Dapr. 
+In the components folder, there is a `local-secret-store.yaml`  which defines a local file secret store component to be used by Dapr. 
+
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -94,6 +95,8 @@ spec:
 ```
 
 The component defines a local secret store with the secrets file path as the `secrets.json` file.
+
+> Note: You can also use a local secret store that uses [environment variables]((https://github.com/dapr/docs/blob/master/howto/setup-secret-store/envvar-secret-store.md)) for secrets instead of a [local file](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/file-secret-store.md#use-local-secret-store-in-standalone-mode).
 
 ### Step 3 - Export Secret Store name and run Node.js app with Dapr
 
@@ -151,7 +154,7 @@ To stop your services from running, simply stop the "dapr run" process. Alternat
 dapr stop --app-id nodeapp
 ```
 
-To see that services have stopped running, run `dapr list`, noting that your services no longer appears!
+To see that services have stopped running, run `dapr list`, noting that your service no longer appears!
 
 ## Run in Kubernetes
 
@@ -161,7 +164,7 @@ The first thing you need is an RBAC enabled Kubernetes cluster. This could be ru
 
 Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, look [here](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
 
-> Please note, that using the CLI does not support non-default namespaces.  
+> Note, that using the CLI does not support non-default namespaces.  
 > If you need a non-default namespace, Helm has to be used (see below).
 
 ```
