@@ -184,29 +184,41 @@ Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key 
 
 > Note: For Windows make sure the file does not contain an extension as the name of the file becomes the metadata key to retrieve the secret.
 2. Create the secret in the Kubernetes secret store. Note, the name of the secret here is "mysecret" and will be used in a later step.
-    ```
-    kubectl create secret generic mysecret --from-file ./mysecret
-    ```
+```bash
+kubectl create secret generic mysecret --from-file ./mysecret
+```
+
 3. You can check that the secret is indeed stored in the Kubernetes secret store by running the command:
-    ```
-    kubectl get secret mysecret -o yaml
-    ```
+```
+kubectl get secret mysecret -o yaml
+```
    You can see the output as below where the secret is stored in the secret store in Base64 encoded format
-   ```
-    % kubectl get secret mysecret -o yaml
-        apiVersion: v1
-        data:
-        mysecret: YWJjZAo=
-        kind: Secret
-        metadata:
-        creationTimestamp: "2020-05-20T20:20:09Z"
-        name: mysecret
-        namespace: default
-        resourceVersion: "2031800"
-        selfLink: /api/v1/namespaces/default/secrets/mysecret
-        uid: 64c60c3e-dce4-4c02-b5c1-8d4dbb7cbb8f
-        type: Opaque
-    ```
+```
+% kubectl get secret mysecret -o yaml
+apiVersion: v1
+data:
+  mysecret: U0dmQXAzcUc5Qg==
+kind: Secret
+metadata:
+  creationTimestamp: "2020-09-30T17:33:12Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        .: {}
+        f:mysecret: {}
+      f:type: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2020-09-30T17:33:12Z"
+  name: mysecret
+  namespace: default
+  resourceVersion: "6617"
+  selfLink: /api/v1/namespaces/default/secrets/mysecret
+  uid: 4734ad91-0863-4dec-a200-5e191b8cab20
+type: Opaque
+```
 
 
 ### Step 3 - Deploy the Node.js app with the Dapr sidecar
