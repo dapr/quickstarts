@@ -175,10 +175,11 @@ Now that the Redis store is set up, you can deploy the assets.
     ```
 
 2. Create and submit messages of different types.
-3. To see the logs generated from your subscribers, first run `kubectl get pods` to get the pod names for each subscriber. Then run `kubectl logs <POD NAME> <CONTAINER NAME>`. For example: 
+3. To see the logs generated from your subscribers: 
 
     ```bash
-        kubectl logs node-subscriber-575bcd88f-2scrt node-subscriber
+        kubectl logs --selector app=node-subscriber -c node-subscriber
+        kubectl logs --selector app=python-subscriber -c python-subscriber
     ```
 
 4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
