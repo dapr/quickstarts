@@ -32,7 +32,7 @@ $ dapr init --kubernetes
 
 ⌛  Making the jump to hyperspace...
 ✅  Deploying the Dapr Operator to your cluster...
-✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
+✅  Success! Dapr has been installed. To verify, run 'dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
 ## Step 2 - Create and configure a state store
