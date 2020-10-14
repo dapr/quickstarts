@@ -26,7 +26,7 @@ jobs:
         run: |
           if [ -z "${{ env.SAMPLE_REGISTRY }}" ]; then
             export SAMPLE_REGISTRY=docker.io/dapriosamples
-            echo "##[set-env name=SAMPLE_REGISTRY;]$SAMPLE_REGISTRY"
+            echo "SAMPLE_REGISTRY=$SAMPLE_REGISTRY" >> $GITHUB_ENV
           fi
   
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
