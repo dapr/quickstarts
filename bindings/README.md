@@ -1,6 +1,6 @@
 # Dapr Bindings
 
-In this quickstart, you'll create two microservices, one with an input binding and another with an output binding. You'll bind to Kafka, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://github.com/dapr/docs/tree/master/concepts/bindings)). 
+In this quickstart, you'll create two microservices, one with an input binding and another with an output binding. You'll bind to Kafka, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://docs.dapr.io/concepts/components-concept/)). 
 
 This quickstart includes two microservices:
 - Node.js microservice that utilizes an input binding
@@ -17,13 +17,13 @@ Dapr allows us to deploy the same microservices from the local machines to Kuber
 
 ### Prerequisites to Run Locally
 
-- [Dapr CLI with Dapr initialized](https://github.com/dapr/docs/tree/master/getting-started)
+- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr/)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Python 3.4 or greater](https://www.python.org/)
 
 ### Prerequisites to Run in Kubernetes
 
-- [Dapr enabled Kubernetes cluster](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
+- [Dapr enabled Kubernetes cluster](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
 
 ## Run Locally
 
@@ -308,9 +308,9 @@ while True:
 
 ## Related links
 
-- Learn more about bindings in the [Dapr docs](https://github.com/dapr/docs/tree/master/concepts/bindings)
-- How to [create an event-driven app using input bindings](https://github.com/dapr/docs/tree/master/howto/trigger-app-with-input-binding)
-- How to [send events to external systems using Output Bindings](https://github.com/dapr/docs/tree/master/howto/send-events-with-output-bindings)
+- Learn more about bindings in the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/bindings/)
+- How to [create an event-driven app using input bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/howto-triggers/)
+- How to [send events to external systems using Output Bindings](https://docs.dapr.io/developing-applications/building-blocks/bindings/howto-bindings/)
 
 ## Next Steps
 
