@@ -1,6 +1,6 @@
 # Dapr Middleware (OAuth Authorization)
 
-This tutorial shows a real use case of the Dapr [middleware](https://github.com/dapr/docs/tree/master/concepts/middleware) building block. It walks you through the steps of setting up the OAuth middleware to enable OAuth authorization on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
+This tutorial shows a real use case of the Dapr [middleware](https://docs.dapr.io/concepts/middleware-concept/) building block. It walks you through the steps of setting up the OAuth middleware to enable OAuth authorization on a Web API without modifying the application. This design separates authentication/authorization concerns from the application, so that application operators can adopt and configure authentication/authorization providers without impacting the application code.
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -8,7 +8,7 @@ This tutorial shows a real use case of the Dapr [middleware](https://github.com/
 
 ## Prerequisites
 
-- [Dapr enabled Kubernetes cluster](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
+- [Dapr enabled Kubernetes cluster](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Docker](https://docs.docker.com/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
@@ -134,8 +134,8 @@ minikube addons disable ingress
 4. Delete the credential created in the authorization server.
 
 ## Related links
-- Learn more about [Dapr middleware](https://github.com/dapr/docs/tree/master/concepts/middleware)
-- How to [configure API authorization with OAuth](https://github.com/dapr/docs/blob/master/howto/authorization-with-oauth/README.md)
+- Learn more about [Dapr middleware](https://docs.dapr.io/concepts/middleware-concept/)
+- How to [configure API authorization with OAuth](https://docs.dapr.io/operations/security/oauth/)
 
 ## Next steps
 - Explore additional [quickstarts](../README.md#quickstarts)

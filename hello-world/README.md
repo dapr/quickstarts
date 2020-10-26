@@ -17,7 +17,7 @@ This quickstart requires you to have the following installed on your machine:
 
 ## Step 1 - Setup Dapr 
 
-Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#environment-setup) to download and install the Dapr CLI and initialize Dapr.
+Follow [instructions](https://docs.dapr.io/getting-started/install-dapr/) to download and install the Dapr CLI and initialize Dapr.
 
 ## Step 2 - Understand the code
 
@@ -134,7 +134,7 @@ You're up and running! Both Dapr and your app logs will appear here.
 ```
 > **Note**: the `--app-port` (the port the app runs on) is configurable. The Node app happens to run on port 3000, but you could configure it to run on any other port. Also note that the Dapr `--app-port` parameter is optional, and if not supplied, a random available port is used.
 
-The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components` which holds yaml definition files for components Dapr will be using at runtime. When running locally, the yaml files which provide default definitions for a local development environment are placed in this default components directory (learn more about this flow [here](https://github.com/dapr/docs/blob/master/walkthroughs/daprrun.md)). Review the `statestore.yaml` file in the `components` directory:
+The `dapr run` command looks for the default components directory which for Linux/MacOS is `$HOME/.dapr/components` and for Windows is `%USERPROFILE%\.dapr\components` which holds yaml definition files for components Dapr will be using at runtime. When running locally, the yaml files which provide default definitions for a local development environment are placed in this default components directory. Review the `statestore.yaml` file in the `components` directory:
 
 ```yml
 apiVersion: dapr.io/v1alpha1
@@ -307,5 +307,5 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 Now that you've gotten Dapr running locally on your machine, consider these next steps:
 - Explore additional quickstarts such as [pub-sub](../pub-sub), [bindings](../bindings) or the [distributed calculator app](../distributed-calculator).
 - Run this hello world application in Kubernetes via the [Hello Kubernetes](../hello-kubernetes) quickstart.
-- Learn more about Dapr in the [Dapr overview](https://github.com/dapr/docs/blob/master/overview/README.md) documentation.
-- Explore [Dapr concepts](https://github.com/dapr/docs/blob/master/concepts/README.md) such as building blocks and components in the Dapr documentation.
+- Learn more about Dapr in the [Dapr overview](https://docs.dapr.io/concepts/overview/) documentation.
+- Explore [Dapr concepts](https://docs.dapr.io/concepts/) such as building blocks and components in the Dapr documentation.

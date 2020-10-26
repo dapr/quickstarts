@@ -31,7 +31,7 @@ Clone the quickstarts repository
 7. Install [Node](https://nodejs.org/en/download/)
 
 ### - Run in Kubernetes environment
-1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster) to set this up.
+1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster) to set this up.
 
 
 ## Running the quickstart locally
@@ -115,7 +115,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
 
 ## Running the quickstart in a Kubernetes environment
 1. Navigate to the deploy directory in this quickstart directory: `cd deploy`
-2. Follow [these instructions](https://github.com/dapr/docs/blob/master/howto/setup-state-store/setup-redis.md) to create and configure a Redis store
+2. Follow [these instructions](https://docs.dapr.io/getting-started/configure-redis/) to create and configure a Redis store
 3. Deploy all of your resources: `kubectl apply -f .`. 
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
@@ -234,11 +234,11 @@ app.post('/calculate/subtract', async (req, res) => {
 
 Microservice applications are dynamic with scaling, updates and failures causing services to change their network endpoints. Dapr enables you to call service endpoints with a consistent URL syntax, utilizing the hosting platform’s service discovery capabilities to resolve the endpoint location.
 
-Learn more about Dapr [service invocation](https://github.com/dapr/docs/blob/master/concepts/service-invocation/README.md).
+Learn more about Dapr [service invocation](https://docs.dapr.io/developing-applications/building-blocks/service-invocation/).
 
 ### Simplified state management
 
-Dapr sidecars provide [state management](https://github.com/dapr/docs/blob/master/concepts/state-management/README.md). In this quickstart, the calculator's state is persisted each time a new button is clicked. This means a user can refresh the page, close the page or even take down the `calculator-front-end` pod, and still retain the same state when they next open it. Dapr adds a layer of indirection so that the app doesn't need to know where it's persisting state. It doesn't have to keep track of keys, handle retry logic or worry about state provider specific configuration. All it has to do is GET or POST against its Dapr sidecar's state endpoint: `http://localhost:3500/v1.0/state/${stateStoreName}`.
+Dapr sidecars provide [state management](https://docs.dapr.io/developing-applications/building-blocks/state-management/). In this quickstart, the calculator's state is persisted each time a new button is clicked. This means a user can refresh the page, close the page or even take down the `calculator-front-end` pod, and still retain the same state when they next open it. Dapr adds a layer of indirection so that the app doesn't need to know where it's persisting state. It doesn't have to keep track of keys, handle retry logic or worry about state provider specific configuration. All it has to do is GET or POST against its Dapr sidecar's state endpoint: `http://localhost:3500/v1.0/state/${stateStoreName}`.
 
 Take a look at `server.js` in the `react-calculator` directory. Note that it exposes two state endpoints for the React client to get and set state: the GET `/state` endpoint and the POST `/persist` endpoint. Both forward client calls to the Dapr state endpoint: 
 
