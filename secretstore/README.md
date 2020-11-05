@@ -7,7 +7,7 @@ This tutorial shows you how to use the Dapr secrets API to access secrets from s
 
 
 ### Prerequisites to run Locally 
-- [Dapr CLI with Dapr initialized](https://github.com/dapr/docs/tree/master/getting-started)
+- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr/)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Postman](https://www.getpostman.com/) [Optional]
 
@@ -16,7 +16,7 @@ This tutorial shows you how to use the Dapr secrets API to access secrets from s
 This quickstart requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- A Kubernetes cluster, such as [Minikube](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-minikube.md), [AKS](https://github.com/dapr/docs/blob/master/getting-started/cluster/setup-aks.md)
+- A Kubernetes cluster, such as [Minikube](https://docs.dapr.io/operations/hosting/kubernetes/cluster/setup-minikube/), [AKS](https://docs.dapr.io/operations/hosting/kubernetes/cluster/setup-aks/)
 
 Also, unless you have already done so, clone the repository with the quickstarts and ````cd```` into the right directory:
 ```
@@ -29,7 +29,7 @@ cd quickstarts
 
 ### Step 1 - Setup Dapr on your local machine
 
-Follow [instructions](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#environment-setup) to download and install the Dapr CLI and initialize Dapr.
+Follow [instructions](https://docs.dapr.io/getting-started/install-dapr/) to download and install the Dapr CLI and initialize Dapr.
 
 ### Step 2 - Understand the code and configuration
 
@@ -96,7 +96,7 @@ spec:
 
 The component defines a local secret store with the secrets file path as the `secrets.json` file.
 
-> Note: You can also use a local secret store that uses [environment variables]((https://github.com/dapr/docs/blob/master/howto/setup-secret-store/envvar-secret-store.md)) for secrets instead of a [local file](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/file-secret-store.md#use-local-secret-store-in-standalone-mode).
+> Note: You can also use a local secret store that uses [environment variables]((https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/envvar-secret-store/)) for secrets instead of a [local file](https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/file-secret-store/).
 
 ### Step 3 - Export Secret Store name and run Node.js app with Dapr
 
@@ -162,7 +162,7 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). 
 
-Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, look [here](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
+Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, look [here](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
 
 > Note, that using the CLI does not support non-default namespaces.  
 > If you need a non-default namespace, Helm has to be used (see below).
@@ -178,7 +178,7 @@ $ dapr init --kubernetes
 
 ### Step 2 - Configure a secret in the secret store
 
-Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, you'll use the [Kubernetes secret store](https://kubernetes.io/docs/concepts/configuration/secret/) (For instructions on other secret stores, please refer to [this documentation](https://github.com/dapr/docs/tree/master/howto/setup-secret-store)).
+Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key Vault, GCP Secret Manager, Kubernetes, etc) to retrieve secrets. For this demo, you'll use the [Kubernetes secret store](https://kubernetes.io/docs/concepts/configuration/secret/) (For instructions on other secret stores, please refer to [this documentation](https://docs.dapr.io/developing-applications/building-blocks/secrets/howto-secrets/)).
 
 1. Add your secret to a file `./mysecret`. For example, if your password is "abcd", then the contents of `./mysecret` should be "abcd"
 
@@ -308,9 +308,8 @@ If you want to update the node app, you can do the following:
 
 ## Related Links
 - [Secret store overview](https://kubernetes.io/docs/concepts/configuration/secret/)
-- [Secret store API reference](https://github.com/dapr/docs/blob/master/reference/api/secrets_api.md)
-- [Setup a secret store](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/README.md)
-- [Code snippets in different programming languages](https://github.com/dapr/docs/blob/master/howto/get-secrets/README.md)
+- [Secret store API reference](https://docs.dapr.io/reference/api/secrets_api/)
+- [Setup a secret store](https://docs.dapr.io/developing-applications/building-blocks/secrets/howto-secrets/)
 
 ## Next steps:
 

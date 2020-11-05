@@ -2,7 +2,7 @@
 
 In this quickstart, you'll create a publisher microservice and two subscriber microservices to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. See [Why Pub-Sub](#why-pub-sub) to understand when this pattern might be a good choice for your software architecture.
 
-Visit [this](https://github.com/dapr/docs/tree/master/concepts/publish-subscribe-messaging) link for more information about Dapr and Pub-Sub.
+Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
 
 This quickstart includes one publisher:
 
@@ -23,12 +23,12 @@ Dapr allows you to deploy the same microservices from your local machines to the
 
 ### Prerequisites to run locally
 
-- [Dapr CLI with Dapr initialized](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md)
+- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr)
 - [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this quickstart with one or both microservices
 
 ### Prerequisites to Run in Kubernetes
 
-- [Dapr enabled Kubernetes cluster](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#installing-dapr-on-a-kubernetes-cluster)
+- [Dapr enabled Kubernetes cluster](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
 
 ## Run locally
 
@@ -138,10 +138,10 @@ To run the same code in Kubernetes, first set up a Redis store and then deploy t
 
 Dapr uses pluggable message buses to enable pub-sub, in this case Redis Streams (enabled in Redis version 5 and above) is used. You'll install Redis into the cluster using helm, but keep in mind that you could use whichever Redis host you like, as long as the version is greater than 5.
 
-1. Follow [these steps](https://github.com/dapr/docs/blob/master/howto/setup-state-store/setup-redis.md#creating-a-redis-cache-in-your-kubernetes-cluster-using-helm) to create a Redis store using Helm. 
+1. Follow [these steps](https://docs.dapr.io/getting-started/configure-redis/#create-a-redis-store) to create a Redis store using Helm. 
    > **Note**: Currently the version of Redis supported by Azure Redis Cache is less than 5, so using Azure Redis Cache will not work.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. Don't worry about applying the `redis.yaml`, as it will be covered in the next step. 
-   > **Note:** the `redis.yaml` file provided in this quickstart takes plain text secrets. In a production-grade application, follow [secret management](https://github.com/dapr/docs/blob/master/concepts/secrets) instructions to securely manage your secrets.
+   > **Note:** the `redis.yaml` file provided in this quickstart takes plain text secrets. In a production-grade application, follow [secret management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) instructions to securely manage your secrets.
 
 ### Deploy assets
 
@@ -332,8 +332,8 @@ Pub-sub allows us to completely decouple the components. Publishers need not be 
 
 ## Related links:
 
-- How to [setup a Dapr pub/sub](https://github.com/dapr/docs/blob/master/howto/setup-pub-sub-message-broker/README.md)
-- How to [use Pub/Sub to publish a message to a topic](https://github.com/dapr/docs/blob/master/howto/publish-topic/README.md)
+- How to [setup a Dapr pub/sub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/)
+- How to [use Pub/Sub to publish a message to a topic](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-publish-subscribe/)
 
 ## Next steps:
 

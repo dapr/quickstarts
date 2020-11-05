@@ -8,13 +8,13 @@ This repository contains a collection of tutorials with code samples that are ai
 
 ## How to use this repository
 
-If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://github.com/dapr/docs/tree/master/getting-started) instructions.
+If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr/) instructions.
 
 This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it. 
 
 * A good place to start is the [hello-world](./hello-world) quickstart, it demonstrates how to run Dapr in standalone mode locally on your machine and demonstrates state management and service invocation in a simple application. 
 * Next, if you are familiar with Kubernetes and want to see how to run the same application in a Kubernetes environment, look for the *hello-kubernetes* quickstart. Other quickstarts such as *pub-sub*, *bindings* and the *distributed-calculator* quickstart explore different Dapr capabilities include instructions for running both locally and on Kubernetes and can be completed in any order. A full list of the quickstarts can be found [below](#quickstarts).
-* At anytime, you can explore the [Dapr documentation](https://github.com/dapr/docs) or [SDK specific samples](#sdks) and come back to try additional quickstarts. 
+* At anytime, you can explore the [Dapr documentation](https://docs.dapr.io/) or [SDK specific samples](#sdks) and come back to try additional quickstarts. 
 * When you're done, consider exploring the [Dapr samples repository](https://github.com/dapr/samples) for additional code samples contributed by the community that show more advanced or specific usages of Dapr.
 
 ## Supported Dapr Runtime version
