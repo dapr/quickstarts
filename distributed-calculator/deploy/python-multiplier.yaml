@@ -17,7 +17,6 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "multiplyapp"
         dapr.io/app-port: "5000"
-        dapr.io/config: "appconfig"
     spec:
       containers:
       - name: multiply
