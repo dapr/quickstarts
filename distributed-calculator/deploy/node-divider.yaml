@@ -17,7 +17,6 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "divideapp"
         dapr.io/app-port: "4000"
-        dapr.io/config: "appconfig"
     spec:
       containers:
       - name: divide
