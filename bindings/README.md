@@ -3,6 +3,7 @@
 In this quickstart, you'll create two microservices, one with an input binding and another with an output binding. You'll bind to Kafka, but note that there are a myriad of components that Dapr can bind to ([see Dapr components](https://docs.dapr.io/concepts/components-concept/)). 
 
 This quickstart includes two microservices:
+
 - Node.js microservice that utilizes an input binding
 - Python microservice that utilizes an output binding
 
@@ -31,7 +32,7 @@ Dapr allows us to deploy the same microservices from the local machines to Kuber
 Clone this quickstarts repository to your local machine:
 
 ```bash
-  git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
+git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 ```
 
 >**Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
@@ -41,80 +42,93 @@ Clone this quickstarts repository to your local machine:
 In order to run the Kafka bindings quickstart locally, you will run the [Kafka broker server](https://github.com/wurstmeister/kafka-docker) in a docker container on your machine.
 
 1. To run the container locally, run:
-    ```bash
-      docker-compose -f ./docker-compose-single-kafka.yml up -d
-    ```
+
+```bash
+docker-compose -f ./docker-compose-single-kafka.yml up -d
+```
+
 2. To see the container running locally, run:
-    ```bash
-      docker ps
-    ```
 
-    The output should be similar to this:
+```bash
+docker ps
+```
 
-    ```bash
-      342d3522ca14        kafka-docker_kafka                      "start-kafka.sh"         14 hours ago        Up About
-      a minute   0.0.0.0:9092->9092/tcp                               kafka-docker_kafka_1
-      0cd69dbe5e65        wurstmeister/zookeeper                  "/bin/sh -c '/usr/sb…"   8 days ago          Up About
-      a minute   22/tcp, 2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp   kafka-docker_zookeeper_1
-    ```
+The output should be similar to this:
+
+```bash
+342d3522ca14        kafka-docker_kafka                      "start-kafka.sh"         14 hours ago        Up About
+a minute   0.0.0.0:9092->9092/tcp                               kafka-docker_kafka_1
+0cd69dbe5e65        wurstmeister/zookeeper                  "/bin/sh -c '/usr/sb…"   8 days ago          Up About
+a minute   22/tcp, 2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp   kafka-docker_zookeeper_1
+```
 
 ### Run Node Microservice with Input Binding
 
 Now that you have Kafka running locally on your machine, you'll need to run the microservices. You'll start by running the Node microservice that uses input bindings:
 
 1. Navigate to Node subscriber directory in your CLI: 
-    ```bash
-      cd nodeapp
-    ```
+
+```bash
+cd nodeapp
+```
+
 2. Install dependencies:
-    ```bash
-      npm install
-    ```
+
+```bash
+npm install
+```
+
 3. Run Node quickstart app with Dapr: 
-    ```bash
-      dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ./components
-    ```
+
+```bash
+dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ./components
+```
 
 ### Run Python Microservice with Output Binding
 
 Next, run the Python microservice that uses output bindings
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: 
-    ```bash
-      cd pythonapp
-    ```
+
+```bash
+cd pythonapp
+```
+
 2. Install dependencies:
-    ```bash
-      pip3 install requests
-    ```
+
+```bash
+pip3 install requests
+```
+
 3. Run Python quickstart app with Dapr: 
-    ```bash
-      dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components
-    ```
+
+```bash
+dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components
+```
 
 ### Observe Logs
 
 1. Observe the Python logs, which show a successful output binding with Kafka:
 
-    ```bash
-      [0m?[94;1m== APP == {'data': {'orderId': 1}}
-      [0m?[94;1m== APP == <Response [200]>
-      [0m?[94;1m== APP == {'data': {'orderId': 2}}
-      [0m?[94;1m== APP == <Response [200]>
-      [0m?[94;1m== APP == {'data': {'orderId': 3}}
-      [0m?[94;1m== APP == <Response [200]>
-    ```
+```bash
+[0m?[94;1m== APP == {'data': {'orderId': 1}}
+[0m?[94;1m== APP == <Response [200]>
+[0m?[94;1m== APP == {'data': {'orderId': 2}}
+[0m?[94;1m== APP == <Response [200]>
+[0m?[94;1m== APP == {'data': {'orderId': 3}}
+[0m?[94;1m== APP == <Response [200]>
+```
 
 2. Observe the Node logs, which show a successful input binding with Kafka: 
 
-    ```bash
-      [0m?[94;1m== APP == { orderId: 1 }
-      [0m?[94;1m== APP == Hello from Kafka!
-      [0m?[94;1m== APP == { orderId: 2 }
-      [0m?[94;1m== APP == Hello from Kafka!
-      [0m?[94;1m== APP == { orderId: 3 }
-      [0m?[94;1m== APP == Hello from Kafka!
-    ```
+```bash
+[0m?[94;1m== APP == { orderId: 1 }
+[0m?[94;1m== APP == Hello from Kafka!
+[0m?[94;1m== APP == { orderId: 2 }
+[0m?[94;1m== APP == Hello from Kafka!
+[0m?[94;1m== APP == { orderId: 3 }
+[0m?[94;1m== APP == Hello from Kafka!
+```
 
 ### Cleanup
 
@@ -129,26 +143,25 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 ### Setting up a Kafka in Kubernetes
 
 1. Install Kafka via [incubator/kafka helm chart](https://github.com/helm/charts/tree/master/incubator/kafka)
-    ```bash
-      helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-      helm repo update
-      kubectl create ns kafka
-      helm install dapr-kafka incubator/kafka --namespace kafka -f ./kafka-non-persistence.yaml
-    ```
+
+```bash
+helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+helm repo update
+kubectl create ns kafka
+helm install dapr-kafka incubator/kafka --namespace kafka -f ./kafka-non-persistence.yaml
+```
 
 2. Wait until kafka pods are running
-    ```bash
-      kubectl -n kafka get pods -w
-    ```
 
-    ```bash
-      NAME                     READY   STATUS    RESTARTS   AGE
-      dapr-kafka-0             1/1     Running   0          2m7s
-      dapr-kafka-zookeeper-0   1/1     Running   0          2m57s
-      dapr-kafka-zookeeper-1   1/1     Running   0          2m13s
-      dapr-kafka-zookeeper-2   1/1     Running   0          109s
-    ```
+```bash
+kubectl -n kafka get pods -w
 
+NAME                     READY   STATUS    RESTARTS   AGE
+dapr-kafka-0             1/1     Running   0          2m7s
+dapr-kafka-zookeeper-0   1/1     Running   0          2m57s
+dapr-kafka-zookeeper-1   1/1     Running   0          2m13s
+dapr-kafka-zookeeper-2   1/1     Running   0          109s
+```
 
 ### Deploy Assets
 
@@ -162,70 +175,73 @@ Now that the Kafka binding is set up, deploy the assets.
 ### Observe Logs
 
 1. Observe the Python app logs, which show a successful output binding with Kafka:
-    ```bash
-      kubectl get pods
-    ```
-    The output should look like this:
 
-    ```bash
-      NAME                                    READY   STATUS        RESTARTS   AGE
-      bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
-      bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
-    ```
+```bash
+kubectl get pods
+```
 
-    Look at the Python app logs by running:
-    ```bash
-      kubectl logs --selector app=bindingspythonapp -c python
-    ```
+The output should look like this:
 
-    ```bash
-      ...
-      {'data': {'orderId': 240}}
-      <Response [200]>
-      {'data': {'orderId': 241}}
-      <Response [200]>
-      ...
-    ```
+```bash
+NAME                                    READY   STATUS        RESTARTS   AGE
+bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
+bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
+```
+
+Look at the Python app logs by running:
+
+```bash
+kubectl logs --selector app=bindingspythonapp -c python
+```
+
+```bash
+...
+{'data': {'orderId': 240}}
+<Response [200]>
+{'data': {'orderId': 241}}
+<Response [200]>
+...
+```
 
 2. Observe the Node app logs, which show a successful input bining with Kafka: 
 
-    ```bash
-      kubectl get pods
-    ```
+```bash
+kubectl get pods
+```
 
-    The output should look like this:
+The output should look like this:
 
-    ```bash
-      NAME                                    READY   STATUS        RESTARTS   AGE
-      bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
-      bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
-    ```
+```bash
+NAME                                    READY   STATUS        RESTARTS   AGE
+bindings-nodeapp-699489b8b6-mqhrj       2/2     Running       0          4s
+bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
+```
 
-    Look at the Node app logs by running:
+Look at the Node app logs by running:
 
-    ```bash
-      kubectl logs --selector app=bindingsnodeapp -c node
-    ```
+```bash
+kubectl logs --selector app=bindingsnodeapp -c node
+```
 
-    The output should look like this:
+The output should look like this:
 
-    ```bash
-      Node App listening on port 3000!
-      ...
-      Hello from Kafka!
-      { orderId: 240 }
-      Hello from Kafka!
-      { orderId: 241 }
-      ...
-    ```
+```bash
+Node App listening on port 3000!
+...
+Hello from Kafka!
+{ orderId: 240 }
+Hello from Kafka!
+{ orderId: 241 }
+...
+```
 
 ### Cleanup
 
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 ```bash
-  cd ./deploy
-  kubectl delete -f .
+cd ./deploy
+kubectl delete -f .
 ```
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the kafka component.
@@ -233,7 +249,7 @@ This will spin down each resource defined by the .yaml files in the `deploy` dir
 Once you delete all quickstart apps, delete Kafka in the cluster.
 
 ```bash
-  helm uninstall dapr-kafka --namespace kafka
+helm uninstall dapr-kafka --namespace kafka
 ```
 
 ## How it Works
@@ -271,7 +287,6 @@ spec:
   - name: authRequired
     value: "false"
 ```
-
 
 ### Node Input binding app
 
