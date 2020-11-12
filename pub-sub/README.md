@@ -46,39 +46,48 @@ git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 ### Run Node message subscriber with Dapr
 
 1. Navigate to Node subscriber directory in your CLI:
-    ```bash
-        cd node-subscriber
-    ```
+
+```bash
+cd node-subscriber
+```
 2. Install dependencies: 
-    ```bash
-        npm install
-    ```
+
+```bash
+npm install
+```
+
 3. Run the Node subscriber app with Dapr: 
-    ```bash
-        dapr run --app-id node-subscriber --app-port 3000 node app.js
-    ```
+
+```bash
+dapr run --app-id node-subscriber --app-port 3000 node app.js
+```
     
-    `app-id` which can be any unique identifier for the microservice. `app-port`, is the port that the Node application is running on. Finally, the command to run the app `node app.js` is passed last.
+`app-id` which can be any unique identifier for the microservice. `app-port`, is the port that the Node application is running on. Finally, the command to run the app `node app.js` is passed last.
 
 ### Run Python message subscriber with Dapr
 
 1. Open a new CLI window and navigate to Python subscriber directory in your CLI: 
-    ```bash
-        cd python-subscriber
-    ```
-2. Install dependencies: 
-    ```bash
-        pip install -r requirements.txt 
-    ```
-    or
 
-    ```bash
-        python -m pip install -r requirements.txt
-    ```
+```bash
+cd python-subscriber
+```
+
+2. Install dependencies: 
+
+```bash
+pip3 install -r requirements.txt 
+```
+or
+
+```bash
+python -m pip install -r requirements.txt
+```
+
 3. Run the Python subscriber app with Dapr: 
-    ```bash
-        dapr run --app-id python-subscriber --app-port 5000 python app.py
-    ```
+    
+```bash
+dapr run --app-id python-subscriber --app-port 5000 python3 app.py
+```
 
 ### Use the CLI to publish messages to subscribers
 
@@ -86,23 +95,29 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes. Now,
 
 1. Use Dapr CLI to publish a message:
    
-    * Linux/Mac:
-        ```bash
-        dapr publish --topic A --pubsub pubsub --data '{ "message": "This is a test" }'
-        ```
-    * Windows CMD
-        ```bash
-        dapr publish --topic A --pubsub pubsub --data "{ \"message\": \"This is a test\" }"
-        ```
-    * Windows Powershell
-        ```ps
-        dapr publish --topic A --pubsub pubsub --data "{ message: This is a test }"
-        ```
-    Both Node.js and Python subscribers subscribe to topic A and log when they receive a message. Note that logs are showing up in the console window where you ran each one: 
+  * Linux/Mac:
+
+```bash
+dapr publish --topic A --pubsub pubsub --data '{ "message": "This is a test" }'
+```
     
-    ```bash
-        [0m?[94;1m== APP == Topic A: { id: '5780e2ca-f526-4839-92e5-a0a30aff829a', source: 'react-form', type: 'com.dapr.event.sent', specversion: '0.3',data: { message: 'this is a test' } }
-    ```
+  * Windows CMD
+
+```bash
+dapr publish --topic A --pubsub pubsub --data "{ \"message\": \"This is a test\" }"
+```
+    
+  * Windows Powershell
+
+```ps
+dapr publish --topic A --pubsub pubsub --data "{ message: This is a test }"
+```
+
+Both Node.js and Python subscribers subscribe to topic A and log when they receive a message. Note that logs are showing up in the console window where you ran each one: 
+
+```bash
+[0m?[94;1m== APP == Topic A: { id: '5780e2ca-f526-4839-92e5-a0a30aff829a', source: 'react-form', type: 'com.dapr.event.sent', specversion: '0.3',data: { message: 'this is a test' } }
+```
 
 2. **Optional**: If you're running both the Node and Python apps, try publishing a message of topic B. You'll notice that only the Node app will receive this message. A more detailed discussion on how these microservices are subscribing to specific topics can be found in [How it Works](#How-it-Works).
 
@@ -111,14 +126,18 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes. Now,
 Now, run the React front end with Dapr. The front end will publish different kinds of messages that subscribers will pick up.
 
 1. Open a new CLI window and navigate to the react-form directory:
-    ```bash
-        cd react-form
-    ```
+
+```bash
+cd react-form
+```
+
 2. Run the React front end app with Dapr: 
-    ```bash
-        dapr run --app-id react-form --app-port 8080 npm run buildandstart
-    ```
-    This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Dapr logs.
+
+```bash
+dapr run --app-id react-form --app-port 8080 npm run buildandstart
+```
+
+This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Dapr logs.
 
 3. Open the browser and navigate to "http://localhost:8080/". You should see a form with a dropdown for message type and message text: 
 
@@ -149,19 +168,24 @@ Now that the Redis store is set up, you can deploy the assets.
 
 1. In your CLI window, navigate to the deploy directory
 2. To deploy the publisher and two subscriber microservices, as well as the redis configuration you set up in the last step, run:
-    ```bash
-        kubectl apply -f .
-    ```
-3. To see each pod being provisioned run:
-    ```bash
-        kubectl get pods
-    ```
-4. To get the external IP exposed by the `react-form` microservice, run 
-    ```bash
-        kubectl get svc -w
-    ```
 
-    This may take a few minutes.
+```bash
+kubectl apply -f .
+```
+
+3. To see each pod being provisioned run:
+
+```bash
+kubectl get pods
+```
+
+4. To get the external IP exposed by the `react-form` microservice, run 
+
+```bash
+kubectl get svc -w
+```
+
+This may take a few minutes.
 
 > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
 
@@ -169,18 +193,18 @@ Now that the Redis store is set up, you can deploy the assets.
 
 1. Copy the external IP from the last step into a browser and observe the same React form that you saw locally.
 
-    **For Minikube users**, execute the below command to open `react-form` in a browser
-    ```
-        minikube service react-form
-    ```
+**For Minikube users**, execute the below command to open `react-form` in a browser
+```
+minikube service react-form
+```
 
 2. Create and submit messages of different types.
 3. To see the logs generated from your subscribers: 
 
-    ```bash
-        kubectl logs --selector app=node-subscriber -c node-subscriber
-        kubectl logs --selector app=python-subscriber -c python-subscriber
-    ```
+```bash
+kubectl logs --selector app=node-subscriber -c node-subscriber
+kubectl logs --selector app=python-subscriber -c python-subscriber
+```
 
 4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
 
@@ -218,6 +242,7 @@ app.get('/dapr/subscribe', (_req, res) => {
     ]);
 });
 ```
+
 This tells Dapr what topics in which pubsub component to subscribe to. When deployed (locally or in Kubernetes), Dapr will call out to the service to determine if it's subscribing to anything. The other two endpoints are POST endpoints:
 
 ```js
@@ -277,14 +302,14 @@ The client is a simple single page React application that was bootstrapped with 
 Upon submission of the form, the aggregated JSON data is sent to the server:
 
 ```js
-    fetch('/publish', {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method:"POST",
-        body: JSON.stringify(this.state),
-    });
+fetch('/publish', {
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    method:"POST",
+    body: JSON.stringify(this.state),
+});
 ```
 
 #### Server
