@@ -33,6 +33,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "calculator-front-end"
         dapr.io/app-port: "8080"
+        dapr.io/config: "appconfig"
     spec:
       containers:
       - name: calculator-front-end
