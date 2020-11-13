@@ -17,6 +17,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "addapp"
         dapr.io/app-port: "6000"
+        dapr.io/config: "appconfig"
     spec:
       containers:
       - name: add
