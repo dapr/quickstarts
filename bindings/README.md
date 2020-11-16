@@ -142,13 +142,13 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 
 ### Setting up a Kafka in Kubernetes
 
-1. Install Kafka via [incubator/kafka helm chart](https://github.com/helm/charts/tree/master/incubator/kafka)
+1. Install Kafka via [bitnami/kafka](https://bitnami.com/stack/kafka/helm)
 
 ```bash
-helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 kubectl create ns kafka
-helm install dapr-kafka incubator/kafka --namespace kafka -f ./kafka-non-persistence.yaml
+helm install dapr-kafka bitnami/kafka --namespace kafka -f ./kafka-non-persistence.yaml
 ```
 
 2. Wait until kafka pods are running
@@ -159,8 +159,6 @@ kubectl -n kafka get pods -w
 NAME                     READY   STATUS    RESTARTS   AGE
 dapr-kafka-0             1/1     Running   0          2m7s
 dapr-kafka-zookeeper-0   1/1     Running   0          2m57s
-dapr-kafka-zookeeper-1   1/1     Running   0          2m13s
-dapr-kafka-zookeeper-2   1/1     Running   0          109s
 ```
 
 ### Deploy Assets
@@ -197,9 +195,9 @@ kubectl logs --selector app=bindingspythonapp -c python
 ```bash
 ...
 {'data': {'orderId': 240}}
-<Response [200]>
+<Response [204]>
 {'data': {'orderId': 241}}
-<Response [200]>
+<Response [204]>
 ...
 ```
 
