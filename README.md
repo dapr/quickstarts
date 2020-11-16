@@ -23,7 +23,8 @@ Dapr is currently under community development with preview releases. The master 
 
 | Dapr Quickstart Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
-| [v0.11.0](https://github.com/dapr/quickstarts/tree/v0.11.0) | [v0.11.0](https://github.com/dapr/dapr/tree/v0.11.0) |
+| [v1.0.0-rc.1](https://github.com/dapr/quickstarts/tree/v1.0.0-rc.1) | [v1.0.0-rc.1](https://github.com/dapr/dapr/tree/v1.0.0-rc.1) |
+| [v0.11.0](https://github.com/dapr/quickstarts/tree/v0.11.0) | [v0.11.3](https://github.com/dapr/dapr/tree/v0.11.3) |
 | [v0.10.0](https://github.com/dapr/quickstarts/tree/v0.10.0) | [v0.10.0](https://github.com/dapr/dapr/tree/v0.10.0) |
 | [v0.9.0](https://github.com/dapr/quickstarts/tree/v0.9.0) | [v0.9.0](https://github.com/dapr/dapr/tree/v0.9.0) |
 | [v0.8.0](https://github.com/dapr/quickstarts/tree/v0.8.0) | [v0.8.0](https://github.com/dapr/dapr/tree/v0.8.0) |
