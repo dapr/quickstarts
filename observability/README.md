@@ -81,10 +81,11 @@ Zipkin as the tracing provider for Dapr.
 
 Deploy Zipkin to your cluster by running:
 ```bash
-# Install Zipkin
 kubectl apply -f ./deploy/zipkin.yaml
+```
 
-# Install the Zipkin exporter component
+Now install a Component that defines Zipkin as the tracing provider for Dapr, and you are done:
+```bash
 kubectl apply -f ./deploy/zipkin-exporter.yaml
 ```
 
@@ -104,7 +105,7 @@ helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm
 helm install open-telemetry/opentelemetry-collector -f ./deploy/otel-values.yaml
 ```
 
-Now, install the OpenTelemetry exporter component:
+Now install a Component that defines OpenTelemetry as the tracing provider for Dapr, and you are done:
 ```bash
 kubectl apply -f ./deploy/otel-exporter.yaml
 ```
