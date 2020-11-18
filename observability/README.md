@@ -70,7 +70,7 @@ the second option will be more preferrable.
 
 ### Option 1: Standalone Zipkin exporter
 
-Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes three sections:
+Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes two sections:
 
 1. A **Deployment** for Zipkin using the *openzipkin/zipkin* docker image.
 2. A **Service** which will expose Zipkin internally as a ClusterIP in Kubernetes.
