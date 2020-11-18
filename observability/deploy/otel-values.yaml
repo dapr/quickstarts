@@ -45,5 +45,3 @@ standaloneCollector:
         traces:
           receivers: [opencensus]
           exporters: [zipkin]
-
-
