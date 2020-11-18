@@ -58,19 +58,60 @@ You can see that `appconfig` has `TRACING-ENABLED` set to `true`.
 
 ## Deploy Zipkin to the cluster and set it as the tracing provider
 
-In this quickstart Zipkin is used for tracing. Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes three sections:
+In this quickstart Zipkin is used for tracing. There are two options
+to do this. In the first option, we export traces directly to Zipkin
+using the Zipkin exporter. The second option is to export traces to
+OpenTelemetry Collector which can push to Zipkin (as well as Jaeger,
+Application Insights, etc).
+
+Since we plan to deprecate our trace exporters in favor of
+OpenTelemetry (which can export to many more trace storage backends),
+the second option will be more preferrable.
+
+### Option 1: Standalone Zipkin exporter
+
+Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes three sections:
 
 1. A **Deployment** for Zipkin using the *openzipkin/zipkin* docker image.
 2. A **Service** which will expose Zipkin internally as a ClusterIP in Kubernetes.
-3. A **Component** that defines Zipkin as the tracing provider for Dapr.
+
+Examine [*./deploy/zipkin-exporter.yaml*](
+./deploy/zipkin-exporter.yaml) and see a **Component** that defines
+Zipkin as the tracing provider for Dapr.
 
 Deploy Zipkin to your cluster by running:
+```bash
+# Install Zipkin
+kubectl apply -f ./deploy/zipkin.yaml
 
+# Install the Zipkin exporter component
+kubectl apply -f ./deploy/zipkin-exporter.yaml
+```
+
+### Option 2: Pushing traces to Zipkin through OpenTelemetry Collector
+
+First, install Zipkin the same way as Option 1:
 ```bash
 kubectl apply -f ./deploy/zipkin.yaml
 ```
 
-Now that Zipkin is deployed, you can access the Zipkin UI by creating a tunnel to the internal Zipkin service you just created by running:
+Check out the file
+[*./deploy/otel-values.yaml*](./deploy/otel-values.yaml) which
+contains parameters for the OpenTelemetry Helm chart to talk to our
+Zipkin instance. Let's use that to install OpenTelemetry:
+```bash
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm install open-telemetry/opentelemetry-collector -f ./deploy/otel-values.yaml
+```
+
+Now, install the OpenTelemetry exporter component:
+```bash
+kubectl apply -f ./deploy/otel-exporter.yaml
+```
+
+Now that you have Zipkin deployed either by following the steps in one
+of the above options, you can access the Zipkin UI by creating a
+tunnel to the internal Zipkin service you just created by running:
 
 ```bash
 kubectl port-forward svc/zipkin 9411:9411

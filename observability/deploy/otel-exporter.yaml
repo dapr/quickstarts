@@ -1,0 +1,21 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+  namespace: default
+spec:
+  tracing:
+    samplingRate: "1"
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: otel-exporter
+  namespace: default
+spec:
+  type: exporters.native
+  metadata:
+  - name: enabled
+    value: "true"
+  - name: agentEndpoint
+    value: "otel-collector.default.svc.cluster.local:55678"

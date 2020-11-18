@@ -1,0 +1,49 @@
+nameOverride: "collector"
+
+ports:
+  # Open a port to serve the OpenCensus protocol, which Dapr can use
+  # to talk to OpenTelemetry Collector Agent.
+  opencensus:
+    enabled: true
+    containerPort: 55678
+    servicePort: 55678
+    protocol: TCP
+
+# For the quickstart, we disable the agent collector, since we don't
+# need to scale collector agent using a DaemonSet (i.e. one Pod per
+# Node). Instead we will use the standaloneCollector which doesn't
+# scale as well but has a much smaller footprint.
+#
+# Users with a lot of trace output should reverse the choice here.
+agentCollector:
+  enabled: false
+standaloneCollector:
+  enabled: true
+  # Set a small footprint in term of Pod count and Pod size which
+  # is suitable for the quickstart sample.
+  replicaCount: 1
+  resources:
+    limits :
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 200m
+      memory: 400Mi
+  configOverride:
+    # Receive traces from OpenCensus format.
+    receivers:
+      opencensus:
+        endpoint: 0.0.0.0:55678
+    # Export traces into Zipkin.
+    exporters:
+      zipkin:
+        endpoint: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
+        format: proto
+        insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers: [opencensus]
+          exporters: [zipkin]
+
+
