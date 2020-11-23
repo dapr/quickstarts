@@ -1,0 +1,25 @@
+apiVersion: jaegertracing.io/v1
+kind: "Jaeger"
+metadata:
+  name: "jaeger"
+spec:
+  strategy: allInOne
+  ingress:
+    enabled: false
+  allInOne:
+    image: jaegertracing/all-in-one:1.13
+    options:
+      query:
+        base-path: /jaeger
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: zipkin
+spec:
+  type: exporters.zipkin
+  metadata:
+  - name: enabled
+    value: "true"
+  - name: exporterAddress
+    value: "http://jaeger-collector.default.svc.cluster.local:9411/api/v2/spans"
