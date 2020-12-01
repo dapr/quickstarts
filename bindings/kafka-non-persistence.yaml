@@ -8,9 +8,35 @@ replicas: 1
 # Disable persistent storage
 persistence:
   enabled: false
+zookeeper:
+  persistence:
+    enabled: false
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+              - linux
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+              - amd64
 
-# Topic creation and configuration for sample
-topics:
-  - name: sample
-    partitions: 1
-    replicationFactor: 1
+autoCreateTopicsEnable: true
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+          - key: kubernetes.io/arch
+            operator: In
+            values:
+            - amd64
