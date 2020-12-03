@@ -1,5 +1,5 @@
 #first stage - builder
-FROM golang:1.11.0-stretch as builder
+FROM golang:1.15-buster as builder
 WORKDIR /dir
 COPY app.go .
 RUN go get -d -v
