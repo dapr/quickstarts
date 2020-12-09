@@ -49,9 +49,9 @@ dapr configurations --kubernetes
 You should see output that looks like this:
 
 ```bash
-  NAME       TRACING-ENABLED  MTLS-ENABLED  MTLS-WORKLOAD-TTL  MTLS-CLOCK-SKEW  
-  appconfig  true             false                                             
-  default    false            true          24h                15m              
+  NAME       TRACING-ENABLED  MTLS-ENABLED  MTLS-WORKLOAD-TTL  MTLS-CLOCK-SKEW
+  appconfig  true             false
+  default    false            true          24h                15m
 ```
 
 You can see that `appconfig` has `TRACING-ENABLED` set to `true`.
@@ -62,7 +62,6 @@ In this quickstart Zipkin is used for tracing. Examine [*./deploy/zipkin.yaml*](
 
 1. A **Deployment** for Zipkin using the *openzipkin/zipkin* docker image.
 2. A **Service** which will expose Zipkin internally as a ClusterIP in Kubernetes.
-3. A **Component** that defines Zipkin as the tracing provider for Dapr.
 
 Deploy Zipkin to your cluster by running:
 
@@ -92,7 +91,7 @@ annotations:
 
 For this quickstart, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/deploy/react-calculator.yaml#L36).
 
-Note you did not introduce any dependency on Zipkin into the calculator app code or deployment yaml files. The Zipkin Dapr component is configured to read tracing events and write these to an exporter.
+Note you did not introduce any dependency on Zipkin into the calculator app code or deployment yaml files. The Zipkin Dapr component is configured to read tracing events and write these to a tracing backend.
 
 Now deploy the distributed calculator application to your cluster following the instructions found in the [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md) quickstart. Then browse to the calculator UI.
 
