@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bindings-pythonapp
+  labels:
+    app: bindingspythonapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bindingspythonapp
+  template:
+    metadata:
+      labels:
+        app: bindingspythonapp
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "bindings-pythonapp"
+    spec:
+      containers:
+      - name: python
+        image: docker.io/dapriosamples/bindings-pythonapp:edge

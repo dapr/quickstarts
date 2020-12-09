@@ -1,3 +1,8 @@
+# ------------------------------------------------------------
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+# ------------------------------------------------------------
+
 name: samples
 
 on:
@@ -7,29 +12,53 @@ on:
       - release-*
     tags:
       - v*
+    paths-ignore: 
+      - '**.md'
   pull_request:
     branches:
       - master
       - release-*
-
+  workflow_dispatch:
 jobs:
   build:
-    name: Build and push docker images
-    runs-on: ubuntu-latest
+    name: Build ${{ matrix.target_os }}_${{ matrix.target_arch }} binaries
+    runs-on: ${{ matrix.os }}
     env:
-      SAMPLE_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      TARGET_OS: ${{ matrix.target_os }}
+      TARGET_ARCH: ${{ matrix.target_arch }}
+      DOCKER_CLI_EXPERIMENTAL: enabled
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        target_arch: [arm, arm64, amd64]
+        include:
+          - os: ubuntu-latest
+            target_os: linux
+        exclude:
+          - os: windows-latest
+            target_arch: arm
+          - os: macOS-latest
+            target_arch: arm
+          - os: windows-latest
+            target_arch: arm64
+          - os: macOS-latest
+            target_arch: arm64
     steps:
-      - uses: actions/checkout@v1
+      - name: Check Docker version
+        run: docker --version
+      - name: Check out code
+        uses: actions/checkout@v2
       - name: Parse release version and set REL_VERSION
         run: python ./.github/scripts/get_release_version.py
-      - name: Build docker image
+      - name: Set Docker's multiarch/qemu-user-static
         run: |
-          if [ -z "${{ env.SAMPLE_REGISTRY }}" ]; then
-            export SAMPLE_REGISTRY=docker.io/dapriosamples
-            echo "##[set-env name=SAMPLE_REGISTRY;]$SAMPLE_REGISTRY"
-          fi
-  
-          SAMPLE_LIST=(2.hello-kubernetes 3.distributed-calculator 4.pub-sub 5.bindings 7.middleware 8.observability)
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          docker buildx create --name mybuilder --driver docker-container --use
+      - name: Check platforms buildx supports
+        run: docker buildx inspect --bootstrap
+      - name: Build docker image
+        run: | 
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
@@ -44,11 +73,48 @@ jobs:
       - name: publish image to dockerhub
         if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(2.hello-kubernetes 3.distributed-calculator 4.pub-sub 5.bindings 7.middleware 8.observability)
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
             make push
+            popd
+          done
+  publish:
+    name: Publish docker manifest
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_CLI_EXPERIMENTAL: enabled
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Parse release version and set REL_VERSION
+        run: python ./.github/scripts/get_release_version.py
+      - name: create docker manifest
+        if: github.event_name != 'pull_request'
+        run: |
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
+
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make manifest-create
+            popd
+          done
+      - name: docker login
+        if: github.event_name != 'pull_request'
+        run: |
+          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
+      - name: publish manifest to dockerhub
+        if: github.event_name != 'pull_request'
+        run: |
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
+
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make manifest-push
             popd
           done

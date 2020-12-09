@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-subscriber
+  labels:
+    app: node-subscriber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-subscriber
+  template:
+    metadata:
+      labels:
+        app: node-subscriber
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "node-subscriber"
+        dapr.io/app-port: "3000"
+    spec:
+      containers:
+      - name: node-subscriber
+        image: dapriosamples/pubsub-node-subscriber:edge
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always

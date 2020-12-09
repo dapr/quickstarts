@@ -1,0 +1,7 @@
+POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
+
+{ "data": {"orderId":"42"} }
+
+###
+
+GET http://localhost:3500/v1.0/invoke/nodeapp/method/order

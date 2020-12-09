@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: react-form
+  labels:
+    app: react-form
+spec:
+  selector:
+    app: react-form
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-form
+  labels:
+    app: react-form
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-form
+  template:
+    metadata:
+      labels:
+        app: react-form
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "react-form"
+        dapr.io/app-port: "8080"
+    spec:
+      containers:
+      - name: react-form
+        image: dapriosamples/pubsub-react-form:edge
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
