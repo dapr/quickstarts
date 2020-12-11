@@ -52,9 +52,8 @@ dapr configurations --kubernetes
 You should see output that looks like this:
 
 ```bash
-  NAME       TRACING-ENABLED  MTLS-ENABLED  MTLS-WORKLOAD-TTL  MTLS-CLOCK-SKEW
-  appconfig  true             false
-  default    false            true          24h                15m
+  NAME       TRACING-ENABLED  METRICS-ENABLED  AGE  CREATED
+  appconfig  true             true             1h   2020-12-10 22:01.59 
 ```
 
 You can see that `appconfig` has `TRACING-ENABLED` set to `true`.
