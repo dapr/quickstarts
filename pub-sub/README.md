@@ -89,38 +89,6 @@ python -m pip install -r requirements.txt
 dapr run --app-id python-subscriber --app-port 5000 python3 app.py
 ```
 
-### Use the CLI to publish messages to subscribers
-
-The Dapr CLI provides a mechanism to publish messages for testing purposes. Now, test that subscribers are listening!
-
-1. Use Dapr CLI to publish a message:
-   
-  * Linux/Mac:
-
-```bash
-dapr publish --topic A --pubsub pubsub --data '{ "message": "This is a test" }'
-```
-    
-  * Windows CMD
-
-```bash
-dapr publish --topic A --pubsub pubsub --data "{ \"message\": \"This is a test\" }"
-```
-    
-  * Windows Powershell
-
-```ps
-dapr publish --topic A --pubsub pubsub --data "{ message: This is a test }"
-```
-
-Both Node.js and Python subscribers subscribe to topic A and log when they receive a message. Note that logs are showing up in the console window where you ran each one: 
-
-```bash
-[0m?[94;1m== APP == Topic A: { id: '5780e2ca-f526-4839-92e5-a0a30aff829a', source: 'react-form', type: 'com.dapr.event.sent', specversion: '0.3',data: { message: 'this is a test' } }
-```
-
-2. **Optional**: If you're running both the Node and Python apps, try publishing a message of topic B. You'll notice that only the Node app will receive this message. A more detailed discussion on how these microservices are subscribing to specific topics can be found in [How it Works](#How-it-Works).
-
 ### Run the React front end with Dapr
 
 Now, run the React front end with Dapr. The front end will publish different kinds of messages that subscribers will pick up.
@@ -143,9 +111,41 @@ This may take a minute, as it downloads dependencies and creates an optimized pr
 
 ![Form Screenshot](./img/Form_Screenshot.JPG)
 
-4. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
+4. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
 
-5. If you want to deploy this same application to Kubernetes, move onto the next step. Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
+```bash
+[0m?[94;1m== APP == Topic A: { id: '5780e2ca-f526-4839-92e5-a0a30aff829a', source: 'react-form', type: 'com.dapr.event.sent', specversion: '0.3',data: { message: 'this is a test' } }
+```
+
+### Use the CLI to publish messages to subscribers
+
+The Dapr CLI provides a mechanism to publish messages for testing purposes.
+
+1. Use Dapr CLI to publish a message:
+   
+  * Linux/Mac:
+
+```bash
+
+dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data '{ "message": "This is a test" }'
+```
+    
+  * Windows CMD
+
+```bash
+dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data "{ \"message\": \"This is a test\" }"
+```
+    
+  * Windows Powershell
+
+```ps
+dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data "{ message: This is a test }"
+```
+
+2. **Optional**: Try publishing a message of topic B. You'll notice that only the Node app will receive this message.
+
+3. If you want to deploy this same application to Kubernetes, move onto the next step. Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
+
 
 ## Run in Kubernetes
 
