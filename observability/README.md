@@ -9,9 +9,9 @@ In this quickstart you will:
 - Troubleshoot a performance issue.
 
 ## Configure self hosted mode
-For self hosted mode, on running `dapr init`:
+For self hosted mode, first run `dapr init`. When you run `dapr init`:
 
-1. The following YAML file is created by default in `$HOME/dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden `:
+1. The following YAML file is created by default in `$HOME/dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden:
 
 * config.yaml
 
@@ -30,14 +30,14 @@ spec:
 
 2. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched.
 
-3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch a Node js app using the default config.yaml:
+3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch a Node.js app using the default config.yaml:
 
 ```bash
 dapr run --app-id mynode --app-port 3000 node app.js
 ```
 
 ### Viewing Traces
-As mentioned, tracing is set up out of the box when running `dapr init`. To
+Tracing is set up out of the box when running `dapr init`. To
 view traces, in your browser go to http://localhost:9411 and you will
 see the Zipkin UI.
 
