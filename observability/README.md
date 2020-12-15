@@ -25,7 +25,7 @@ spec:
   tracing:
     samplingRate: "1"
     zipkin:
-	endpointAddress: "http://localhost:9411/api/v2/spans"
+      endpointAddress: "http://localhost:9411/api/v2/spans"
 ```
 
 2. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched.
