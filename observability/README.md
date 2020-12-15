@@ -8,7 +8,42 @@ In this quickstart you will:
 - Instrument an application for tracing and then deploy it.
 - Troubleshoot a performance issue.
 
-## Prerequisites
+## Configure self hosted mode
+For self hosted mode, first run `dapr init`. When you run `dapr init`:
+
+1. The following YAML file is created by default in `$HOME/dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden:
+
+* config.yaml
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: daprConfig
+  namespace: default
+spec:
+  tracing:
+    samplingRate: "1"
+    zipkin:
+      endpointAddress: "http://localhost:9411/api/v2/spans"
+```
+
+2. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched.
+
+3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch a Node.js app using the default config.yaml:
+
+```bash
+dapr run --app-id mynode --app-port 3000 node app.js
+```
+
+### Viewing Traces
+Tracing is set up out of the box when running `dapr init`. To
+view traces, in your browser go to http://localhost:9411 and you will
+see the Zipkin UI.
+
+
+## Configure Kubernetes
+### Prerequisites
 
 This quickstart builds on the [distributed calculator](../distributed-calculator/README.md) quickstart and requires Dapr to be installed on a Kubernetes cluster along with a state store. It is suggested to go through the distributed calculator quickstart before this one. If you have not done this then:
 
@@ -53,12 +88,12 @@ You should see output that looks like this:
 
 ```bash
   NAME       TRACING-ENABLED  METRICS-ENABLED  AGE  CREATED
-  appconfig  true             true             1h   2020-12-10 22:01.59 
+  appconfig  true             true             1h   2020-12-10 22:01.59
 ```
 
 You can see that `appconfig` has `TRACING-ENABLED` set to `true`.
 
-## Deploy Zipkin to the cluster and set it as the tracing provider
+### Deploy Zipkin to the cluster and set it as the tracing provider
 
 In this quickstart Zipkin is used for tracing. Examine [*./deploy/zipkin.yaml*](./deploy/zipkin.yaml) and see how it includes three sections:
 
@@ -79,7 +114,7 @@ kubectl port-forward svc/zipkin 9411:9411
 
 On your browser go to [http://localhost:9411](http://localhost:9411). You should be able to see the Zipkin dashboard.
 
-## Instrument the application for tracing and deploy it
+### Instrument the application for tracing and deploy it
 
 To instrument a service for tracing with Dapr, no code changes are required, Dapr handles all of the tracing using the Dapr side-car. All that is needed is to add the Dapr annotation for the configuration you deployed earlier (which enables tracing) in the application deployment yaml along with the other Dapr annotations. The configuration annotation looks like this:
 
@@ -101,7 +136,7 @@ Now deploy the distributed calculator application to your cluster following the 
 
 > `kubectl rollout restart deployment addapp calculator-front-end divideapp multiplyapp subtractapp`
 
-## Discover and troubleshoot a performance issue using Zipkin
+### Discover and troubleshoot a performance issue using Zipkin
 
 To show how observability can help discover and troubleshoot issues on a distributed application, you'll update one of the services in the calculator app. This updated version simulates a performance degradation in the multiply operation of the calculator that you can then investigate using the traces emitted by the Dapr sidecar. Run the following to apply a new version of the python-multiplier service:
 
@@ -137,7 +172,7 @@ You can quickly see that the multiply method invocation is unusually slow (takes
 
 Now you can see which specific call was delayed via the `data` field (here it's the 12 * 2 operation) and confirm that it is the multiplier service which you updated that is causing the slowdown (You can find the code for the slow multiplier under the python directory).
 
-## Clean up
+### Clean up
 
 1. To remove the distributed calculator application from your cluster run:
 
