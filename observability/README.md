@@ -30,7 +30,7 @@ spec:
 
 2. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched.
 
-3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example:
+3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch a Node js app using the default config.yaml:
 
 ```bash
 dapr run --app-id mynode --app-port 3000 node app.js
