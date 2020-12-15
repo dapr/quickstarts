@@ -4,9 +4,10 @@ metadata:
   name: pipeline
 spec:
   tracing:
-    enabled: true
-    expandParams: true
-    includeBody: true
+    samplingRate: "1"
+    stdout: true
+    zipkin:
+      endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
   httpPipeline:
     handlers:
     - type: middleware.http.oauth2
