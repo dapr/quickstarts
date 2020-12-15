@@ -37,7 +37,7 @@ dapr run --app-id mynode --app-port 3000 node app.js
 ```
 
 ### Viewing Traces
-Since tracing is set up out of the box when running `dapr init`, to
+As mentioned, tracing is set up out of the box when running `dapr init`. To
 view traces, in your browser go to http://localhost:9411 and you will
 see the Zipkin UI.
 
