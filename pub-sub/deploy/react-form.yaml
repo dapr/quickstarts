@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: react-form
-        image: dapriosamples/pubsub-react-form:edge
+        image: dapriosamples/pubsub-react-form:latest
         ports:
         - containerPort: 8080
         imagePullPolicy: Always
