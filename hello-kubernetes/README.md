@@ -1,6 +1,6 @@
 # Hello Kubernetes
 
-This tutorial will get you up and running with Dapr in a Kubernetes cluster. We'll be deploying the same applications from [Hello World](../hello-world). To recap, the Python App generates messages and the Node app consumes and persists them. The following architecture diagram illustrates the components that make up this quickstart:
+This tutorial will get you up and running with Dapr in a Kubernetes cluster. You will be deploying the same applications from [Hello World](../hello-world). To recap, the Python App generates messages and the Node app consumes and persists them. The following architecture diagram illustrates the components that make up this quickstart:
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -37,11 +37,11 @@ $ dapr init --kubernetes
 
 ## Step 2 - Create and configure a state store
 
-Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc) to persist and retrieve state. For this demo, we'll use Redis.
+Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc) to persist and retrieve state. This demo will use Redis.
 
 1. Follow [these steps](https://docs.dapr.io/getting-started/configure-redis/) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory.
-    > **Note:** the `redis.yaml` file provided in this quickstart will work securely out-of-the-box with a Redis installed with `helm install bitnami/redis`. If you have your own Redis setup, replace the `redisHost` value  with your own Redis master address, and the redisPassword with your own Secret.
+    > **Note:** the `redis.yaml` file provided in this quickstart will work securely out-of-the-box with a Redis installed with `helm install bitnami/redis`. If you have your own Redis setup, replace the `redisHost` value  with your own Redis master address, and the redisPassword with your own Secret. You can learn more [here](https://docs.dapr.io/operations/components/component-secrets/).
 3. Apply the `redis.yaml` file: `kubectl apply -f ./deploy/redis.yaml` and observe that your state store was successfully configured!
 
 ```bash
