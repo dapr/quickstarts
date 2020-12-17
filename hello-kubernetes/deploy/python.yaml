@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
       - name: python
-        image: dapriosamples/hello-k8s-python:edge
+        image: dapriosamples/hello-k8s-python:latest
