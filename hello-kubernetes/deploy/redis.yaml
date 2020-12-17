@@ -5,7 +5,15 @@ metadata:
 spec:
   type: state.redis
   metadata:
+  # These settings will work out of the box if you use `helm install
+  # bitnami/redis`.  If you have your own setup, replace
+  # `redis-master:6379` with your own Redis master address, and the
+  # Redis password with your own Secret.
   - name: redisHost
-    value: YOUR_REDIS_HOST_HERE:6379
+    value: redis-master:6379
   - name: redisPassword
-    value: YOUR_REDIS_KEY_HERE
+    secretKeyRef:
+      name: redis
+      key: redis-password
+auth:
+  secretStore: kubernetes
