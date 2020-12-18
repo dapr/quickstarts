@@ -2,7 +2,8 @@ const operationMap = {
   "+": "add",
   "-": "subtract",
   "x": "multiply",
-  "÷": "divide"
+  "÷": "divide",
+  "%": "percentage"
 };
 
 export default async function operate(operandOne, operandTwo, operationSymbol) {

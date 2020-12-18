@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: percentageapp
+  labels:
+    app: percentage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: percentage
+  template:
+    metadata:
+      labels:
+        app: percentage
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "percentageapp"
+        dapr.io/app-port: "3000"
+        dapr.io/config: "appconfig"
+    spec:
+      containers:
+        - name: percentage
+          image: dapriosamples/distributed-calculator-php:latest
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always

@@ -1,0 +1,16 @@
+{
+  "description": "Percentage Operation",
+  "license": "MIT",
+  "name": "dapr/php-percentage",
+  "version": "0.1.0",
+  "type": "project",
+  "require": {
+    "dapr/php-sdk": "dev-main"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "../../../php-sdk"
+    }
+  ]
+}

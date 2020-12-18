@@ -1,0 +1,68 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "cd321f269e8681b78c24c4d490121811",
+    "packages": [
+        {
+            "name": "dapr/php-sdk",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "../../../php-sdk",
+                "reference": "5bba537a3df1f9eb10af923564c2a23ec2e877a6"
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "8.0"
+            },
+            "require-dev": {
+                "ext-xdebug": "*",
+                "phpunit/phpunit": "^9",
+                "vimeo/psalm": "^4.3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dapr\\": "src/lib",
+                    "Dapr\\TestActors\\": "test/actors"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "./vendor/bin/phpunit --testdox tests"
+                ],
+                "start": [
+                    "PHP_CLI_SERVER_WORKERS=100 dapr run -i dev -p 9502 -- php -S 0.0.0.0:9502 -t src"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Landers",
+                    "email": "landers.robert@gmail.com"
+                }
+            ],
+            "description": "Dapr Implementation in PHP",
+            "time": "2020-12-16T19:50:17+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "dapr/php-sdk": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}

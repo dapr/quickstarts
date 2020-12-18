@@ -6,6 +6,7 @@ This quickstart shows method invocation and state persistent capabilities of Dap
 - **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/1.0.x/) application
 - **Division**: Node [Express](https://expressjs.com/) application
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
+- **Percentage** [php](https://php.net) application
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/). 
 Kudos to [ahfarmer](https://github.com/ahfarmer) whose [React calculator](https://github.com/ahfarmer/calculator) 
@@ -95,7 +96,16 @@ These instructions start the four calculator operator apps (add, subtract, multi
       ```
       dapr run --app-id multiplyapp --app-port 5000 --dapr-http-port 3501 flask run
       ```
-5. Frontend Calculator app - Open a terminal window and navigate to the react-calculator directory and follow the steps below:
+5. Percentage App - Open a terminal window and navigate to the php directory and follow the steps below:
+   - Install the required packages
+     ```
+     composer install -o --no-dev
+     ```
+   - Start dapr using the command:
+     ```
+     dapr run --app-id percentageapp --app-port 3005 --dapr-http-port 3505 -- php -S 0.0.0.0:3005
+     ```
+6. Frontend Calculator app - Open a terminal window and navigate to the react-calculator directory and follow the steps below:
     - Install the required modules
       ```
       npm install

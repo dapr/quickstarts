@@ -38,6 +38,11 @@ app.post('/calculate/divide', async (req, res) => {
   req.pipe(request(divideUrl)).pipe(res);
 });
 
+app.post('/calculate/percentage', async (req, res) => {
+  const percentUrl = `${daprUrl}/percentageapp/method/percentage`;
+  req.pipe(request(percentUrl)).pipe(res);
+});
+
 // Forward state retrieval to Dapr state endpoint
 app.get('/state', async (req, res) => req.pipe(request(`${stateUrl}/calculatorState`)).pipe(res));
 
