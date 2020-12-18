@@ -1,0 +1,65 @@
+# ------------------------------------------------------------
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+# ------------------------------------------------------------
+
+name: Auto Validate Quickstarts
+
+on:
+  push:
+    branches:
+      - master
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - release-*
+jobs:
+  deploy:
+    name: Validate ${{ matrix.quickstart }}/README.md on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    env:
+      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/v1.0.0-rc.3/install
+      DAPR_CLI_VERSION: 1.0.0-rc.3
+      DAPR_RUNTIME_VERSION: 1.0.0-rc.2
+      GOVER: 1.15.3
+    strategy:
+      matrix: 
+        quickstart: [hello-world, distributed-calculator]
+        os: [ubuntu-latest]
+    steps:
+      - name: Install docker on MacOS
+        if: matrix.os == 'macOS-latest'
+        run: |
+          brew install --cask docker
+          open /Applications/Docker.app
+      - name: Set up Go ${{ env.GOVER }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GOVER }}
+      - name: Set up Dapr CLI - Mac/Linux
+        if: matrix.os != 'windows-latest'
+        run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
+      - name: Set up Dapr CLI - Windows
+        if: matrix.os == 'windows-latest'
+        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"     
+      - name: Install Dapr
+        run: |
+          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr --version
+      - name: Check out code 
+        uses: actions/checkout@v2
+      - name: Install utilities dependencies
+        run: |
+          echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
+          pip3 install setuptools 
+          pip3 install mechanical-markdown
+      - name: Validate ${{ matrix.quickstart }}
+        run: |
+          pushd ${{ matrix.quickstart }}
+          make validate
+          popd
+
+          

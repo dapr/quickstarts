@@ -23,10 +23,11 @@ Follow [instructions](https://docs.dapr.io/getting-started/install-dapr/) to dow
 
 Now that Dapr is set up locally, clone the repo, then navigate to the Hello World quickstart: 
 
-```bash
+```sh
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 cd quickstarts/hello-world
 ```
+
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 
@@ -37,6 +38,7 @@ const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 ```
+
 Dapr CLI creates an environment variable for the Dapr port, which defaults to 3500. You'll be using this in step 3 when sending POST messages to the system. The `stateStoreName` is the name given to the state store. You'll come back to that later on to see how that name is configured.
 
 Next, take a look at the ```neworder``` handler:
@@ -110,20 +112,53 @@ app.get('/order', (_req, res) => {
 This calls out to the Redis cache to retrieve the latest value of the "order" key, which effectively allows the Node.js app to be _stateless_. 
 
 ## Step 3 - Run the Node.js app with Dapr
+<!-- STEP
+expected_stdout_lines:
+expected_stderr_lines:
+name: "npm install"
+-->
 
 1. Install dependencies: 
 
-    ```sh
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
-    This will install `express` and `body-parser`, dependencies that are shown in the `package.json`.
+<!-- END_STEP -->
+
+This will install `express` and `body-parser`, dependencies that are shown in the `package.json`.
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Got a new order! Order ID: 42"
+  - "== APP == Successfully persisted state."
+  - "== APP == Got a new order! Order ID: 42"
+  - "== APP == Successfully persisted state."
+  - "== APP == Got a new order! Order ID: 1"
+  - "== APP == Successfully persisted state."
+  - "== APP == Got a new order! Order ID: 2"
+  - "== APP == Successfully persisted state."
+  - "== APP == Got a new order! Order ID: 3"
+  - "== APP == Successfully persisted state."
+  - "== APP == Got a new order! Order ID: 4"
+  - "== APP == Successfully persisted state."
+  - "== APP == Got a new order! Order ID: 5"
+  - "== APP == Successfully persisted state."
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+name: "run npm app"
+background: true
+sleep: 5
+-->
 
 2. Run Node.js app with Dapr: 
+   ```bash
+   dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 node app.js
+   ```
 
-    ```sh
-    dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 node app.js
-    ```
+<!-- END_STEP -->
 
 The command should output text that looks like the following, along with logs:
 
@@ -172,15 +207,33 @@ dapr invoke --app-id nodeapp --method neworder --data '{\"data\": { \"orderId\":
 ```
 
 Linux or MacOS
-```sh
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  App invoked successfully"
+expected_stderr_lines:
+name: dapr invoke
+-->
+
+```bash
 dapr invoke --app-id nodeapp --method neworder --data '{"data": { "orderId": "42" } }'
 ```
 
+<!-- END_STEP -->
+
 Alternatively, using `curl`:
 
-```sh
+<!-- STEP
+expected_stdout_lines:
+expected_stderr_lines:
+name: curl test
+-->
+
+```bash
 curl -XPOST -d @sample.json -H "Content-Type:application/json" http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
+
+<!-- END_STEP -->
 
 Or, using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
@@ -209,15 +262,34 @@ In your terminal window, you should see logs indicating that the message was rec
 
 Now, to verify the order was successfully persisted to the state store, create a GET request against: `http://localhost:3500/v1.0/invoke/nodeapp/method/order`. **Note**: Again, be sure to reflect the right port if you chose a port other than 3500.
 
-```sh
+<!-- STEP
+expected_stdout_lines: 
+  - '{"orderId":"42"}'
+expected_stderr_lines:
+name: Persistence test curl
+-->
+
+```bash
 curl http://localhost:3500/v1.0/invoke/nodeapp/method/order
 ```
 
+<!-- END_STEP -->
+
 or use Dapr CLI
 
-```sh
+<!-- STEP
+expected_stdout_lines: 
+  - '{"orderId":"42"}'
+  - "✅  App invoked successfully"
+expected_stderr_lines:
+name: Persistence test dapr invoke
+-->
+
+```bash
 dapr invoke --app-id nodeapp --method order --verb GET
 ```
+
+<!-- END_STEP -->
 
 or use the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
@@ -243,6 +315,7 @@ dapr_url = "http://localhost:{}/v1.0/invoke/nodeapp/method/neworder".format(dapr
 It is important to notice the Node App's name (`nodeapp`) in the URL, it will allow Dapr to redirect the request to the right API endpoint. This name needs to match the name used to run the Node App earlier in this exercise.
 
 The code block below shows how the Python App will incrementally post a new orderId every second, or print an exception if the post call fails.
+
 ```python
 n = 0
 while True:
@@ -259,17 +332,36 @@ while True:
 
 Now open a **new** command line terminal and go to the `hello-world` directory.
 
+<!-- STEP
+name: "Install python requirements"
+-->
+
 1. Install dependencies:
 
-    ```sh
-    pip3 install requests
-    ```
+   ```bash
+   pip3 install requests
+   ```
+
+<!-- END_STEP -->
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+name: "run python app"
+background: true
+sleep: 10
+-->
 
 2. Start the Python App with Dapr: 
 
-    ```bash
-    dapr run --app-id pythonapp python3 app.py
-    ```
+   ```bash
+   dapr run --app-id pythonapp python3 app.py
+   ```
+
+<!-- END_STEP -->
 
 3. If all went well, the **other** terminal, running the Node App, should log entries like these:
 
@@ -309,10 +401,20 @@ Now open a **new** command line terminal and go to the `hello-world` directory.
 
 To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new command line terminal: 
 
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: nodeapp'
+  - '✅  app stopped successfully: pythonapp'
+expected_stderr_lines:
+name: Shutdown dapr
+-->
+
 ```bash
 dapr stop --app-id nodeapp
 dapr stop --app-id pythonapp
 ```
+
+<!-- END_STEP -->
 
 To see that services have stopped running, run `dapr list`, noting that your services no longer appears!
 
