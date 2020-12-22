@@ -10,7 +10,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "../../../php-sdk"
+      "url": "https://github.com/dapr/php-sdk.git"
     }
   ]
 }

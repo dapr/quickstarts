@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd321f269e8681b78c24c4d490121811",
+    "content-hash": "c38227b6f7022d9aba93f9ed2e29e83d",
     "packages": [
         {
             "name": "dapr/php-sdk",
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "../../../php-sdk",
-                "reference": "5bba537a3df1f9eb10af923564c2a23ec2e877a6"
+                "url": "https://github.com/dapr/php-sdk.git",
+                "reference": "2ab860c527b1f4e5945f7ab184f1c1ab847e4be4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dapr/php-sdk/zipball/2ab860c527b1f4e5945f7ab184f1c1ab847e4be4",
+                "reference": "2ab860c527b1f4e5945f7ab184f1c1ab847e4be4",
+                "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
@@ -39,6 +45,9 @@
                 ],
                 "start": [
                     "PHP_CLI_SERVER_WORKERS=100 dapr run -i dev -p 9502 -- php -S 0.0.0.0:9502 -t src"
+                ],
+                "lint": [
+                    "./vendor/bin/psalm"
                 ]
             },
             "license": [
@@ -51,7 +60,11 @@
                 }
             ],
             "description": "Dapr Implementation in PHP",
-            "time": "2020-12-16T19:50:17+00:00"
+            "support": {
+                "source": "https://github.com/dapr/php-sdk/tree/main",
+                "issues": "https://github.com/dapr/php-sdk/issues"
+            },
+            "time": "2020-12-21T16:14:03+00:00"
         }
     ],
     "packages-dev": [],

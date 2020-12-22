@@ -97,7 +97,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
       dapr run --app-id multiplyapp --app-port 5000 --dapr-http-port 3501 flask run
       ```
 5. Percentage App - Open a terminal window and navigate to the php directory and follow the steps below:
-   - Install the required packages
+   - Install the required packages and PHP 8
      ```
      composer install -o --no-dev
      ```
