@@ -12,7 +12,7 @@ Later on, you'll deploy a Python app to act as the publisher. The architecture d
 This quickstart requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
-- [Python 3.x](https://www.python.org/downloads/)
+- [Python 3.x](https://www.python.org/downloads/): Note: When running this quickstart on Windows, it best to install Python from python.org rather than from the Windows store. 
 - [Postman](https://www.getpostman.com/) [Optional]
 
 ## Step 1 - Setup Dapr 
@@ -282,7 +282,15 @@ Now open a **new** command line terminal and go to the `hello-world` directory.
     Successfully persisted state
     ```
 
-> **Note**: Please refer [this](https://github.com/dapr/quickstarts/issues/240) issue if you have trouble running python apps with dapr on windows.
+> **Known Issue**: If you are running python3 on Windows from the Microsoft Store, and you get the following error message:
+
+    exec: "python3": executable file not found in %!P(MISSING)ATH%!(NOVERB)
+
+> This is due to golang being unable to properly execute Microsoft Store aliases. You can use the following command instead of the above:
+
+    dapr run --app-id pythonapp cmd /c "python3 app.py"
+
+> For more info please see [this](https://github.com/dapr/quickstarts/issues/240) issue.
 
 4. Now, perform a GET request a few times and see how the orderId changes every second (enter it into the web browser, use Postman, or curl):
 
