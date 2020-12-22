@@ -282,7 +282,15 @@ Now open a **new** command line terminal and go to the `hello-world` directory.
     Successfully persisted state
     ```
 
-> **Note**: Please refer [this](https://github.com/dapr/quickstarts/issues/240) issue if you have trouble running python apps with dapr on windows.
+> **Known Issue**: If you are running python3 on Windows from the Microsoft Store, and you get the following error message:
+
+    exec: "python3": executable file not found in %!P(MISSING)ATH%!(NOVERB)
+
+> This is due to golang being unable to properly execute Microsoft Store aliases. You can use the following command instead of the above:
+
+    dapr run --app-id pythonapp cmd /c "python3 app.py"
+
+> For more info please see [this](https://github.com/dapr/quickstarts/issues/240) issue.
 
 4. Now, perform a GET request a few times and see how the orderId changes every second (enter it into the web browser, use Postman, or curl):
 
