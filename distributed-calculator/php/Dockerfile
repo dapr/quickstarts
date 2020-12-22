@@ -16,5 +16,5 @@ FROM base AS service
 COPY . .
 COPY --from=composer /app/vendor /app/vendor
 ENTRYPOINT ['php']
-CMD ["-s", "0.0.0.0:3000", "-t", "/app"]
+CMD ["-S", "0.0.0.0:3000", "-t", "/app"]
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
