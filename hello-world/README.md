@@ -12,7 +12,7 @@ Later on, you'll deploy a Python app to act as the publisher. The architecture d
 This quickstart requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
 - [Node.js version 8 or greater](https://nodejs.org/en/) 
-- [Python 3.x](https://www.python.org/downloads/)
+- [Python 3.x](https://www.python.org/downloads/): Note: When running this quickstart on Windows, it best to install Python from python.org rather than from the Windows store. 
 - [Postman](https://www.getpostman.com/) [Optional]
 
 ## Step 1 - Setup Dapr 
