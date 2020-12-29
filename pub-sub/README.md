@@ -50,17 +50,57 @@ git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 ```bash
 cd node-subscriber
 ```
+
+<!-- STEP
+name: Install node dependencies
+working_dir: ./node-subscriber
+-->
+
 2. Install dependencies: 
 
 ```bash
 npm install
 ```
 
+<!-- END_STEP -->
+
 3. Run the Node subscriber app with Dapr: 
+
+<!-- STEP
+name: Run node subscriber
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == A:  {"
+  - "== APP ==   source: 'react-form',"
+  - "== APP ==   type: 'com.dapr.event.sent',"
+  - "== APP ==   specversion: '1.0',"
+  - "== APP ==   datacontenttype: 'application/json',"
+  - "== APP ==   data: { message: 'This is a test' },"
+  - "== APP ==   topic: 'A',"
+  - "== APP ==   pubsubname: 'pubsub'"
+  - "== APP == }"
+  - "== APP == B:  {"
+  - "== APP ==   source: 'react-form',"
+  - "== APP ==   type: 'com.dapr.event.sent',"
+  - "== APP ==   specversion: '1.0',"
+  - "== APP ==   datacontenttype: 'application/json',"
+  - "== APP ==   data: { messageType: 'B', message: 'Message on B' },"
+  - "== APP ==   topic: 'B',"
+  - "== APP ==   pubsubname: 'pubsub'"
+  - "== APP == }"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+working_dir: ./node-subscriber
+background: true
+sleep: 5
+-->
 
 ```bash
 dapr run --app-id node-subscriber --app-port 3000 node app.js
 ```
+
+<!-- END_STEP -->
     
 `app-id` which can be any unique identifier for the microservice. `app-port`, is the port that the Node application is running on. Finally, the command to run the app `node app.js` is passed last.
 
@@ -74,20 +114,44 @@ cd python-subscriber
 
 2. Install dependencies: 
 
+<!-- STEP
+name: Install python dependencies
+working_dir: ./python-subscriber
+-->
+
 ```bash
 pip3 install -r requirements.txt 
 ```
 or
 
+<!-- END_STEP -->
+
 ```bash
 python -m pip install -r requirements.txt
 ```
 
+
 3. Run the Python subscriber app with Dapr: 
+
+<!-- STEP
+name: Run python subscriber
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP == Received message "This is a test" on topic "A"'
+  - '== APP == Received message "Message on C" on topic "C"'
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+working_dir: ./python-subscriber
+background: true
+sleep: 10
+-->
     
 ```bash
 dapr run --app-id python-subscriber --app-port 5000 python3 app.py
 ```
+
+<!-- END_STEP -->
 
 ### Run the React front end with Dapr
 
@@ -101,15 +165,43 @@ cd react-form
 
 2. Run the React front end app with Dapr: 
 
+<!-- STEP
+name: Run react frontent
+working_dir: ./react-form
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Listening on port 8080!"
+  - "== APP == Publishing:  { messageType: 'B', message: 'Message on B' }"
+  - "== APP == Publishing:  { messageType: 'C', message: 'Message on C' }"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+background: true
+sleep: 60
+env:
+  CI: "false"
+-->
+
 ```bash
 dapr run --app-id react-form --app-port 8080 npm run buildandstart
 ```
+
+<!-- END_STEP -->
 
 This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Dapr logs.
 
 3. Open the browser and navigate to "http://localhost:8080/". You should see a form with a dropdown for message type and message text: 
 
 ![Form Screenshot](./img/Form_Screenshot.JPG)
+
+<!-- STEP
+name: Pause for manual validation
+manual_pause_message: "Pubsub APP running on http://localhost:8080. Please open in your browser and test manually."
+-->
+
+<!-- We will pause here and print the above message when mm.py is run with '-m'. Otherwise, this step does nothing -->
+
+<!-- END_STEP -->
 
 4. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
 
@@ -125,10 +217,19 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
    
   * Linux/Mac:
 
+<!-- STEP
+expected_stdout_lines:
+  - "✅  Event published successfully"
+expected_stderr_lines:
+name: Publish with dapr CLI
+-->
+
 ```bash
 
 dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data '{ "message": "This is a test" }'
 ```
+
+<!-- END_STEP -->
     
   * Windows CMD
 
@@ -142,9 +243,45 @@ dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data "{ \"m
 dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data "{ message: This is a test }"
 ```
 
-2. **Optional**: Try publishing a message of topic B. You'll notice that only the Node app will receive this message.
+2. **Optional**: Try publishing a message of topic B. You'll notice that only the Node app will receive this message. The same is true for topic 'C' and the python app.
 
-3. If you want to deploy this same application to Kubernetes, move onto the next step. Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
+<!-- STEP
+name: Curl validation
+expected_stdout_lines:
+  - "OK"
+  - "OK"
+expected_stderr_lines:
+-->
+
+> **Note:** If you are running in an environment without easy access to a web browser, the following curl commands will simulate a browser request to the node server.
+
+```bash
+curl -w "\n" -s 'http://localhost:8080/publish' -H 'Content-Type: application/json' --data '{"messageType":"B","message":"Message on B"}'
+curl -s 'http://localhost:8080/publish' -H 'Content-Type: application/json' --data '{"messageType":"C","message":"Message on C"}'
+```
+
+<!-- END_STEP -->
+
+3. Cleanup
+
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: node-subscriber'
+  - '✅  app stopped successfully: python-subscriber'
+  - '✅  app stopped successfully: react-form'
+expected_stderr_lines:
+name: Shutdown dapr
+-->
+
+```bash
+dapr stop --app-id node-subscriber
+dapr stop --app-id python-subscriber
+dapr stop --app-id react-form
+```
+
+<!-- END_STEP -->
+
+4. If you want to deploy this same application to Kubernetes, move onto the next step. Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
 
 
 ## Run in Kubernetes

@@ -27,7 +27,7 @@ jobs:
       GOVER: 1.15.3
     strategy:
       matrix: 
-        quickstart: [hello-world, distributed-calculator]
+        quickstart: [hello-world, distributed-calculator, pub-sub]
         os: [ubuntu-latest]
     steps:
       - name: Install docker on MacOS
