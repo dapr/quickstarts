@@ -38,80 +38,282 @@ Clone the quickstarts repository
 
 These instructions start the four calculator operator apps (add, subtract, multiply and divide) along with the dapr sidecar locally and then run the front end app which persists the state in a local redis state store.
 
-1. Add App - Open a terminal window and navigate to the go directory and follow the steps below:
-   - Install the gorilla/mux package: Run:
-      ```
-      go get -u github.com/gorilla/mux
-      ```
-    - Build the app. Run:
-      ```
-      go build app.go
-      ```
-    - Run dapr using the command:
-      ```
-      dapr run --app-id addapp --app-port 6000 --dapr-http-port 3503 ./app
-      ```
-2. Subtract App - Open a terminal window and navigate to the csharp directory and follow the steps below:
-    - Set environment variable to use non-default app port 7000
-      ```
-      Linux/Mac OS:
-      export ASPNETCORE_URLS="http://localhost:7000"
-      
-      Windows:
-      set ASPNETCORE_URLS=http://localhost:7000
-      ```
-    - Build the app. Run:
-      ```
-      dotnet build
-      ```
-    - Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
-      ```
-      dapr run --app-id subtractapp --app-port 7000 --dapr-http-port 3504 dotnet Subtract.dll
-      ```
-3. Divide App - Open a terminal window and navigate to the node directory and follow the steps below:
-    - Install dependencies by running the command:
-      ```
-      npm install
-      ```
-    - Start Dapr using the command below:
-      ```
-      dapr run --app-id divideapp --app-port 4000 --dapr-http-port 3502 node app.js
-      ```
-4. Multiply App - Open a terminal window and navigate to the python directory and follow the steps below:
-    - Install required packages
-      ```
-      pip3 install wheel
-      pip3 install python-dotenv
-      ```
-    - Set environment variable to use non-default app port 5000
-      ```
-      Linux/Mac OS:
-      export FLASK_RUN_PORT=5000
 
-      Windows:
-      set FLASK_RUN_PORT=5000
-      ```
-    - Start dapr using the command:
-      ```
-      dapr run --app-id multiplyapp --app-port 5000 --dapr-http-port 3501 flask run
-      ```
+1. Add App - Open a terminal window and navigate to the go directory and follow the steps below:
+
+<!-- STEP
+name: "Build go app"
+working_dir: "./go"
+-->
+
+- Install the gorilla/mux package: Run:
+   ```bash
+   go get -u github.com/gorilla/mux
+   ```
+- Build the app. Run:
+   ```bash
+   go build app.go
+   ```
+
+<!-- END_STEP -->
+
+<!-- STEP
+expected_stdout_lines:
+- "✅  You're up and running! Both Dapr and your app logs will appear here."
+- "== APP == Adding 56.000000 to 3.000000"
+- "✅  Exited Dapr successfully"
+- "✅  Exited App successfully"
+expected_stderr_lines:
+name: "Run go app"
+working_dir: "./go"
+background: true
+sleep: 2
+-->
+
+- Run dapr using the command:
+   ```bash
+   dapr run --app-id addapp --app-port 6000 --dapr-http-port 3503 ./app
+   ```
+
+<!-- END_STEP -->
+
+2. Subtract App - Open a terminal window and navigate to the csharp directory and follow the steps below:
+
+- Set environment variable to use non-default app port 7000
+   ```bash
+   #Linux/Mac OS:
+   export ASPNETCORE_URLS="http://localhost:7000"
+
+   #Windows:
+   set ASPNETCORE_URLS=http://localhost:7000
+   ```
+
+<!-- STEP
+name: "Build dotnet app"
+working_dir: "./csharp"
+-->
+
+- Build the app. Run:
+   ```bash
+   dotnet build
+   ```
+
+<!-- END_STEP -->
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Subtracting 34 from 52"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+name: "Run dotnet app"
+working_dir: "./csharp/bin/Debug/netcoreapp3.1"
+background: true
+env: 
+  ASPNETCORE_URLS: 'http://localhost:7000'
+sleep: 2
+-->
+
+- Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
+   ```bash
+   dapr run --app-id subtractapp --app-port 7000 --dapr-http-port 3504 dotnet Subtract.dll
+   ```
+
+
+<!-- END_STEP -->
+
+3. Divide App - Open a terminal window and navigate to the node directory and follow the steps below:
+
+<!-- STEP
+name: "Build node app"
+working_dir: "./node"
+timeout_seconds: 300
+-->
+
+- Install dependencies by running the command:
+   ```bash
+   npm install
+   ```
+
+<!-- END_STEP -->
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Dividing 144 by 12"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+name: "Run node app"
+working_dir: "./node"
+background: true
+sleep: 2
+-->
+
+- Start Dapr using the command below
+   ```bash
+   dapr run --app-id divideapp --app-port 4000 --dapr-http-port 3502 node app.js
+   ```
+
+<!-- END_STEP -->
+
+4. Multiply App - Open a terminal window and navigate to the python directory and follow the steps below:
+
+<!-- STEP
+name: "Build ptyhon app"
+working_dir: "./python"
+-->
+
+- Install required packages
+   ```bash
+   pip3 install wheel python-dotenv flask_cors flask
+   ```
+
+<!-- END_STEP -->
+
+- Set environment variable to use non-default app port 5000
+   ```bash
+   #Linux/Mac OS:
+   export FLASK_RUN_PORT=5000
+   
+   #Windows:
+   set FLASK_RUN_PORT=5000
+   ```
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Calculating 52.0 * 34.0"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+name: "Run python app"
+working_dir: "./python"
+background: true
+env:
+  FLASK_RUN_PORT: "5000"
+sleep: 2
+-->
+
+- Start dapr using the command:
+   ```bash
+   dapr run --app-id multiplyapp --app-port 5000 --dapr-http-port 3501 flask run
+   ```
+
+<!-- END_STEP -->
+
 5. Frontend Calculator app - Open a terminal window and navigate to the react-calculator directory and follow the steps below:
-    - Install the required modules
-      ```
-      npm install
-      npm run buildclient
-      ```
-    - Start Dapr using command below:
-      ```
-      dapr run --app-id frontendapp --app-port 8080 --dapr-http-port 3500 node server.js
-      ```
+
+
+<!-- STEP
+name: "Build frontend app"
+working_dir: "./react-calculator"
+timeout_seconds: 600
+-->
+
+- Install the required modules
+   ```bash
+   npm install
+   npm run buildclient
+   ```
+
+<!-- END_STEP -->
+
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+name: "Run frontent app"
+working_dir: "./react-calculator"
+background: true
+sleep: 15
+-->
+
+- Start Dapr using command below:
+   ```bash
+   dapr run --app-id frontendapp --app-port 8080 --dapr-http-port 3500 node server.js
+   ```
+
+<!-- END_STEP -->
+
+
 6. Open a browser window and go to http://localhost:8080/. From here, you can enter the different operations.
 
     ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
 7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence and the different apps that are contacted to perform the operation. 
 
+<!-- STEP
+name: Pause for manual validation
+manual_pause_message: "Calculator APP running on http://localhost:8080. Please open in your browser and test manually."
+-->
 
+<!-- We will pause here and print the above message when mm.py is run with '-m'. Otherwise, this step does nothing -->
+
+<!-- END_STEP -->
+
+8. Curl Validate
+
+<!-- STEP
+expected_stdout_lines:
+  - "59"
+  - "18"
+  - "12"
+  - "1768.0"
+  - '    "total": "54"'
+name: "Curl test"
+-->
+
+- To make sure all the apps are working, you can run the following curl commands which will test all the operations:
+   ```bash
+   curl -w "\n" -s 'http://localhost:8080/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
+   curl -w "\n" -s 'http://localhost:8080/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
+   curl -w "\n" -s 'http://localhost:8080/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
+   curl -w "\n" -s 'http://localhost:8080/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
+   curl -w "\n" -s 'http://localhost:8080/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
+   curl -s 'http://localhost:8080/state' | python -m json.tool
+   ```
+
+<!-- END_STEP -->
+
+- You should get the following output:
+   ```bash
+   59
+   18
+   12
+   1768.0
+   
+   {
+       "next": null,
+       "operation": null,
+       "total": "54"
+   }   
+   ```
+
+<!-- STEP
+expected_stdout_lines:
+  - '✅  app stopped successfully: addapp'
+  - '✅  app stopped successfully: subtractapp'
+  - '✅  app stopped successfully: divideapp'
+  - '✅  app stopped successfully: multiplyapp'
+  - '✅  app stopped successfully: frontendapp'
+name: cleanup
+-->
+
+9. Cleanup
+   ```bash
+   dapr stop --app-id addapp
+   dapr stop --app-id subtractapp
+   dapr stop --app-id divideapp
+   dapr stop --app-id multiplyapp
+   dapr stop --app-id frontendapp
+   ```
+
+<!-- END_STEP -->
 
 ## Running the quickstart in a Kubernetes environment
 1. Navigate to the deploy directory in this quickstart directory: `cd deploy`
