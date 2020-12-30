@@ -26,7 +26,7 @@ app.get('/getsecret', (_req, res) => {
     fetch(url)
     .then(res => res.json())
     .then(json => {
-        let secretBuffer = new Buffer(json["mysecret"])
+        let secretBuffer = Buffer.from(json["mysecret"])
         let encodedSecret = secretBuffer.toString('base64')
         console.log("Base64 encoded secret is: %s", encodedSecret)
         return res.send(encodedSecret)
