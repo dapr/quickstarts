@@ -43,9 +43,16 @@ In order to run the Kafka bindings quickstart locally, you will run the [Kafka b
 
 1. To run the container locally, run:
 
+<!-- STEP
+name: Install Kafka
+sleep: 20
+-->
+
 ```bash
 docker-compose -f ./docker-compose-single-kafka.yml up -d
 ```
+
+<!-- END_STEP -->
 
 2. To see the container running locally, run:
 
@@ -68,21 +75,58 @@ Now that you have Kafka running locally on your machine, you'll need to run the 
 
 1. Navigate to Node subscriber directory in your CLI: 
 
+
 ```bash
 cd nodeapp
 ```
 
 2. Install dependencies:
 
+<!-- STEP
+name: Install npm dependencies
+working_dir: ./nodeapp
+-->
+
 ```bash
 npm install
 ```
 
+<!-- END_STEP -->
+
 3. Run Node quickstart app with Dapr: 
+
+<!-- STEP
+name: Run node app
+working_dir: ./nodeapp
+background: true
+sleep: 5
+expected_stdout_lines: 
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 1 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 2 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 3 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 4 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 5 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 6 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 7 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 8 }"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+-->
 
 ```bash
 dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ./components
 ```
+
+<!-- END_STEP -->
 
 ### Run Python Microservice with Output Binding
 
@@ -96,15 +140,50 @@ cd pythonapp
 
 2. Install dependencies:
 
+<!-- STEP
+name: Install python dependencies
+working_dir: ./pythonapp
+-->
+
 ```bash
 pip3 install requests
 ```
 
+<!-- END_STEP -->
+
 3. Run Python quickstart app with Dapr: 
+
+<!-- STEP
+name: Run node app
+working_dir: ./pythonapp
+background: true
+sleep: 15
+expected_stdout_lines: 
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == {'data': {'orderId': 1}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 2}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 3}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 4}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 5}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 6}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 7}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 8}, 'operation': 'create'}"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+-->
 
 ```bash
 dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components
 ```
+
+<!-- END_STEP -->
 
 ### Observe Logs
 
@@ -132,11 +211,28 @@ dapr run --app-id bindings-pythonapp python3 app.py --components-path ./componen
 
 ### Cleanup
 
+To cleanly stop the dapr microservices, run:
+
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: bindings-nodeapp'
+  - '✅  app stopped successfully: bindings-pythonapp'
+expected_stderr_lines:
+name: Shutdown Dapr and Kafka
+-->
+
+```bash
+dapr stop --app-id bindings-nodeapp
+dapr stop --app-id bindings-pythonapp
+```
+
 Once you're done, you can spin down your local Kafka Docker Container by running:
 
 ```bash
 docker-compose -f ./docker-compose-single-kafka.yml down
 ```
+
+<!-- END_STEP -->
 
 ## Run in Kubernetes
 
