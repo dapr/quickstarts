@@ -42,17 +42,41 @@ Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cass
 1. Follow [these steps](https://docs.dapr.io/getting-started/configure-redis/) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory.
     > **Note:** the `redis.yaml` file provided in this quickstart will work securely out-of-the-box with a Redis installed with `helm install bitnami/redis`. If you have your own Redis setup, replace the `redisHost` value  with your own Redis master address, and the redisPassword with your own Secret. You can learn more [here](https://docs.dapr.io/operations/components/component-secrets/).
-3. Apply the `redis.yaml` file: `kubectl apply -f ./deploy/redis.yaml` and observe that your state store was successfully configured!
+3. Apply the `redis.yaml` file and observe that your state store was successfully configured!
+
+
+<!-- STEP
+name: Deploy redis config
+sleep: 1
+expected_stdout_lines:
+  - "component.dapr.io/statestore created"
+-->
 
 ```bash
-component.dapr.io "statestore" configured
+kubectl apply -f ./deploy/redis.yaml
+```
+
+<!-- END_STEP -->
+
+```bash
+component.dapr.io/statestore created
 ```
 
 ## Step 3 - Deploy the Node.js app with the Dapr sidecar
 
-```
+<!-- STEP
+name: Deploy Node App
+sleep: 30
+expected_stdout_lines:
+  - "service/nodeapp created"
+  - "deployment.apps/nodeapp created"
+-->
+
+```bash
 kubectl apply -f ./deploy/node.yaml
 ```
+
+<!-- END_STEP -->
 
 This will deploy the Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to the Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
 
@@ -82,11 +106,43 @@ Windows
 for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
 ```
 
+**Optional:** You can also use port forwarding if you don't have easy access to your Kubernetes cluster service IPs:
+
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 1
+expected_return_code:
+-->
+
+```bash
+export NODE_APP=localhost:8080
+kubectl port-forward service/nodeapp 8080:80
+```
+
+<!-- END_STEP -->
+
 ## Step 4 - Verify Service call using external IP
 To call the service using the extracted external IP, from a command prompt run:
 
+<!-- STEP
+name: Curl Test
+expected_stdout_lines:
+  - '{"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}'
+env:
+  NODE_APP: "localhost:8080"
+-->
+
 ```bash
-$ curl $NODE_APP/ports
+curl $NODE_APP/ports
+```
+
+<!-- END_STEP -->
+
+Expected output:
+
+```
 {"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}
 ```
 
@@ -114,10 +170,20 @@ while True:
     time.sleep(1)
 ```
 
+<!-- STEP
+name: Deploy Python App
+sleep: 30
+expected_stdout_lines:
+  - deployment.apps/pythonapp created
+-->
+
 Deploy the Python app to your Kubernetes cluster:
-```
+
+```bash
 kubectl apply -f ./deploy/python.yaml
 ```
+
+<!-- END_STEP -->
 
 Now wait for the pod to be in ```Running``` state:
 
@@ -131,9 +197,27 @@ Now that the Node.js and Python applications are deployed, watch messages come t
 
 Get the logs of the Node.js app:
 
+<!-- STEP
+expected_stdout_lines:
+  - "Node App listening on port 3000!"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 8"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 9"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 10"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 11"
+  - "Successfully persisted state."
+expected_stderr_lines:
+name: Read nodeapp logs
+-->
+
+```bash
+kubectl logs --selector=app=node -c node --tail=-1
 ```
-kubectl logs --selector=app=node -c node
-```
+
+<!-- END_STEP -->
 
 If all went well, you should see logs like this:
 
@@ -161,9 +245,22 @@ You should see the latest JSON in response!
 
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
+<!-- STEP
+name: "Deploy Kubernetes"
+working_dir: "./deploy"
+sleep: 10
+expected_stdout_lines:
+  - service "nodeapp" deleted
+  - deployment.apps "nodeapp" deleted
+  - deployment.apps "pythonapp" deleted
+  - component.dapr.io "statestore" deleted
+-->
+
 ```bash
 kubectl delete -f .
 ```
+
+<!-- END_STEP -->
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
 
