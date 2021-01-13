@@ -256,7 +256,7 @@ manual_pause_message: "Calculator APP running on http://localhost:8080. Please o
 
 <!-- END_STEP -->
 
-8. Curl Validate
+8. **Optional:** Curl Validate
 
 <!-- STEP
 expected_stdout_lines:
@@ -301,10 +301,13 @@ expected_stdout_lines:
   - '✅  app stopped successfully: divideapp'
   - '✅  app stopped successfully: multiplyapp'
   - '✅  app stopped successfully: frontendapp'
-name: cleanup
+name: Cleanup local
 -->
 
 9. Cleanup
+
+- Cleanup microservices
+
    ```bash
    dapr stop --app-id addapp
    dapr stop --app-id subtractapp
@@ -315,11 +318,47 @@ name: cleanup
 
 <!-- END_STEP -->
 
+<!-- STEP
+name: "cleanup node app"
+working_dir: "./node"
+timeout_seconds: 300
+-->
+
+- Uninstall node modules by navigating to the node directory and run:
+  ```
+  npm uninstall
+  ```
+
+<!-- END_STEP -->
+
 ## Running the quickstart in a Kubernetes environment
 1. Navigate to the deploy directory in this quickstart directory: `cd deploy`
    > **Note**: `appconfig.yaml` is not used directly for this quickstart but is present for the [observability quickstart](../observability).
 2. Follow [these instructions](https://docs.dapr.io/getting-started/configure-redis/) to create and configure a Redis store
-3. Deploy all of your resources: `kubectl apply -f .`. 
+3. Deploy all of your resources: 
+
+
+<!-- STEP
+name: "Deploy Kubernetes"
+working_dir: "./deploy"
+sleep: 60
+expected_stdout_lines:
+  - "configuration.dapr.io/appconfig created"
+  - "deployment.apps/subtractapp created"
+  - "deployment.apps/addapp created"
+  - "deployment.apps/divideapp created"
+  - "deployment.apps/multiplyapp created"
+  - "service/calculator-front-end created"
+  - "deployment.apps/calculator-front-end created"
+  - "component.dapr.io/statestore created"
+-->
+
+```bash 
+kubectl apply -f .
+``` 
+
+<!-- END_STEP -->
+
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for the front-end, which allows us to connect to it externally.
@@ -365,6 +404,16 @@ subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
     $ minikube service calculator-front-end
     ```
 
+<!-- STEP
+name: Pause for manual validation
+manual_pause_message: "Calculator APP running on http://<service_ip>:80. Please open in your browser and test manually."
+-->
+
+<!-- We will pause here and print the above message when mm.py is run with '-m'. Otherwise, this step does nothing -->
+
+<!-- END_STEP -->
+
+
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
 7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
@@ -389,21 +438,86 @@ Calling divide service
 
 The client code calls to an Express server, which routes the calls through Dapr to the back-end services. In this case the divide endpoint is called on the nodejs application.
 
-## Cleanup
+8. **Optional:** As with the local steps above, you can validate that all the individual calculator apps are working:
 
-### Local setup cleanup
-- Stop all running applications (dapr stop --app-id {application id})
-- Uninstall node modules by navigating to the node directory and run:
-  ```
-  npm uninstall
-  ```
+Port forwarding is another way you can access a kubernetes service:
+
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 1
+expected_return_code:
+-->
+
+```bash
+kubectl port-forward service/calculator-front-end 8000:80
+```
+
+<!-- END_STEP -->
+
+Then you can use the following curl commands to make sure each one of the microservies is working:
+
+<!-- STEP
+expected_stdout_lines:
+  - "59"
+  - "18"
+  - "12"
+  - "1768.0"
+  - '    "total": "54"'
+name: "Curl test"
+-->
+
+```bash 
+curl -w "\n" -s 'http://localhost:8000/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
+curl -w "\n" -s 'http://localhost:8000/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
+curl -w "\n" -s 'http://localhost:8000/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
+curl -w "\n" -s 'http://localhost:8000/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
+curl -w "\n" -s 'http://localhost:8000/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
+curl -s 'http://localhost:8000/state' | python -m json.tool
+```
+
+<!-- END_STEP -->
+
+You should get the following output:
+
+   ```bash
+   59
+   18
+   12
+   1768.0
+   
+   {
+       "next": null,
+       "operation": null,
+       "total": "54"
+   }   
+   ```
+
+## Cleanup
 
 ### Kubernetes environment cleanup
 - Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
+<!-- STEP
+name: Cleanup kubernetes
+expected_stdout_lines:
+  - 'configuration.dapr.io "appconfig" deleted'
+  - 'deployment.apps "subtractapp" deleted'
+  - 'deployment.apps "addapp" deleted'
+  - 'deployment.apps "divideapp" deleted'
+  - 'deployment.apps "multiplyapp" deleted'
+  - 'service "calculator-front-end" deleted'
+  - 'deployment.apps "calculator-front-end" deleted'
+  - 'component.dapr.io "statestore" deleted'
+working_dir: "./deploy"
+-->
+
   ```bash
   kubectl delete -f .
   ```
+
+<!-- END_STEP -->
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
 
