@@ -416,7 +416,25 @@ manual_pause_message: "Calculator APP running on http://<service_ip>:80. Please 
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
+7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. *If you got 400 error, you may need create a role binding for that:*
+```
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: admin
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "true"
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+```
+
+Note that each time you click a button, you see logs that indicate state persistence: 
 
 ```js
 Persisting State:
