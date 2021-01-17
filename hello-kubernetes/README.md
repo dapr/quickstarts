@@ -151,6 +151,26 @@ Minikube users cannot see the external IP. Instead, you can use `minikube servic
 
 Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this quickstart the HTTP Port is used for further communication with the Dapr sidecar.
 
+Next submit an order to the app
+
+```bash
+curl --request POST --data "{\"data\": { \"orderId\": \"42\" } }" --header "Content-Type:application/json" http://localhost/neworder
+```
+
+Expected output:
+Empty reply from server
+
+Confirm the order was persisted by requesting it from the app
+
+```bash
+curl http://localhost/order
+```
+
+Expected output:
+```json
+{"orderId":"42"}
+```
+
 ## Step 5 - Deploy the Python app with the Dapr sidecar
 Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
 
