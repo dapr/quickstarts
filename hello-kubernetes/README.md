@@ -100,10 +100,10 @@ You can also export it to a variable:
 
 ```
 Linux/MacOS
-export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
+export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].hostname}')
 
-Windows
-for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
+Windows PowerShell
+$NODE_APP=(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].hostname}')
 ```
 
 **Optional:** You can also use port forwarding if you don't have easy access to your Kubernetes cluster service IPs:
