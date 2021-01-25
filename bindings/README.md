@@ -429,6 +429,7 @@ metadata:
   name: sample-topic
 spec:
   type: bindings.kafka
+  version: v1
   metadata:
   # Kafka broker connection setting
   - name: brokers
