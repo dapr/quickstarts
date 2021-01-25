@@ -178,6 +178,7 @@ metadata:
   name: statestore
 spec:
   type: state.redis
+  version: v1
 ...
 ```
 
