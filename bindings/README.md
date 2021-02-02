@@ -244,6 +244,7 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 <!-- STEP
 name: Install Kafka
 sleep: 15
+timeout_seconds: 120
 -->
 
 ```bash
