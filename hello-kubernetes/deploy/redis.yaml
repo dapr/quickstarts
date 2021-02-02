@@ -4,6 +4,7 @@ metadata:
   name: statestore
 spec:
   type: state.redis
+  version: v1
   metadata:
   # These settings will work out of the box if you use `helm install
   # bitnami/redis`.  If you have your own setup, replace
