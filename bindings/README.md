@@ -43,9 +43,16 @@ In order to run the Kafka bindings quickstart locally, you will run the [Kafka b
 
 1. To run the container locally, run:
 
+<!-- STEP
+name: Install Kafka
+sleep: 20
+-->
+
 ```bash
 docker-compose -f ./docker-compose-single-kafka.yml up -d
 ```
+
+<!-- END_STEP -->
 
 2. To see the container running locally, run:
 
@@ -68,21 +75,58 @@ Now that you have Kafka running locally on your machine, you'll need to run the 
 
 1. Navigate to Node subscriber directory in your CLI: 
 
+
 ```bash
 cd nodeapp
 ```
 
 2. Install dependencies:
 
+<!-- STEP
+name: Install npm dependencies
+working_dir: ./nodeapp
+-->
+
 ```bash
 npm install
 ```
 
+<!-- END_STEP -->
+
 3. Run Node quickstart app with Dapr: 
+
+<!-- STEP
+name: Run node app
+working_dir: ./nodeapp
+background: true
+sleep: 5
+expected_stdout_lines: 
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 1 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 2 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 3 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 4 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 5 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 6 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 7 }"
+  - "== APP == Hello from Kafka!"
+  - "== APP == { orderId: 8 }"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+-->
 
 ```bash
 dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ./components
 ```
+
+<!-- END_STEP -->
 
 ### Run Python Microservice with Output Binding
 
@@ -96,15 +140,50 @@ cd pythonapp
 
 2. Install dependencies:
 
+<!-- STEP
+name: Install python dependencies
+working_dir: ./pythonapp
+-->
+
 ```bash
 pip3 install requests
 ```
 
+<!-- END_STEP -->
+
 3. Run Python quickstart app with Dapr: 
+
+<!-- STEP
+name: Run node app
+working_dir: ./pythonapp
+background: true
+sleep: 15
+expected_stdout_lines: 
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == {'data': {'orderId': 1}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 2}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 3}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 4}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 5}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 6}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 7}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
+  - "== APP == {'data': {'orderId': 8}, 'operation': 'create'}"
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+-->
 
 ```bash
 dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components
 ```
+
+<!-- END_STEP -->
 
 ### Observe Logs
 
@@ -132,11 +211,28 @@ dapr run --app-id bindings-pythonapp python3 app.py --components-path ./componen
 
 ### Cleanup
 
+To cleanly stop the dapr microservices, run:
+
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: bindings-nodeapp'
+  - '✅  app stopped successfully: bindings-pythonapp'
+expected_stderr_lines:
+name: Shutdown Dapr and Kafka
+-->
+
+```bash
+dapr stop --app-id bindings-nodeapp
+dapr stop --app-id bindings-pythonapp
+```
+
 Once you're done, you can spin down your local Kafka Docker Container by running:
 
 ```bash
 docker-compose -f ./docker-compose-single-kafka.yml down
 ```
+
+<!-- END_STEP -->
 
 ## Run in Kubernetes
 
@@ -144,12 +240,21 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 
 1. Install Kafka via [bitnami/kafka](https://bitnami.com/stack/kafka/helm)
 
+
+<!-- STEP
+name: Install Kafka
+sleep: 15
+timeout_seconds: 120
+-->
+
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 kubectl create ns kafka
-helm install dapr-kafka bitnami/kafka --namespace kafka -f ./kafka-non-persistence.yaml
+helm install dapr-kafka bitnami/kafka --wait --namespace kafka -f ./kafka-non-persistence.yaml
 ```
+
+<!-- END_STEP -->
 
 2. Wait until kafka pods are running
 
@@ -166,7 +271,27 @@ dapr-kafka-zookeeper-0   1/1     Running   0          2m57s
 Now that the Kafka binding is set up, deploy the assets.
 
 1. In your CLI window, navigate to the deploy directory
-2. Run `kubectl apply -f .` which will deploy bindings-nodeapp and bindings-pythonapp microservices. It will also apply the Kafka bindings component configuration you set up in the last step.
+2. Run: 
+
+<!-- STEP
+name: Run kubernetes apps
+working_dir: ./deploy
+sleep: 30
+expected_stdout_lines: 
+  - component.dapr.io/sample-topic created
+  - service/bindings-nodeapp created
+  - deployment.apps/bindings-nodeapp created
+  - deployment.apps/bindings-pythonapp created
+-->
+
+```bash
+kubectl apply -f .
+```
+
+<!-- END_STEP -->
+
+This will deploy bindings-nodeapp and bindings-pythonapp microservices. It will also apply the Kafka bindings component configuration you set up in the last step.
+
 3. Run `kubectl get pods -w` to see each pod being provisioned.
 
 
@@ -188,15 +313,26 @@ bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
 
 Look at the Python app logs by running:
 
+<!-- STEP
+name: Read Python Logs
+expected_stdout_lines:
+  - "{'data': {'orderId': 10}, 'operation': 'create'}"
+  - "<Response [204]>"
+  - "{'data': {'orderId': 11}, 'operation': 'create'}"
+  - "<Response [204]>"
+-->
+
 ```bash
-kubectl logs --selector app=bindingspythonapp -c python
+kubectl logs --selector app=bindingspythonapp -c python --tail=-1
 ```
+
+<!-- END_STEP -->
 
 ```bash
 ...
-{'data': {'orderId': 240}}
+{'data': {'orderId': 10}, 'operation': 'create'}
 <Response [204]>
-{'data': {'orderId': 241}}
+{'data': {'orderId': 11}, 'operation': 'create'}
 <Response [204]>
 ...
 ```
@@ -217,9 +353,20 @@ bindings-pythonapp-644489969b-c8lg5     2/2     Running       0          4m9s
 
 Look at the Node app logs by running:
 
+<!-- STEP
+name: Read Node Logs
+expected_stdout_lines:
+  - Hello from Kafka!
+  - "{ orderId: 10 }"
+  - Hello from Kafka!
+  - "{ orderId: 11 }"
+-->
+
 ```bash
-kubectl logs --selector app=bindingsnodeapp -c node
+kubectl logs --selector app=bindingsnodeapp -c node --tail=-1
 ```
+
+<!-- END_STEP -->
 
 The output should look like this:
 
@@ -237,6 +384,11 @@ Hello from Kafka!
 
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
+<!-- STEP
+name: Cleanup
+expected_stdout_lines:
+-->
+
 ```bash
 cd ./deploy
 kubectl delete -f .
@@ -249,6 +401,14 @@ Once you delete all quickstart apps, delete Kafka in the cluster.
 ```bash
 helm uninstall dapr-kafka --namespace kafka
 ```
+
+And finally, you can delete the kafka namespace
+
+```bash
+kubectl delete ns kafka
+```
+
+<!-- END_STEP -->
 
 ## How it Works
 
@@ -270,6 +430,7 @@ metadata:
   name: sample-topic
 spec:
   type: bindings.kafka
+  version: v1
   metadata:
   # Kafka broker connection setting
   - name: brokers

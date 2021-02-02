@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: calculator-front-end
-        image: dapriosamples/distributed-calculator-react-calculator:edge
+        image: dapriosamples/distributed-calculator-react-calculator:latest
         ports:
         - containerPort: 8080
         imagePullPolicy: Always

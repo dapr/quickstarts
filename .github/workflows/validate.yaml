@@ -1,0 +1,117 @@
+# ------------------------------------------------------------
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+# ------------------------------------------------------------
+
+name: Auto Validate Quickstarts
+
+on:
+  push:
+    branches:
+      - master
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - release-*
+jobs:
+  deploy:
+    name: Validate ${{ matrix.quickstart }}/README.md on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    env:
+      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/v1.0.0-rc.4/install
+      DAPR_CLI_VERSION: 1.0.0-rc.4
+      DAPR_RUNTIME_VERSION: 1.0.0-rc.3
+      GOVER: 1.15.3
+      KUBERNETES_VERSION: v1.18.8
+      KIND_VERSION: v0.9.0
+      KIND_IMAGE_SHA: sha256:f4bcc97a0ad6e7abaf3f643d890add7efe6ee4ab90baeb374b4f41a4c95567eb
+    strategy:
+      matrix: 
+        quickstart: [hello-world, hello-kubernetes, distributed-calculator, pub-sub, bindings, secretstore]
+        os: [ubuntu-latest]
+    steps:
+      - name: Configure KinD
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        # Generate a KinD configuration file that uses:
+        # A couple of worker nodes: this is needed to run both
+        #     ZooKeeper + Kakfa
+        working-directory: ./
+        run: |
+          cat > kind.yaml <<EOF
+          apiVersion: kind.x-k8s.io/v1alpha4
+          kind: Cluster
+          nodes:
+          - role: control-plane
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          EOF
+  
+          # Log the generated kind.yaml for easy reference.
+          cat kind.yaml
+
+      - name: Create KinD Cluster
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        uses: helm/kind-action@v1.0.0
+        with:
+          config: kind.yaml
+          cluster_name: kind
+          version: ${{ env.KIND_VERSION }}
+      - name: Get KinD info
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        run: |
+          kubectl cluster-info --context kind-kind
+          NODE_IP=$(kubectl get nodes \
+                    -lkubernetes.io/hostname!=kind-control-plane \
+                    -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
+          echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
+      - name: Install docker on MacOS
+        if: matrix.os == 'macOS-latest'
+        run: |
+          brew install --cask docker
+          open /Applications/Docker.app
+      - name: Set up Go ${{ env.GOVER }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GOVER }}
+      - name: Set up Dapr CLI - Mac/Linux
+        if: matrix.os != 'windows-latest'
+        run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
+      - name: Set up Dapr CLI - Windows
+        if: matrix.os == 'windows-latest'
+        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"     
+      - name: Install Dapr
+        run: |
+          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr --version
+      - name: Install Dapr - Kubernetes
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+          helm install redis bitnami/redis
+          dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          sleep 40
+      - name: Check out code 
+        uses: actions/checkout@v2
+      - name: Install utilities dependencies
+        run: |
+          echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
+          pip3 install setuptools wheel
+          pip3 install mechanical-markdown
+      - name: Validate ${{ matrix.quickstart }}
+        run: |
+          pushd ${{ matrix.quickstart }}
+          make validate
+          popd
+
+          

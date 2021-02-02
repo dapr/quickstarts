@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: dapriosamples/secretstorenode:edge
+        image: dapriosamples/secretstorenode:latest
         env:
         - name: SECRET_STORE
           value: "kubernetes"
