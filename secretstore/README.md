@@ -87,6 +87,7 @@ metadata:
   namespace: default
 spec:
   type: secretstores.local.file
+  version: v1
   metadata:
   - name: secretsFile
     value: secrets.json
@@ -102,7 +103,7 @@ The component defines a local secret store with the secrets file path as the `se
 
 Export Secret Store name as environment variable:
 
- ```
+```
 Linux/Mac OS:
 export SECRET_STORE="localsecretstore"
 
@@ -112,15 +113,40 @@ set SECRET_STORE=localsecretstore
 
 Install dependencies 
 
+<!-- STEP
+name: "npm install"
+working_dir: node
+-->
+
 ```bash
 npm install
 ```
 
+<!-- END_STEP -->
+
 Run Node.js app with Dapr with the local secret store component: 
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Fetching URL: http://localhost:3500/v1.0/secrets/localsecretstore/mysecret?metadata.namespace=default"
+  - "== APP == Base64 encoded secret is: YWJjZA=="
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+working_dir: node
+name: Run node app
+background: true
+sleep: 5
+env:
+  SECRET_STORE: "localsecretstore"
+-->
 
 ```bash
 dapr run --app-id nodeapp --components-path ./components --app-port 3000 --dapr-http-port 3500 node app.js
 ```
+
+<!-- END_STEP -->
 
 The command starts the Dapr application and finally after it is completely initialized, you should see the logs 
 
@@ -132,10 +158,20 @@ The command starts the Dapr application and finally after it is completely initi
 ### Step 4 - Access the secret
 
 Make a request to the node app to fetch the secret. You can use the command below:
-```
+
+<!-- STEP
+name: "Curl validate"
+expected_stdout_lines:
+  - YWJjZA==
+-->
+
+```bash
 curl -k http://localhost:3000/getsecret 
 ```
-The output should be your base64 encoded secret `YWJjZAo=`
+
+<!-- END_STEP -->
+
+The output should be your base64 encoded secret `YWJjZA==`
 
 ### Step 5 - Observe the logs of the app
 
@@ -143,16 +179,24 @@ The application logs should be similar to the following:
 ```
 == APP == Fetching URL: http://localhost:3500/v1.0/secrets/localsecretstore/mysecret?metadata.namespace=default
 
-== APP == Base64 encoded secret is: YWJjZAo=
+== APP == Base64 encoded secret is: YWJjZA==
 ```
 
 ### Step 6 - Cleanup
 
 To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new command line terminal: 
 
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: nodeapp'
+name: Shutdown dapr
+-->
+
 ```bash
 dapr stop --app-id nodeapp
 ```
+
+<!-- END_STEP -->
 
 To see that services have stopped running, run `dapr list`, noting that your service no longer appears!
 

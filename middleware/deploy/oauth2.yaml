@@ -4,6 +4,7 @@ metadata:
   name: oauth2
 spec:
   type: middleware.http.oauth2
+  version: v1
   metadata:
   - name: clientId
     value: "<your client ID>"
