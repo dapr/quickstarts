@@ -30,16 +30,120 @@ spec:
 
 2. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched.
 
-3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch a Node.js app using the default config.yaml:
+3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch the hello-world quickstart app using the default config.yaml:
+
+<!-- STEP
+name: Run app with tracing
+expected_stdout_lines:
+  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "✅  Exited Dapr successfully"
+  - "✅  Exited App successfully"
+expected_stderr_lines:
+background: true
+sleep: 5
+-->
 
 ```bash
-dapr run --app-id mynode --app-port 3000 node app.js
+cd ../hello-world
+dapr run --app-id hello-tracing --app-port 3000 node app.js
 ```
+
+<!-- END_STEP -->
+
+4. Once the app is running, you can make a request, which will populate at least one trace:
+
+
+<!-- STEP
+expected_stdout_lines:
+  - "✅  App invoked successfully"
+expected_stderr_lines:
+name: dapr invoke
+sleep: 2
+-->
+
+```bash
+dapr invoke --app-id hello-tracing --method neworder --data '{"data": { "orderId": "42" } }'
+```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: Pause for manual validation
+manual_pause_message: "Zipkin tracing running on http://localhost:9411. Please open in your browser and test manually."
+-->
+
+<!-- We will pause here and print the above message when mm.py is run with '-m'. Otherwise, this step does nothing -->
+
+<!-- END_STEP -->
 
 ### Viewing Traces
 Tracing is set up out of the box when running `dapr init`. To
 view traces, in your browser go to http://localhost:9411 and you will
 see the Zipkin UI.
+
+### Zipkin API
+
+Zipkin also has an API available. See [Zipkin API](https://zipkin.io/zipkin-api/) for more details.
+
+To see traces collected through the API:
+
+<!-- STEP
+expected_stdout_lines:
+  - '                "dapr.api": "POST /v1.0/invoke/hello-tracing/method/neworder",'
+expected_stderr_lines:
+name: Curl validate
+-->
+
+
+```bash
+curl -s "http://localhost:9411/api/v2/traces?serviceName=hello-tracing&spanName=calllocal%2Fhello-tracing%2Fneworder&limit=10" -H  "accept: application/json" | python -m json.tool
+```
+<!-- END_STEP -->
+
+You should see output like the following:
+
+```
+[
+    [
+        {
+            "traceId": "4c480d57b0e6d96b7150b46d027c5904",
+            "id": "90d58917274e180a",
+            "kind": "CLIENT",
+            "name": "calllocal/hello-tracing/neworder",
+            "timestamp": 1613170216016911,
+            "duration": 93671,
+            "localEndpoint": {
+                "serviceName": "hello-tracing",
+                "ipv4": "127.0.0.1"
+            },
+            "tags": {
+                "dapr.api": "POST /v1.0/invoke/hello-tracing/method/neworder",
+                "dapr.protocol": "http",
+                "dapr.status_code": "200",
+                "net.peer.name": "hello-tracing",
+                "opencensus.status_description": "OK",
+                "rpc.service": "ServiceInvocation"
+            }
+        }
+    ]
+]
+```
+
+### Cleanup
+
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: hello-tracing'
+expected_stderr_lines:
+name: Shutdown dapr
+-->
+
+```bash
+dapr stop --app-id hello-tracing
+```
+
+<!-- END_STEP -->
+
 
 
 ## Configure Kubernetes
