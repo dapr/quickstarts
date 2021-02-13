@@ -144,8 +144,6 @@ dapr stop --app-id hello-tracing
 
 <!-- END_STEP -->
 
-
-
 ## Configure Kubernetes
 ### Prerequisites
 
@@ -178,6 +176,13 @@ set `samplingRate : "0"` in the configuration. The valid range of samplingRate i
 
 This configuration file enables Dapr tracing. Deploy the configuration by running:
 
+<!-- STEP
+name: Apply tracting config
+expected_stdout_lines: 
+  - 'configuration.dapr.io/appconfig created'
+expected_stderr_lines:
+-->
+
 ```bash
 kubectl apply -f ./deploy/appconfig.yaml
 ```
@@ -187,6 +192,8 @@ You can see that now a new Dapr configuration which enables tracing has been add
 ```bash
 dapr configurations --kubernetes
 ```
+
+<!-- END_STEP -->
 
 You should see output that looks like this:
 
@@ -206,9 +213,18 @@ In this quickstart Zipkin is used for tracing. Examine [*./deploy/zipkin.yaml*](
 
 Deploy Zipkin to your cluster by running:
 
+<!-- STEP
+name: Apply tracting config
+expected_stdout_lines: 
+  - deployment.apps/zipkin created
+  - service/zipkin created
+-->
+
 ```bash
 kubectl apply -f ./deploy/zipkin.yaml
 ```
+
+<!-- END_STEP -->
 
 Now that Zipkin is deployed, you can access the Zipkin UI by creating a tunnel to the internal Zipkin service you just created by running:
 
@@ -236,29 +252,115 @@ Note you did not introduce any dependency on Zipkin into the calculator app code
 
 Now deploy the distributed calculator application to your cluster following the instructions found in the [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md) quickstart. Then browse to the calculator UI.
 
+The quick version for starting the calculator quickstart:
+
+<!-- STEP
+name: Deploy Calculator Kubernetes
+sleep: 60
+expected_stdout_lines:
+  - "deployment.apps/subtractapp created"
+  - "deployment.apps/addapp created"
+  - "deployment.apps/divideapp created"
+  - "deployment.apps/multiplyapp created"
+  - "service/calculator-front-end created"
+  - "deployment.apps/calculator-front-end created"
+  - "component.dapr.io/statestore created"
+-->
+
+```bash 
+kubectl apply -f ../distributed-calculator/deploy
+``` 
+
+<!-- END_STEP -->
+
 > **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing to take effect. You can do so by running:
 
 > `kubectl rollout restart deployment addapp calculator-front-end divideapp multiplyapp subtractapp`
+
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 1
+expected_return_code:
+-->
+
+**Optional:** if you don't have easy public browser access, you can always use port forwarding
+
+```bash
+kubectl port-forward service/calculator-front-end 8000:80
+```
+
+<!-- END_STEP -->
 
 ### Discover and troubleshoot a performance issue using Zipkin
 
 To show how observability can help discover and troubleshoot issues on a distributed application, you'll update one of the services in the calculator app. This updated version simulates a performance degradation in the multiply operation of the calculator that you can then investigate using the traces emitted by the Dapr sidecar. Run the following to apply a new version of the python-multiplier service:
 
+<!-- STEP
+name: Deploy mmdified multiply app
+sleep: 60
+expected_stdout_lines:
+  - 'deployment.apps/multiplyapp configured'
+-->
+
 ```bash
 kubectl apply -f ./deploy/python-multiplier.yaml
 ```
+
+<!-- END_STEP -->
 
 Now go to the calculator UI and perform several calculations. Make sure to use all operands. For example, do the following:
 
 `9 + 3 * 2 / 4 - 1 =`
 
-Now go to the Zipkin dashboard by running:
+**Optional:** You can also use the following curl commands to execute all operations:
 
-```bash
-kubectl port-forward svc/zipkin 9411:9411
+<!-- STEP
+expected_stdout_lines:
+  - "59"
+  - "18"
+  - "12"
+  - "1768.0"
+name: "Curl test"
+-->
+
+```bash 
+curl -w "\n" -s 'http://localhost:8000/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
+curl -w "\n" -s 'http://localhost:8000/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
+curl -w "\n" -s 'http://localhost:8000/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
+curl -w "\n" -s 'http://localhost:8000/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
 ```
 
-And browsing to [http://localhost:9411](http://localhost:9411). Click the search button to view tracing coming from the application:
+<!-- END_STEP -->
+
+
+Now go to the Zipkin dashboard by running. (Note: if you are running Dapr locally, be sure to use a different local port for Zipkin):
+
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 1
+expected_return_code:
+-->
+
+```bash
+kubectl port-forward svc/zipkin 19411:9411
+```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: Pause for manual validation
+manual_pause_message: "Zipkin tracing running on http://localhost:19411. Please open in your browser and test manually."
+-->
+
+<!-- We will pause here and print the above message when mm.py is run with '-m'. Otherwise, this step does nothing -->
+
+<!-- END_STEP -->
+
+And browsing to [http://localhost:19411](http://localhost:19411). Click the search button to view tracing coming from the application:
 
 ![Zipkin](./img/zipkin-1.png)
 
@@ -276,19 +378,78 @@ You can quickly see that the multiply method invocation is unusually slow (takes
 
 Now you can see which specific call was delayed via the `data` field (here it's the 12 * 2 operation) and confirm that it is the multiplier service which you updated that is causing the slowdown (You can find the code for the slow multiplier under the python directory).
 
+### Zipkin API
+
+As before, you can also access traces through the Zipkin API. The following will give you the same traces as the UI search above:
+
+<!-- STEP
+expected_stdout_lines:
+  - '            "name": "calllocal/multiplyapp/multiply",'
+expected_stderr_lines:
+name: Curl validate
+-->
+
+```bash
+curl -s "http://localhost:19411/api/v2/traces?minDuration=250000&limit=10" -H  "accept: application/json" | python -m json.tool
+```
+
+<!-- END_STEP -->
+
+You should get output like this:
+```
+[
+    [
+        {
+            "duration": 1009084,
+            "id": "ff0bf110ca88f770",
+            "kind": "SERVER",
+            "localEndpoint": {
+                "ipv4": "10.244.4.225",
+                "serviceName": "multiplyapp"
+            },
+            "name": "calllocal/multiplyapp/multiply",
+            "parentId": "733a1812e839dcfb",
+            "tags": {
+                "dapr.api": "/dapr.proto.internals.v1.ServiceInvocation/CallLocal",
+                "dapr.invoke_method": "multiply",
+                "dapr.protocol": "grpc",
+                "rpc.service": "ServiceInvocation"
+            },
+            "timestamp": 1613177766316506,
+            "traceId": "926f1a5a6c63ae6f5167c29b3ddf4271"
+        },
+...
+```
+
+
 ### Clean up
+
+<!-- STEP
+name: Cleanup kubernetes
+expected_stdout_lines:
+  - 'configuration.dapr.io "appconfig" deleted'
+  - 'deployment.apps "subtractapp" deleted'
+  - 'deployment.apps "addapp" deleted'
+  - 'deployment.apps "divideapp" deleted'
+  - 'deployment.apps "multiplyapp" deleted'
+  - 'service "calculator-front-end" deleted'
+  - 'deployment.apps "calculator-front-end" deleted'
+  - 'component.dapr.io "statestore" deleted'
+-->
 
 1. To remove the distributed calculator application from your cluster run:
 
 ```bash
-kubectl delete -f ..\3.distributed-calculator\deploy
+kubectl delete -f ../distributed-calculator/deploy
 ```
 
 2. To remove the Zipkin installation and tracing configuration run:
 
 ```bash
-kubectl delete -f deploy\appconfig.yaml -f deploy\zipkin.yaml
+kubectl delete -f deploy/zipkin.yaml
 ```
+
+<!-- END_STEP -->
 
 ## Additional Resources
 

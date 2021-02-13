@@ -34,7 +34,7 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Configure KinD
-        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'observability' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
         # Generate a KinD configuration file that uses:
         # A couple of worker nodes: this is needed to run both
         #     ZooKeeper + Kakfa
@@ -60,14 +60,14 @@ jobs:
           cat kind.yaml
 
       - name: Create KinD Cluster
-        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'observability' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
         uses: helm/kind-action@v1.0.0
         with:
           config: kind.yaml
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
       - name: Get KinD info
-        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'observability' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
         run: |
           kubectl cluster-info --context kind-kind
           NODE_IP=$(kubectl get nodes \
@@ -94,7 +94,7 @@ jobs:
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
           dapr --version
       - name: Install Dapr - Kubernetes
-        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
+        if: matrix.quickstart == 'distributed-calculator' || matrix.quickstart == 'observability' || matrix.quickstart == 'bindings' || matrix.quickstart == 'hello-kubernetes'
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
