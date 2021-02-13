@@ -1,11 +1,11 @@
 # Observability with Dapr
 
-This quickstart explores the [observability](https://docs.dapr.io/concepts/observability-concept/) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this quickstart you'll be enabling [distributed tracing](https://docs.dapr.io/developing-applications/building-blocks/observability/tracing/) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.  In this sampple you'll be using [Zipkin](https://zipkin.io/).
+This quickstart explores the [observability](https://docs.dapr.io/concepts/observability-concept/) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this quickstart you'll be enabling [distributed tracing](https://docs.dapr.io/developing-applications/building-blocks/observability/tracing/) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.
 
 In this quickstart you will:
 
-- Deploy Zipkin and configure it as a tracing provider for Dapr in Kubernetes.
-- Instrument an application for tracing and then deploy it.
+- Deploy [Zipkin](https://zipkin.io/) and configure it as a tracing provider for Dapr in self hosted mode and in Kubernetes.
+- Configure an application for tracing and then deploy it.
 - Troubleshoot a performance issue.
 
 ## Configure self hosted mode
@@ -32,6 +32,8 @@ spec:
 
 3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch the hello-world quickstart app using the default config.yaml:
 
+4. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the repo's directory via `cd quickstarts/observability`.
+
 <!-- STEP
 name: Run app with tracing
 expected_stdout_lines:
@@ -44,13 +46,12 @@ sleep: 5
 -->
 
 ```bash
-cd ../hello-world
-dapr run --app-id hello-tracing --app-port 3000 node app.js
+cd ../hello-world && dapr run --app-id hello-tracing --app-port 3000 node app.js && cd ../observability
 ```
 
 <!-- END_STEP -->
 
-4. Once the app is running, you can make a request, which will populate at least one trace:
+5. Once the app is running, you can make a request, which will populate at least one trace:
 
 
 <!-- STEP
@@ -149,14 +150,15 @@ dapr stop --app-id hello-tracing
 
 This quickstart builds on the [distributed calculator](../distributed-calculator/README.md) quickstart and requires Dapr to be installed on a Kubernetes cluster along with a state store. It is suggested to go through the distributed calculator quickstart before this one. If you have not done this then:
 
-1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory named */8.obervability*
+1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory via `cd quickstarts/obervability`.
 2. [Install Dapr on Kubernetes](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster).
 3. [Configure Redis](https://docs.dapr.io/getting-started/configure-redis/) as a state store for Dapr.
+4. Configure host and password for Redis state store Component in `../distributed-calculator/deploy/redis.yaml`.
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 ## Configure Dapr tracing in the cluster
 
-Review the Dapr configuration file *./deploy/appconfig.yaml* below:
+Review the Dapr configuration file `./deploy/appconfig.yaml` below:
 
 ```yaml
 apiVersion: dapr.io/v1alpha1
@@ -250,9 +252,7 @@ For this quickstart, a configuration has already been enabled for every service 
 
 Note you did not introduce any dependency on Zipkin into the calculator app code or deployment yaml files. The Zipkin Dapr component is configured to read tracing events and write these to a tracing backend.
 
-Now deploy the distributed calculator application to your cluster following the instructions found in the [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md) quickstart. Then browse to the calculator UI.
-
-The quick version for starting the calculator quickstart:
+Now deploy the distributed calculator application to your cluster:
 
 <!-- STEP
 name: Deploy Calculator Kubernetes
@@ -272,6 +272,10 @@ kubectl apply -f ../distributed-calculator/deploy
 ``` 
 
 <!-- END_STEP -->
+
+Then, open the distributed calculator UI.
+
+If this is the first time trying the distributed calculator, find more detailed instructions in the [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md) quickstart.
 
 > **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing to take effect. You can do so by running:
 
@@ -459,3 +463,27 @@ kubectl delete -f deploy/zipkin.yaml
 ## Next steps
 
 - Explore additional [quickstarts](../README.md#quickstarts)
+
+## Troubleshooting
+
+If you see an error with the following message:
+```txt
+time="2021-02-13T00:39:00.48769561Z" level=fatal msg="process component zipkin error: incorrect type exporters.zipkin" app_id=addapp instance=addapp-59f447d8b6-w48jt scope=dapr.runtime type=log ver=1.0.0-rc.4
+```
+
+It means there is an old exporter Component in your Kubernetes cluster. First, list Components:
+
+```bash
+kubectl get components
+```
+
+```txt
+NAME         AGE
+zipkin       71d
+statestore   43m
+```
+
+Then, identify which Component is the exporter (usually named `zipkin`) and delete it:
+```bash
+kubectl delete component zipkin
+```
