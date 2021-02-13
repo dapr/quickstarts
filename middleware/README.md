@@ -28,12 +28,12 @@ helm install my-release ingress-nginx/ingress-nginx
 
 ```bash
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
-cd quickstarts/middleware/echoapp
+cd quickstarts/middleware
 ```
 
 > **Note**: See <https://github.com/dapr/quickstarts#supported-dapr-runtime-version> for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
-1. Examine the ```app.js``` file. You'll see this is a simple Node.js Express web server with a single ```/echo``` route that returns the ```authorization``` header and the ```text``` parameter client passes in:
+1. Examine the ```echoapp/app.js``` file. You'll see this is a simple Node.js Express web server with a single ```/echo``` route that returns the ```authorization``` header and the ```text``` parameter client passes in:
 
 ```javascript
 app.get('/echo', (req, res) => {
