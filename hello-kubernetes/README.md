@@ -155,6 +155,7 @@ Next submit an order to the app
 
 <!-- STEP
 name: neworder Test
+sleep: 30
 expected_stdout_lines:
   - ''
 env:
