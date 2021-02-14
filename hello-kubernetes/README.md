@@ -153,17 +153,35 @@ Here you can see that two ports are displayed. Both the ports have been injected
 
 Next submit an order to the app
 
+<!-- STEP
+name: neworder Test
+expected_stdout_lines:
+  - 'Empty reply from server'
+env:
+  NODE_APP: "localhost:8080"
+-->
+
 ```bash
-curl --request POST --data "{\"data\": { \"orderId\": \"42\" } }" --header "Content-Type:application/json" http://localhost/neworder
+curl --request POST --data "{\"data\": { \"orderId\": \"42\" } }" --header "Content-Type:application/json" http://$NODE_APP/neworder
 ```
+
+<!-- END_STEP -->
 
 Expected output:
 Empty reply from server
 
 Confirm the order was persisted by requesting it from the app
 
+<!-- STEP
+name: order Test
+expected_stdout_lines:
+  - '{"orderId":"42"}'
+env:
+  NODE_APP: "localhost:8080"
+-->
+
 ```bash
-curl http://localhost/order
+curl http://$NODE_APP/order
 ```
 
 Expected output:
