@@ -156,7 +156,7 @@ Next submit an order to the app
 <!-- STEP
 name: neworder Test
 expected_stdout_lines:
-  - 'Empty reply from server'
+  - ''
 env:
   NODE_APP: "localhost:8080"
 -->
