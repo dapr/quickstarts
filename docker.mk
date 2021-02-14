@@ -13,11 +13,6 @@ ifeq ($(REL_VERSION),edge)
 	REL_VERSION := latest
 endif
 
-TARGET_DOTNET_PLATFORM = $(TARGET_ARCH)
-ifeq ($(TARGET_DOTNET_PLATFORM),amd64)
-  TARGET_DOTNET_PLATFORM = x64
-endif
-
 # Docker image build and push setting
 DOCKER:=docker
 DOCKERFILE:=Dockerfile
@@ -32,7 +27,7 @@ build: $(BUILD_APPS)
 define genDockerImageBuild
 .PHONY: build-$(1)
 build-$(1):
-	$(DOCKER) build --build-arg DOTNET_PLATFORM=$(TARGET_DOTNET_PLATFORM) -f $(1)/$(DOCKERFILE) $(1)/. -t $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH) --platform $(TARGET_OS)/$(TARGET_ARCH)
+	$(DOCKER) build -f $(1)/$(DOCKERFILE) $(1)/. -t $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH) --platform $(TARGET_OS)/$(TARGET_ARCH)
 endef
 
 # Generate docker image build targets

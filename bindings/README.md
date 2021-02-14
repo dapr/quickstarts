@@ -357,9 +357,9 @@ Look at the Node app logs by running:
 name: Read Node Logs
 expected_stdout_lines:
   - Hello from Kafka!
-  - "{ orderId: 10 }"
+  - "{ orderId: 16 }"
   - Hello from Kafka!
-  - "{ orderId: 11 }"
+  - "{ orderId: 17 }"
 -->
 
 ```bash
