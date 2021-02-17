@@ -28,12 +28,12 @@ app.get('/dapr/subscribe', (_req, res) => {
 });
 
 app.post('/A', (req, res) => {
-    console.log("A: ", req.body);
+    console.log("A: ", req.body.data.message);
     res.sendStatus(200);
 });
 
 app.post('/B', (req, res) => {
-    console.log("B: ", req.body);
+    console.log("B: ", req.body.data.message);
     res.sendStatus(200);
 });
 
