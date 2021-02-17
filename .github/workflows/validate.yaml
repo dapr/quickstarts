@@ -21,9 +21,9 @@ jobs:
     name: Validate ${{ matrix.quickstart }}/README.md on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
-      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/v1.0.0-rc.5/install
-      DAPR_CLI_VERSION: 1.0.0-rc.5
-      DAPR_RUNTIME_VERSION: 1.0.0-rc.4
+      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/v1.0.0/install
+      DAPR_CLI_VERSION: 1.0.0
+      DAPR_RUNTIME_VERSION: 1.0.0
       GOVER: 1.15.3
       KUBERNETES_VERSION: v1.18.8
       KIND_VERSION: v0.9.0
