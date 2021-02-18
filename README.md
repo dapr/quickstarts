@@ -54,8 +54,8 @@ Dapr is currently under community development with preview releases. The master 
 Find SDK-specific samples in the links below:
 
 - **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
-  - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/samples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
-  - **[Getting Started with .NET Actors](https://github.com/dapr/dotnet-sdk/blob/master/docs/get-started-dapr-actor.md)** - Tutorial for developing actor applications using the Dapr .NET SDK including  **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/samples/Actor)**
+  - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
+  - **[Getting Started with .NET Actors](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/)** - Tutorial for developing actor applications using the Dapr .NET SDK including  **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/examples/Actor)**
 - **[Java SDK](https://github.com/dapr/java-sdk)**
   - **[Examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples)** - Examples for developing Java applications using Dapr
   - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http)** - Example for developing an actor application using the Java SDK.
