@@ -1,6 +1,6 @@
 # Observability with Dapr
 
-This quickstart explores the [observability](https://docs.dapr.io/concepts/observability-concept/) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this quickstart you'll be enabling [distributed tracing](https://docs.dapr.io/developing-applications/building-blocks/observability/tracing/) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.
+This quickstart explores the [observability](https://docs.dapr.io/concepts/observability-concept/) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this quickstart you'll be enabling [distributed tracing](https://docs.dapr.io/developing-applications/building-blocks/observability/tracing-overview/) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.
 
 In this quickstart you will:
 
@@ -364,7 +364,11 @@ manual_pause_message: "Zipkin tracing running on http://localhost:19411. Please 
 
 <!-- END_STEP -->
 
+<!-- IGNORE_LINKS -->
+
 And browsing to [http://localhost:19411](http://localhost:19411). Click the search button to view tracing coming from the application:
+
+<!-- END_IGNORE -->
 
 ![Zipkin](./img/zipkin-1.png)
 
@@ -458,7 +462,7 @@ kubectl delete -f deploy/zipkin.yaml
 ## Additional Resources
 
 - Learn more about [observability](https://docs.dapr.io/concepts/observability-concept/).
-- Learn more on how Dapr does [distributed tracing](https://docs.dapr.io/developing-applications/building-blocks/observability/tracing/).
+- Learn more on how Dapr does [distributed tracing](https://docs.dapr.io/developing-applications/building-blocks/observability/tracing-overview/).
 
 ## Next steps
 
