@@ -264,7 +264,7 @@ expected_stdout_lines:
   - "18"
   - "12"
   - "1768.0"
-  - '    "total": "54"'
+  - '"54"'
 name: "Curl test"
 -->
 
@@ -275,7 +275,7 @@ name: "Curl test"
    curl -w "\n" -s 'http://localhost:8080/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
    curl -w "\n" -s 'http://localhost:8080/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
    curl -w "\n" -s 'http://localhost:8080/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
-   curl -s 'http://localhost:8080/state' | python -m json.tool
+   curl -s 'http://localhost:8080/state' | jq '.total'
    ```
 
 <!-- END_STEP -->
@@ -287,11 +287,7 @@ name: "Curl test"
    12
    1768.0
    
-   {
-       "next": null,
-       "operation": null,
-       "total": "54"
-   }   
+   "54"
    ```
 
 <!-- STEP
@@ -464,7 +460,7 @@ expected_stdout_lines:
   - "18"
   - "12"
   - "1768.0"
-  - '    "total": "54"'
+  - '"54"'
 name: "Curl test"
 -->
 
@@ -474,7 +470,7 @@ curl -w "\n" -s 'http://localhost:8000/calculate/subtract' -H 'Content-Type: app
 curl -w "\n" -s 'http://localhost:8000/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
 curl -w "\n" -s 'http://localhost:8000/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
 curl -w "\n" -s 'http://localhost:8000/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
-curl -s 'http://localhost:8000/state' | python -m json.tool
+curl -s 'http://localhost:8000/state' | jq '.total'
 ```
 
 <!-- END_STEP -->
@@ -487,11 +483,7 @@ You should get the following output:
    12
    1768.0
    
-   {
-       "next": null,
-       "operation": null,
-       "total": "54"
-   }   
+   "54"
    ```
 
 ## Cleanup
