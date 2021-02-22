@@ -1,3 +1,3 @@
 
 validate:
-	mm.py README.md
+	mm.py -l README.md
