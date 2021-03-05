@@ -58,7 +58,7 @@ Find SDK-specific samples in the links below:
   - **[Getting Started with .NET Actors](https://docs.dapr.io/developing-applications/sdks/dotnet/dotnet-actors/dotnet-actor-howto/)** - Tutorial for developing actor applications using the Dapr .NET SDK including **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/examples/Actor)**
 - **[Java SDK](https://github.com/dapr/java-sdk)**
   - **[Examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples)** - Examples for developing Java applications using Dapr
-  - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors/http)** - Example for developing an actor application using the Java SDK.
+  - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors)** - Example for developing an actor application using the Java SDK.
 - **[Go SDK](https://github.com/dapr/go-sdk)** 
   - **[Examples](https://github.com/dapr/go-sdk/tree/master/example#dapr-go-client-example)** using the client library to connect to Dapr API, and how to create a Dapr application in either HTTP or gRPC.
 - **[Javascript SDK](https://github.com/dapr/js-sdk)**
