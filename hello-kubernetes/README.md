@@ -189,6 +189,7 @@ Expected output:
 ```json
 {"orderId":"42"}
 ```
+<!-- END_STEP -->
 
 ## Step 5 - Deploy the Python app with the Dapr sidecar
 Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
