@@ -208,16 +208,16 @@ The first thing you need is an RBAC enabled Kubernetes cluster. This could be ru
 
 Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, look [here](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
 
-> Note, that using the CLI does not support non-default namespaces.  
-> If you need a non-default namespace, Helm has to be used (see below).
+> Please note, the CLI will install to the dapr-system namespace by default. If this namespace does not exist, the CLI will create it.
+> If you need to deploy to a different namespace, you can use ```-n mynamespace```. See [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/) for more info.
 
 ```
 $ dapr init --kubernetes
-ℹ️  Note: this installation is recommended for testing purposes. For production environments, please use Helm
-
 ⌛  Making the jump to hyperspace...
-✅  Deploying the Dapr Operator to your cluster...
-✅  Success! Dapr has been installed. To verify, run 'kubectl get pods -w' in your terminal
+ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
+
+✅  Deploying the Dapr control plane to your cluster...
+✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
 ### Step 2 - Configure a secret in the secret store
