@@ -35,6 +35,28 @@ $ dapr init --kubernetes
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
+The ```dapr``` CLI will exit as soon as the kubernetes deployments are created. Kubernetes deployments are asyncronous, so you will need to make sure that the dapr deployments are actually completed before continuing.
+
+<!-- STEP
+name: Check dapr status
+-->
+
+```bash
+dapr status -k
+```
+
+<!-- END_STEP -->
+
+You will see output like the following. All services should show ```True``` in the HEALTHY column and ```Running``` in the STATUS column before you continue. 
+```
+  NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION  AGE  CREATED              
+  dapr-operator          dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
+  dapr-placement-server  dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
+  dapr-dashboard         dapr-system  True     Running  1         0.6.0    13s  2021-03-08 11:00.21  
+  dapr-sentry            dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
+  dapr-sidecar-injector  dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
+``` 
+
 ## Step 2 - Create and configure a state store
 
 Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc) to persist and retrieve state. This demo will use Redis.
@@ -66,14 +88,20 @@ component.dapr.io/statestore created
 
 <!-- STEP
 name: Deploy Node App
-sleep: 30
 expected_stdout_lines:
   - "service/nodeapp created"
   - "deployment.apps/nodeapp created"
+  - 'deployment "nodeapp" successfully rolled out'
 -->
 
 ```bash
 kubectl apply -f ./deploy/node.yaml
+```
+
+Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following command:
+
+```bash
+kubectl rollout status deploy/nodeapp
 ```
 
 <!-- END_STEP -->
@@ -155,7 +183,6 @@ Next submit an order to the app
 
 <!-- STEP
 name: neworder Test
-sleep: 30
 expected_stdout_lines:
   - ''
 env:
@@ -212,9 +239,10 @@ while True:
 
 <!-- STEP
 name: Deploy Python App
-sleep: 30
+sleep: 11
 expected_stdout_lines:
   - deployment.apps/pythonapp created
+  - 'deployment "pythonapp" successfully rolled out'
 -->
 
 Deploy the Python app to your Kubernetes cluster:
@@ -223,13 +251,13 @@ Deploy the Python app to your Kubernetes cluster:
 kubectl apply -f ./deploy/python.yaml
 ```
 
+As with above, the following command will wait for the deployment to complete:
+
+```bash
+kubectl rollout status deploy/pythonapp
+```
+
 <!-- END_STEP -->
-
-Now wait for the pod to be in ```Running``` state:
-
-```
-kubectl get pods --selector=app=python -w
-```
 
 ## Step 6 - Observe messages
 
