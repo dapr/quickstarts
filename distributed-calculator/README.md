@@ -337,7 +337,6 @@ timeout_seconds: 300
 <!-- STEP
 name: "Deploy Kubernetes"
 working_dir: "./deploy"
-sleep: 60
 expected_stdout_lines:
   - "configuration.dapr.io/appconfig created"
   - "deployment.apps/subtractapp created"
@@ -359,18 +358,44 @@ kubectl apply -f .
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for the front-end, which allows us to connect to it externally.
 
-4. Wait until your pods are in a running state: `kubectl get pods -w`
+4. Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following commands:
+
+<!-- STEP
+name: "Deploy Kubernetes"
+expected_stdout_lines:
+  - 'deployment "addapp" successfully rolled out'
+  - 'deployment "subtractapp" successfully rolled out'
+  - 'deployment "divideapp" successfully rolled out'
+  - 'deployment "multiplyapp" successfully rolled out'
+  - 'deployment "calculator-front-end" successfully rolled out'
+-->
 
 ```bash
+kubectl rollout status deploy/addapp
+kubectl rollout status deploy/subtractapp
+kubectl rollout status deploy/divideapp
+kubectl rollout status deploy/multiplyapp
+kubectl rollout status deploy/calculator-front-end
+```
 
-NAME                                    READY     STATUS    RESTARTS   AGE
-dapr-operator-775c97497c-p92mf          1/1       Running   0          134m
-dapr-placement-58c7d5f9cf-l9wcv         1/1       Running   0          134m
-dapr-sidecar-injector-5879986bdc-nwdps  1/1       Running   0          134m
-calculator-front-end-7c549cc84d-m24cb   2/2       Running   0          3m
-divideapp-6d85b88cb4-vh7nz              2/2       Running   0          1m
-multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
-subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
+
+You can view the status of the running pods with:
+
+```bash
+kubectl get pods
+```
+
+<!-- END_STEP -->
+
+When everything is running properly, you'll see output like this:
+
+```
+NAME                                    READY   STATUS    RESTARTS   AGE
+addapp-5ff9586df6-5bpll                 2/2     Running   0          16s
+calculator-front-end-56dc959b58-bb8vw   2/2     Running   0          16s
+divideapp-c64f744d6-wljcc               2/2     Running   0          16s
+multiplyapp-6989454d77-tkd6c            2/2     Running   0          16s
+subtractapp-869b74f676-9mw94            2/2     Running   0          16s
 ```
 
 5. Next, take a look at the services and wait until you have an external IP configured for the front-end: `kubectl get svc -w`
