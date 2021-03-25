@@ -28,7 +28,7 @@ Dapr allows you to deploy the same microservices from your local machines to the
 
 ### Prerequisites to Run in Kubernetes
 
-- [Dapr enabled Kubernetes cluster](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
+- [Dapr enabled Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/)
 
 ## Run locally
 
@@ -278,7 +278,7 @@ To run the same code in Kubernetes, first set up a Redis store and then deploy t
 
 Dapr uses pluggable message buses to enable pub-sub, in this case Redis Streams (enabled in Redis version 5 and above) is used. You'll install Redis into the cluster using helm, but keep in mind that you could use whichever Redis host you like, as long as the version is greater than 5.
 
-1. Follow [these steps](https://docs.dapr.io/getting-started/configure-redis/#create-a-redis-store) to create a Redis store using Helm. 
+1. Follow [these steps](https://docs.dapr.io/getting-started/configure-state-pubsub/#create-a-redis-store) to create a Redis store using Helm. 
    > **Note**: Currently the version of Redis supported by Azure Redis Cache is less than 5, so using Azure Redis Cache will not work.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. Don't worry about applying the `redis.yaml`, as it will be covered in the next step. 
    > **Note:** the `redis.yaml` file provided in this quickstart takes plain text secrets. In a production-grade application, follow [secret management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) instructions to securely manage your secrets.
