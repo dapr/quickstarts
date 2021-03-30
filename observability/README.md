@@ -285,7 +285,7 @@ If this is the first time trying the distributed calculator, find more detailed 
 name: Port forward
 background: true
 sleep: 2
-timeout_seconds: 1
+timeout_seconds: 100
 expected_return_code:
 -->
 
