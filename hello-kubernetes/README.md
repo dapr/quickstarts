@@ -27,7 +27,11 @@ Once you have a cluster, follow the steps below to deploy Dapr to it. For more d
 > If you need to deploy to a different namespace, you can use ```-n mynamespace```. See [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/) for more info.
 
 ```
-$ dapr init --kubernetes
+dapr init --kubernetes --wait
+```
+
+Sample output:
+```
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
 
@@ -35,7 +39,7 @@ $ dapr init --kubernetes
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
-The ```dapr``` CLI will exit as soon as the kubernetes deployments are created. Kubernetes deployments are asyncronous, so you will need to make sure that the dapr deployments are actually completed before continuing.
+> Without the ```--wait``` flag the Dapr CLI will exit as soon as the kubernetes deployments are created. Kubernetes deployments are asyncronous by default, so we use ```--wait``` here to make sure the dapr control plane is completely deployed and running before continuing.
 
 <!-- STEP
 name: Check dapr status
@@ -114,56 +118,41 @@ This will deploy the Node.js app to Kubernetes. The Dapr control plane will auto
 
 You'll also see the container image that you're deploying. If you want to update the code and deploy a new image, see **Next Steps** section.
 
-This deployment provisions an External IP.
-Wait until the IP is visible: (may take a few minutes)
-
-```
-kubectl get svc nodeapp
-```
-
-> Note: Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
-
-Once you have an external IP, save it.
-You can also export it to a variable:
-
-```
-Linux/MacOS
-export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
-
-Windows
-for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
-```
-
-**Optional:** You can also use port forwarding if you don't have easy access to your Kubernetes cluster service IPs:
+There are several different ways to access a Kubernetes service depending on which platform you are using. Port forwarding is one consistent way to access a service, whether it is hosted locally or on a cloud Kubernetes provider like AKS.
 
 <!-- STEP
 name: Port forward
 background: true
 sleep: 2
-timeout_seconds: 1
+timeout_seconds: 10
 expected_return_code:
 -->
 
 ```bash
-export NODE_APP=localhost:8080
 kubectl port-forward service/nodeapp 8080:80
 ```
 
 <!-- END_STEP -->
 
-## Step 4 - Verify Service call using external IP
-To call the service using the extracted external IP, from a command prompt run:
+This will make your service available on http://localhost:8080.
+
+> **Optional**: If you are using a public cloud provider, you can substitue your EXTERNAL-IP address instead of port forwarding. You can find it with:
+
+```bash 
+kubectl get svc nodeapp
+```
+
+## Step 4 - Verify Service
+To call the service that you set up port forwarding to, from a command prompt run:
 
 <!-- STEP
 name: Curl Test
 expected_stdout_lines:
   - '{"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}'
-env:
-  NODE_APP: "localhost:8080"
 -->
 
 ```bash
-curl $NODE_APP/ports
+curl http://localhost:8080/ports
 ```
 
 <!-- END_STEP -->
@@ -174,23 +163,16 @@ Expected output:
 {"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}
 ```
 
-> Note: This assumes that the external IP is available in the `NODE_APP` environment variable from the previous step.
-Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP. Then export it to an environment variable.
-
-Here you can see that two ports are displayed. Both the ports have been injected when Dapr was enabled for this app. Additionally, in this quickstart the HTTP Port is used for further communication with the Dapr sidecar.
-
 Next submit an order to the app
 
 <!-- STEP
 name: neworder Test
 expected_stdout_lines:
   - ''
-env:
-  NODE_APP: "localhost:8080"
 -->
 
 ```bash
-curl --request POST --data "{\"data\": { \"orderId\": \"42\" } }" --header "Content-Type:application/json" http://$NODE_APP/neworder
+curl --request POST --data "{\"data\": { \"orderId\": \"42\" } }" --header "Content-Type:application/json" http://localhost:8080/neworder
 ```
 
 <!-- END_STEP -->
@@ -204,12 +186,10 @@ Confirm the order was persisted by requesting it from the app
 name: order Test
 expected_stdout_lines:
   - '{"orderId":"42"}'
-env:
-  NODE_APP: "localhost:8080"
 -->
 
 ```bash
-curl http://$NODE_APP/order
+curl http://localhost:8080/order
 ```
 
 Expected output:
