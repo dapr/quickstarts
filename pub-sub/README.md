@@ -150,24 +150,39 @@ cd react-form
 2. Run the React front end app with Dapr: 
 
 <!-- STEP
+name: Run react build
+working_dir: ./react-form
+expected_stdout_lines:
+expected_stderr_lines:
+env:
+  CI: "false"
+-->
+
+```bash
+npm run buildclient
+npm install
+```
+
+<!-- END_STEP -->
+
+<!-- STEP
 name: Run react frontent
 working_dir: ./react-form
 expected_stdout_lines:
   - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Listening on port 8080!"
   - "== APP == Publishing:  { messageType: 'B', message: 'Message on B' }"
   - "== APP == Publishing:  { messageType: 'C', message: 'Message on C' }"
   - "✅  Exited Dapr successfully"
   - "✅  Exited App successfully"
 expected_stderr_lines:
 background: true
-sleep: 60
+sleep: 10
 env:
   CI: "false"
 -->
 
 ```bash
-dapr run --app-id react-form --app-port 8080 npm run buildandstart
+dapr run --app-id react-form --app-port 8080 npm run start
 ```
 
 <!-- END_STEP -->
@@ -290,9 +305,33 @@ Now that the Redis store is set up, you can deploy the assets.
 1. In your CLI window, navigate to the deploy directory
 2. To deploy the publisher and two subscriber microservices, as well as the redis configuration you set up in the last step, run:
 
+<!-- STEP
+name: Deploy to k8s
+working_dir: deploy
+expected_stdout_lines:
+  - "deployment.apps/node-subscriber created"
+  - "deployment.apps/python-subscriber created"
+  - "service/react-form created"
+  - "deployment.apps/react-form created"
+  - 'deployment "node-subscriber" successfully rolled out'
+  - 'deployment "python-subscriber" successfully rolled out'
+  - 'deployment "react-form" successfully rolled out'
+-->
+
 ```bash
 kubectl apply -f .
 ```
+
+Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following command:
+
+```bash
+kubectl rollout status deploy/node-subscriber
+kubectl rollout status deploy/python-subscriber
+kubectl rollout status deploy/react-form
+```
+
+<!-- END_STEP -->
+
 
 3. To see each pod being provisioned run:
 
@@ -312,20 +351,82 @@ This may take a few minutes.
 
 ### Use the app
 
-1. Copy the external IP from the last step into a browser and observe the same React form that you saw locally.
+1. Access the web form.
 
-**For Minikube users**, execute the below command to open `react-form` in a browser
+There are several different ways to access a Kubernetes service depending on which platform you are using. Port forwarding is one consistent way to access a service, whether it is hosted locally or on a cloud Kubernetes provider like AKS.
+
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 10
+expected_return_code:
+-->
+
+```bash
+kubectl port-forward service/react-form 8000:80
 ```
-minikube service react-form
+
+<!-- END_STEP -->
+
+This will make your service available on http://localhost:8000
+
+> **Optional**: If you are using a public cloud provider, you can substitue your EXTERNAL-IP address instead of port forwarding. You can find it with:
+
+```bash 
+kubectl get svc react-form
 ```
 
 2. Create and submit messages of different types.
+
+Open a web broswer and navigate to http://localhost:8000 and you see the same form as with the locally hosted example above.
+
+<!-- STEP
+name: Curl validation k8s
+expected_stdout_lines:
+  - "OK"
+  - "OK"
+  - "OK"
+expected_stderr_lines:
+-->
+
+> **Note:** If you are running in an environment without easy access to a web browser, the following curl commands will simulate a browser request to the node server.
+
+```bash
+curl -w "\n" -s 'http://localhost:8000/publish' -H 'Content-Type: application/json' --data '{"messageType":"A","message":"Message on A"}'
+curl -w "\n" -s 'http://localhost:8000/publish' -H 'Content-Type: application/json' --data '{"messageType":"B","message":"Message on B"}'
+curl -s 'http://localhost:8000/publish' -H 'Content-Type: application/json' --data '{"messageType":"C","message":"Message on C"}'
+```
+
+<!-- END_STEP -->
+
 3. To see the logs generated from your subscribers: 
+
+<!-- STEP
+name: Deploy Node App
+expected_stdout_lines:
+  - "A:  Message on A"
+  - "B:  Message on B"
+-->
 
 ```bash
 kubectl logs --selector app=node-subscriber -c node-subscriber
+```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: Deploy Python App
+expected_stdout_lines:
+  - 'Received message "Message on A" on topic "A"'
+  - 'Received message "Message on C" on topic "C"'
+-->
+
+```bash
 kubectl logs --selector app=python-subscriber -c python-subscriber
 ```
+
+<!-- END_STEP -->
 
 4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
 
@@ -333,9 +434,22 @@ kubectl logs --selector app=python-subscriber -c python-subscriber
 
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
+<!-- STEP
+name: Cleanup
+working_dir: deploy
+expected_stdout_lines:
+  - 'deployment.apps "node-subscriber" deleted'
+  - 'deployment.apps "python-subscriber" deleted'
+  - 'service "react-form" deleted'
+  - 'deployment.apps "react-form" deleted'
+  - 'component.dapr.io "pubsub" deleted'
+-->
+
 ```bash
 kubectl delete -f .
 ```
+
+<!-- END_STEP -->
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
 
