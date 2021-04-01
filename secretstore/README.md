@@ -212,13 +212,19 @@ Once you have a cluster, follow the steps below to deploy Dapr to it. For more d
 > If you need to deploy to a different namespace, you can use ```-n mynamespace```. See [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/) for more info.
 
 ```
-$ dapr init --kubernetes
+dapr init --kubernetes --wait
+```
+
+Sample output:
+```
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
 
 ✅  Deploying the Dapr control plane to your cluster...
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
+
+> Without the ```--wait``` flag the Dapr CLI will exit as soon as the kubernetes deployments are created. Kubernetes deployments are asyncronous by default, so we use ```--wait``` here to make sure the dapr control plane is completely deployed and running before continuing.
 
 ### Step 2 - Configure a secret in the secret store
 
@@ -228,9 +234,18 @@ Dapr can use a number of different secret stores (AWS Secret Manager, Azure Key 
 
 > Note: For Windows make sure the file does not contain an extension as the name of the file becomes the metadata key to retrieve the secret.
 2. Create the secret in the Kubernetes secret store. Note, the name of the secret here is "mysecret" and will be used in a later step.
+
+<!-- STEP
+name: Create secret
+working_dir: node
+expected_stdout_lines:
+-->
+
 ```bash
 kubectl create secret generic mysecret --from-file ./mysecret
 ```
+
+<!-- END_STEP -->
 
 3. You can check that the secret is indeed stored in the Kubernetes secret store by running the command:
 ```
@@ -267,43 +282,66 @@ type: Opaque
 
 ### Step 3 - Deploy the Node.js app with the Dapr sidecar
 
+<!-- STEP
+name: Deploy to k8s
+expected_stdout_lines:
+  - "deployment.apps/nodeapp created"
+  - 'deployment "nodeapp" successfully rolled out'
+-->
+
+```bash
+kubectl apply -f deploy/node.yaml
 ```
-kubectl apply -f ./deploy/node.yaml
+
+Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following command:
+
+```bash
+kubectl rollout status deploy/nodeapp
 ```
 
-This will deploy the Node.js app to Kubernetes.
+<!-- END_STEP -->
 
-You'll also see the container image that is being deployed. If you want to update the code and deploy a new image, see **Next Steps** section. 
 
-This deployment provisions an external IP.
-Wait until the IP is visible: (may take a few minutes)
+There are several different ways to access a Kubernetes service depending on which platform you are using. Port forwarding is one consistent way to access a service, whether it is hosted locally or on a cloud Kubernetes provider like AKS.
 
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 10
+expected_return_code:
+-->
+
+```bash
+kubectl port-forward service/nodeapp 8000:80
 ```
+
+<!-- END_STEP -->
+
+This will make your service available on http://localhost:8000.
+
+> **Optional**: If you are using a public cloud provider, you can substitue your EXTERNAL-IP address instead of port forwarding. You can find it with:
+
+```bash 
 kubectl get svc nodeapp
 ```
 
-> Note: Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
-
-Once you have an external IP, save it.
-You can also export it to a variable:
-
-**Linux/MacOS**:
-
-```
-export NODE_APP=$(kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
-```
-
-**Windows**:
-
-```
-for /f "delims=" %a in ('kubectl get svc nodeapp --output 'jsonpath={.status.loadBalancer.ingress[0].ip}') do @set NODE_APP=%a
-```
 
 ### Step 4 - Access the secret
 Make a request to the node app to fetch the secret. You can use the command below:
+
+<!-- STEP
+name: Curl test
+expected_stdout_lines:
+  - "eHl6OTg3Ngo="
+-->
+
+```bash
+curl -k http://localhost:8000/getsecret 
 ```
-curl -k http://$NODE_APP/getsecret 
-```
+
+<!-- END_STEP -->
+
 The output should be your base64 encoded secret
 
 ### Step 5 - Observe Logs
@@ -312,14 +350,23 @@ Now that the node app is running, watch messages come through.
 
 Get the logs of the Node.js app:
 
-```
+<!-- STEP
+name: Read logs
+expected_stdout_lines:
+  - 'Node App listening on port 3000!'
+  - 'Fetching URL: http://localhost:3500/v1.0/secrets/kubernetes/mysecret?metadata.namespace=default'
+  - 'Base64 encoded secret is: eHl6OTg3Ngo='
+-->
+
+```bash
 kubectl logs --selector=app=node -c node
 ```
+
+<!-- END_STEP -->
 
 If all went well, you should see logs like this:
 
 ```
-% kubectl logs --selector=app=node -c node
 Node App listening on port 3000!
 Fetching URL: http://localhost:3500/v1.0/secrets/kubernetes/mysecret?metadata.namespace=default
 Base64 encoded secret is: eHl6OTg3Ngo=
@@ -331,9 +378,20 @@ In these logs, you can see that the node app is making a request to dapr to fetc
 
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
+<!-- STEP
+name: Cleanup
+expected_stdout_lines:
+  - 'service "nodeapp" deleted'
+  - 'deployment.apps "nodeapp" deleted'
+  - 'secret "mysecret" deleted'
+-->
+
 ```bash
 kubectl delete -f ./deploy/node.yaml
+kubectl delete secret mysecret
 ```
+
+<!-- END_STEP -->
 
 This will spin down the node app.
 

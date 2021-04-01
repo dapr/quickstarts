@@ -398,36 +398,52 @@ multiplyapp-6989454d77-tkd6c            2/2     Running   0          16s
 subtractapp-869b74f676-9mw94            2/2     Running   0          16s
 ```
 
-5. Next, take a look at the services and wait until you have an external IP configured for the front-end: `kubectl get svc -w`
+5. Next, setup access to your service
 
-    ```bash
-    NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
-    dapr-api                      ClusterIP      10.103.71.22   <none>          80/TCP             135m
-    dapr-placement                ClusterIP      10.103.53.127  <none>          80/TCP             135m
-    dapr-sidecar-injector         ClusterIP      10.104.220.35  <none>          443/TCP            135m
-    addapp-dapr                   ClusterIP      10.0.1.170     <none>          80/TCP,50001/TCP   2m
-    calculator-front-end          LoadBalancer   10.0.155.131   40.80.152.125   80:32633/TCP       3m
-    calculator-front-end-dapr     ClusterIP      10.0.230.219   <none>          80/TCP,50001/TCP   3m
-    divideapp-dapr                ClusterIP      10.0.240.3     <none>          80/TCP,50001/TCP   1m
-    kubernetes                    ClusterIP      10.0.0.1       <none>          443/TCP            33d
-    multiplyapp-dapr              ClusterIP      10.0.217.211   <none>          80/TCP,50001/TCP   1m
-    subtractapp-dapr              ClusterIP      10.0.146.253   <none>          80/TCP,50001/TCP   2m
-    ```
+There are several different ways to access a Kubernetes service depending on which platform you are using. Port forwarding is one consistent way to access a service, whether it is hosted locally or on a cloud Kubernetes provider like AKS.
 
-    Each service ending in "-dapr" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 10
+expected_return_code:
+-->
 
-    > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
+```bash
+kubectl port-forward service/calculator-front-end 8000:80
+```
 
-6. Take the external IP address for `calculator-front-end` and drop it in your browser and voilà! You have a working distributed calculator!
+<!-- END_STEP -->
 
-    **For Minikube users**, execute the below command to open calculator on your browser
-    ```
-    $ minikube service calculator-front-end
-    ```
+This will make your service available on http://localhost:8000. Navigate to this address with your browser and voilà! You have a working distributed calculator!
+
+> **Optional**: If you are using a public cloud provider, you can substitue your EXTERNAL-IP address instead of port forwarding. You can find it with:
+
+```bash 
+kubectl get svc
+```
+
+```bash
+NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
+dapr-api                      ClusterIP      10.103.71.22   <none>          80/TCP             135m
+dapr-placement                ClusterIP      10.103.53.127  <none>          80/TCP             135m
+dapr-sidecar-injector         ClusterIP      10.104.220.35  <none>          443/TCP            135m
+addapp-dapr                   ClusterIP      10.0.1.170     <none>          80/TCP,50001/TCP   2m
+calculator-front-end          LoadBalancer   10.0.155.131   40.80.152.125   80:32633/TCP       3m
+calculator-front-end-dapr     ClusterIP      10.0.230.219   <none>          80/TCP,50001/TCP   3m
+divideapp-dapr                ClusterIP      10.0.240.3     <none>          80/TCP,50001/TCP   1m
+kubernetes                    ClusterIP      10.0.0.1       <none>          443/TCP            33d
+multiplyapp-dapr              ClusterIP      10.0.217.211   <none>          80/TCP,50001/TCP   1m
+subtractapp-dapr              ClusterIP      10.0.146.253   <none>          80/TCP,50001/TCP   2m
+```
+
+Each service ending in "-dapr" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
+
 
 <!-- STEP
 name: Pause for manual validation
-manual_pause_message: "Calculator APP running on http://<service_ip>:80. Please open in your browser and test manually."
+manual_pause_message: "Calculator APP running on http://localhost:8000. Please open in your browser and test manually."
 -->
 
 <!-- We will pause here and print the above message when mm.py is run with '-m'. Otherwise, this step does nothing -->
@@ -437,7 +453,7 @@ manual_pause_message: "Calculator APP running on http://<service_ip>:80. Please 
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
+6. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
 
 ```js
 Persisting State:
@@ -459,23 +475,8 @@ Calling divide service
 
 The client code calls to an Express server, which routes the calls through Dapr to the back-end services. In this case the divide endpoint is called on the nodejs application.
 
-8. **Optional:** As with the local steps above, you can validate that all the individual calculator apps are working:
+7. **Optional:** If your environment doesn't have easy access to a browser, or you just like using curl
 
-Port forwarding is another way you can access a kubernetes service:
-
-<!-- STEP
-name: Port forward
-background: true
-sleep: 2
-timeout_seconds: 1
-expected_return_code:
--->
-
-```bash
-kubectl port-forward service/calculator-front-end 8000:80
-```
-
-<!-- END_STEP -->
 
 Then you can use the following curl commands to make sure each one of the microservies is working:
 

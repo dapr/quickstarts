@@ -282,17 +282,27 @@ expected_stdout_lines:
   - service/bindings-nodeapp created
   - deployment.apps/bindings-nodeapp created
   - deployment.apps/bindings-pythonapp created
+  - 'deployment "bindings-nodeapp" successfully rolled out'
+  - 'deployment "bindings-pythonapp" successfully rolled out'
 -->
 
 ```bash
 kubectl apply -f .
 ```
 
-<!-- END_STEP -->
-
 This will deploy bindings-nodeapp and bindings-pythonapp microservices. It will also apply the Kafka bindings component configuration you set up in the last step.
 
-3. Run `kubectl get pods -w` to see each pod being provisioned.
+Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following command:
+
+```bash
+kubectl rollout status deploy/bindings-nodeapp
+kubectl rollout status deploy/bindings-pythonapp
+```
+
+<!-- END_STEP -->
+
+
+3. Run `kubectl get pods` to see that pods were correctly provisioned.
 
 
 ### Observe Logs
