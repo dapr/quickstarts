@@ -46,7 +46,7 @@ sleep: 5
 -->
 
 ```bash
-cd ../hello-world && dapr run --app-id hello-tracing --app-port 3000 node app.js && cd ../observability
+cd ../hello-world && npm install && dapr run --app-id hello-tracing --app-port 3000 node app.js && cd ../observability
 ```
 
 <!-- END_STEP -->
