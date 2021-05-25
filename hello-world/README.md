@@ -346,7 +346,7 @@ expected_stderr_lines:
 output_match_mode: substring
 name: "run python app"
 background: true
-sleep: 10
+sleep: 30
 -->
 
 2. Start the Python App with Dapr: 
