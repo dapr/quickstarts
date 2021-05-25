@@ -37,10 +37,11 @@ spec:
 <!-- STEP
 name: Run app with tracing
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 background: true
 sleep: 5
 -->
@@ -56,14 +57,15 @@ cd ../hello-world && npm install && dapr run --app-id hello-tracing --app-port 3
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  App invoked successfully"
+  - "App invoked successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: dapr invoke
 sleep: 2
 -->
 
 ```bash
-dapr invoke --app-id hello-tracing --method neworder --data '{"data": { "orderId": "42" } }'
+dapr invoke --app-id hello-tracing --method neworder --data-file sample.json
 ```
 
 <!-- END_STEP -->
@@ -90,14 +92,15 @@ To see traces collected through the API:
 
 <!-- STEP
 expected_stdout_lines:
-  - '                "dapr.api": "POST /v1.0/invoke/hello-tracing/method/neworder",'
+  - '"dapr.api": "POST /v1.0/invoke/hello-tracing/method/neworder",'
 expected_stderr_lines:
+output_match_mode: substring
 name: Curl validate
 -->
 
 
 ```bash
-curl -s "http://localhost:9411/api/v2/traces?serviceName=hello-tracing&spanName=calllocal%2Fhello-tracing%2Fneworder&limit=10" -H  "accept: application/json" | python -m json.tool
+curl -s http://localhost:9411/api/v2/traces?spanName=calllocal%2Fhello-tracing%2Fneworder -H  accept:application/json -o output.json && python -m json.tool output.json
 ```
 <!-- END_STEP -->
 
@@ -134,8 +137,9 @@ You should see output like the following:
 
 <!-- STEP
 expected_stdout_lines: 
-  - '✅  app stopped successfully: hello-tracing'
+  - 'app stopped successfully: hello-tracing'
 expected_stderr_lines:
+output_match_mode: substring
 name: Shutdown dapr
 -->
 
@@ -286,9 +290,21 @@ expected_stdout_lines:
 
 ```bash
 kubectl rollout status deploy/addapp
+```
+
+```bash
 kubectl rollout status deploy/subtractapp
+```
+
+```bash
 kubectl rollout status deploy/divideapp
+```
+
+```bash
 kubectl rollout status deploy/multiplyapp
+```
+
+```bash
 kubectl rollout status deploy/calculator-front-end
 ```
 
@@ -313,7 +329,7 @@ If this is the first time trying the distributed calculator, find more detailed 
 name: Port forward
 background: true
 sleep: 2
-timeout_seconds: 100
+timeout_seconds: 50
 expected_return_code:
 -->
 
@@ -331,7 +347,6 @@ To show how observability can help discover and troubleshoot issues on a distrib
 
 <!-- STEP
 name: Deploy mmdified multiply app
-sleep: 60
 expected_stdout_lines:
   - 'deployment.apps/multiplyapp configured'
 -->
@@ -363,20 +378,40 @@ Now go to the calculator UI and perform several calculations. Make sure to use a
 
 **Optional:** You can also use the following curl commands to execute all operations:
 
+
 <!-- STEP
 expected_stdout_lines:
-  - "59"
+  - "86"
   - "18"
-  - "12"
+  - "1.5294"
   - "1768.0"
+  - '"total":"54"'
+output_match_mode: substring
 name: "Curl test"
 -->
 
-```bash 
-curl -w "\n" -s 'http://localhost:8000/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
+```bash
+curl -s http://localhost:8000/calculate/add -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/subtract -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/divide -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/persist -H Content-Type:application/json --data @persist.json
+```
+
+```bash
+curl -s http://localhost:8000/state 
 ```
 
 <!-- END_STEP -->
@@ -388,7 +423,7 @@ Now go to the Zipkin dashboard by running. (Note: if you are running Dapr locall
 name: Port forward
 background: true
 sleep: 2
-timeout_seconds: 1
+timeout_seconds: 10
 expected_return_code:
 -->
 
@@ -435,13 +470,15 @@ As before, you can also access traces through the Zipkin API. The following will
 
 <!-- STEP
 expected_stdout_lines:
-  - '            "name": "calllocal/multiplyapp/multiply",'
+  - '"name": "calllocal/multiplyapp/multiply",'
+output_match_mode: substring
 expected_stderr_lines:
+
 name: Curl validate
 -->
 
 ```bash
-curl -s "http://localhost:19411/api/v2/traces?minDuration=250000&limit=10" -H  "accept: application/json" | python -m json.tool
+curl -s http://localhost:19411/api/v2/traces?minDuration=250000 -H accept:application/json -o output.json && python -m json.tool output.json
 ```
 
 <!-- END_STEP -->
