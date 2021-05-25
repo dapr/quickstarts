@@ -357,7 +357,7 @@ name: Read logs
 expected_stdout_lines:
   - 'Node App listening on port 3000!'
   - 'Fetching URL: http://localhost:3500/v1.0/secrets/kubernetes/mysecret?metadata.namespace=default'
-  - 'Base64 encoded secret is: eHl6OTg3Ngo='
+  - 'Base64 encoded secret is: eHl6OTg3Ng=='
 -->
 
 ```bash
@@ -371,7 +371,7 @@ If all went well, you should see logs like this:
 ```
 Node App listening on port 3000!
 Fetching URL: http://localhost:3500/v1.0/secrets/kubernetes/mysecret?metadata.namespace=default
-Base64 encoded secret is: eHl6OTg3Ngo=
+Base64 encoded secret is: eHl6OTg3Ng==
 ```
 
 In these logs, you can see that the node app is making a request to dapr to fetch the secret from the secret store. Note: mysecret is the secret that you created in Step 2
@@ -390,6 +390,9 @@ expected_stdout_lines:
 
 ```bash
 kubectl delete -f ./deploy/node.yaml
+```
+
+```bash
 kubectl delete secret mysecret
 ```
 
