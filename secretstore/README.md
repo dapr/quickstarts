@@ -128,12 +128,13 @@ Run Node.js app with Dapr with the local secret store component:
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Fetching URL: http://localhost:3500/v1.0/secrets/localsecretstore/mysecret?metadata.namespace=default"
   - "== APP == Base64 encoded secret is: YWJjZA=="
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 working_dir: node
 name: Run node app
 background: true
@@ -151,7 +152,7 @@ dapr run --app-id nodeapp --components-path ./components --app-port 3000 --dapr-
 The command starts the Dapr application and finally after it is completely initialized, you should see the logs 
 
 ```
-ℹ️  Updating metadata for app command: node app.js
+Updating metadata for app command: node app.js
 ✅  You're up and running! Both Dapr and your app logs will appear here.
 ```
 
@@ -187,8 +188,9 @@ The application logs should be similar to the following:
 To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new command line terminal: 
 
 <!-- STEP
+output_match_mode: substring
 expected_stdout_lines: 
-  - '✅  app stopped successfully: nodeapp'
+  - 'app stopped successfully: nodeapp'
 name: Shutdown dapr
 -->
 
@@ -218,7 +220,7 @@ dapr init --kubernetes --wait
 Sample output:
 ```
 ⌛  Making the jump to hyperspace...
-ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
+   Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
 
 ✅  Deploying the Dapr control plane to your cluster...
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
@@ -333,7 +335,7 @@ Make a request to the node app to fetch the secret. You can use the command belo
 <!-- STEP
 name: Curl test
 expected_stdout_lines:
-  - "eHl6OTg3Ngo="
+  - "eHl6OTg3Ng=="
 -->
 
 ```bash
@@ -355,7 +357,7 @@ name: Read logs
 expected_stdout_lines:
   - 'Node App listening on port 3000!'
   - 'Fetching URL: http://localhost:3500/v1.0/secrets/kubernetes/mysecret?metadata.namespace=default'
-  - 'Base64 encoded secret is: eHl6OTg3Ngo='
+  - 'Base64 encoded secret is: eHl6OTg3Ng=='
 -->
 
 ```bash
@@ -369,7 +371,7 @@ If all went well, you should see logs like this:
 ```
 Node App listening on port 3000!
 Fetching URL: http://localhost:3500/v1.0/secrets/kubernetes/mysecret?metadata.namespace=default
-Base64 encoded secret is: eHl6OTg3Ngo=
+Base64 encoded secret is: eHl6OTg3Ng==
 ```
 
 In these logs, you can see that the node app is making a request to dapr to fetch the secret from the secret store. Note: mysecret is the secret that you created in Step 2
@@ -388,6 +390,9 @@ expected_stdout_lines:
 
 ```bash
 kubectl delete -f ./deploy/node.yaml
+```
+
+```bash
 kubectl delete secret mysecret
 ```
 

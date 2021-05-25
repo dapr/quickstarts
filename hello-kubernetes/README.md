@@ -33,7 +33,7 @@ dapr init --kubernetes --wait
 Sample output:
 ```
 ⌛  Making the jump to hyperspace...
-ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
+  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
 
 ✅  Deploying the Dapr control plane to your cluster...
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
@@ -172,7 +172,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-curl --request POST --data "{\"data\": { \"orderId\": \"42\" } }" --header "Content-Type:application/json" http://localhost:8080/neworder
+curl --request POST --data @sample.json --header Content-Type:application/json http://localhost:8080/neworder
 ```
 
 <!-- END_STEP -->
