@@ -59,11 +59,12 @@ working_dir: "./go"
 
 <!-- STEP
 expected_stdout_lines:
-- "✅  You're up and running! Both Dapr and your app logs will appear here."
-- "== APP == Adding 56.000000 to 3.000000"
-- "✅  Exited Dapr successfully"
-- "✅  Exited App successfully"
+- "You're up and running! Both Dapr and your app logs will appear here."
+- "== APP == Adding 52.000000 to 34.000000"
+- "Exited Dapr successfully"
+- "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "Run go app"
 working_dir: "./go"
 background: true
@@ -83,7 +84,9 @@ sleep: 2
    ```bash
    #Linux/Mac OS:
    export ASPNETCORE_URLS="http://localhost:7000"
+   ```
 
+   ```bash
    #Windows:
    set ASPNETCORE_URLS=http://localhost:7000
    ```
@@ -102,12 +105,13 @@ working_dir: "./csharp"
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Subtracting 34 from 52"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
 name: "Run dotnet app"
+output_match_mode: substring
 working_dir: "./csharp/bin/Debug/netcoreapp3.1"
 background: true
 env: 
@@ -128,7 +132,6 @@ sleep: 2
 <!-- STEP
 name: "Build node app"
 working_dir: "./node"
-timeout_seconds: 300
 -->
 
 - Install dependencies by running the command:
@@ -140,11 +143,12 @@ timeout_seconds: 300
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Dividing 144 by 12"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Dividing 52 by 34"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "Run node app"
 working_dir: "./node"
 background: true
@@ -183,13 +187,14 @@ working_dir: "./python"
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Calculating 52.0 * 34.0"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
 name: "Run python app"
 working_dir: "./python"
+output_match_mode: substring
 background: true
 env:
   FLASK_RUN_PORT: "5000"
@@ -209,7 +214,6 @@ sleep: 2
 <!-- STEP
 name: "Build frontend app"
 working_dir: "./react-calculator"
-timeout_seconds: 600
 -->
 
 - Install the required modules
@@ -223,10 +227,11 @@ timeout_seconds: 600
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "Run frontent app"
 working_dir: "./react-calculator"
 background: true
@@ -260,43 +265,60 @@ manual_pause_message: "Calculator APP running on http://localhost:8080. Please o
 
 <!-- STEP
 expected_stdout_lines:
-  - "59"
+  - "86"
   - "18"
-  - "12"
+  - "1.5294"
   - "1768.0"
-  - '"54"'
+  - '"total":"54"'
+output_match_mode: substring
 name: "Curl test"
 -->
 
 - To make sure all the apps are working, you can run the following curl commands which will test all the operations:
    ```bash
-   curl -w "\n" -s 'http://localhost:8080/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
-   curl -w "\n" -s 'http://localhost:8080/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-   curl -w "\n" -s 'http://localhost:8080/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
-   curl -w "\n" -s 'http://localhost:8080/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-   curl -w "\n" -s 'http://localhost:8080/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
-   curl -s 'http://localhost:8080/state' | jq '.total'
+   curl -s http://localhost:8080/calculate/add -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/calculate/subtract -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/calculate/divide -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/calculate/multiply -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/persist -H Content-Type:application/json --data @persist.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/state 
    ```
 
 <!-- END_STEP -->
 
 - You should get the following output:
    ```bash
-   59
+   86
    18
-   12
+   1.5294117647058822
    1768.0
    
-   "54"
+   {"operation":null,"total":"54","next":null}
    ```
 
 <!-- STEP
 expected_stdout_lines:
-  - '✅  app stopped successfully: addapp'
-  - '✅  app stopped successfully: subtractapp'
-  - '✅  app stopped successfully: divideapp'
-  - '✅  app stopped successfully: multiplyapp'
-  - '✅  app stopped successfully: frontendapp'
+  - 'app stopped successfully: addapp'
+  - 'app stopped successfully: subtractapp'
+  - 'app stopped successfully: divideapp'
+  - 'app stopped successfully: multiplyapp'
+  - 'app stopped successfully: frontendapp'
+output_match_mode: substring
 name: Cleanup local
 -->
 
@@ -306,9 +328,21 @@ name: Cleanup local
 
    ```bash
    dapr stop --app-id addapp
+   ```
+
+   ```bash
    dapr stop --app-id subtractapp
+   ```
+   
+   ```bash
    dapr stop --app-id divideapp
+   ```
+   
+   ```bash
    dapr stop --app-id multiplyapp
+   ```
+
+   ```bash
    dapr stop --app-id frontendapp
    ```
 
@@ -317,7 +351,6 @@ name: Cleanup local
 <!-- STEP
 name: "cleanup node app"
 working_dir: "./node"
-timeout_seconds: 300
 -->
 
 - Uninstall node modules by navigating to the node directory and run:
@@ -372,9 +405,21 @@ expected_stdout_lines:
 
 ```bash
 kubectl rollout status deploy/addapp
+```
+
+```bash
 kubectl rollout status deploy/subtractapp
+```
+
+```bash
 kubectl rollout status deploy/divideapp
+```
+
+```bash
 kubectl rollout status deploy/multiplyapp
+```
+
+```bash
 kubectl rollout status deploy/calculator-front-end
 ```
 
@@ -477,26 +522,41 @@ The client code calls to an Express server, which routes the calls through Dapr 
 
 7. **Optional:** If your environment doesn't have easy access to a browser, or you just like using curl
 
-
 Then you can use the following curl commands to make sure each one of the microservies is working:
 
 <!-- STEP
 expected_stdout_lines:
-  - "59"
+  - "86"
   - "18"
-  - "12"
+  - "1.5294"
   - "1768.0"
-  - '"54"'
+  - '"total":"54"'
+output_match_mode: substring
 name: "Curl test"
 -->
 
-```bash 
-curl -w "\n" -s 'http://localhost:8000/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-curl -w "\n" -s 'http://localhost:8000/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
-curl -s 'http://localhost:8000/state' | jq '.total'
+```bash
+curl -s http://localhost:8000/calculate/add -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/subtract -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/divide -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/persist -H Content-Type:application/json --data @persist.json
+```
+
+```bash
+curl -s http://localhost:8000/state 
 ```
 
 <!-- END_STEP -->
@@ -504,12 +564,12 @@ curl -s 'http://localhost:8000/state' | jq '.total'
 You should get the following output:
 
    ```bash
-   59
+   86
    18
-   12
+   1.5294117647058822
    1768.0
    
-   "54"
+   {"operation":null,"total":"54","next":null}
    ```
 
 ## Cleanup

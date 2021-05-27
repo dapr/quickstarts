@@ -69,12 +69,13 @@ npm install
 <!-- STEP
 name: Run node subscriber
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == A:  This is a test"
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == A:  Message on A"
   - "== APP == B:  Message on B"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 working_dir: ./node-subscriber
 background: true
 sleep: 5
@@ -120,12 +121,13 @@ python -m pip install -r requirements.txt
 <!-- STEP
 name: Run python subscriber
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "This is a test" on topic "A"'
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP == Received message "Message on A" on topic "A"'
   - '== APP == Received message "Message on C" on topic "C"'
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 working_dir: ./python-subscriber
 background: true
 sleep: 10
@@ -160,6 +162,9 @@ env:
 
 ```bash
 npm run buildclient
+```
+
+```bash
 npm install
 ```
 
@@ -169,12 +174,13 @@ npm install
 name: Run react frontent
 working_dir: ./react-form
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Publishing:  { messageType: 'B', message: 'Message on B' }"
   - "== APP == Publishing:  { messageType: 'C', message: 'Message on C' }"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 background: true
 sleep: 10
 env:
@@ -205,7 +211,7 @@ manual_pause_message: "Pubsub APP running on http://localhost:8080. Please open 
 4. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
 
 ```bash
-[0m?[94;1m== APP == Topic A: { id: '5780e2ca-f526-4839-92e5-a0a30aff829a', source: 'react-form', type: 'com.dapr.event.sent', specversion: '0.3',data: { message: 'this is a test' } }
+== APP == Listening on port 8080!
 ```
 
 ### Use the CLI to publish messages to subscribers
@@ -214,34 +220,20 @@ The Dapr CLI provides a mechanism to publish messages for testing purposes.
 
 1. Use Dapr CLI to publish a message:
    
-  * Linux/Mac:
-
 <!-- STEP
 expected_stdout_lines:
-  - "✅  Event published successfully"
+  - "Event published successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: Publish with dapr CLI
 -->
 
 ```bash
-
-dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data '{ "message": "This is a test" }'
+dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data-file message_a.json
 ```
 
 <!-- END_STEP -->
     
-  * Windows CMD
-
-```bash
-dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data "{ \"message\": \"This is a test\" }"
-```
-    
-  * Windows Powershell
-
-```ps
-dapr publish --publish-app-id react-form --pubsub pubsub --topic A --data "{ message: This is a test }"
-```
-
 2. **Optional**: Try publishing a message of topic B. You'll notice that only the Node app will receive this message. The same is true for topic 'C' and the python app.
 
 <!-- STEP
@@ -255,8 +247,11 @@ expected_stderr_lines:
 > **Note:** If you are running in an environment without easy access to a web browser, the following curl commands will simulate a browser request to the node server.
 
 ```bash
-curl -w "\n" -s 'http://localhost:8080/publish' -H 'Content-Type: application/json' --data '{"messageType":"B","message":"Message on B"}'
-curl -s 'http://localhost:8080/publish' -H 'Content-Type: application/json' --data '{"messageType":"C","message":"Message on C"}'
+curl -s http://localhost:8080/publish -H Content-Type:application/json --data @message_b.json
+```
+
+```bash
+curl -s http://localhost:8080/publish -H Content-Type:application/json --data @message_c.json
 ```
 
 <!-- END_STEP -->
@@ -265,16 +260,23 @@ curl -s 'http://localhost:8080/publish' -H 'Content-Type: application/json' --da
 
 <!-- STEP
 expected_stdout_lines: 
-  - '✅  app stopped successfully: node-subscriber'
-  - '✅  app stopped successfully: python-subscriber'
-  - '✅  app stopped successfully: react-form'
+  - 'app stopped successfully: node-subscriber'
+  - 'app stopped successfully: python-subscriber'
+  - 'app stopped successfully: react-form'
 expected_stderr_lines:
+output_match_mode: substring
 name: Shutdown dapr
 -->
 
 ```bash
 dapr stop --app-id node-subscriber
+```
+
+```bash
 dapr stop --app-id python-subscriber
+```
+
+```bash
 dapr stop --app-id react-form
 ```
 
@@ -326,7 +328,13 @@ Kubernetes deployments are asyncronous. This means you'll need to wait for the d
 
 ```bash
 kubectl rollout status deploy/node-subscriber
+```
+
+```bash
 kubectl rollout status deploy/python-subscriber
+```
+
+```bash
 kubectl rollout status deploy/react-form
 ```
 
@@ -392,10 +400,17 @@ expected_stderr_lines:
 
 > **Note:** If you are running in an environment without easy access to a web browser, the following curl commands will simulate a browser request to the node server.
 
+
 ```bash
-curl -w "\n" -s 'http://localhost:8000/publish' -H 'Content-Type: application/json' --data '{"messageType":"A","message":"Message on A"}'
-curl -w "\n" -s 'http://localhost:8000/publish' -H 'Content-Type: application/json' --data '{"messageType":"B","message":"Message on B"}'
-curl -s 'http://localhost:8000/publish' -H 'Content-Type: application/json' --data '{"messageType":"C","message":"Message on C"}'
+curl -s http://localhost:8000/publish -H Content-Type:application/json --data @message_a.json
+```
+
+```bash
+curl -s http://localhost:8000/publish -H Content-Type:application/json --data @message_b.json
+```
+
+```bash
+curl -s http://localhost:8000/publish -H Content-Type:application/json --data @message_c.json
 ```
 
 <!-- END_STEP -->
@@ -482,12 +497,12 @@ This tells Dapr what topics in which pubsub component to subscribe to. When depl
 
 ```js
 app.post('/A', (req, res) => {
-    console.log("A: ", req.body);
+    console.log("A: ", req.body.data.message);
     res.sendStatus(200);
 });
 
 app.post('/B', (req, res) => {
-    console.log("B: ", req.body);
+    console.log("B: ", req.body.data.message);
     res.sendStatus(200);
 });
 ```
@@ -510,11 +525,13 @@ Again, this is how you tell Dapr what topics in which pubsub component to subscr
 @app.route('/A', methods=['POST'])
 def a_subscriber():
     print(f'A: {request.json}', flush=True)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    print('Received message "{}" on topic "{}"'.format(request.json['data']['message'], request.json['topic']), flush=True)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/C', methods=['POST'])
 def c_subscriber():
     print(f'C: {request.json}', flush=True)
+    print('Received message "{}" on topic "{}"'.format(request.json['data']['message'], request.json['topic']), flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 ```
 

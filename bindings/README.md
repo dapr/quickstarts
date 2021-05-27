@@ -52,13 +52,13 @@ sleep: 20
 docker-compose -f ./docker-compose-single-kafka.yml up -d
 ```
 
-<!-- END_STEP -->
-
 2. To see the container running locally, run:
 
 ```bash
 docker ps
 ```
+
+<!-- END_STEP -->
 
 The output should be similar to this:
 
@@ -100,8 +100,9 @@ name: Run node app
 working_dir: ./nodeapp
 background: true
 sleep: 5
+output_match_mode: substring
 expected_stdout_lines: 
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Hello from Kafka!"
   - "== APP == { orderId: 1 }"
   - "== APP == Hello from Kafka!"
@@ -109,17 +110,8 @@ expected_stdout_lines:
   - "== APP == Hello from Kafka!"
   - "== APP == { orderId: 3 }"
   - "== APP == Hello from Kafka!"
-  - "== APP == { orderId: 4 }"
-  - "== APP == Hello from Kafka!"
-  - "== APP == { orderId: 5 }"
-  - "== APP == Hello from Kafka!"
-  - "== APP == { orderId: 6 }"
-  - "== APP == Hello from Kafka!"
-  - "== APP == { orderId: 7 }"
-  - "== APP == Hello from Kafka!"
-  - "== APP == { orderId: 8 }"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 -->
 
 ```bash
@@ -157,26 +149,18 @@ pip3 install requests
 name: Run node app
 working_dir: ./pythonapp
 background: true
-sleep: 15
+sleep: 25
+output_match_mode: substring
 expected_stdout_lines: 
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == {'data': {'orderId': 1}, 'operation': 'create'}"
   - "== APP == <Response [204]>"
   - "== APP == {'data': {'orderId': 2}, 'operation': 'create'}"
   - "== APP == <Response [204]>"
   - "== APP == {'data': {'orderId': 3}, 'operation': 'create'}"
   - "== APP == <Response [204]>"
-  - "== APP == {'data': {'orderId': 4}, 'operation': 'create'}"
-  - "== APP == <Response [204]>"
-  - "== APP == {'data': {'orderId': 5}, 'operation': 'create'}"
-  - "== APP == <Response [204]>"
-  - "== APP == {'data': {'orderId': 6}, 'operation': 'create'}"
-  - "== APP == <Response [204]>"
-  - "== APP == {'data': {'orderId': 7}, 'operation': 'create'}"
-  - "== APP == <Response [204]>"
-  - "== APP == {'data': {'orderId': 8}, 'operation': 'create'}"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 -->
 
 ```bash
@@ -214,15 +198,19 @@ dapr run --app-id bindings-pythonapp python3 app.py --components-path ./componen
 To cleanly stop the dapr microservices, run:
 
 <!-- STEP
+output_match_mode: substring
 expected_stdout_lines: 
-  - '✅  app stopped successfully: bindings-nodeapp'
-  - '✅  app stopped successfully: bindings-pythonapp'
+  - 'app stopped successfully: bindings-nodeapp'
+  - 'app stopped successfully: bindings-pythonapp'
 expected_stderr_lines:
 name: Shutdown Dapr and Kafka
 -->
 
 ```bash
 dapr stop --app-id bindings-nodeapp
+```
+
+```bash
 dapr stop --app-id bindings-pythonapp
 ```
 
@@ -249,8 +237,17 @@ timeout_seconds: 120
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
+```
+
+```bash
 helm repo update
+```
+
+```bash
 kubectl create ns kafka
+```
+
+```bash
 helm install dapr-kafka bitnami/kafka --wait --namespace kafka -f ./kafka-non-persistence.yaml
 ```
 
@@ -270,12 +267,10 @@ dapr-kafka-zookeeper-0   1/1     Running   0          2m57s
 
 Now that the Kafka binding is set up, deploy the assets.
 
-1. In your CLI window, navigate to the deploy directory
-2. Run: 
+1. In your CLI window, in the bindings directory run: 
 
 <!-- STEP
 name: Run kubernetes apps
-working_dir: ./deploy
 sleep: 30
 expected_stdout_lines: 
   - component.dapr.io/sample-topic created
@@ -287,7 +282,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-kubectl apply -f .
+kubectl apply -f ./deploy
 ```
 
 This will deploy bindings-nodeapp and bindings-pythonapp microservices. It will also apply the Kafka bindings component configuration you set up in the last step.
@@ -296,14 +291,15 @@ Kubernetes deployments are asyncronous. This means you'll need to wait for the d
 
 ```bash
 kubectl rollout status deploy/bindings-nodeapp
+```
+
+```bash
 kubectl rollout status deploy/bindings-pythonapp
 ```
 
 <!-- END_STEP -->
 
-
-3. Run `kubectl get pods` to see that pods were correctly provisioned.
-
+2. Run `kubectl get pods` to see that pods were correctly provisioned.
 
 ### Observe Logs
 
@@ -392,7 +388,7 @@ Hello from Kafka!
 
 ### Cleanup
 
-Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
+Once you're done, you can spin down your Kubernetes resources by running:
 
 <!-- STEP
 name: Cleanup
@@ -400,8 +396,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-cd ./deploy
-kubectl delete -f .
+kubectl delete -f ./deploy
 ```
 
 This will spin down each resource defined by the .yaml files in the `deploy` directory, including the kafka component.

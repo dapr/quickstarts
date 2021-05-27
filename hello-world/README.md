@@ -112,6 +112,7 @@ app.get('/order', (_req, res) => {
 This calls out to the Redis cache to retrieve the latest value of the "order" key, which effectively allows the Node.js app to be _stateless_. 
 
 ## Step 3 - Run the Node.js app with Dapr
+
 <!-- STEP
 expected_stdout_lines:
 expected_stderr_lines:
@@ -130,7 +131,7 @@ This will install `express` and `body-parser`, dependencies that are shown in th
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Got a new order! Order ID: 42"
   - "== APP == Successfully persisted state."
   - "== APP == Got a new order! Order ID: 42"
@@ -145,9 +146,10 @@ expected_stdout_lines:
   - "== APP == Successfully persisted state."
   - "== APP == Got a new order! Order ID: 5"
   - "== APP == Successfully persisted state."
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "run npm app"
 background: true
 sleep: 5
@@ -197,27 +199,16 @@ Now that Dapr and the Node.js app are running, you can send POST messages agains
 
 First, POST the message by using Dapr cli in a new command line terminal:
 
-Windows Command Prompt
-```sh
-dapr invoke --app-id nodeapp --method neworder --data "{\"data\": { \"orderId\": \"42\" } }"
-```
-
-Windows PowerShell
-```sh
-dapr invoke --app-id nodeapp --method neworder --data '{\"data\": { \"orderId\": \"42\" } }'
-```
-
-Linux or MacOS
-
 <!-- STEP
 expected_stdout_lines:
-  - "✅  App invoked successfully"
+  - "App invoked successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: dapr invoke
 -->
 
 ```bash
-dapr invoke --app-id nodeapp --method neworder --data '{"data": { "orderId": "42" } }'
+dapr invoke --app-id nodeapp --method neworder --data-file sample.json
 ```
 
 <!-- END_STEP -->
@@ -231,7 +222,7 @@ name: curl test
 -->
 
 ```bash
-curl -XPOST -d @sample.json -H "Content-Type:application/json" http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
+curl -XPOST -d @sample.json -H Content-Type:application/json http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 ```
 
 <!-- END_STEP -->
@@ -281,8 +272,9 @@ or use Dapr CLI
 <!-- STEP
 expected_stdout_lines: 
   - '{"orderId":"42"}'
-  - "✅  App invoked successfully"
+  - "App invoked successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: Persistence test dapr invoke
 -->
 
@@ -347,13 +339,14 @@ name: "Install python requirements"
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "run python app"
 background: true
-sleep: 10
+sleep: 30
 -->
 
 2. Start the Python App with Dapr: 
@@ -404,14 +397,18 @@ To stop your services from running, simply stop the "dapr run" process. Alternat
 
 <!-- STEP
 expected_stdout_lines: 
-  - '✅  app stopped successfully: nodeapp'
-  - '✅  app stopped successfully: pythonapp'
+  - 'app stopped successfully: nodeapp'
+  - 'app stopped successfully: pythonapp'
 expected_stderr_lines:
+output_match_mode: substring
 name: Shutdown dapr
 -->
 
 ```bash
 dapr stop --app-id nodeapp
+```
+
+```bash
 dapr stop --app-id pythonapp
 ```
 
