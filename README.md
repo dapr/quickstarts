@@ -10,7 +10,9 @@ This repository contains a collection of tutorials with code samples that are ai
 
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr/) instructions.
 
-This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it. 
+If you are [signed up](https://github.com/features/codespaces/signup) for the [GitHub Codespaces beta](https://github.com/features/codespaces), you can click on "Code" in this repo and "Open with Codespaces", which will let you get started right away with [`dapr init`](https://docs.dapr.io/getting-started/install-dapr-selfhost/). The Codespace will be based off a personal fork of this repo (if you have not already forked this repo, one will be created for you), so feel free to explore!
+
+This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it.
 
 * A good place to start is the [hello-world](./hello-world) quickstart, it demonstrates how to run Dapr in standalone mode locally on your machine and demonstrates state management and service invocation in a simple application. 
 * Next, if you are familiar with Kubernetes and want to see how to run the same application in a Kubernetes environment, look for the *hello-kubernetes* quickstart. Other quickstarts such as *pub-sub*, *bindings* and the *distributed-calculator* quickstart explore different Dapr capabilities include instructions for running both locally and on Kubernetes and can be completed in any order. A full list of the quickstarts can be found [below](#quickstarts).
