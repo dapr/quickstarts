@@ -1,11 +1,27 @@
-/* Contents of {repository-root}/.devcontainer/devcontainer.json */
-
 {
-  // Install dapr extension
+  "name": "Dapr Quickstarts Codespace",
+  "dockerFile": "Dockerfile",
   "extensions": [
-      "ms-azuretools.vscode-dapr",
-      "Davidsekar.redis-xplorer"
+    "ms-vscode.go",
+    "ms-azuretools.vscode-dapr",
+    "ms-azuretools.vscode-docker",
+    "ms-kubernetes-tools.vscode-kubernetes-tools"
   ],
-  // Run Bash script in .devcontainer directory
-  "postCreateCommand": "/bin/bash .devcontainer/dapr-setup.sh",
+  "mounts": [
+    // Mount docker-in-docker library volume
+    "source=codespaces-linux-var-lib-docker,target=/var/lib/docker,type=volume"
+  ],
+  // Always run image-defined docker-init.sh to enable docker-in-docker
+  "overrideCommand": false,
+  "remoteUser": "codespace",
+  "runArgs": [
+    // Enable ptrace-based debugging for Go in container
+    "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined",
+
+    // Enable docker-in-docker configuration
+    "--init",
+    "--privileged"
+  ],
 }
