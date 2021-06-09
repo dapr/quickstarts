@@ -1,0 +1,4 @@
+👋 Welcome to the Dapr Codespace! You are on our Dapr Quickstarts image.
+It includes everything needed to run through our tutorials and quickstart applications.
+
+📚 Dapr docs can be found at: https://docs.dapr.io/

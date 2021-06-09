@@ -11,7 +11,7 @@ In this quickstart you will:
 ## Configure self hosted mode
 For self hosted mode, first run `dapr init`. When you run `dapr init`:
 
-1. The following YAML file is created by default in `$HOME/dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden:
+1. The following YAML file is created by default in `$HOME/.dapr/config.yaml` (on Linux/Mac) or `%USERPROFILE%\.dapr\config.yaml` (on Windows) and it is referenced by default on `dapr run` calls unless otherwise overridden:
 
 * config.yaml
 
@@ -30,7 +30,7 @@ spec:
 
 2. The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched.
 
-3. The applications launched with `dapr run` will by default reference the config file in `$HOME/dapr/config.yaml` or `%USERPROFILE%\dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch the hello-world quickstart app using the default config.yaml:
+3. The applications launched with `dapr run` will by default reference the config file in `$HOME/.dapr/config.yaml` or `%USERPROFILE%\.dapr\config.yaml` and can be overridden with the Dapr CLI using the `--config` param. For example, the following command will launch the hello-world quickstart app using the default config.yaml:
 
 4. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the repo's directory via `cd quickstarts/observability`.
 
