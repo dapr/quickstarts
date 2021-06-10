@@ -30,7 +30,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:f4bcc97a0ad6e7abaf3f643d890add7efe6ee4ab90baeb374b4f41a4c95567eb
     strategy:
       matrix: 
-        quickstart: [hello-world, hello-kubernetes, distributed-calculator, pub-sub, bindings, secretstore, observability, .]
+        quickstart: [hello-world, hello-world-sdk, hello-kubernetes, distributed-calculator, pub-sub, bindings, secretstore, observability, .]
         os: [ubuntu-latest]
     steps:
       - name: Configure KinD
