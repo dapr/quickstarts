@@ -198,6 +198,12 @@ Expected output:
 ```
 <!-- END_STEP -->
 
+> **Optional**: Now it would be a good time to get acquainted with the [Dapr dashboard](https://docs.dapr.io/reference/cli/dapr-dashboard/). Which is a convenient interface to check status, information and logs of applications running on Dapr. The following command will make it available on http://localhost:9999/.
+
+```bash 
+dapr dashboard -k -p 9999
+```
+
 ## Step 5 - Deploy the Python app with the Dapr sidecar
 Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
 
