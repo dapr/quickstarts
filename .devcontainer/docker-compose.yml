@@ -1,0 +1,37 @@
+# ------------------------------------------------------------
+# Copyright (c) Microsoft Corporation and Dapr Contributors.
+# Licensed under the MIT License.
+# ------------------------------------------------------------
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+version: '3'
+
+services:
+  quickstarts:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    init: true
+    volumes:
+      - "codespaces-linux-var-lib-docker:/var/lib/docker"
+      # Update this to wherever you want VS Code to mount the folder of your project
+      - ..:/workspace:cached
+
+    # Enable ptrace-based debuggers for Go.
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+
+    # Necessary for Docker-in-docker.
+    privileged: true
+
+    # Use default Codesapce non-root user for all processes.
+    user: codespace
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+volumes:
+    codespaces-linux-var-lib-docker:
