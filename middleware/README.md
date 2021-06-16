@@ -8,7 +8,7 @@ This tutorial shows a real use case of the Dapr [middleware](https://docs.dapr.i
 
 ## Prerequisites
 
-- [Dapr enabled Kubernetes cluster](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
+- [Dapr enabled Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Docker](https://docs.docker.com/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
