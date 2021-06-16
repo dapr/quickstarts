@@ -193,6 +193,12 @@ const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 
 While in this tutorial the default yaml files were used, usually a developer would modify them or create custom yaml definitions depending on the application and scenario.
 
+> **Optional**: Now it would be a good time to get acquainted with the [Dapr dashboard](https://docs.dapr.io/reference/cli/dapr-dashboard/). Which is a convenient interface to check status and information of applications running on Dapr. The following command will make it available on http://localhost:9999/.
+
+```bash 
+dapr dashboard -p 9999
+```
+
 ## Step 4 - Post messages to the service
 
 Now that Dapr and the Node.js app are running, you can send POST messages against it, using different tools. **Note**: here the POST message is sent to port 3500 - if you used a different port, be sure to update your URL accordingly.
