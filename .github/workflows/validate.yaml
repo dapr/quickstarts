@@ -18,7 +18,7 @@ on:
       - release-*
 jobs:
   deploy:
-    name: Validate ${{ matrix.quickstart }}/README.md on ${{ matrix.os }}
+    name: Validate quickstarts on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
@@ -28,11 +28,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        quickstart: [hello-world, hello-kubernetes, distributed-calculator, pub-sub, bindings, secretstore, observability, .]
         os: [ubuntu-latest, macos-latest]
-        exclude:
-          - os: macos-latest
-            quickstart: .
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-latest'
@@ -41,7 +37,7 @@ jobs:
           docker_buildx: false
           docker_version: 20.10
       - name: Configure KinD
-        if: matrix.os == 'ubuntu-latest' && matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
+        if: matrix.os == 'ubuntu-latest'
         # Generate a KinD configuration file that uses:
         # A couple of worker nodes: this is needed to run both
         #     ZooKeeper + Kakfa
@@ -67,21 +63,20 @@ jobs:
           cat kind.yaml
 
       - name: Create KinD Cluster - Linux
-        if: matrix.os == 'ubuntu-latest' && matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
+        if: matrix.os == 'ubuntu-latest' 
         uses: helm/kind-action@v1.0.0
         with:
           config: kind.yaml
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
       - name: Install minikube - MacOS
-        if: matrix.os == 'macos-latest' && matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
+        if: matrix.os == 'macos-latest' 
         run: |
           brew install kubernetes-cli || brew link --overwrite kubernetes-cli
           brew install minikube
-          minikube start
-          brew install kubectl
+          minikube start --driver=virtualbox --memory 4096
       - name: Get KinD info
-        if: matrix.os == 'ubuntu-latest' && matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
+        if: matrix.os == 'ubuntu-latest'
         run: |
           kubectl cluster-info --context kind-kind
           NODE_IP=$(kubectl get nodes \
@@ -116,12 +111,13 @@ jobs:
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
           dapr --version
       - name: Install Dapr - Kubernetes
-        if: matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
           helm install redis bitnami/redis
           dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
+          kubectl get nodes -o wide
+          for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
       - name: Check out code 
         uses: actions/checkout@v2
       - name: Install utilities dependencies
@@ -129,10 +125,41 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate ${{ matrix.quickstart }}
+      - name: Validate hello-world
         run: |
-          pushd ${{ matrix.quickstart }}
+          pushd hello-world
           make validate
           popd
-
-          
+      - name: Validate hello-kubernetes
+        run: |
+          pushd hello-kubernetes
+          make validate
+          popd
+      - name: Validate distributed-calculator
+        run: |
+          pushd distributed-calculator
+          make validate
+          popd
+      - name: Validate pub-sub
+        run: |
+          pushd pub-sub
+          make validate
+          popd
+      - name: Validate bindings
+        run: |
+          pushd bindings
+          make validate
+          popd
+      - name: Validate secretstore
+        run: |
+          pushd secretstore
+          make validate
+          popd
+      - name: Validate observability
+        run: |
+          pushd observability
+          make validate
+          popd
+      - name: Linkcheck README.md
+        run: |
+          make validate        
