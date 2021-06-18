@@ -115,7 +115,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ./components
+dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ../components
 ```
 
 <!-- END_STEP -->
@@ -164,7 +164,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-dapr run --app-id bindings-pythonapp python3 app.py --components-path ./components
+dapr run --app-id bindings-pythonapp python3 app.py --components-path ../components
 ```
 
 <!-- END_STEP -->
@@ -421,7 +421,7 @@ Now that you've run the quickstart locally and/or in Kubernetes, let's unpack ho
 
 ### Kafka Bindings yaml
 
-Before looking at the application code, let's see the Kafka bindings component yamls([nodeapp](./nodeapp/components/kafka_bindings.yaml), [pythonapp](./pythonapp/components/kafka_bindings.yaml), and [Kubernetes](./deploy/kafka_bindings.yaml)), which specify `brokers` for Kafka connection, `topics` and `consumerGroup` for consumer, and `publishTopic` for publisher topic.
+Before looking at the application code, let's see the Kafka bindings component yamls([local](./components/kafka_bindings.yaml), and [Kubernetes](./deploy/kafka_bindings.yaml)), which specify `brokers` for Kafka connection, `topics` and `consumerGroup` for consumer, and `publishTopic` for publisher topic.
 
 > See the howtos in [references](#references) for the details on input and output bindings
 
