@@ -208,10 +208,10 @@ To see that services have stopped running, run `dapr list`, noting that your ser
 
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluser in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/). 
 
-Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, look [here](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster)
+Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
 
 > Please note, the CLI will install to the dapr-system namespace by default. If this namespace does not exist, the CLI will create it.
-> If you need to deploy to a different namespace, you can use ```-n mynamespace```. See [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/) for more info.
+> If you need to deploy to a different namespace, you can use ```-n mynamespace```.
 
 ```
 dapr init --kubernetes --wait

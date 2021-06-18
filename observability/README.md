@@ -155,7 +155,7 @@ dapr stop --app-id hello-tracing
 This quickstart builds on the [distributed calculator](../distributed-calculator/README.md) quickstart and requires Dapr to be installed on a Kubernetes cluster along with a state store. It is suggested to go through the distributed calculator quickstart before this one. If you have not done this then:
 
 1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory via `cd quickstarts/obervability`.
-2. [Install Dapr on Kubernetes](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster).
+2. [Install Dapr on Kubernetes](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
 3. [Configure Redis](https://docs.dapr.io/getting-started/configure-redis/) as a state store for Dapr.
 4. Configure host and password for Redis state store Component in `../distributed-calculator/deploy/redis.yaml`.
 

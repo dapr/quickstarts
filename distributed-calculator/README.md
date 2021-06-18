@@ -31,7 +31,7 @@ Clone the quickstarts repository
 7. Install [Node](https://nodejs.org/en/download/)
 
 ### - Run in Kubernetes environment
-1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster) to set this up.
+1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/) to set this up.
 
 
 ## Running the quickstart locally
