@@ -25,6 +25,7 @@ jobs:
     env:
       DAPR_CLI_VERSION: 1.2.0
       DAPR_RUNTIME_VERSION: 1.2.0
+      DOCKER_WAIT_LIMIT: 30
     strategy:
       matrix:
         quickstart: [hello-world, hello-kubernetes, distributed-calculator, pub-sub, bindings, secretstore, observability, .]
@@ -41,8 +42,15 @@ jobs:
           docker-compose up -d quickstarts
       - name: Start minikube cluster
         if: matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
-        run: |
-          docker-compose exec -T quickstarts bash -c 'minikube start'
+        run: >
+          docker-compose exec -T quickstarts bash -c '
+            wait_count=${{ env.DOCKER_WAIT_LIMIT }};
+            while (! docker stats --no-stream &> /dev/null && (($wait_count > 0)));
+              do echo "Waiting for docker service ... $wait_count";
+              sleep 1;
+              wait_count=$(( $wait_count - 1 ));
+            done;
+            minikube start'
       - name: Install Dapr
         run: >
           docker-compose exec -T quickstarts bash -c '
