@@ -1,6 +1,6 @@
 ---
-name: Feature Request
-about: Start a discussion for Dapr
+name: Discussion
+about: Start a discussion for Dapr quickstarts
 title: ''
 labels: kind/discussion
 assignees: ''

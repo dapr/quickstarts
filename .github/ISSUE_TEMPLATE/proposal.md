@@ -1,6 +1,6 @@
 ---
 name: Proposal
-about: Create a proposal for Dapr
+about: Create a proposal for Dapr quickstarts
 title: ''
 labels: kind/proposal
 assignees: ''
