@@ -5,6 +5,8 @@
 
 FROM mcr.microsoft.com/vscode/devcontainers/universal:1.4.0-focal
 
+ARG DAPR_CLI_VERSION="1.2.0"
+
 # Copy custom first notice message.
 COPY first-run-notice.txt /tmp/staging/
 RUN sudo mv -f /tmp/staging/first-run-notice.txt /usr/local/etc/vscode-dev-containers/ \
@@ -18,7 +20,7 @@ RUN MINIKUBE_URL="https://storage.googleapis.com/minikube/releases/latest/miniku
     && echo "${MINIKUBE_SHA256} */usr/local/bin/minikube" | sha256sum -c -
 
 # Install Dapr CLI
-RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash
+RUN wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s "${DAPR_CLI_VERSION}"
 
 # Install mechanical-markdown for quickstart validations
 RUN pip install mechanical-markdown
