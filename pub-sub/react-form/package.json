@@ -10,7 +10,7 @@
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "start": "node server.js",
     "buildclient": "cd client && npm install && npm run build",
-    "buildandstart": "npm run buildclient && npm install && npm run start"
+    "build": "npm run buildclient && npm install"
   },
   "author": "Ryan Volum",
   "license": "ISC",
