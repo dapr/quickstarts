@@ -10,7 +10,9 @@ This repository contains a collection of tutorials with code samples that are ai
 
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr/) instructions.
 
-This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it. 
+If you are [signed up](https://github.com/features/codespaces/signup) for the [GitHub Codespaces beta](https://github.com/features/codespaces), you can click on "Code" in this repo and "Open with Codespaces", which will let you get started right away with [`dapr init`](https://docs.dapr.io/getting-started/install-dapr-selfhost/). The Codespace will be based off a personal fork of this repo (if you have not already forked this repo, one will be created for you), so feel free to explore!
+
+This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it.
 
 * A good place to start is the [hello-world](./hello-world) quickstart, it demonstrates how to run Dapr in standalone mode locally on your machine and demonstrates state management and service invocation in a simple application. 
 * Next, if you are familiar with Kubernetes and want to see how to run the same application in a Kubernetes environment, look for the *hello-kubernetes* quickstart. Other quickstarts such as *pub-sub*, *bindings* and the *distributed-calculator* quickstart explore different Dapr capabilities include instructions for running both locally and on Kubernetes and can be completed in any order. A full list of the quickstarts can be found [below](#quickstarts).
@@ -23,6 +25,8 @@ Dapr is currently under community development with preview releases. The master 
 
 | Dapr Quickstart Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
+| [v1.2.0](https://github.com/dapr/quickstarts/tree/v1.2.0) | [v1.2.0](https://github.com/dapr/dapr/tree/v1.2.0) |
+| [v1.1.0](https://github.com/dapr/quickstarts/tree/v1.1.0) | [v1.1.0](https://github.com/dapr/dapr/tree/v1.1.0) |
 | [v1.0.0](https://github.com/dapr/quickstarts/tree/v1.0.0) | [v1.0.0](https://github.com/dapr/dapr/tree/v1.0.0) |
 | [v0.11.0](https://github.com/dapr/quickstarts/tree/v0.11.0) | [v0.11.3](https://github.com/dapr/dapr/tree/v0.11.3) |
 | [v0.10.0](https://github.com/dapr/quickstarts/tree/v0.10.0) | [v0.10.0](https://github.com/dapr/dapr/tree/v0.10.0) |
@@ -55,12 +59,12 @@ Find SDK-specific samples in the links below:
 
 - **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
   - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
-  - **[Getting Started with .NET Actors](https://docs.dapr.io/developing-applications/sdks/dotnet/dotnet-actors/dotnet-actor-howto/)** - Tutorial for developing actor applications using the Dapr .NET SDK including **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/examples/Actor)**
+  - **[Getting Started with .NET Actors](https://docs.dapr.io/developing-applications/sdks/dotnet/dotnet-actors/dotnet-actors-howto/)** - Tutorial for developing actor applications using the Dapr .NET SDK including **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/examples/Actor)**
 - **[Java SDK](https://github.com/dapr/java-sdk)**
   - **[Examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples)** - Examples for developing Java applications using Dapr
   - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors)** - Example for developing an actor application using the Java SDK.
 - **[Go SDK](https://github.com/dapr/go-sdk)** 
-  - **[Examples](https://github.com/dapr/go-sdk/tree/master/example#dapr-go-client-example)** using the client library to connect to Dapr API, and how to create a Dapr application in either HTTP or gRPC.
+  - **[Examples](https://github.com/dapr/go-sdk/tree/master/examples)** using the client library to connect to Dapr API, and how to create a Dapr application in either HTTP or gRPC.
 - **[Javascript SDK](https://github.com/dapr/js-sdk)**
   - **[Examples](https://github.com/dapr/js-sdk/tree/master/examples)** - Examples for developing Javascript applications using Dapr
 - **[Python SDK](https://github.com/dapr/python-sdk)**

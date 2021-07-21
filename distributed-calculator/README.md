@@ -31,7 +31,7 @@ Clone the quickstarts repository
 7. Install [Node](https://nodejs.org/en/download/)
 
 ### - Run in Kubernetes environment
-1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://docs.dapr.io/getting-started/install-dapr/#install-dapr-on-a-kubernetes-cluster) to set this up.
+1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/) to set this up.
 
 
 ## Running the quickstart locally
@@ -59,11 +59,12 @@ working_dir: "./go"
 
 <!-- STEP
 expected_stdout_lines:
-- "✅  You're up and running! Both Dapr and your app logs will appear here."
-- "== APP == Adding 56.000000 to 3.000000"
-- "✅  Exited Dapr successfully"
-- "✅  Exited App successfully"
+- "You're up and running! Both Dapr and your app logs will appear here."
+- "== APP == Adding 52.000000 to 34.000000"
+- "Exited Dapr successfully"
+- "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "Run go app"
 working_dir: "./go"
 background: true
@@ -83,7 +84,9 @@ sleep: 2
    ```bash
    #Linux/Mac OS:
    export ASPNETCORE_URLS="http://localhost:7000"
+   ```
 
+   ```bash
    #Windows:
    set ASPNETCORE_URLS=http://localhost:7000
    ```
@@ -102,12 +105,13 @@ working_dir: "./csharp"
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Subtracting 34 from 52"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
 name: "Run dotnet app"
+output_match_mode: substring
 working_dir: "./csharp/bin/Debug/netcoreapp3.1"
 background: true
 env: 
@@ -128,7 +132,6 @@ sleep: 2
 <!-- STEP
 name: "Build node app"
 working_dir: "./node"
-timeout_seconds: 300
 -->
 
 - Install dependencies by running the command:
@@ -140,11 +143,12 @@ timeout_seconds: 300
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Dividing 144 by 12"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - "== APP == Dividing 52 by 34"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "Run node app"
 working_dir: "./node"
 background: true
@@ -183,13 +187,14 @@ working_dir: "./python"
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == Calculating 52.0 * 34.0"
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
 name: "Run python app"
 working_dir: "./python"
+output_match_mode: substring
 background: true
 env:
   FLASK_RUN_PORT: "5000"
@@ -209,7 +214,6 @@ sleep: 2
 <!-- STEP
 name: "Build frontend app"
 working_dir: "./react-calculator"
-timeout_seconds: 600
 -->
 
 - Install the required modules
@@ -223,10 +227,11 @@ timeout_seconds: 600
 
 <!-- STEP
 expected_stdout_lines:
-  - "✅  You're up and running! Both Dapr and your app logs will appear here."
-  - "✅  Exited Dapr successfully"
-  - "✅  Exited App successfully"
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
 expected_stderr_lines:
+output_match_mode: substring
 name: "Run frontent app"
 working_dir: "./react-calculator"
 background: true
@@ -260,43 +265,60 @@ manual_pause_message: "Calculator APP running on http://localhost:8080. Please o
 
 <!-- STEP
 expected_stdout_lines:
-  - "59"
+  - "86"
   - "18"
-  - "12"
+  - "1.5294"
   - "1768.0"
-  - '"54"'
+  - '"total":"54"'
+output_match_mode: substring
 name: "Curl test"
 -->
 
 - To make sure all the apps are working, you can run the following curl commands which will test all the operations:
    ```bash
-   curl -w "\n" -s 'http://localhost:8080/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
-   curl -w "\n" -s 'http://localhost:8080/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-   curl -w "\n" -s 'http://localhost:8080/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
-   curl -w "\n" -s 'http://localhost:8080/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-   curl -w "\n" -s 'http://localhost:8080/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
-   curl -s 'http://localhost:8080/state' | jq '.total'
+   curl -s http://localhost:8080/calculate/add -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/calculate/subtract -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/calculate/divide -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/calculate/multiply -H Content-Type:application/json --data @operands.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/persist -H Content-Type:application/json --data @persist.json
+   ```
+
+   ```bash
+   curl -s http://localhost:8080/state 
    ```
 
 <!-- END_STEP -->
 
 - You should get the following output:
    ```bash
-   59
+   86
    18
-   12
+   1.5294117647058822
    1768.0
    
-   "54"
+   {"operation":null,"total":"54","next":null}
    ```
 
 <!-- STEP
 expected_stdout_lines:
-  - '✅  app stopped successfully: addapp'
-  - '✅  app stopped successfully: subtractapp'
-  - '✅  app stopped successfully: divideapp'
-  - '✅  app stopped successfully: multiplyapp'
-  - '✅  app stopped successfully: frontendapp'
+  - 'app stopped successfully: addapp'
+  - 'app stopped successfully: subtractapp'
+  - 'app stopped successfully: divideapp'
+  - 'app stopped successfully: multiplyapp'
+  - 'app stopped successfully: frontendapp'
+output_match_mode: substring
 name: Cleanup local
 -->
 
@@ -306,9 +328,21 @@ name: Cleanup local
 
    ```bash
    dapr stop --app-id addapp
+   ```
+
+   ```bash
    dapr stop --app-id subtractapp
+   ```
+   
+   ```bash
    dapr stop --app-id divideapp
+   ```
+   
+   ```bash
    dapr stop --app-id multiplyapp
+   ```
+
+   ```bash
    dapr stop --app-id frontendapp
    ```
 
@@ -317,7 +351,6 @@ name: Cleanup local
 <!-- STEP
 name: "cleanup node app"
 working_dir: "./node"
-timeout_seconds: 300
 -->
 
 - Uninstall node modules by navigating to the node directory and run:
@@ -337,7 +370,6 @@ timeout_seconds: 300
 <!-- STEP
 name: "Deploy Kubernetes"
 working_dir: "./deploy"
-sleep: 60
 expected_stdout_lines:
   - "configuration.dapr.io/appconfig created"
   - "deployment.apps/subtractapp created"
@@ -359,50 +391,104 @@ kubectl apply -f .
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for the front-end, which allows us to connect to it externally.
 
-4. Wait until your pods are in a running state: `kubectl get pods -w`
+4. Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following commands:
+
+<!-- STEP
+name: "Deploy Kubernetes"
+expected_stdout_lines:
+  - 'deployment "addapp" successfully rolled out'
+  - 'deployment "subtractapp" successfully rolled out'
+  - 'deployment "divideapp" successfully rolled out'
+  - 'deployment "multiplyapp" successfully rolled out'
+  - 'deployment "calculator-front-end" successfully rolled out'
+-->
 
 ```bash
-
-NAME                                    READY     STATUS    RESTARTS   AGE
-dapr-operator-775c97497c-p92mf          1/1       Running   0          134m
-dapr-placement-58c7d5f9cf-l9wcv         1/1       Running   0          134m
-dapr-sidecar-injector-5879986bdc-nwdps  1/1       Running   0          134m
-calculator-front-end-7c549cc84d-m24cb   2/2       Running   0          3m
-divideapp-6d85b88cb4-vh7nz              2/2       Running   0          1m
-multiplyapp-746588586f-kxpx4            2/2       Running   0          1m
-subtractapp-7bbdfd5649-r4pxk            2/2       Running   0          2m
+kubectl rollout status deploy/addapp
 ```
 
-5. Next, take a look at the services and wait until you have an external IP configured for the front-end: `kubectl get svc -w`
+```bash
+kubectl rollout status deploy/subtractapp
+```
 
-    ```bash
-    NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
-    dapr-api                      ClusterIP      10.103.71.22   <none>          80/TCP             135m
-    dapr-placement                ClusterIP      10.103.53.127  <none>          80/TCP             135m
-    dapr-sidecar-injector         ClusterIP      10.104.220.35  <none>          443/TCP            135m
-    addapp-dapr                   ClusterIP      10.0.1.170     <none>          80/TCP,50001/TCP   2m
-    calculator-front-end          LoadBalancer   10.0.155.131   40.80.152.125   80:32633/TCP       3m
-    calculator-front-end-dapr     ClusterIP      10.0.230.219   <none>          80/TCP,50001/TCP   3m
-    divideapp-dapr                ClusterIP      10.0.240.3     <none>          80/TCP,50001/TCP   1m
-    kubernetes                    ClusterIP      10.0.0.1       <none>          443/TCP            33d
-    multiplyapp-dapr              ClusterIP      10.0.217.211   <none>          80/TCP,50001/TCP   1m
-    subtractapp-dapr              ClusterIP      10.0.146.253   <none>          80/TCP,50001/TCP   2m
-    ```
+```bash
+kubectl rollout status deploy/divideapp
+```
 
-    Each service ending in "-dapr" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
+```bash
+kubectl rollout status deploy/multiplyapp
+```
 
-    > **Note:** Minikube users cannot see the external IP. Instead, you can use `minikube service [service_name]` to access loadbalancer without external IP.
+```bash
+kubectl rollout status deploy/calculator-front-end
+```
 
-6. Take the external IP address for `calculator-front-end` and drop it in your browser and voilà! You have a working distributed calculator!
 
-    **For Minikube users**, execute the below command to open calculator on your browser
-    ```
-    $ minikube service calculator-front-end
-    ```
+You can view the status of the running pods with:
+
+```bash
+kubectl get pods
+```
+
+<!-- END_STEP -->
+
+When everything is running properly, you'll see output like this:
+
+```
+NAME                                    READY   STATUS    RESTARTS   AGE
+addapp-5ff9586df6-5bpll                 2/2     Running   0          16s
+calculator-front-end-56dc959b58-bb8vw   2/2     Running   0          16s
+divideapp-c64f744d6-wljcc               2/2     Running   0          16s
+multiplyapp-6989454d77-tkd6c            2/2     Running   0          16s
+subtractapp-869b74f676-9mw94            2/2     Running   0          16s
+```
+
+5. Next, setup access to your service
+
+There are several different ways to access a Kubernetes service depending on which platform you are using. Port forwarding is one consistent way to access a service, whether it is hosted locally or on a cloud Kubernetes provider like AKS.
+
+<!-- STEP
+name: Port forward
+background: true
+sleep: 2
+timeout_seconds: 10
+expected_return_code:
+-->
+
+```bash
+kubectl port-forward service/calculator-front-end 8000:80
+```
+
+<!-- END_STEP -->
+
+This will make your service available on http://localhost:8000. Navigate to this address with your browser and voilà! You have a working distributed calculator!
+
+> **Optional**: If you are using a public cloud provider, you can substitue your EXTERNAL-IP address instead of port forwarding. You can find it with:
+
+```bash 
+kubectl get svc
+```
+
+```bash
+NAME                          TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)            AGE
+dapr-api                      ClusterIP      10.103.71.22   <none>          80/TCP             135m
+dapr-placement                ClusterIP      10.103.53.127  <none>          80/TCP             135m
+dapr-sidecar-injector         ClusterIP      10.104.220.35  <none>          443/TCP            135m
+addapp-dapr                   ClusterIP      10.0.1.170     <none>          80/TCP,50001/TCP   2m
+calculator-front-end          LoadBalancer   10.0.155.131   40.80.152.125   80:32633/TCP       3m
+calculator-front-end-dapr     ClusterIP      10.0.230.219   <none>          80/TCP,50001/TCP   3m
+divideapp-dapr                ClusterIP      10.0.240.3     <none>          80/TCP,50001/TCP   1m
+kubernetes                    ClusterIP      10.0.0.1       <none>          443/TCP            33d
+multiplyapp-dapr              ClusterIP      10.0.217.211   <none>          80/TCP,50001/TCP   1m
+subtractapp-dapr              ClusterIP      10.0.146.253   <none>          80/TCP,50001/TCP   2m
+```
+
+Each service ending in "-dapr" represents your services respective sidecars, while the `calculator-front-end` service represents the external load balancer for the React calculator front-end.
+
 
 <!-- STEP
 name: Pause for manual validation
-manual_pause_message: "Calculator APP running on http://<service_ip>:80. Please open in your browser and test manually."
+manual_pause_message: "Calculator APP running on http://localhost:8000. Please open in your browser and test manually."
 -->
 
 <!-- We will pause here and print the above message when mm.py is run with '-m'. Otherwise, this step does nothing -->
@@ -412,7 +498,7 @@ manual_pause_message: "Calculator APP running on http://<service_ip>:80. Please 
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
+6. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
 
 ```js
 Persisting State:
@@ -434,43 +520,43 @@ Calling divide service
 
 The client code calls to an Express server, which routes the calls through Dapr to the back-end services. In this case the divide endpoint is called on the nodejs application.
 
-8. **Optional:** As with the local steps above, you can validate that all the individual calculator apps are working:
-
-Port forwarding is another way you can access a kubernetes service:
-
-<!-- STEP
-name: Port forward
-background: true
-sleep: 2
-timeout_seconds: 1
-expected_return_code:
--->
-
-```bash
-kubectl port-forward service/calculator-front-end 8000:80
-```
-
-<!-- END_STEP -->
+7. **Optional:** If your environment doesn't have easy access to a browser, or you just like using curl
 
 Then you can use the following curl commands to make sure each one of the microservies is working:
 
 <!-- STEP
 expected_stdout_lines:
-  - "59"
+  - "86"
   - "18"
-  - "12"
+  - "1.5294"
   - "1768.0"
-  - '"54"'
+  - '"total":"54"'
+output_match_mode: substring
 name: "Curl test"
 -->
 
-```bash 
-curl -w "\n" -s 'http://localhost:8000/calculate/add' -H 'Content-Type: application/json' --data '{"operandOne":"56","operandTwo":"3"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/subtract' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/divide' -H 'Content-Type: application/json' --data '{"operandOne":"144","operandTwo":"12"}'
-curl -w "\n" -s 'http://localhost:8000/calculate/multiply' -H 'Content-Type: application/json' --data '{"operandOne":"52","operandTwo":"34"}'
-curl -w "\n" -s 'http://localhost:8000/persist' -H 'Content-Type: application/json' --data '[{"key":"calculatorState","value":{"total":"54","next":null,"operation":null}}]'
-curl -s 'http://localhost:8000/state' | jq '.total'
+```bash
+curl -s http://localhost:8000/calculate/add -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/subtract -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/divide -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/json --data @operands.json
+```
+
+```bash
+curl -s http://localhost:8000/persist -H Content-Type:application/json --data @persist.json
+```
+
+```bash
+curl -s http://localhost:8000/state 
 ```
 
 <!-- END_STEP -->
@@ -478,12 +564,12 @@ curl -s 'http://localhost:8000/state' | jq '.total'
 You should get the following output:
 
    ```bash
-   59
+   86
    18
-   12
+   1.5294117647058822
    1768.0
    
-   "54"
+   {"operation":null,"total":"54","next":null}
    ```
 
 ## Cleanup
