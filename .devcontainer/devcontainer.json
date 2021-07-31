@@ -2,7 +2,7 @@
   "name": "Dapr Quickstarts Codespace",
   "dockerFile": "Dockerfile",
   "extensions": [
-    "ms-vscode.go",
+    "golang.go",
     "ms-azuretools.vscode-dapr",
     "ms-azuretools.vscode-docker",
     "ms-kubernetes-tools.vscode-kubernetes-tools"
