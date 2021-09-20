@@ -81,15 +81,15 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GOVER }}
-      - name: Determine latest Dapr Runtime version
+      - name: Determine latest Dapr Runtime version including Preleases
         run: |
-          helm repo add dapr https://dapr.github.io/helm-charts/ && helm repo update && export RUNTIME_VERSION=$(helm search repo dapr/dapr --versions | awk '/dapr\/dapr/ {print $3; exit}' )
+          helm repo add dapr https://dapr.github.io/helm-charts/ && helm repo update && export RUNTIME_VERSION=$(helm search repo dapr/dapr --devel --versions | awk '/dapr\/dapr/ {print $3; exit}' )
           echo "DAPR_RUNTIME_VERSION=$RUNTIME_VERSION" >> $GITHUB_ENV
           echo "Found $RUNTIME_VERSION"
         shell: bash
-      - name: Determine latest Dapr Cli version
+      - name: Determine latest Dapr Cli version including Preleases
         run: |
-          export CLI_VERSION=$(curl "https://api.github.com/repos/dapr/cli/releases/latest" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | jq '.tag_name'| tr -d '",v')
+          export CLI_VERSION=$(curl "https://api.github.com/repos/dapr/cli/releases?per_page=1&page=1" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | jq '.[0].tag_name'| tr -d '",v')
           echo "DAPR_CLI_VERSION=$CLI_VERSION" >> $GITHUB_ENV
           echo "Found $CLI_VERSION"
         shell: bash
