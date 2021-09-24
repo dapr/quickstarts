@@ -1,0 +1,9 @@
+{
+  "type": "widget",
+  "source": "routing-demo", 
+  "data": {
+    "description": "Hello, Widget!",
+    "price": 25.00,
+    "widgetField": "widgets only"
+  }
+}

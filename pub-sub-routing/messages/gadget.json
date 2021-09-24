@@ -1,0 +1,9 @@
+{
+  "type": "gadget",
+  "source": "routing-demo", 
+  "data": {
+    "description": "Hello, Gadget!",
+    "price": 75.00,
+    "gadgetField": "gadgets only"
+  }
+}

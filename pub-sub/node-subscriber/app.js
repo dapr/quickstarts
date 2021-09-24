@@ -4,11 +4,10 @@
 // ------------------------------------------------------------
 
 const express = require('express');
-const bodyParser = require('body-parser');
 
 const app = express();
 // Dapr publishes messages with the application/cloudevents+json content-type
-app.use(bodyParser.json({ type: 'application/*+json' }));
+app.use(express.json({ type: ['application/json', 'application/*+json'] }));
 
 const port = 3000;
 
