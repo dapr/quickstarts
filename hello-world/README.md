@@ -118,6 +118,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 name: "npm install"
 -->
+Open a terminal window and navigate to the `./hello-world/node` directory and follow the steps below:
 
 1. Install dependencies: 
 
@@ -305,7 +306,7 @@ This invokes the `/order` route, which calls out to the Redis store for the late
 
 ## Step 6 - Run the Python app with Dapr
 
-Take a look at the Python App to see how another application can invoke the Node App via Dapr without being aware of the destination's hostname or port. In the `app.py` file you can find the endpoint definition to call the Node App via Dapr.
+Take a look at the Python App in the `./hello-world/python` directory to see how another application can invoke the Node App via Dapr without being aware of the destination's hostname or port. In the `app.py` file you can find the endpoint definition to call the Node App via Dapr.
 
 ```python
 dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
@@ -329,7 +330,7 @@ while True:
     time.sleep(1)
 ```
 
-Now open a **new** command line terminal and go to the `hello-world` directory.
+Now open a **new** command line terminal and go to the `./hello-world/python` directory.
 
 <!-- STEP
 name: "Install python requirements"
