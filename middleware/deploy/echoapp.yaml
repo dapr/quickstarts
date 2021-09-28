@@ -18,6 +18,7 @@ spec:
         dapr.io/app-id: "echoapp"
         dapr.io/app-port: "3000"
         dapr.io/config: "pipeline"
+        dapr.io/sidecar-listen-addresses: "0.0.0.0"
     spec:
       containers:
       - name: echo
