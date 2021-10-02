@@ -118,7 +118,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 name: "npm install"
 -->
-Open a terminal window and navigate to the `./hello-world/node` directory and follow the steps below:
+Open a new terminal and navigate to the `./hello-world/node` directory and follow the steps below:
 
 1. Install dependencies: 
 
@@ -204,7 +204,7 @@ dapr dashboard -p 9999
 
 Now that Dapr and the Node.js app are running, you can send POST messages against it, using different tools. **Note**: here the POST message is sent to port 3500 - if you used a different port, be sure to update your URL accordingly.
 
-First, POST the message by using Dapr cli in a new command line terminal:
+First, POST the message by using Dapr cli in a new terminal:
 
 <!-- STEP
 expected_stdout_lines:
@@ -251,7 +251,7 @@ Last but not least, you can use the Postman GUI.
 
 Open Postman and create a POST request against `http://localhost:3500/v1.0/invoke/nodeapp/method/neworder`
 ![Postman Screenshot](./img/postman1.jpg)
-In your terminal window, you should see logs indicating that the message was received and state was updated:
+In your terminal, you should see logs indicating that the message was received and state was updated:
 ```bash
 == APP == Got a new order! Order ID: 42
 == APP == Successfully persisted state.
@@ -330,7 +330,7 @@ while True:
     time.sleep(1)
 ```
 
-Now open a **new** command line terminal and go to the `./hello-world/python` directory.
+Now open a **new** terminal and go to the `./hello-world/python` directory.
 
 <!-- STEP
 name: "Install python requirements"
@@ -396,11 +396,11 @@ sleep: 30
     }
     ```
 
-> **Note**: It is not required to run `dapr init` in the **second** command line terminal because dapr was already setup on your local machine initially, running this command again would fail.
+> **Note**: It is not required to run `dapr init` in the **second** terminal because dapr was already setup on your local machine initially, running this command again would fail.
 
 ## Step 7 - Cleanup
 
-To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new command line terminal: 
+To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new terminal: 
 
 <!-- STEP
 expected_stdout_lines: 
