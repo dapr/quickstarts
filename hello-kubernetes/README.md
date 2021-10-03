@@ -4,17 +4,20 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. You
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
-
 ## Prerequisites
+
 This quickstart requires you to have the following installed on your machine:
+
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - A Kubernetes cluster, such as [Minikube](https://docs.dapr.io/operations/hosting/kubernetes/cluster/setup-minikube/), [AKS](https://docs.dapr.io/operations/hosting/kubernetes/cluster/setup-aks/) or [GKE](https://cloud.google.com/kubernetes-engine/)
 
-Also, unless you have already done so, clone the repository with the quickstarts and ````cd```` into the right directory:
+Also, unless you have already done so, clone the repository with the quickstarts and `cd` into the right directory:
+
 ```
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
 cd quickstarts
 ```
+
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 ## Step 1 - Setup Dapr on your Kubernetes cluster
@@ -24,13 +27,14 @@ The first thing you need is an RBAC enabled Kubernetes cluster. This could be ru
 Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
 
 > Please note, the CLI will install to the dapr-system namespace by default. If this namespace does not exist, the CLI will create it.
-> If you need to deploy to a different namespace, you can use ```-n mynamespace```.
+> If you need to deploy to a different namespace, you can use `-n mynamespace`.
 
 ```
 dapr init --kubernetes --wait
 ```
 
 Sample output:
+
 ```
 ⌛  Making the jump to hyperspace...
   Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
@@ -39,7 +43,7 @@ Sample output:
 ✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
 ```
 
-> Without the ```--wait``` flag the Dapr CLI will exit as soon as the kubernetes deployments are created. Kubernetes deployments are asyncronous by default, so we use ```--wait``` here to make sure the dapr control plane is completely deployed and running before continuing.
+> Without the `--wait` flag the Dapr CLI will exit as soon as the kubernetes deployments are created. Kubernetes deployments are asyncronous by default, so we use `--wait` here to make sure the dapr control plane is completely deployed and running before continuing.
 
 <!-- STEP
 name: Check dapr status
@@ -51,15 +55,16 @@ dapr status -k
 
 <!-- END_STEP -->
 
-You will see output like the following. All services should show ```True``` in the HEALTHY column and ```Running``` in the STATUS column before you continue. 
+You will see output like the following. All services should show `True` in the HEALTHY column and `Running` in the STATUS column before you continue.
+
 ```
-  NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION  AGE  CREATED              
-  dapr-operator          dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
-  dapr-placement-server  dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
-  dapr-dashboard         dapr-system  True     Running  1         0.6.0    13s  2021-03-08 11:00.21  
-  dapr-sentry            dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
-  dapr-sidecar-injector  dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21  
-``` 
+  NAME                   NAMESPACE    HEALTHY  STATUS   REPLICAS  VERSION  AGE  CREATED
+  dapr-operator          dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21
+  dapr-placement-server  dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21
+  dapr-dashboard         dapr-system  True     Running  1         0.6.0    13s  2021-03-08 11:00.21
+  dapr-sentry            dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21
+  dapr-sidecar-injector  dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21
+```
 
 ## Step 2 - Create and configure a state store
 
@@ -67,9 +72,8 @@ Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cass
 
 1. Follow [these steps](https://docs.dapr.io/getting-started/configure-redis/) to create a Redis store.
 2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory.
-    > **Note:** the `redis.yaml` file provided in this quickstart will work securely out-of-the-box with a Redis installed with `helm install bitnami/redis`. If you have your own Redis setup, replace the `redisHost` value  with your own Redis master address, and the redisPassword with your own Secret. You can learn more [here](https://docs.dapr.io/operations/components/component-secrets/).
+   > **Note:** the `redis.yaml` file provided in this quickstart will work securely out-of-the-box with a Redis installed with `helm install bitnami/redis`. If you have your own Redis setup, replace the `redisHost` value with your own Redis master address, and the redisPassword with your own Secret. You can learn more [here](https://docs.dapr.io/operations/components/component-secrets/).
 3. Apply the `redis.yaml` file and observe that your state store was successfully configured!
-
 
 <!-- STEP
 name: Deploy redis config
@@ -110,11 +114,11 @@ kubectl rollout status deploy/nodeapp
 
 <!-- END_STEP -->
 
-This will deploy the Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to the Pod. If you take a look at the ```node.yaml``` file, you will see how Dapr is enabled for that deployment:
+This will deploy the Node.js app to Kubernetes. The Dapr control plane will automatically inject the Dapr sidecar to the Pod. If you take a look at the `node.yaml` file, you will see how Dapr is enabled for that deployment:
 
-```dapr.io/enabled: true``` - this tells the Dapr control plane to inject a sidecar to this deployment.
+`dapr.io/enabled: true` - this tells the Dapr control plane to inject a sidecar to this deployment.
 
-```dapr.io/app-id: nodeapp``` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
+`dapr.io/app-id: nodeapp` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
 
 You'll also see the container image that you're deploying. If you want to update the code and deploy a new image, see **Next Steps** section.
 
@@ -138,11 +142,12 @@ This will make your service available on http://localhost:8080.
 
 > **Optional**: If you are using a public cloud provider, you can substitue your EXTERNAL-IP address instead of port forwarding. You can find it with:
 
-```bash 
+```bash
 kubectl get svc nodeapp
 ```
 
 ## Step 4 - Verify Service
+
 To call the service that you set up port forwarding to, from a command prompt run:
 
 <!-- STEP
@@ -172,7 +177,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-curl --request POST --data @sample.json --header Content-Type:application/json http://localhost:8080/neworder
+curl --request POST --data "@sample.json" --header Content-Type:application/json http://localhost:8080/neworder
 ```
 
 <!-- END_STEP -->
@@ -193,18 +198,21 @@ curl http://localhost:8080/order
 ```
 
 Expected output:
+
 ```json
-{"orderId":"42"}
+{ "orderId": "42" }
 ```
+
 <!-- END_STEP -->
 
 > **Optional**: Now it would be a good time to get acquainted with the [Dapr dashboard](https://docs.dapr.io/reference/cli/dapr-dashboard/). Which is a convenient interface to check status, information and logs of applications running on Dapr. The following command will make it available on http://localhost:9999/.
 
-```bash 
+```bash
 dapr dashboard -k -p 9999
 ```
 
 ## Step 5 - Deploy the Python app with the Dapr sidecar
+
 Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
 
 At a quick glance, this is a basic Python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. You can invoke the Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. The message contains some `data` with an orderId that increments once per second:
@@ -331,7 +339,9 @@ Now that you're successfully working with Dapr, you probably want to update the 
 7. Deploy your updated Dapr enabled app: `kubectl apply -f <YOUR APP NAME>.yaml`.
 
 ## Related links
+
 - [Guidelines for production ready deployments on Kubernetes](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-production/)
 
 ## Next steps
+
 - Explore additional [quickstarts](../README.md#quickstarts) and deploy them locally or on Kubernetes.
