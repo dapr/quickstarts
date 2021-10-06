@@ -1,0 +1,31 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"appId": "nodeapp",
+			"appPort": 3000,
+			"httpPort": 3500,
+			"metricsPort": 9090,
+			"label": "daprd-debug-node",
+			"type": "daprd"
+		},
+		{
+			"appId": "nodeapp",
+			"label": "daprd-down-node",
+			"type": "daprd-down"
+		},
+		{
+			"appId": "pythonapp",
+			"httpPort": 53109,
+			"grpcPort": 53317,
+			"metricsPort": 9091,
+			"label": "daprd-debug-python",
+			"type": "daprd"
+		},
+		{
+			"appId": "pythonapp",
+			"label": "daprd-down-python",
+			"type": "daprd-down"
+		}
+	]
+}

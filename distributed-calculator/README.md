@@ -658,6 +658,17 @@ Our client persists state by simply POSTing JSON key-value pairs (see `react-cal
     });
 ```
 
+## [Optional Steps] VS Code Debugging
+
+If you are using Visual Studio Code, you can debug this application using the preconfigured launch.json and task.json files in the .vscode folder.
+The .vscode folder has already been modified in the project to allow users to launch a compound configuration called "Full Dapr App" which will run all applications and allow you to debug in VS Code.
+
+For more information on how to configure the files visit [How-To: Debug multiple Dapr applications](https://docs.dapr.io/developing-applications/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/)
+
+> **Note**: You still need to edit your environment variables for Flask and ASPNETCORE_URLS
+**Note**: Dapr offers a preview [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) for local development which enables users a variety of features related to better managing their Dapr applications and debugging of your Dapr applications for all supported Dapr languages which are .NET, Go, PHP, Python and Java.
+
+
 ## Next Steps
 
 - Explore additional [quickstarts](../README.md#quickstarts).
