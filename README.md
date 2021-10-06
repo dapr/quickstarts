@@ -10,7 +10,7 @@ This repository contains a collection of tutorials with code samples that are ai
 
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr/) instructions.
 
-If you are [signed up](https://github.com/features/codespaces/signup) for the [GitHub Codespaces beta](https://github.com/features/codespaces), you can click on "Code" in this repo and "Open with Codespaces", which will let you get started right away with [`dapr init`](https://docs.dapr.io/getting-started/install-dapr-selfhost/). The Codespace will be based off a personal fork of this repo (if you have not already forked this repo, one will be created for you), so feel free to explore!
+If you would like to jump in right away by using [GitHub Codespaces](https://github.com/features/codespaces), you can click on "Code" in this repo and "Open with Codespaces", which will let you get started right away with [`dapr init`](https://docs.dapr.io/getting-started/install-dapr-selfhost/). The Codespace will be based off a personal fork of this repo (if you have not already forked this repo, one will be created for you), so feel free to explore!
 
 This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it.
 
@@ -25,6 +25,7 @@ Dapr is currently under community development with preview releases. The master 
 
 | Dapr Quickstart Version  | Dapr Runtime Version |
 |:--------------------:|:--------------------:|
+| [v1.4.0](https://github.com/dapr/quickstarts/tree/v1.4.0) | [v1.4.0](https://github.com/dapr/dapr/tree/v1.4.0) |
 | [v1.3.0](https://github.com/dapr/quickstarts/tree/v1.3.0) | [v1.3.0](https://github.com/dapr/dapr/tree/v1.3.0) |
 | [v1.2.0](https://github.com/dapr/quickstarts/tree/v1.2.0) | [v1.2.0](https://github.com/dapr/dapr/tree/v1.2.0) |
 | [v1.1.0](https://github.com/dapr/quickstarts/tree/v1.1.0) | [v1.1.0](https://github.com/dapr/dapr/tree/v1.1.0) |
