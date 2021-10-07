@@ -113,12 +113,14 @@ This calls out to the Redis cache to retrieve the latest value of the "order" ke
 
 ## Step 3 - Run the Node.js app with Dapr
 
+Open a new terminal and navigate to the `./hello-world/node` directory and follow the steps below:
+
 <!-- STEP
 expected_stdout_lines:
 expected_stderr_lines:
 name: "npm install"
+working_dir: node
 -->
-Open a new terminal and navigate to the `./hello-world/node` directory and follow the steps below:
 
 1. Install dependencies: 
 
@@ -153,6 +155,7 @@ expected_stderr_lines:
 output_match_mode: substring
 name: "run npm app"
 background: true
+working_dir: node
 sleep: 5
 -->
 
@@ -212,6 +215,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 name: dapr invoke
+working_dir: node
 -->
 
 ```bash
@@ -226,6 +230,7 @@ Alternatively, using `curl`:
 expected_stdout_lines:
 expected_stderr_lines:
 name: curl test
+working_dir: node
 -->
 
 ```bash
@@ -353,6 +358,7 @@ expected_stderr_lines:
 output_match_mode: substring
 name: "run python app"
 background: true
+working_dir: python
 sleep: 30
 -->
 
