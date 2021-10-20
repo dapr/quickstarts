@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Dapr;
+using csharp_subscriber.Models;
 
 namespace csharp_subscriber.Controllers
 {
@@ -18,17 +19,17 @@ namespace csharp_subscriber.Controllers
 
         [Topic("pubsub", "A")]
         [HttpPost("A")]
-        public ActionResult TopicA(Dictionary<string, string> item)
+        public ActionResult TopicA(MessageEvent item)
         {
-            _logger.LogInformation($"A: {item["message"]}");
+            _logger.LogInformation($"{item.MessageType}: {item.Message}");
             return Ok();
         }
 
         [Topic("pubsub", "B")]
         [HttpPost("B")]
-        public ActionResult TopicB(Dictionary<string, string> item)
+        public ActionResult TopicB(MessageEvent item)
         {
-            _logger.LogInformation($"B: {item["message"]}");
+            _logger.LogInformation($"{item.MessageType}: {item.Message}");
             return Ok();
         }
 
@@ -36,7 +37,7 @@ namespace csharp_subscriber.Controllers
         [HttpPost("C")]
         public ActionResult TopicC(Dictionary<string, string> item)
         {
-            _logger.LogInformation($"C: {item["message"]}");
+            _logger.LogInformation($"{item["messageType"]}: {item["message"]}");
             return Ok();
         }
     }
