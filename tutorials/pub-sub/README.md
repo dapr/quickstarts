@@ -8,10 +8,11 @@ This quickstart includes one publisher:
 
 - React front-end message generator
 
-And two subscribers: 
+And three subscribers: 
  
 - Node.js subscriber
 - Python subscriber
+- C# subscriber
 
 Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case you'll use Redis Streams (enabled in Redis versions => 5). The following architecture diagram illustrates how components interconnect locally:
 
@@ -24,7 +25,7 @@ Dapr allows you to deploy the same microservices from your local machines to the
 ### Prerequisites to run locally
 
 - [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr-cli/)
-- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this quickstart with one or both microservices
+- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/) and/or [Asp.Net Core 5](https://dotnet.microsoft.com/download/dotnet/5.0): You can run this quickstart with one or both or all microservices
 
 ### Prerequisites to Run in Kubernetes
 
@@ -138,6 +139,33 @@ dapr run --app-id python-subscriber --app-port 5001 python3 app.py
 ```
 
 <!-- END_STEP -->
+
+### Run C# message subscriber with Dapr
+
+1. Open a new CLI window and navigate to C# subscriber directory in your CLI: 
+
+```bash
+cd csharp-subscriber
+```
+
+2. Build Asp.Net Core app: 
+
+<!-- STEP
+name: Build Asp.Net Core app
+working_dir: ./csharp-subscriber
+-->
+
+```bash
+dotnet build
+```
+
+<!-- END_STEP -->
+
+3. Run the C# subscriber app with Dapr: 
+
+```bash
+dapr run --app-id csharp-subscriber --app-port 5009 dotnet run csharp-subscriber.csproj
+```
 
 ### Run the React front end with Dapr
 
@@ -335,6 +363,10 @@ kubectl rollout status deploy/python-subscriber
 ```
 
 ```bash
+kubectl rollout status deploy/csharp-subscriber
+```
+
+```bash
 kubectl rollout status deploy/react-form
 ```
 
@@ -443,7 +475,11 @@ kubectl logs --selector app=python-subscriber -c python-subscriber
 
 <!-- END_STEP -->
 
-4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
+```bash
+kubectl logs --selector app=csharp-subscriber -c csharp-subscriber
+```
+
+4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C" and the C# subscriber receives messages of type "A" and "B" and "C".
 
 ### Cleanup
 
@@ -536,6 +572,84 @@ def c_subscriber():
 ```
 
 Note: if `flush=True` is not set, logs will not appear when running `kubectl get logs...`. This is a product of Python's output buffering.
+
+### C# message subscriber
+
+Navigate to the `csharp-subscriber` directory and open `Startup.cs` and/or `MessageController.cs` , the code for the C# subscriber. We're exposing three API endpoints, this time using `Asp.Net Core`. first let's look at Startup.cs:
+
+```csharp
+// This method gets called by the runtime. Use this method to add services to the container.
+public void ConfigureServices(IServiceCollection services)
+{
+
+    services.AddControllers().AddDapr();
+    services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "csharp_subscriber", Version = "v1" });
+    });
+}
+
+// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+        app.UseSwagger();
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "csharp_subscriber v1"));
+    }
+
+    app.UseRouting();
+
+    app.UseCloudEvents();
+
+    app.UseAuthorization();
+
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapSubscribeHandler();
+        endpoints.MapControllers();
+    });
+}
+```
+Again, this is how you tell Dapr what topics in which pubsub component to subscribe to. In this case, subscribing to topics "A" and "B" and "C" of pubsub component named 'pubsub'. Messages of those topics are handled with these three routes:
+
+```csharp
+[ApiController]
+public class MessageController : ControllerBase
+{
+    private readonly ILogger<MessageController> _logger;
+    
+    public MessageController(ILogger<MessageController> logger)
+    {
+        _logger = logger;
+    }
+
+    [Topic("pubsub", "A")]
+    [HttpPost("A")]
+    public ActionResult TopicA(Dictionary<string, string> item)
+    {
+        _logger.LogInformation($"A: {item["message"]}");
+        return Ok();
+    }
+
+    [Topic("pubsub", "B")]
+    [HttpPost("B")]
+    public ActionResult TopicB(Dictionary<string, string> item)
+    {
+        _logger.LogInformation($"B: {item["message"]}");
+        return Ok();
+    }
+
+    [Topic("pubsub", "C")]
+    [HttpPost("C")]
+    public ActionResult TopicC(Dictionary<string, string> item)
+    {
+        _logger.LogInformation($"C: {item["message"]}");
+        return Ok();
+    }
+}
+```
 
 ### React front end
 
