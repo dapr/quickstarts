@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "cDIJDiIctqTRI4JeELJss4Xxss3Qq1cDR1tZHmt6KILnNbor7YvWhNCTGq6vi3/N7jfqNPaZ7daLS2av4EI4iA==",
+  "success": true,
+  "projectFilePath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/CheckoutService/CheckoutService.csproj",
+  "expectedPackageFiles": [
+    "/Users/amulyavarote/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/Users/amulyavarote/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/amulyavarote/.nuget/packages/swashbuckle.aspnetcore/5.6.3/swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "/Users/amulyavarote/.nuget/packages/swashbuckle.aspnetcore.swagger/5.6.3/swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "/Users/amulyavarote/.nuget/packages/swashbuckle.aspnetcore.swaggergen/5.6.3/swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "/Users/amulyavarote/.nuget/packages/swashbuckle.aspnetcore.swaggerui/5.6.3/swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
