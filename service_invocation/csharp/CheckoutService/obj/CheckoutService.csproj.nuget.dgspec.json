@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/CheckoutService/CheckoutService.csproj": {}
+    "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/CheckoutService/CheckoutService.csproj": {}
   },
   "projects": {
-    "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/CheckoutService/CheckoutService.csproj": {
+    "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/CheckoutService/CheckoutService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/CheckoutService/CheckoutService.csproj",
+        "projectUniqueName": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/CheckoutService/CheckoutService.csproj",
         "projectName": "CheckoutService",
-        "projectPath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/CheckoutService/CheckoutService.csproj",
+        "projectPath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/CheckoutService/CheckoutService.csproj",
         "packagesPath": "/Users/amulyavarote/.nuget/packages/",
-        "outputPath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/CheckoutService/obj/",
+        "outputPath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/CheckoutService/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/amulyavarote/.nuget/NuGet/NuGet.Config"

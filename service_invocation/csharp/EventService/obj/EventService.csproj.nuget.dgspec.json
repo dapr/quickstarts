@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/EventService/EventService.csproj": {}
+    "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/EventService/EventService.csproj": {}
   },
   "projects": {
-    "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/EventService/EventService.csproj": {
+    "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/EventService/EventService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/EventService/EventService.csproj",
+        "projectUniqueName": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/EventService/EventService.csproj",
         "projectName": "EventService",
-        "projectPath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/EventService/EventService.csproj",
+        "projectPath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/EventService/EventService.csproj",
         "packagesPath": "/Users/amulyavarote/.nuget/packages/",
-        "outputPath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/EventService/obj/",
+        "outputPath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/EventService/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/amulyavarote/.nuget/NuGet/NuGet.Config"
