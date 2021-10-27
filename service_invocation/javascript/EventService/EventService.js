@@ -3,7 +3,7 @@ var result = new XMLHttpRequest()
 
 
 var main = function() {
-    for(var i=0;i<1;i++) {
+    for(var i=0;i<10;i++) {
         sleep(5000);
         var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
         var uri = 'http://localhost:6001/order/' + orderId;
