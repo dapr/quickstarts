@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dZOZQFmw+/tW0n6rIpDJwMzOBFKBpyWGiLdra9D5VjwOc7iVsb8yaFvgT86ROQygHzwIYnEpRUYSx4zvHdHheA==",
+  "dgSpecHash": "0AAuJBUEYDfW6CP9vQ01Rcy7+9qJr7Mi8YJaNtNXzDoZ7Zv7cHk+KHaCBzVb2qMY+16OUwf4bNiYVIUs4vMcGg==",
   "success": true,
-  "projectFilePath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/OrderProcessingService/OrderProcessingService.csproj",
+  "projectFilePath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/OrderProcessingService/OrderProcessingService.csproj",
   "expectedPackageFiles": [
     "/Users/amulyavarote/.nuget/packages/dapr.aspnetcore/1.4.0/dapr.aspnetcore.1.4.0.nupkg.sha512",
     "/Users/amulyavarote/.nuget/packages/dapr.client/1.4.0/dapr.client.1.4.0.nupkg.sha512",

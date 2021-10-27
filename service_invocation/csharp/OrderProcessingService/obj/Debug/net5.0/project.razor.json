@@ -1,5 +1,5 @@
 {
-  "FilePath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/OrderProcessingService/OrderProcessingService.csproj",
+  "FilePath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/OrderProcessingService/OrderProcessingService.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "5.0",

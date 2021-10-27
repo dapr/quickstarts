@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = EventService
-build_property.ProjectDir = /Users/amulyavarote/Documents/Dapr quickstarts/csharp/EventService/
+build_property.ProjectDir = /Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/EventService/

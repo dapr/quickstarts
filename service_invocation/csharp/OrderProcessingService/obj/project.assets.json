@@ -605,11 +605,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/OrderProcessingService/OrderProcessingService.csproj",
+      "projectUniqueName": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/OrderProcessingService/OrderProcessingService.csproj",
       "projectName": "OrderProcessingService",
-      "projectPath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/OrderProcessingService/OrderProcessingService.csproj",
+      "projectPath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/OrderProcessingService/OrderProcessingService.csproj",
       "packagesPath": "/Users/amulyavarote/.nuget/packages/",
-      "outputPath": "/Users/amulyavarote/Documents/Dapr quickstarts/csharp/OrderProcessingService/obj/",
+      "outputPath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/OrderProcessingService/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/amulyavarote/.nuget/NuGet/NuGet.Config"

@@ -19,6 +19,7 @@ namespace OrderProcessingService.controller
         {
             using var client = new DaprClientBuilder().Build();
             var result = client.CreateInvokeMethodRequest(HttpMethod.Get, "checkoutservice", "checkout/" + orderId, cancellationToken);
+            await client.InvokeMethodAsync(result);
             Console.WriteLine("Order requested: " + orderId);
             Console.WriteLine("Result: " + result);
             return new Order("order1",  orderId);
