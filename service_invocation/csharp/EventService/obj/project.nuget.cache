@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "dgSpecHash": "x1c5dRqHbxDDxgPF++t8B4l9yt+t6QiSdoeRIGmFd0I0xVdugTtnYomP9HErK78eFkRDKfF7QsL9Xgy04jpMoA==",
-  "success": true,
-  "projectFilePath": "/Users/amulyavarote/Documents/Dapr quickstarts/dapr-quickstarts-examples/service_invocation/csharp/EventService/EventService.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
-}
