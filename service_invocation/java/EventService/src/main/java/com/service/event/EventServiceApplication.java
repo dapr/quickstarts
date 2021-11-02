@@ -1,6 +1,5 @@
 package com.service.event;
 
-//import org.springframework.boot.SpringApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +20,7 @@ public class EventServiceApplication {
 			RestTemplate restTemplate = new RestTemplate();
 			String result = restTemplate.getForObject(uri, String.class);
 			log.info("Order processed for order id " + orderId);
-			log.info(result);
+			log.info(String.valueOf(result));
 		}
 	}
 
