@@ -1,0 +1,13 @@
+.DS_store
+node_modules
+*.txt
+.env
+**/__pycache__/
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages
+mvnw
+.idea/
