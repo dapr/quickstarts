@@ -78,6 +78,8 @@ kubectl apply -f deploy/pipeline.yaml
 
 Next, you'll deploy the application and define an ingress rule that routes to the ```-dapr``` service that gets automatically created when you deploy your pod. In this case, all traffic is routed to the Dapr sidecar, which can reinforce various policies through middleware.
 
+>**Note:** 'dapr.io/sidecar-listen-addresses' annotation is added to echoapp deployment to allow external connections. Be cautious of using it in a production environment. To read more on this annotation see [Dapr arguments and annotations for daprd, CLI, and Kubernetes](https://docs.dapr.io/reference/arguments-annotations-overview/)
+
 1. Deploy the application and the ingress rule:
 
 ```bash
