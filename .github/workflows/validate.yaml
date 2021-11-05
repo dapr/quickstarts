@@ -73,6 +73,7 @@ jobs:
         if: matrix.os == 'macos-latest' 
         run: |
           brew install kubernetes-cli || brew link --overwrite kubernetes-cli
+          brew install VirtualBox
           brew install minikube
           minikube start --driver=virtualbox --memory 4096
       - name: Get KinD info
