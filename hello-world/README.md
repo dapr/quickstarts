@@ -113,12 +113,14 @@ This calls out to the Redis cache to retrieve the latest value of the "order" ke
 
 ## Step 3 - Run the Node.js app with Dapr
 
+Open a new terminal and navigate to the `./hello-world/node` directory and follow the steps below:
+
 <!-- STEP
 expected_stdout_lines:
 expected_stderr_lines:
 name: "npm install"
+working_dir: node
 -->
-Open a new terminal and navigate to the `./hello-world/node` directory and follow the steps below:
 
 1. Install dependencies: 
 
@@ -153,6 +155,7 @@ expected_stderr_lines:
 output_match_mode: substring
 name: "run npm app"
 background: true
+working_dir: node
 sleep: 5
 -->
 
@@ -212,6 +215,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 name: dapr invoke
+working_dir: node
 -->
 
 ```bash
@@ -226,6 +230,7 @@ Alternatively, using `curl`:
 expected_stdout_lines:
 expected_stderr_lines:
 name: curl test
+working_dir: node
 -->
 
 ```bash
@@ -353,6 +358,7 @@ expected_stderr_lines:
 output_match_mode: substring
 name: "run python app"
 background: true
+working_dir: python
 sleep: 30
 -->
 
@@ -422,6 +428,15 @@ dapr stop --app-id pythonapp
 <!-- END_STEP -->
 
 To see that services have stopped running, run `dapr list`, noting that your services no longer appears!
+
+## [Optional Steps] VS Code Debugging
+
+If you are using Visual Studio Code, you can debug this application using the preconfigured launch.json and task.json files in the .vscode folder.
+The .vscode folder has already been modified in the project to allow users to launch a compound configuration called "Node/Python Dapr" which will run both applications and allow you to debug in VS Code.
+
+For more information on how to configure the files visit [How-To: Debug multiple Dapr applications](https://docs.dapr.io/developing-applications/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/)
+
+**Note**: Dapr offers a preview [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) for local development which enables users a variety of features related to better managing their Dapr applications and debugging of your Dapr applications for all supported Dapr languages which are .NET, Go, PHP, Python and Java.
 
 ## Next steps
 
