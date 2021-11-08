@@ -232,7 +232,7 @@ docker-compose -f ./docker-compose-single-kafka.yml down
 <!-- STEP
 name: Install Kafka
 sleep: 15
-timeout_seconds: 120
+timeout_seconds: 300
 -->
 
 ```bash
@@ -321,10 +321,11 @@ Look at the Python app logs by running:
 
 <!-- STEP
 name: Read Python Logs
+output_match_mode: substring
 expected_stdout_lines:
-  - "{'data': {'orderId': 10}, 'operation': 'create'}"
+  - "{'data': {'orderId': " 
   - "<Response [204]>"
-  - "{'data': {'orderId': 11}, 'operation': 'create'}"
+  - "{'data': {'orderId': "
   - "<Response [204]>"
 -->
 
@@ -361,11 +362,12 @@ Look at the Node app logs by running:
 
 <!-- STEP
 name: Read Node Logs
+output_match_mode: substring
 expected_stdout_lines:
   - Hello from Kafka!
-  - "{ orderId: 16 }"
+  - "{ orderId: "
   - Hello from Kafka!
-  - "{ orderId: 17 }"
+  - "{ orderId: "
 -->
 
 ```bash
