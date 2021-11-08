@@ -611,7 +611,7 @@ Each service in this quickstart is written in a different programming language, 
 
 When the front-end server calls the respective operation services (see `server.js` code below), it doesn't need to know what IP address they live at or how they were built. Instead it calls their local dapr side-car by name, which knows how to invoke the method on the service, taking advantage of the platform’s service discovery mechanism, in this case Kubernetes DNS resolution.
 
-The code below shows calls to the “add” and “subtract” services via the Dapr URLs:
+The code below shows calls to the "add" and "subtract" services via the Dapr URLs:
 ```js
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 
