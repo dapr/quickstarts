@@ -36,6 +36,9 @@ jobs:
         with:
           docker_buildx: false
           docker_version: 20.10
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: Configure KinD
         if: matrix.os == 'ubuntu-latest'
         # Generate a KinD configuration file that uses:
