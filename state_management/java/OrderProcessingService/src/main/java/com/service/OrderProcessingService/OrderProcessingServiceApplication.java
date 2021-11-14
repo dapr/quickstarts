@@ -4,8 +4,6 @@ import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.State;
 import io.dapr.client.domain.TransactionalStateOperation;
-import io.dapr.exceptions.DaprException;
-import io.grpc.Status;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +27,13 @@ public class OrderProcessingServiceApplication {
 			TimeUnit.MILLISECONDS.sleep(5000);
 			Random random = new Random();
 			int orderId = random.nextInt(1000-1) + 1;
-			DaprClient daprClient = new DaprClientBuilder().build();
-			daprClient.saveState(STATE_STORE_NAME, "order_1", Integer.toString(orderId)).block();
-			daprClient.saveState(STATE_STORE_NAME, "order_2", Integer.toString(orderId)).block();
-			Mono<State<String>> result = daprClient.getState(STATE_STORE_NAME, "order_1", String.class);
+			DaprClient client = new DaprClientBuilder().build();
+			client.saveState(STATE_STORE_NAME, "order_1", Integer.toString(orderId)).block();
+			client.saveState(STATE_STORE_NAME, "order_2", Integer.toString(orderId)).block();
+			Mono<State<String>> result = client.getState(STATE_STORE_NAME, "order_1", String.class);
 			log.info("Result after get" + result);
 
-			Mono<List<State<String>>> resultBulk = daprClient.getBulkState(STATE_STORE_NAME,
+			Mono<List<State<String>>> resultBulk = client.getBulkState(STATE_STORE_NAME,
 					Arrays.asList("order_1", "order_2"), String.class);
 
 			log.info("Result after get bulk" + resultBulk);
@@ -45,10 +43,10 @@ public class OrderProcessingServiceApplication {
 					new State<>("order_3", Integer.toString(orderId), "")));
 			operationList.add(new TransactionalStateOperation<>(TransactionalStateOperation.OperationType.DELETE,
 					new State<>("order_2")));
-			daprClient.executeStateTransaction(STATE_STORE_NAME, operationList).block();
+			client.executeStateTransaction(STATE_STORE_NAME, operationList).block();
 
-			String storedEtag = daprClient.getState(STATE_STORE_NAME, "order_1", String.class).block().getEtag();
-			daprClient.deleteState(STATE_STORE_NAME, "order_1", storedEtag, null).block();
+			String storedEtag = client.getState(STATE_STORE_NAME, "order_1", String.class).block().getEtag();
+			client.deleteState(STATE_STORE_NAME, "order_1", storedEtag, null).block();
 
 			log.info("Order requested: " + orderId);
 			log.info("Result: " + result);
