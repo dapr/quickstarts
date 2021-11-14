@@ -20,22 +20,22 @@ func main() {
 		time.Sleep(5000)
 		orderId := rand.Intn(1000-1) + 1
 		client, err := dapr.NewClient()
-		store := "statestore"
+		STATE_STORE_NAME := "statestore"
 		if err != nil {
 			panic(err)
 		}
 		defer client.Close()
 		ctx := context.Background()
 
-		if err := client.SaveState(ctx, store, "order_1", []byte(strconv.Itoa(orderId))); err != nil {
+		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId))); err != nil {
 			panic(err)
 		}
 
-		if err := client.SaveState(ctx, store, "order_2", []byte(strconv.Itoa(orderId))); err != nil {
+		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_2", []byte(strconv.Itoa(orderId))); err != nil {
 			panic(err)
 		}
 		
-		result, err := client.GetState(ctx, store, "order_2")
+		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_2")
 		if err != nil {
 			panic(err)
 		}
@@ -43,7 +43,7 @@ func main() {
 		log.Println("Result after get: ")
 		log.Println(result)
 
-		if err := client.DeleteState(ctx, store, "order_1"); err != nil {
+		if err := client.DeleteState(ctx, STATE_STORE_NAME, "order_1"); err != nil {
 			panic(err)
 		}
 
