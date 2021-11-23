@@ -31,7 +31,7 @@ func main() {
 	}
 
 	if secret != nil {
-		log.Println("Result for random key : ")
+		log.Println("Result for bulk: ")
 		log.Println(secretRandom)
 	}
 }
