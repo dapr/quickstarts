@@ -11,6 +11,6 @@ logging.basicConfig(level = logging.INFO)
 @app.subscribe(pubsub_name='order_pub_sub', topic='orders')
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
-    logging.info('Subscriber received: ' + data)
+    logging.info('Subscriber received: ' + str(data))
 
-app.run(60002)
+app.run(6002)
