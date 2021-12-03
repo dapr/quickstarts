@@ -25,6 +25,11 @@ scopes:
   - checkout
 
 
+Start a RabbitMQ message broker by entering the following command:
+docker run -d -p 5672:5672 -p 15672:15672 --name dtc-rabbitmq rabbitmq:3-management-alpine
+
+
+
 Java:
 
 dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 mvn spring-boot:run
