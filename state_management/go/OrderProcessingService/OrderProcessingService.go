@@ -4,16 +4,11 @@ import (
 	"context"
 	"log"
 	"math/rand"
-	"time"
 	"strconv"
+	"time"
+
 	dapr "github.com/dapr/go-sdk/client"
-
 )
-
-type Order struct {
-	orderName string
-	orderNum  string
-}
 
 func main() {
 	for i := 0; i < 10; i++ {
@@ -34,7 +29,7 @@ func main() {
 		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_2", []byte(strconv.Itoa(orderId))); err != nil {
 			panic(err)
 		}
-		
+
 		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_2")
 		if err != nil {
 			panic(err)
@@ -52,4 +47,3 @@ func main() {
 		log.Println(result)
 	}
 }
-
