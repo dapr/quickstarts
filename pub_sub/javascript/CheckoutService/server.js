@@ -10,6 +10,8 @@ start().catch((e) => {
 });
 
 async function start(orderId) {
+    const PUBSUB_NAME = "order_pub_sub"
+	const TOPIC_NAME  = "orders"
     const server = new DaprServer(
         serverHost, 
         serverPort, 
@@ -17,7 +19,7 @@ async function start(orderId) {
         process.env.DAPR_HTTP_PORT, 
         CommunicationProtocolEnum.HTTP
      );
-    await server.pubsub.subscribe("order_pub_sub", "orders", async (orderId) => {
+    await server.pubsub.subscribe(PUBSUB_NAME, TOPIC_NAME, async (orderId) => {
         console.log(`Subscriber received: ${JSON.stringify(orderId)}`)
     });
     await server.startServer();
