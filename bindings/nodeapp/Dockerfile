@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:17-alpine
 WORKDIR /app
 COPY . /app
 RUN rm -rf ./components
