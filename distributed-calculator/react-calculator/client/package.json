@@ -5,7 +5,7 @@
   "dependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^5.0.0"
   },
   "proxy": "http://localhost:8080/",
   "scripts": {
