@@ -11,13 +11,9 @@
     "dependencies": {
         "body-parser": "^1.18.3",
         "express": "^4.16.4",
-        "request": "^2.88.0",
-        "mini-css-extract-plugin": "2.4.5"
+        "request": "^2.88.0"
     },
     "devDependencies": {
         "concurrently": "^4.0.1"
-    },
-    "resolutions": {
-        "mini-css-extract-plugin": "2.4.5"
     }
 }
