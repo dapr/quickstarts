@@ -52,7 +52,6 @@ Dapr is currently under community development with preview releases. The master 
 | [Distributed-calculator](./distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
 | [Pub-sub](./pub-sub)                | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
 | [Bindings](./bindings)            | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
-| [Middleware](./middleware) | Demonstrates use of Dapr middleware to enable OAuth 2.0 authorization. |
 | [Observability](./observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
 | [Secret Store](./secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
 
