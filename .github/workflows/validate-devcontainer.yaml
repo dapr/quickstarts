@@ -23,7 +23,7 @@ jobs:
     name: Validate ${{ matrix.quickstart }}/README.md on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
-DAPR_CLI_VERSION: 1.6.0-rc.1
+      DAPR_CLI_VERSION: 1.6.0-rc.1
 DAPR_RUNTIME_VERSION: 1.6.0-rc.3
       DOCKER_WAIT_LIMIT: 30
     strategy:
