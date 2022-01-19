@@ -18,23 +18,26 @@ on:
       - release-*
 jobs:
   deploy:
-    name: Validate ${{ matrix.quickstart }}/README.md on ${{ matrix.os }}
+    name: Validate quickstarts on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      DAPR_CLI_VERSION: 1.2.0
-      DAPR_RUNTIME_VERSION: 1.2.1
-      GOVER: 1.16.3
-      KUBERNETES_VERSION: v1.18.8
-      KIND_VERSION: v0.9.0
-      KIND_IMAGE_SHA: sha256:f4bcc97a0ad6e7abaf3f643d890add7efe6ee4ab90baeb374b4f41a4c95567eb
+      GOVER: 1.17
+      KUBERNETES_VERSION: v1.21.1
+      KIND_VERSION: v0.11.0
+      KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        quickstart: [hello-world, hello-kubernetes, distributed-calculator, pub-sub, bindings, secretstore, observability, .]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-10.15]
     steps:
+      - name: Install docker - MacOS
+        if: matrix.os == 'macos-10.15'
+        uses: docker-practice/actions-setup-docker@v1
+        with:
+          docker_buildx: false
+          docker_version: 20.10
       - name: Configure KinD
-        if: matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
+        if: matrix.os == 'ubuntu-latest'
         # Generate a KinD configuration file that uses:
         # A couple of worker nodes: this is needed to run both
         #     ZooKeeper + Kakfa
@@ -59,30 +62,43 @@ jobs:
           # Log the generated kind.yaml for easy reference.
           cat kind.yaml
 
-      - name: Create KinD Cluster
-        if: matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
+      - name: Create KinD Cluster - Linux
+        if: matrix.os == 'ubuntu-latest' 
         uses: helm/kind-action@v1.0.0
         with:
           config: kind.yaml
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
+      - name: Install minikube - MacOS
+        if: matrix.os == 'macos-10.15' 
+        run: |
+          brew install kubernetes-cli || brew link --overwrite kubernetes-cli
+          brew install minikube
+          minikube start --driver=virtualbox --memory 4096 --host-only-cidr "192.168.59.1/24"
       - name: Get KinD info
-        if: matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
+        if: matrix.os == 'ubuntu-latest'
         run: |
           kubectl cluster-info --context kind-kind
           NODE_IP=$(kubectl get nodes \
                     -lkubernetes.io/hostname!=kind-control-plane \
                     -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
           echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
-      - name: Install docker on MacOS
-        if: matrix.os == 'macOS-latest'
-        run: |
-          brew install --cask docker
-          open /Applications/Docker.app
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GOVER }}
+      - name: Determine latest Dapr Runtime version including Pre-releases
+        run: |
+          helm repo add dapr https://dapr.github.io/helm-charts/ && helm repo update && export RUNTIME_VERSION=$(helm search repo dapr/dapr --devel --versions | awk '/dapr\/dapr/ {print $3; exit}' )
+          echo "DAPR_RUNTIME_VERSION=$RUNTIME_VERSION" >> $GITHUB_ENV
+          echo "Found $RUNTIME_VERSION"
+        shell: bash
+      - name: Determine latest Dapr Cli version including Pre-releases
+        run: |
+          export CLI_VERSION=$(curl "https://api.github.com/repos/dapr/cli/releases?per_page=1&page=1" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | jq '.[0].tag_name'| tr -d '",v')
+          echo "DAPR_CLI_VERSION=$CLI_VERSION" >> $GITHUB_ENV
+          echo "Found $CLI_VERSION"
+        shell: bash
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
@@ -91,15 +107,17 @@ jobs:
         run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"     
       - name: Install Dapr
         run: |
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
           dapr --version
       - name: Install Dapr - Kubernetes
-        if: matrix.quickstart != '.' && matrix.quickstart != 'hello-world'
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
           helm install redis bitnami/redis
-          dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait
+          dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
+          kubectl get nodes -o wide
+          for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
       - name: Check out code 
         uses: actions/checkout@v2
       - name: Install utilities dependencies
@@ -107,10 +125,41 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate ${{ matrix.quickstart }}
+      - name: Validate hello-world
         run: |
-          pushd ${{ matrix.quickstart }}
+          pushd hello-world
           make validate
           popd
-
-          
+      - name: Validate hello-kubernetes
+        run: |
+          pushd hello-kubernetes
+          make validate
+          popd
+      - name: Validate distributed-calculator
+        run: |
+          pushd distributed-calculator
+          make validate
+          popd
+      - name: Validate pub-sub
+        run: |
+          pushd pub-sub
+          make validate
+          popd
+      - name: Validate bindings
+        run: |
+          pushd bindings
+          make validate
+          popd
+      - name: Validate secretstore
+        run: |
+          pushd secretstore
+          make validate
+          popd
+      - name: Validate observability
+        run: |
+          pushd observability
+          make validate
+          popd
+      - name: Linkcheck README.md
+        run: |
+          make validate        

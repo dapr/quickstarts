@@ -3,7 +3,7 @@
 # Licensed under the MIT License.
 # ------------------------------------------------------------
 
-FROM mcr.microsoft.com/vscode/devcontainers/universal:1.4.0-focal
+FROM mcr.microsoft.com/vscode/devcontainers/universal:1.6.9-focal
 
 ARG DAPR_CLI_VERSION="1.2.0"
 
