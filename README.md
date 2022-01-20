@@ -11,6 +11,7 @@ This repository contains a collection of tutorials with code samples that are ai
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr/) instructions.
 
 If you would like to jump in right away by using [GitHub Codespaces](https://github.com/features/codespaces), you can click on "Code" in this repo and "Open with Codespaces", which will let you get started right away with [`dapr init`](https://docs.dapr.io/getting-started/install-dapr-selfhost/). The Codespace will be based off a personal fork of this repo (if you have not already forked this repo, one will be created for you), so feel free to explore!
+>Note GitHub Codespaces currently requires GitHub Team and Enterprise Cloud plans plus configuration by organization owners.  See the [CodeSpaces FAQ](https://github.com/features/codespaces) for current information on pre-reqs.  
 
 This repository is designed to help you explore different Dapr capabilities and you can go through the quickstarts based on the areas you would like to explore. Each quickstart includes sample code and a tutorial that will guide you through it.
 
