@@ -4,7 +4,7 @@ COPY . .
 RUN npm install
 
 # Build the client
-RUN cd client; npm i
+RUN cd client && npm i && npm run build
 
 EXPOSE 8080
 EXPOSE 3000
