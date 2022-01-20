@@ -3,21 +3,13 @@ kind: Component
 metadata:
   name: order_pub_sub
 spec:
-  type: pubsub.rabbitmq
+  type: pubsub.redis
   version: v1
   metadata:
-  - name: host
-    value: "amqp://localhost:5672"
-  - name: durable
-    value: "false"
-  - name: deletedWhenUnused
-    value: "false"
-  - name: autoAck
-    value: "false"
-  - name: reconnectWait
-    value: "0"
-  - name: concurrency
-    value: parallel
+  - name: redisHost
+    value: localhost:6379
+  - name: redisPassword
+    value: ""
 scopes:
   - orderprocessing
   - checkout
