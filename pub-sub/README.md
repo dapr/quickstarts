@@ -134,7 +134,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id python-subscriber --app-port 5000 python3 app.py
+dapr run --app-id python-subscriber --app-port 5001 python3 app.py
 ```
 
 <!-- END_STEP -->

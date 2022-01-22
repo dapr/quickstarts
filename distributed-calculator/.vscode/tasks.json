@@ -57,7 +57,7 @@
         },
         {
             "appId": "subtractapp",
-            "appPort": 7000,
+            "appPort": 7001,
             "httpPort": 3504,
             "metricsPort": 9091,
             "grpcPort": 50015,
@@ -85,7 +85,7 @@
         },
         {
             "appId": "multiplyapp",
-            "appPort": 5000,
+            "appPort": 5001,
             "httpPort": 3501,
             "metricsPort": 9093,
             "grpcPort": 50003,

@@ -29,4 +29,4 @@ def c_subscriber():
     print('Received message "{}" on topic "{}"'.format(request.json['data']['message'], request.json['topic']), flush=True)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
-app.run()
+app.run(port=5001)
