@@ -19,4 +19,4 @@ def multiply():
     print(f"Calculating {operand_one} * {operand_two}", flush=True)
     return jsonify(math.ceil(operand_one * operand_two * 100000)/100000)
 
-app.run()
+app.run(port=5001)
