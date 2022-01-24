@@ -3,7 +3,7 @@
 # Licensed under the MIT License.
 # ------------------------------------------------------------
 
-FROM mcr.microsoft.com/vscode/devcontainers/universal:1.6.9-focal
+FROM mcr.microsoft.com/vscode/devcontainers/universal:1-focal
 
 # Copy custom first notice message.
 COPY first-run-notice.txt /tmp/staging/
