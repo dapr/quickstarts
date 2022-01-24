@@ -176,6 +176,15 @@ working_dir: "./python"
 
 <!-- END_STEP -->
 
+- Set environment variable to use non-default app port 5000
+   ```bash
+   #Linux/Mac OS:
+   export FLASK_RUN_PORT=5001
+   
+   #Windows:
+   set FLASK_RUN_PORT=5001
+   ```
+
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
@@ -188,6 +197,8 @@ working_dir: "./python"
 output_match_mode: substring
 background: true
 sleep: 2
+env:
+  FLASK_RUN_PORT: "5001"
 -->
 
 - Start dapr using the command:
