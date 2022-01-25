@@ -3,6 +3,8 @@ package com.service.CheckoutService.controller;
 import io.dapr.Topic;
 import io.dapr.client.domain.CloudEvent;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,10 +20,12 @@ public class CheckoutServiceController {
 
     @Topic(name = "orders", pubsubName = "order_pub_sub")
     @PostMapping(path = "/checkout")
-    public Mono<Void> getCheckout(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
-        return Mono.fromRunnable(() -> {
+    public Mono<ResponseEntity> getCheckout(@RequestBody(required = false) CloudEvent<String> cloudEvent) {
+        return Mono.fromSupplier(() -> {
             try {
                 log.info("Subscriber received: " + cloudEvent.getData());
+                return new ResponseEntity<>("successful",
+                        HttpStatus.OK);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

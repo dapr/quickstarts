@@ -12,5 +12,6 @@ logging.basicConfig(level = logging.INFO)
 def mytopic(event: v1.Event) -> None:
     data = json.loads(event.Data())
     logging.info('Subscriber received: ' + str(data))
+    return '', 200
 
 app.run(6002)
