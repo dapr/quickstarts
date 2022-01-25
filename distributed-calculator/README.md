@@ -80,15 +80,15 @@ sleep: 2
 
 2. Subtract App - Open a terminal window and navigate to the csharp directory and follow the steps below:
 
-- Set environment variable to use non-default app port 7000
+- Set environment variable to use non-default app port 7001
    ```bash
    #Linux/Mac OS:
-   export ASPNETCORE_URLS="http://localhost:7000"
+   export ASPNETCORE_URLS="http://localhost:7001"
    ```
 
    ```bash
    #Windows:
-   set ASPNETCORE_URLS=http://localhost:7000
+   set ASPNETCORE_URLS=http://localhost:7001
    ```
 
 <!-- STEP
@@ -115,13 +115,13 @@ output_match_mode: substring
 working_dir: "./csharp/bin/Debug/netcoreapp3.1"
 background: true
 env: 
-  ASPNETCORE_URLS: 'http://localhost:7000'
+  ASPNETCORE_URLS: 'http://localhost:7001'
 sleep: 2
 -->
 
 - Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
    ```bash
-   dapr run --app-id subtractapp --app-port 7000 --dapr-http-port 3504 dotnet Subtract.dll
+   dapr run --app-id subtractapp --app-port 7001 --dapr-http-port 3504 dotnet Subtract.dll
    ```
 
 
@@ -179,10 +179,10 @@ working_dir: "./python"
 - Set environment variable to use non-default app port 5000
    ```bash
    #Linux/Mac OS:
-   export FLASK_RUN_PORT=5000
+   export FLASK_RUN_PORT=5001
    
    #Windows:
-   set FLASK_RUN_PORT=5000
+   set FLASK_RUN_PORT=5001
    ```
 
 <!-- STEP
@@ -196,14 +196,14 @@ name: "Run python app"
 working_dir: "./python"
 output_match_mode: substring
 background: true
-env:
-  FLASK_RUN_PORT: "5000"
 sleep: 2
+env:
+  FLASK_RUN_PORT: "5001"
 -->
 
 - Start dapr using the command:
    ```bash
-   dapr run --app-id multiplyapp --app-port 5000 --dapr-http-port 3501 flask run
+   dapr run --app-id multiplyapp --app-port 5001 --dapr-http-port 3501 flask run
    ```
 
 <!-- END_STEP -->

@@ -16,12 +16,12 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "multiplyapp"
-        dapr.io/app-port: "5000"
+        dapr.io/app-port: "5001"
         dapr.io/config: "appconfig"
     spec:
       containers:
       - name: multiply
         image: dapriosamples/distributed-calculator-python:latest
         ports:
-        - containerPort: 5000
+        - containerPort: 5001
         imagePullPolicy: Always
