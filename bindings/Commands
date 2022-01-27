@@ -42,7 +42,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
 To start kafka
-docker-compose -f ./docker-compose-single-kafka.yml up -d
+docker-compose -f ../docker-compose-single-kafka.yml up -d
 
 
 Java:
