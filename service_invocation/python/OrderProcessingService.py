@@ -1,24 +1,23 @@
 import random
-from time import sleep    
+from time import sleep 
 import requests
+import flask
 import logging
-from dapr.clients import DaprClient
 
-logging.basicConfig(level = logging.INFO)
-    
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
 
-while True:
+
+@app.route('/order', methods=['GET'])
+def getOrder():
+    logging.basicConfig(level = logging.INFO)
     sleep(random.randrange(50, 5000) / 1000)
     orderId = random.randint(1, 1000)
-    with DaprClient() as daprClient:
-        result = daprClient.invoke_method(
-            "checkoutservice",
-               f"checkout/{orderId}",
-               data=b'',
-               http_verb="GET"
-        )    
-    logging.basicConfig(level = logging.INFO)
+    daprPort = '3602'
+    daprUrl = 'http://localhost:' + daprPort + '/v1.0/invoke/checkout/method/checkout/' + str(orderId); 
+    result = requests.get(daprUrl, params={})
     logging.info('Order requested: ' + str(orderId))
     logging.info('Result: ' + str(result))
-    
+    return str(result)
 
+app.run(host="localhost", port=6001, debug=True)
