@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/dapr/go-sdk v1.2.0 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
+	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb // indirect
 	golang.org/x/sys v0.0.0-20201202213521-69691e467435 // indirect

@@ -1,30 +1,24 @@
-import { DaprClient, HttpMethod, CommunicationProtocolEnum } from 'dapr-client'; 
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 
-const daprHost = "127.0.0.1"; 
+var XMLHttpRequest = require('xhr2');
 
-var main = function() {
-    for(var i=0;i<10;i++) {
-        sleep(5000);
-        var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
-        start(orderId).catch((e) => {
-            console.error(e);
-            process.exit(1);
-        });
-    }
-}
+const port = 6001;
 
-async function start(orderId) {
-    const client = new DaprClient(daprHost, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
-    const result = await client.invoker.invoke('checkoutservice' , "checkout/" + orderId , HttpMethod.GET);
+app.get('/order', (req, res) => {
+    var orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+    var daprPort = '3602';
+    var daprUrl = 'http://localhost:' + daprPort + '/v1.0/invoke/checkout/method/checkout/' + orderId;
+    var request = new XMLHttpRequest();
+    request.open('GET', daprUrl);
+    request.send();
     console.log("Order requested: " + orderId);
-    console.log("Result: " + result);
-}
+});
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-main();
+app.listen(port, () => {
+    console.log("We are live on port: " + port);
+});
 
 
 
