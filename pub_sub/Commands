@@ -40,9 +40,9 @@ dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-por
 
 Python:
 
-dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
+dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
 
-dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
+dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
 
 GO:
 
