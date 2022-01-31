@@ -20,9 +20,9 @@ app.MapGet("/dapr/subscribe", () => {
     return subscriptions;
 });
 
-app.MapPost("/orders", async (Order order) => {
+app.MapPost("/orders", (Order order) => {
     Console.WriteLine("Subscriber received : " + order.ToString());
-    return new HttpResponseMessage(HttpStatusCode.OK);
+    return Results.Ok(order.ToString());
 });
 
         // [Topic("order_pub_sub", "orders")]
