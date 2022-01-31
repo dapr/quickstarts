@@ -2,7 +2,6 @@ package-lock.json
 **/.vscode/
 .DS_store
 node_modules
-*.txt
 .env
 **/__pycache__/
 *.suo

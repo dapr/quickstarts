@@ -7,13 +7,13 @@ using System.Net;
 using Dapr;
 using Dapr.Client;
 
-namespace CheckoutService.controller
+namespace order_processor.controller
 {
     [ApiController]
-    public class CheckoutServiceController : Controller
+    public class order_processorController : Controller
     {
         [Topic("order_pub_sub", "orders")]
-        [HttpPost("checkout")]
+        [HttpPost("order-processor")]
         public HttpResponseMessage getCheckout([FromBody] int orderId)
         {
             Console.WriteLine("Subscriber received : " + orderId);
