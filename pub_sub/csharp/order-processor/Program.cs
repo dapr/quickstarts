@@ -1,5 +1,3 @@
-using System.Text;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,25 +14,23 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapGet("/dapr/subscribe", () => {
-    var subscriptions = "[{'pubsubname': 'order_pub_sub', 'topic': 'orders', 'route': 'orders'}]";
-    return subscriptions;
+    var sub = new DaprSubscription(pubsub_name: "order_pub_sub", topic: "orders", route: "orders");
+    Console.WriteLine("Dapr pub/sub is subscribed to: " + sub);
+    return Results.Json(new DaprSubscription[]{sub});
 });
 
-app.MapPost("/orders", (Order order) => {
-    Console.WriteLine("Subscriber received : " + order.ToString());
-    return Results.Ok(order.ToString());
+app.MapPost("/orders", (DaprData<Order> request_data) => {
+    Console.WriteLine("Subscriber received : " + request_data.data.order_id);
+    return Results.Ok(request_data.data.order_id);
 });
-
-        // [Topic("order_pub_sub", "orders")]
-        // [HttpPost("order-processor")]
-        // public HttpResponseMessage getCheckout([FromBody] int orderId)
-        // {
-        //     Console.WriteLine("Subscriber received : " + orderId);
-        //     return new HttpResponseMessage(HttpStatusCode.OK);
-        // }
 
 await app.RunAsync();
 
 app.Run();
 
+public record DaprData<T> ([property: JsonPropertyName("data")] T data); 
 public record Order([property: JsonPropertyName("orderid")] int order_id);
+public record DaprSubscription(
+  [property: JsonPropertyName("pubsubname")] string pubsub_name, 
+  [property: JsonPropertyName("topic")] string topic, 
+  [property: JsonPropertyName("route")] string route);
