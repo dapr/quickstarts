@@ -9,12 +9,13 @@ using System.Text.Json.Serialization;
 while(true) {
     Random random = new Random();
     var order = new Order(random.Next(1,1000));
-    var data = JsonSerializer.Serialize<Order>(order);
+    //var data = JsonSerializer.Serialize<Order>(order);
     CancellationTokenSource source = new CancellationTokenSource();
     CancellationToken cancellationToken = source.Token;
     using var client = new DaprClientBuilder().Build();
-    await client.PublishEventAsync("order_pub_sub", "orders", data, cancellationToken);
-    Console.WriteLine("Published data: " + data);
+    await client.PublishEventAsync("order_pub_sub", "orders", order, cancellationToken);
+    //await client.PublishEventAsync("order_pub_sub", "orders", data, cancellationToken);
+    Console.WriteLine("Published data: " + order);
     System.Threading.Thread.Sleep(1000);
 }
 
