@@ -49,7 +49,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkoout --components-path ../../components/ -- python3 app.py
+dapr run --app-id checkout --components-path ../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->
