@@ -32,7 +32,3 @@ await app.RunAsync();
 app.Run();
 
 public record Order([property: JsonPropertyName("orderid")] int order_id);
-public record DaprSubscription(
-  [property: JsonPropertyName("pubsubname")] string pubsub_name, 
-  [property: JsonPropertyName("topic")] string topic, 
-  [property: JsonPropertyName("route")] string route);
