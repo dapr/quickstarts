@@ -2,8 +2,6 @@ using System.Text.Json.Serialization;
 using Dapr;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -14,12 +12,7 @@ app.UseCloudEvents();
 app.UseRouting();
 app.UseEndpoints(endpoints =>{endpoints.MapSubscribeHandler();});
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseDeveloperExceptionPage();
-}
+if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 
 // Dapr will send messages/events to route defined in [Topic]
 app.MapPost("/orders", [Topic("order_pub_sub", "orders")] (Order order) => {
@@ -29,6 +22,4 @@ app.MapPost("/orders", [Topic("order_pub_sub", "orders")] (Order order) => {
 
 await app.RunAsync();
 
-app.Run();
-
-public record Order([property: JsonPropertyName("orderid")] int order_id);
+public record Order([property: JsonPropertyName("orderId")] int OrderId);
