@@ -1,10 +1,18 @@
 using System.Text.Json.Serialization;
+using Dapr;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Dapr will send serialized event object vs. being raw CloudEvent
+app.UseCloudEvents();
+
+// needed for Dapr pub/sub routing
+app.UseRouting();
+app.UseEndpoints(endpoints =>{endpoints.MapSubscribeHandler();});
 
 if (app.Environment.IsDevelopment())
 {
@@ -13,22 +21,16 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.MapGet("/dapr/subscribe", () => {
-    var sub = new DaprSubscription(pubsub_name: "order_pub_sub", topic: "orders", route: "orders");
-    Console.WriteLine("Dapr pub/sub is subscribed to: " + sub);
-    return Results.Json(new DaprSubscription[]{sub});
-});
-
-app.MapPost("/orders", (DaprData<Order> request_data) => {
-    Console.WriteLine("Subscriber received : " + request_data.data.order_id);
-    return Results.Ok(request_data.data.order_id);
+// Dapr will send messages/events to route defined in [Topic]
+app.MapPost("/orders", [Topic("order_pub_sub", "orders")] (Order order) => {
+    Console.WriteLine("Subscriber received : " + order);
+    return Results.Ok(order);
 });
 
 await app.RunAsync();
 
 app.Run();
 
-public record DaprData<T> ([property: JsonPropertyName("data")] T data); 
 public record Order([property: JsonPropertyName("orderid")] int order_id);
 public record DaprSubscription(
   [property: JsonPropertyName("pubsubname")] string pubsub_name, 
