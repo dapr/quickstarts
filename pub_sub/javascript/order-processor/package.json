@@ -1,0 +1,19 @@
+{
+    "name": "order-processor",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "start:dapr": "dapr run --app-port 5000 --app-id order-processing --app-protocol http --dapr-http-port 3500 --components-path ./components -- npm run start",
+        "demo:publish": "dapr publish --publish-app-id order-processing  --pubsub my-pubsub-name --topic my-topic --data '{\"image_url\": \"https://www.ikea.com/images/een-3-zitsbank-met-chaise-longue-een-stellingkast-met-deuren-04d392ffcd855db85a5373f188230c66.jpg\"}'",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "dapr-client": "^2.0.1"
+    }
+}
