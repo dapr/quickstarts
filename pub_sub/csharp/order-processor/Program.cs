@@ -14,7 +14,7 @@ app.UseEndpoints(endpoints =>{endpoints.MapSubscribeHandler();});
 
 if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 
-// Dapr will send messages/events to route defined in [Topic]
+// Dapr subscription in [Topic] routes orders topic to this route
 app.MapPost("/orders", [Topic("order_pub_sub", "orders")] (Order order) => {
     Console.WriteLine("Subscriber received : " + order);
     return Results.Ok(order);
