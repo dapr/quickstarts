@@ -10,7 +10,8 @@ while True:
     order = {"orderid": random.randint(1, 1000)}
 
     with DaprClient() as client:
-        result = client.publish_event(  # publish an event using Dapr pub-sub
+        # publish an event using Dapr pub/sub
+        result = client.publish_event(
             pubsub_name="order_pub_sub",
             topic_name="orders",
             data=json.dumps(order),
