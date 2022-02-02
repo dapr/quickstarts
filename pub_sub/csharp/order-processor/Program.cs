@@ -9,8 +9,7 @@ var app = builder.Build();
 app.UseCloudEvents();
 
 // needed for Dapr pub/sub routing
-app.UseRouting();
-app.UseEndpoints(endpoints =>{endpoints.MapSubscribeHandler();});
+app.MapSubscribeHandler();
 
 if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 
