@@ -1,0 +1,3 @@
+fastapi
+dapr-ext-fastapi==1.5.0
+cloudevents

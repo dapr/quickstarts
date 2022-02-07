@@ -16,6 +16,7 @@ def subscribe():
 # Dapr subscription routes orders topic to this route
 @app.route('/orders', methods=['POST'])
 def orders_subscriber():
+    print('raw:' + json.dumps(request.get_json))
     event = from_http(request.headers, request.get_data())
     print('Received message "{}" on topic "{}"'.format(
           event.data['orderid'], event['topic']), flush=True)
