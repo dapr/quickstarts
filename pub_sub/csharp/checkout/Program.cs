@@ -8,7 +8,7 @@ while(true) {
     var order = new Order(random.Next(1,1000));
     using var client = new DaprClientBuilder().Build();
 
-    //Publish a message using Dapr pub/sub
+    // Publish an event/message using Dapr PubSub
     await client.PublishEventAsync("order_pub_sub", "orders", order);
     Console.WriteLine("Published data: " + order);
 
