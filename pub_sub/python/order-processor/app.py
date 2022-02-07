@@ -8,8 +8,11 @@ app = Flask(__name__)
 # Register Dapr pub/sub subscriptions
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
-    subscriptions = [{'pubsubname': 'order_pub_sub',
-                      'topic': 'orders', 'route': 'orders'}]
+    subscriptions = [{
+        'pubsubname': 'order_pub_sub',
+        'topic': 'orders',
+        'route': 'orders'
+    }]
     print('Dapr pub/sub is subscribed to: ' + json.dumps(subscriptions))
     return jsonify(subscriptions)
 

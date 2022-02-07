@@ -18,8 +18,10 @@ while True:
     order = {'orderid': random.randint(1, 1000)}
 
     # Publish an event/message using Dapr PubSub via HTTP Post
-    result = requests.post('%s/v1.0/publish/%s/%s' % (
-                           base_url, PUBSUB_NAME, TOPIC), json=order)
+    result = requests.post(
+        url='%s/v1.0/publish/%s/%s' % (base_url, PUBSUB_NAME, TOPIC),
+        json=order
+    )
     logging.info('Published data: ' + json.dumps(order))
 
     time.sleep(1)
