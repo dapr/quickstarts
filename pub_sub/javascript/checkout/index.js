@@ -1,7 +1,7 @@
 import { DaprClient } from 'dapr-client';
 
 const DAPR_HOST = process.env.DAPR_HOST || "localhost";
-const DAPR_PORT = process.env.DAPR_PORT || 3500;
+const DAPR_PORT = process.env.DAPR_PORT || 3501;
 
 async function main() {
   const client = new DaprClient(DAPR_HOST, DAPR_PORT);
