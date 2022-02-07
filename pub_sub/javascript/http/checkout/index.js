@@ -8,7 +8,7 @@ const PUBSUB_TOPIC = "orders";
 async function main() {
   while (true) {
     const rand = Math.floor(Math.random() * 1000);
-    const order = {orderId: rand };
+    const order = {orderId: rand};
 
     // Publish an event using Dapr pub/sub
     await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/publish/${PUBSUB_NAME}/${PUBSUB_TOPIC}`, order)
