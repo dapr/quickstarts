@@ -13,7 +13,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "dapr-client": "^2.0.1",
-        "uuid": "^8.3.2"
+        "dapr-client": "^2.0.1"
     }
 }
