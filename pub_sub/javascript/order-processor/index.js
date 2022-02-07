@@ -8,7 +8,7 @@ const SERVER_PORT = process.env.SERVER_PORT || 5001;
 async function main() {
   const server = new DaprServer(SERVER_HOST, SERVER_PORT, DAPR_HOST, DAPR_PORT);
 
-  //Dapr subscription routes orders topic to this route
+  // ßDapr subscription routes orders topic to this route
   server.pubsub.subscribe("order_pub_sub", "orders", (data) => console.log(data));
   
   await server.start();
