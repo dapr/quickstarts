@@ -1,5 +1,4 @@
 import { DaprClient } from 'dapr-client';
-// import { v4 as uuidv4 } from 'uuid';
 
 const DAPR_HOST = process.env.DAPR_HOST || "localhost";
 const DAPR_PORT = process.env.DAPR_PORT || 3500;
@@ -9,7 +8,6 @@ async function main() {
 
   while (true) {
     const rand = Math.floor(Math.random() * 1000)
-    //console.log(rand.toString());
     const order = { orderId:  rand};
 
     // publish an event using Dapr pub/sub
