@@ -16,7 +16,7 @@ while (true) {
     var orderJson = JsonSerializer.Serialize<Order>(order);
     var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
 
-    //Publish an event/message using Dapr PubSub via HTTP Post
+    // Publish an event/message using Dapr PubSub via HTTP Post
     var response = httpClient.PostAsync($"{baseURL}/v1.0/publish/{PUBSUBNAME}/{TOPIC}", content);
     Console.WriteLine("Published data: " + order);
 

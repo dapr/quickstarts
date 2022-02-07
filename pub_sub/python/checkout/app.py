@@ -7,16 +7,16 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 while True:
-    order = {"orderid": random.randint(1, 1000)}
+    order = {'orderid': random.randint(1, 1000)}
 
     with DaprClient() as client:
-        # publish an event using Dapr pub/sub
+        # Publish an event/message using Dapr PubSub
         result = client.publish_event(
-            pubsub_name="order_pub_sub",
-            topic_name="orders",
+            pubsub_name='order_pub_sub',
+            topic_name='orders',
             data=json.dumps(order),
-            data_content_type="application/json",
+            data_content_type='application/json',
         )
 
-    logging.info("Published data: " + json.dumps(order))
+    logging.info('Published data: ' + json.dumps(order))
     time.sleep(1)

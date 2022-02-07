@@ -1,4 +1,3 @@
-#from dapr.clients import DaprClient
 import json
 import time
 import random
@@ -8,19 +7,21 @@ import os
 
 logging.basicConfig(level=logging.INFO)
 
-baseURL = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
+base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
 PUBSUB_NAME = 'order_pub_sub'
-ORDERS = 'orders'
+TOPIC = 'orders'
 logging.info('Publishing to baseURL: %s, Pubsub Name: %s, Topic: %s' % (
-            baseURL, PUBSUB_NAME, ORDERS))
+            base_url, PUBSUB_NAME, TOPIC))
 
 while True:
     order = {'orderid': random.randint(1, 1000)}
-    data = json.dumps(order)
 
-    result = requests.post('%s/v1.0/publish/%s/%s' % (
-                           baseURL, PUBSUB_NAME, ORDERS), data)
-    logging.info('Published data: ' + data)
+    # Publish an event/message using Dapr PubSub via HTTP Post
+    result = requests.post(
+        url='%s/v1.0/publish/%s/%s' % (base_url, PUBSUB_NAME, TOPIC),
+        json=order
+    )
+    logging.info('Published data: ' + json.dumps(order))
 
     time.sleep(1)
