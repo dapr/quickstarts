@@ -4,7 +4,7 @@ In this quickstart, you'll create a publisher microservice and a subscriber micr
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
 
-> **Note:** This example leverages the Dapr client SDK.  If you are looking for the example using only HTTP `requests` [click here](../python-http/).
+> **Note:** This example leverages the Dapr client SDK.  If you are looking for the example using only HTTP `requests` [click here](../http).
 
 This quickstart includes one publisher:
 
