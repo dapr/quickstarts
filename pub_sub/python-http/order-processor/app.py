@@ -19,7 +19,7 @@ def subscribe():
 # Dapr subscription in /dapr/subscribe sets up this route
 @app.route('/orders', methods=['POST'])
 def orders_subscriber():
-    event_orderid = request.json['data']['orderid']
+    event_orderid = request.json['data']['orderId']
     print('Subscriber received : ' + json.dumps(event_orderid), flush=True)
     return json.dumps({'success': True}), 200, {
         'ContentType': 'application/json'}
