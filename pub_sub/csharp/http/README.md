@@ -4,7 +4,7 @@ In this quickstart, you'll create a publisher microservice and a subscriber micr
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
 
-> **Note:** This example leverages HTTPClient only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../csharp/).
+> **Note:** This example leverages HTTPClient only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk).
 
 This quickstart includes one publisher:
 

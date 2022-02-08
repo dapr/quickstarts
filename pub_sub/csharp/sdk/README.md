@@ -4,15 +4,17 @@ In this quickstart, you'll create a publisher microservice and a subscriber micr
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
 
+> **Note:** This example leverages the Dapr client SDK.  If you are looking for the example using only HTTP [click here](../http).
+
 This quickstart includes one publisher:
 
-- Node client message generator `checkout` 
+- Dotnet client message generator `checkout` 
 
 And one subscriber: 
  
-- Node subscriber `order-processor`
+- Dotnet subscriber `order-processor`
 
-### Run Node message publisher with Dapr
+### Run Dotnet message publisher with Dapr
 
 1. Open a new terminal window and navigate to `checkout` directory: 
 
@@ -23,18 +25,19 @@ cd checkout
 2. Install dependencies: 
 
 <!-- STEP
-name: Install Node dependencies
+name: Install Dotnet dependencies
 working_dir: ./checkout
 -->
 
 ```bash
-npm install
+dotnet restore
+dotnet build
 ```
 
-3. Run the Node publisher app with Dapr: 
+3. Run the Dotnet publisher app with Dapr: 
 
 <!-- STEP
-name: Run Node publisher
+name: Run Dotnet publisher
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Received message "Message on A" on topic "A"'
@@ -49,11 +52,11 @@ sleep: 10
 -->
     
 ```bash
-npm start:dapr
+dapr run --app-id checkout --components-path ../../components/ -- dotnet run
 ```
 
 <!-- END_STEP -->
-### Run Node message subscriber with Dapr
+### Run Dotnet message subscriber with Dapr
 
 1. Open a new terminal window and navigate to `checkout` directory: 
 
@@ -64,18 +67,19 @@ cd order-processor
 2. Install dependencies: 
 
 <!-- STEP
-name: Install Node dependencies
+name: Install Dotnet dependencies
 working_dir: ./order-processor
 -->
 
 ```bash
-npm install
+dotnet restore
+dotnet build
 ```
 
-3. Run the Node subscriber app with Dapr: 
+3. Run the Dotnet subscriber app with Dapr: 
 
 <!-- STEP
-name: Run Node subscriber
+name: Run Dotnet subscriber
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Received message "Message on A" on topic "A"'
@@ -91,7 +95,7 @@ sleep: 10
 
 
 ```bash
-npm start:dapr
+dapr run --app-id order-processor --components-path ../../components/ --app-port 7001 -- dotnet run
 ```
 
 <!-- END_STEP -->
