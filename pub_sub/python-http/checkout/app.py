@@ -15,7 +15,7 @@ logging.info('Publishing to baseURL: %s, Pubsub Name: %s, Topic: %s' % (
             base_url, PUBSUB_NAME, TOPIC))
 
 while True:
-    order = {'orderid': random.randint(1, 1000)}
+    order = {'orderId': random.randint(1, 1000)}
 
     # Publish an event/message using Dapr PubSub via HTTP Post
     result = requests.post(
