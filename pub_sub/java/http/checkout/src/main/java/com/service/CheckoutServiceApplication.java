@@ -1,13 +1,6 @@
 package com.service;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.env.Environment;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,9 +11,7 @@ import java.time.Duration;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@SpringBootApplication
-public class CheckoutServiceApplication implements CommandLineRunner {
-	private static final Logger logger = LoggerFactory.getLogger(CheckoutServiceApplication.class);
+public class CheckoutServiceApplication {
 	private static final HttpClient httpClient = HttpClient.newBuilder()
 			.version(HttpClient.Version.HTTP_2)
 			.connectTimeout(Duration.ofSeconds(10))
@@ -28,20 +19,19 @@ public class CheckoutServiceApplication implements CommandLineRunner {
 
 	private static final String PUBSUB_NAME = "order_pub_sub";
 	private static final String TOPIC = "orders";
-	private static String dapr_host;
-	private static String dapr_http_port;
-
-	@Autowired
-	private Environment environment;
+	private static String DAPR_HOST;
+	private static String DAPR_HTTP_PORT;
 
 	public static void main(String[] args) throws InterruptedException, IOException {
-		SpringApplication.run(CheckoutServiceApplication.class, args);
+		String daprHost = System.getenv("DAPR_HOST");
+		String daprHttpPort = System.getenv("DAPR_HTTP_PORT");
+		DAPR_HOST = daprHost == null ? "http://localhost" : daprHost;
+		DAPR_HTTP_PORT = daprHttpPort == null ? "3500" : daprHttpPort;
 		publishMessages();
 	}
 
 	private static void publishMessages() throws IOException, InterruptedException {
-		String uri = dapr_host+":"+dapr_http_port + "/v1.0/publish/"+PUBSUB_NAME+"/"+TOPIC;
-		logger.info("Publishing to url : "+ uri);
+		String uri = DAPR_HOST +":"+ DAPR_HTTP_PORT + "/v1.0/publish/"+PUBSUB_NAME+"/"+TOPIC;
 		while(true) {
 			TimeUnit.MILLISECONDS.sleep(3000);
 			Random random = new Random();
@@ -58,12 +48,5 @@ public class CheckoutServiceApplication implements CommandLineRunner {
 			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			System.out.println("Published data: "+ orderId);
 		}
-	}
-	@Override
-	public void run(String... args) {
-		String daprHost = environment.getProperty("DAPR_HOST");
-		String daprHttpPort = environment.getProperty("DAPR_HTTP_PORT");
-		dapr_host = daprHost == null ? "http://localhost" : daprHost;
-		dapr_http_port = daprHttpPort == null ? "3500" : daprHttpPort;
 	}
 }

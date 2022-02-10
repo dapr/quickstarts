@@ -8,10 +8,10 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub
 
 This quickstart includes one publisher:
 
-- Java client message generator `checkout` 
+- Java client message generator `checkout`
 
-And one subscriber: 
- 
+And one subscriber:
+
 - Java subscriber `order-processor`
 
 ## Pre-requisites
@@ -21,7 +21,7 @@ And one subscriber:
 * [Apache Maven](https://maven.apache.org/install.html) version 3.x.
 ### Run Java message publisher app with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
+1. Open a new terminal window and navigate to `checkout` directory:
 
 ```bash
 cd checkout
@@ -34,14 +34,14 @@ mvn clean install
 ```
 
 3. Run the Java publisher app with Dapr:
-    
+
 ```bash
  dapr run --app-id checkout --components-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
 ### Run Java message subscriber app with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
+1. Open a new terminal window and navigate to `checkout` directory:
 
 ```bash
 cd order-processor
@@ -50,11 +50,11 @@ cd order-processor
 2. Install dependencies:
 
 ```bash
-mvn clean install 
+mvn clean install
 ```
 
-3. Run the Python subscriber app with Dapr: 
+3. Run the Java subscriber app with Dapr:
 
 ```bash
- dapr run --app-port 3000 --app-id order-processor --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+ dapr run --app-port 8080 --app-id order-processor --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
