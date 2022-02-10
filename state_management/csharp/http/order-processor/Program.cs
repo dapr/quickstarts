@@ -12,13 +12,14 @@ httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTyp
 while (true) {
     Random random = new Random();
     var orderId = random.Next(1,1000);
-    var order = new
-        {
-            key = "orderId",
-            value = orderId
+    var order = new[] {
+            new {
+                key = "orderId",
+                value = orderId
+            }
         };
 
-    var orderJson = JsonSerializer.Serialize(state);
+    var orderJson = JsonSerializer.Serialize(order);
     var state = new StringContent(orderJson, Encoding.UTF8, "application/json");
 
     // Save state into a state store

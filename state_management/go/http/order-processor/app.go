@@ -1,15 +1,21 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
-	"net/url"
 	"os"
 	"strconv"
 )
+
+type State struct {
+	key   string
+	value string
+}
 
 func main() {
 	DAPR_HOST := "http://localhost"
@@ -25,32 +31,22 @@ func main() {
 	DAPR_STATE_STORE := "statestore"
 	for true {
 		orderId := rand.Intn(1000-1) + 1
-
-		state := url.Values{
-			"key":   {"orderId"},
-			"value": {strconv.Itoa(orderId)},
-		}
-
-		postResponse, err := http.PostForm(DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE, state)
-		if err != nil {
-			fmt.Print(err.Error())
-			os.Exit(1)
-		}
-
-		log.Println(postResponse)
-
+		state, _ := json.Marshal([]map[string]string{
+			{"key": "orderId", "value": strconv.Itoa(orderId)},
+		})
+		responseBody := bytes.NewBuffer(state)
+		http.Post(DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE, "application/json", responseBody)
 		getResponse, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/state/" + DAPR_STATE_STORE + "/orderId")
 		if err != nil {
 			fmt.Print(err.Error())
 			os.Exit(1)
 		}
-
 		result, err := ioutil.ReadAll(getResponse.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
 		log.Println("Order requested: " + strconv.Itoa(orderId))
 		log.Println("Result: ")
-		log.Println(result)
+		log.Println(string(result))
 	}
 }

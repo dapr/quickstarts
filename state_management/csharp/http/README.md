@@ -4,7 +4,7 @@ In this quickstart, you'll create a microservice to demonstrate how Dapr enables
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-management/) link for more information about Dapr and State Management.
 
-> **Note:** This example leverages the Dapr client SDK.  If you are looking for the example using only HTTP `requests` [click here](../http).
+> **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
 This quickstart includes one service:
 
@@ -21,19 +21,18 @@ cd order-processor
 2. Install dependencies: 
 
 <!-- STEP
-name: Install Dotnet dependencies
+name: Build Go file
 working_dir: ./order-processor
 -->
 
 ```bash
-dotnet restore
-dotnet build
+go build app.go
 ```
 
 3. Run the Dotnet service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- dotnet run
+dapr run --app-id order-processor -- go run app.go
 ```
 
 <!-- END_STEP -->
