@@ -12,6 +12,11 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "axios": "^0.25.0",
         "dapr-client": "^2.0.1"
+    },
+    "devDependencies": {
+        "eslint": "^8.8.0",
+        "eslint-plugin-react": "^7.28.0"
     }
 }

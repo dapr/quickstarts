@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	for i := 0; i < 10; i++ {
+	for {
 		time.Sleep(5000)
 		orderId := rand.Intn(1000-1) + 1
 		client, err := dapr.NewClient()
@@ -19,29 +19,22 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		defer client.Close()
 		ctx := context.Background()
-
-		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_1", []byte(strconv.Itoa(orderId))); err != nil {
+		// Save state into the state store
+		if err := client.SaveState(ctx, STATE_STORE_NAME, "orderId", []byte(strconv.Itoa(orderId))); err != nil {
 			panic(err)
 		}
-
-		if err := client.SaveState(ctx, STATE_STORE_NAME, "order_2", []byte(strconv.Itoa(orderId))); err != nil {
-			panic(err)
-		}
-
-		result, err := client.GetState(ctx, STATE_STORE_NAME, "order_2")
+		// Get state from the state store
+		result, err := client.GetState(ctx, STATE_STORE_NAME, "orderId")
 		if err != nil {
 			panic(err)
 		}
-
 		log.Println("Result after get: ")
 		log.Println(string(result.Value))
-
-		if err := client.DeleteState(ctx, STATE_STORE_NAME, "order_1"); err != nil {
+		// Delete state from the state store
+		if err := client.DeleteState(ctx, STATE_STORE_NAME, "orderId"); err != nil {
 			panic(err)
 		}
-
 		log.Println("Order requested: " + strconv.Itoa(orderId))
 		log.Println("Result: ")
 		log.Println(string(result.Value))

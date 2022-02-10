@@ -10,7 +10,11 @@ This quickstart includes one service:
 
 - Go client service `order-processor` 
 
-### Run Go service with Dapr
+This quickstart includes one service:
+
+- Node client service `order-processor` 
+
+### Run Node service with Dapr
 
 1. Open a new terminal window and navigate to `order-processor` directory: 
 
@@ -21,18 +25,18 @@ cd order-processor
 2. Install dependencies: 
 
 <!-- STEP
-name: Build Go file
+name: Install Node dependencies
 working_dir: ./order-processor
 -->
 
 ```bash
-go build app.go
+npm install
 ```
 
-3. Run the Go service app with Dapr: 
+3. Run the Node service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- go run app.go
+dapr run --app-id order-processor -- npm start
 ```
 
 <!-- END_STEP -->

@@ -8,9 +8,9 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-
 
 This quickstart includes one service:
 
-- Dotnet client service `order-processor` 
+- Go client service `order-processor` 
 
-### Run Dotnet service with Dapr
+### Run Go service with Dapr
 
 1. Open a new terminal window and navigate to `order-processor` directory: 
 
@@ -21,19 +21,18 @@ cd order-processor
 2. Install dependencies: 
 
 <!-- STEP
-name: Install Dotnet dependencies
+name: Build Go file
 working_dir: ./order-processor
 -->
 
 ```bash
-dotnet restore
-dotnet build
+go build app.go
 ```
 
-3. Run the Dotnet service app with Dapr: 
+3. Run the Go service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- dotnet run
+dapr run --app-id order-processor -- go run app.go
 ```
 
 <!-- END_STEP -->

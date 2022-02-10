@@ -21,18 +21,19 @@ cd order-processor
 2. Install dependencies: 
 
 <!-- STEP
-name: Build Go file
+name: Install Dotnet dependencies
 working_dir: ./order-processor
 -->
 
 ```bash
-go build app.go
+dotnet restore
+dotnet build
 ```
 
 3. Run the Dotnet service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- go run app.go
+dapr run --app-id order-processor -- dotnet run
 ```
 
 <!-- END_STEP -->

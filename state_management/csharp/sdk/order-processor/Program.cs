@@ -7,32 +7,26 @@ using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Text.Json;
+using System.Text;
+using System.Text.Json.Serialization;
 
 string DAPR_STORE_NAME = "statestore";
 while(true) {
     System.Threading.Thread.Sleep(5000);
     using var client = new DaprClientBuilder().Build();
     Random random = new Random();
-    var orderId = random.Next(1,1000);
-    await client.SaveStateAsync(DAPR_STORE_NAME, "order_1", orderId.ToString());
-    await client.SaveStateAsync(DAPR_STORE_NAME, "order_2", orderId.ToString());
-
-    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "order_1");
+    var order = new Order(random.Next(1,1000));
+    // Save state into the state store
+    await client.SaveStateAsync(DAPR_STORE_NAME, "orderId", order.ToString());
+    // Get state from the state store
+    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "orderId");
     Console.WriteLine("Result after get: " + result);
-
-    var requests = new List<StateTransactionRequest>()
-    {
-        new StateTransactionRequest("order_3", JsonSerializer.SerializeToUtf8Bytes(orderId.ToString()), StateOperationType.Upsert),
-        new StateTransactionRequest("order_2", null, StateOperationType.Delete)
-    };
-
+    // Delete state from the state store
     CancellationTokenSource source = new CancellationTokenSource();
     CancellationToken cancellationToken = source.Token;
-
-    await client.ExecuteStateTransactionAsync(DAPR_STORE_NAME, requests, cancellationToken: cancellationToken);
-
-    await client.DeleteStateAsync(DAPR_STORE_NAME, "order_1", cancellationToken: cancellationToken);
-
-    Console.WriteLine("Order requested: " + orderId);
+    await client.DeleteStateAsync(DAPR_STORE_NAME, "orderId", cancellationToken: cancellationToken);
+    Console.WriteLine("Order requested: " + order);
     Console.WriteLine("Result: " + result);
 }
+
+public record Order([property: JsonPropertyName("orderId")] int orderId);

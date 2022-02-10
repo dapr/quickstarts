@@ -11,24 +11,23 @@ httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTyp
 
 while (true) {
     Random random = new Random();
-    var orderId = random.Next(1,1000);
-    var order = new[] {
+    var order = new Order(random.Next(1,1000));
+    var orderJson = JsonSerializer.Serialize(
+        new[] {
             new {
                 key = "orderId",
-                value = orderId
+                value = order
             }
-        };
-
-    var orderJson = JsonSerializer.Serialize(order);
+        }
+    );
     var state = new StringContent(orderJson, Encoding.UTF8, "application/json");
-
     // Save state into a state store
     await httpClient.PostAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}", state);
-    Console.WriteLine("Order requested: " + orderId);
-
+    Console.WriteLine("Order requested: " + order);
     // Get state from a state store
     var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/orderId");
     Console.WriteLine("Result after get: " + response);
-
     await Task.Delay(TimeSpan.FromSeconds(1));
 }
+
+public record Order([property: JsonPropertyName("orderId")] int orderId);
