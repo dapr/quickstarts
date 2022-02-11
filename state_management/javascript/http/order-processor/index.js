@@ -8,7 +8,7 @@ async function main() {
   for (;;) {
     const order = {orderId: Math.floor(Math.random() * (1000 - 1) + 1)}; 
     const state = [{
-      key: "orderId",
+      key: "order1",
       value: order
     }];
 
@@ -22,7 +22,7 @@ async function main() {
       });
       
     // Get state from a state store
-    await axios.get(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/state/${DAPR_STATE_STORE}/orderId`)
+    await axios.get(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/state/${DAPR_STATE_STORE}/order1`)
       .then(function (response) {
         console.log("Result after get: ", response.data);
       })

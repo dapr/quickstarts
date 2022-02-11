@@ -28,7 +28,7 @@ func main() {
 	for {
 		orderId := rand.Intn(1000-1) + 1
 		state, _ := json.Marshal([]map[string]string{
-			{"key": "orderId", "value": strconv.Itoa(orderId)},
+			{"key": "order1", "value": strconv.Itoa(orderId)},
 		})
 		responseBody := bytes.NewBuffer(state)
 
@@ -37,7 +37,7 @@ func main() {
 		log.Println(postResponse)
 
 		// Get state from a state store
-		getResponse, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/state/" + DAPR_STATE_STORE + "/orderId")
+		getResponse, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/state/" + DAPR_STATE_STORE + "/order1")
 		if err != nil {
 			fmt.Print(err.Error())
 			os.Exit(1)

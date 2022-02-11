@@ -13,7 +13,7 @@ DAPR_STATE_STORE = 'statestore'
 while True:
     order = {'orderId': random.randint(1, 1000)}
     state = [{
-      'key': "orderId",
+      'key': "order1",
       'value': order
     }]
     logging.info('Order requested: ' + str(order))
@@ -26,7 +26,7 @@ while True:
 
     # Get state from a state store
     result = requests.get(
-        url='%s/v1.0/state/%s/%s' % (base_url, DAPR_STATE_STORE, 'orderId')
+        url='%s/v1.0/state/%s/%s' % (base_url, DAPR_STATE_STORE, 'order1')
     )
     logging.info('Result after get: ' + str(result.json()))
     

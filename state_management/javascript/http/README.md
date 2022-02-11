@@ -32,7 +32,7 @@ npm install
 3. Run the Node service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- npm start
+dapr run --app-id order-processor --components-path ../../../components/ -- npm start
 ```
 
 <!-- END_STEP -->

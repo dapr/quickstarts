@@ -11,14 +11,14 @@ while True:
     with DaprClient() as client:
 
         # Save state into the state store
-        client.save_state(DAPR_STORE_NAME, "orderId", str(order))
+        client.save_state(DAPR_STORE_NAME, "order1", str(order))
 
         # Get state from the state store
-        result = client.get_state(DAPR_STORE_NAME, "orderId")
+        result = client.get_state(DAPR_STORE_NAME, "order1")
         logging.info('Result after get: ' + str(result.data))
 
         # Delete state from the state store
-        client.delete_state(store_name=DAPR_STORE_NAME, key="orderId")
+        client.delete_state(store_name=DAPR_STORE_NAME, key="order1")
         logging.info('Order requested: ' + str(order))
         logging.info('Result: ' + str(result.data))
         

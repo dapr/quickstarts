@@ -33,7 +33,7 @@ dotnet build
 3. Run the Dotnet service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- dotnet run
+dapr run --app-id order-processor --components-path ../../../components/ -- dotnet run
 ```
 
 <!-- END_STEP -->

@@ -15,7 +15,7 @@ while (true) {
     var orderJson = JsonSerializer.Serialize(
         new[] {
             new {
-                key = "orderId",
+                key = "order1",
                 value = order
             }
         }
@@ -27,7 +27,7 @@ while (true) {
     Console.WriteLine("Order requested: " + order);
     
     // Get state from a state store
-    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/orderId");
+    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/order1");
     Console.WriteLine("Result after get: " + response);
     
     await Task.Delay(TimeSpan.FromSeconds(1));

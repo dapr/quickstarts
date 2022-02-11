@@ -32,7 +32,7 @@ go build app.go
 3. Run the Go service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- go run app.go
+dapr run --app-id order-processor --components-path ../../../components/ -- go run app.go
 ```
 
 <!-- END_STEP -->

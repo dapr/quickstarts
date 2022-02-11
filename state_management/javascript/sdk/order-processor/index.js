@@ -11,19 +11,19 @@ async function main() {
         // Save state into the state store
         client.state.save(STATE_STORE_NAME, [
             {
-                key: "orderId",
+                key: "order1",
                 value: order.toString()
             }
         ]);
 
         // Get state from the state store
-        var result = client.state.get(STATE_STORE_NAME, "orderId");
+        var result = client.state.get(STATE_STORE_NAME, "order1");
         result.then(function(val) {
             console.log("Result after get: ", val);
         });
 
         // Delete state from the state store
-        client.state.delete(STATE_STORE_NAME, "orderId");    
+        client.state.delete(STATE_STORE_NAME, "order1");    
         console.log("Order requested: ", order);
         result.then(function(val) {
             console.log("Result: ", val);

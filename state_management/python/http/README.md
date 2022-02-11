@@ -32,7 +32,7 @@ pip3 install -r requirements.txt
 3. Run the Python service app with Dapr: 
     
 ```bash
-dapr run --app-id order-processor -- python3 app.py
+dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->

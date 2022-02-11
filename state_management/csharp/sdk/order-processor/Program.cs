@@ -17,14 +17,14 @@ while(true) {
     var order = new Order(random.Next(1,1000));
 
     // Save state into the state store
-    await client.SaveStateAsync(DAPR_STORE_NAME, "orderId", order.ToString());
+    await client.SaveStateAsync(DAPR_STORE_NAME, "order1", order.ToString());
 
     // Get state from the state store
-    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "orderId");
+    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, "order1");
     Console.WriteLine("Result after get: " + result);
     
     // Delete state from the state store
-    await client.DeleteStateAsync(DAPR_STORE_NAME, "orderId");
+    await client.DeleteStateAsync(DAPR_STORE_NAME, "order1");
     Console.WriteLine("Order requested: " + order);
     Console.WriteLine("Result: " + result);
     
