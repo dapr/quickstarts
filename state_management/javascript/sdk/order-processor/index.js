@@ -1,4 +1,4 @@
-import { DaprClient, CommunicationProtocolEnum } from 'dapr-client'; 
+import { DaprClient } from 'dapr-client'; 
 
 const DAPR_HOST = '127.0.0.1'; 
 
@@ -6,7 +6,7 @@ async function main() {
     for (;;) {
         sleep(5000);
         const order = {orderId: Math.floor(Math.random() * (1000 - 1) + 1)};
-        const client = new DaprClient(DAPR_HOST, process.env.DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
+        const client = new DaprClient(DAPR_HOST, process.env.DAPR_HTTP_PORT);
         const STATE_STORE_NAME = "statestore";
         // Save state into the state store
         client.state.save(STATE_STORE_NAME, [
