@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 while True:
-    order = {'orderid': random.randint(1, 1000)}
+    order = {'orderId': random.randint(1, 1000)}
 
     with DaprClient() as client:
         # Publish an event/message using Dapr PubSub
