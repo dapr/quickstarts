@@ -12,8 +12,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.25.0",
-        "dapr-client": "^2.0.1"
+        "axios": "^0.25.0"
     },
     "devDependencies": {
         "eslint": "^8.8.0",

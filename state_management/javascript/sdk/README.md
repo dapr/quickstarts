@@ -8,7 +8,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-
 
 This quickstart includes one service:
 
-- Go client service `order-processor` 
+- Node client service `order-processor` 
 
 This quickstart includes one service:
 

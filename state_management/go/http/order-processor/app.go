@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 func main() {
@@ -30,9 +31,11 @@ func main() {
 			{"key": "orderId", "value": strconv.Itoa(orderId)},
 		})
 		responseBody := bytes.NewBuffer(state)
+
 		// Save state into a state store
 		postResponse, _ := http.Post(DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE, "application/json", responseBody)
 		log.Println(postResponse)
+
 		// Get state from a state store
 		getResponse, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/state/" + DAPR_STATE_STORE + "/orderId")
 		if err != nil {
@@ -46,5 +49,7 @@ func main() {
 		log.Println("Order requested: " + strconv.Itoa(orderId))
 		log.Println("Result: ")
 		log.Println(string(result))
+
+		time.Sleep(5000)
 	}
 }

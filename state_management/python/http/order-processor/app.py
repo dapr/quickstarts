@@ -17,14 +17,17 @@ while True:
       'value': order
     }]
     logging.info('Order requested: ' + str(order))
+
     # Save state into a state store
     result = requests.post(
         url='%s/v1.0/state/%s' % (base_url, DAPR_STATE_STORE),
         json=state
     )
+
     # Get state from a state store
     result = requests.get(
         url='%s/v1.0/state/%s/%s' % (base_url, DAPR_STATE_STORE, 'orderId')
     )
     logging.info('Result after get: ' + str(result.json()))
+    
     time.sleep(1)

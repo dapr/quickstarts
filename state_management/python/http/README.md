@@ -6,7 +6,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-
 
 > **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
-This quickstart includes service:
+This quickstart includes one service:
  
 - Python service `order-processor`
 

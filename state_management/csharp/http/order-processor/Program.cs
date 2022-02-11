@@ -21,12 +21,15 @@ while (true) {
         }
     );
     var state = new StringContent(orderJson, Encoding.UTF8, "application/json");
+
     // Save state into a state store
     await httpClient.PostAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}", state);
     Console.WriteLine("Order requested: " + order);
+    
     // Get state from a state store
     var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/orderId");
     Console.WriteLine("Result after get: " + response);
+    
     await Task.Delay(TimeSpan.FromSeconds(1));
 }
 
