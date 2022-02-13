@@ -3,27 +3,28 @@ import { DaprClient } from 'dapr-client';
 const DAPR_HOST = '127.0.0.1'; 
 
 async function main() {
-    for (;;) {
-        const order = {orderId: Math.floor(Math.random() * (1000 - 1) + 1)};
+    while(true) {
+        const orderId = Math.floor(Math.random() * (1000 - 1) + 1).toString();
+        const order = {orderId: orderId};
         const client = new DaprClient(DAPR_HOST, process.env.DAPR_HTTP_PORT);
         const STATE_STORE_NAME = "statestore";
 
         // Save state into the state store
         client.state.save(STATE_STORE_NAME, [
             {
-                key: "order1",
-                value: order.toString()
+                key: orderId,
+                value: order
             }
         ]);
 
         // Get state from the state store
-        var result = client.state.get(STATE_STORE_NAME, "order1");
+        var result = client.state.get(STATE_STORE_NAME, orderId);
         result.then(function(val) {
             console.log("Result after get: ", val);
         });
 
         // Delete state from the state store
-        client.state.delete(STATE_STORE_NAME, "order1");    
+        client.state.delete(STATE_STORE_NAME, orderId);    
         console.log("Order requested: ", order);
         result.then(function(val) {
             console.log("Result: ", val);

@@ -11,11 +11,12 @@ httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTyp
 
 while (true) {
     Random random = new Random();
-    var order = new Order(random.Next(1,1000));
+    var orderId = random.Next(1,1000).ToString();
+    var order = new Order(orderId);
     var orderJson = JsonSerializer.Serialize(
         new[] {
             new {
-                key = "order1",
+                key = orderId,
                 value = order
             }
         }
@@ -27,10 +28,10 @@ while (true) {
     Console.WriteLine("Order requested: " + order);
     
     // Get state from a state store
-    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/order1");
+    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/{orderId}");
     Console.WriteLine("Result after get: " + response);
     
     await Task.Delay(TimeSpan.FromSeconds(1));
 }
 
-public record Order([property: JsonPropertyName("orderId")] int orderId);
+public record Order([property: JsonPropertyName("orderId")] string orderId);

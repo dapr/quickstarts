@@ -13,6 +13,7 @@ import (
 func main() {
 	for {
 		orderId := rand.Intn(1000-1) + 1
+		order := "{\"orderId\":" + strconv.Itoa(orderId) + "}"
 		client, err := dapr.NewClient()
 		STATE_STORE_NAME := "statestore"
 		if err != nil {
@@ -21,12 +22,12 @@ func main() {
 		ctx := context.Background()
 
 		// Save state into the state store
-		if err := client.SaveState(ctx, STATE_STORE_NAME, "orderId", []byte(strconv.Itoa(orderId))); err != nil {
+		if err := client.SaveState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId), []byte(order)); err != nil {
 			panic(err)
 		}
 
 		// Get state from the state store
-		result, err := client.GetState(ctx, STATE_STORE_NAME, "orderId")
+		result, err := client.GetState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId))
 		if err != nil {
 			panic(err)
 		}
@@ -34,10 +35,10 @@ func main() {
 		log.Println(string(result.Value))
 
 		// Delete state from the state store
-		if err := client.DeleteState(ctx, STATE_STORE_NAME, "orderId"); err != nil {
+		if err := client.DeleteState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId)); err != nil {
 			panic(err)
 		}
-		log.Println("Order requested: " + strconv.Itoa(orderId))
+		log.Println("Order requested: " + order)
 		log.Println("Result: ")
 		log.Println(string(result.Value))
 

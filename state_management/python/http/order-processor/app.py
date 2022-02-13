@@ -11,12 +11,13 @@ base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
 DAPR_STATE_STORE = 'statestore'
 
 while True:
-    order = {'orderId': random.randint(1, 1000)}
+    orderId = str(random.randint(1, 1000))
+    order = {'orderId': orderId}
     state = [{
-      'key': "order1",
+      'key': orderId,
       'value': order
     }]
-    logging.info('Order requested: ' + str(order))
+    logging.info('Order requested: ' + orderId)
 
     # Save state into a state store
     result = requests.post(
@@ -26,7 +27,7 @@ while True:
 
     # Get state from a state store
     result = requests.get(
-        url='%s/v1.0/state/%s/%s' % (base_url, DAPR_STATE_STORE, 'order1')
+        url='%s/v1.0/state/%s/%s' % (base_url, DAPR_STATE_STORE, orderId)
     )
     logging.info('Result after get: ' + str(result.json()))
     
