@@ -1,6 +1,8 @@
 package com.service;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,6 +14,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class CheckoutServiceApplication {
+	private static final Logger logger = LoggerFactory.getLogger(CheckoutServiceApplication.class);
 	private static final HttpClient httpClient = HttpClient.newBuilder()
 			.version(HttpClient.Version.HTTP_2)
 			.connectTimeout(Duration.ofSeconds(10))
@@ -19,26 +22,18 @@ public class CheckoutServiceApplication {
 
 	private static final String PUBSUB_NAME = "order_pub_sub";
 	private static final String TOPIC = "orders";
-	private static String DAPR_HOST;
-	private static String DAPR_HTTP_PORT;
+	private static String DAPR_HOST = System.getenv().getOrDefault("DAPR_HOST", "http://localhost");
+	private static String DAPR_HTTP_PORT = System.getenv().getOrDefault("DAPR_HTTP_PORT", "3500");
 
 	public static void main(String[] args) throws InterruptedException, IOException {
-		String daprHost = System.getenv("DAPR_HOST");
-		String daprHttpPort = System.getenv("DAPR_HTTP_PORT");
-		DAPR_HOST = daprHost == null ? "http://localhost" : daprHost;
-		DAPR_HTTP_PORT = daprHttpPort == null ? "3500" : daprHttpPort;
-		publishMessages();
-	}
-
-	private static void publishMessages() throws IOException, InterruptedException {
 		String uri = DAPR_HOST +":"+ DAPR_HTTP_PORT + "/v1.0/publish/"+PUBSUB_NAME+"/"+TOPIC;
-		while(true) {
-			TimeUnit.MILLISECONDS.sleep(3000);
+		while (true) {
 			Random random = new Random();
 			int orderId = random.nextInt(1000 - 1) + 1;
 			JSONObject obj = new JSONObject();
 			obj.put("orderId", orderId);
 
+			// Publish an event/message using Dapr PubSub via HTTP Post
 			HttpRequest request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(obj.toString()))
 					.uri(URI.create(uri))
@@ -46,7 +41,8 @@ public class CheckoutServiceApplication {
 					.build();
 
 			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-			System.out.println("Published data: "+ orderId);
+			logger.info("Published data: {}", orderId);
+			TimeUnit.MILLISECONDS.sleep(3000);
 		}
 	}
 }
