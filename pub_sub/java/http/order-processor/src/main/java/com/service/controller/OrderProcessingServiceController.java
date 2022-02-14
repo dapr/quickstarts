@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderProcessingServiceController {
     private static final Logger logger = LoggerFactory.getLogger(OrderProcessingServiceController.class);
 
+    /**
+     * Register Dapr pub/sub subscriptions.
+     *
+     * @return DaprSubscription Object containing pubsub name, topic and route for subscription.
+     */
     @GetMapping(path = "/dapr/subscribe", produces = MediaType.APPLICATION_JSON_VALUE)
     public DaprSubscription[] getSubscription() {
         DaprSubscription daprSubscription = DaprSubscription.builder()
@@ -28,9 +33,15 @@ public class OrderProcessingServiceController {
         return arr;
     }
 
+    /**
+     * Dapr subscription in /dapr/subscribe sets up this route.
+     *
+     * @param body Request body
+     * @return ResponseEntity Returns ResponseEntity.ok()
+     */
     @PostMapping(path = "/orders", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> processOrders(@RequestBody SubscriptionData<Order> body) {
-        System.out.println("Subscriber received: "+ body.getData().getOrderId());
+        logger.info("Subscriber received: "+ body.getData().getOrderId());
         return ResponseEntity.ok().build();
     }
 }
