@@ -21,6 +21,6 @@ while True:
 
         # Delete state from the state store
         client.delete_state(store_name=DAPR_STORE_NAME, key=orderId)
-        logging.info('Deleted Order: %s', order)
+        logging.info('Deleting Order: %s', order)
         
     sleep(random.randrange(50, 5000) / 1000)

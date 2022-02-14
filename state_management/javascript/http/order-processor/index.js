@@ -28,7 +28,7 @@ async function main() {
     // Save state into a state store
     await axios.delete(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/state/${DAPR_STATE_STORE}/${orderId.toString()}`, state)
       .then(function (response) {
-        console.log("Deleted Order: " + JSON.stringify(order));
+        console.log("Deleting Order: " + JSON.stringify(order));
       });
 
     await sleep(1000);

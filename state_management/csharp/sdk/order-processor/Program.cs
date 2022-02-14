@@ -27,7 +27,7 @@ while(true) {
     
     // Delete state from the state store
     await client.DeleteStateAsync(DAPR_STORE_NAME, orderId.ToString());
-    Console.WriteLine("Deleted Order: " + order);
+    Console.WriteLine("Deleting Order: " + order);
     
     await Task.Delay(TimeSpan.FromSeconds(5));
 }

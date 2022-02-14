@@ -33,9 +33,8 @@ func main() {
 		responseBody := bytes.NewBuffer(state)
 
 		// Save state into a state store
-		postResponse, _ := http.Post(DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE, "application/json", responseBody)
+		_, _ = http.Post(DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE, "application/json", responseBody)
 		log.Println("Saving Order: " + order)
-		log.Println(postResponse)
 
 		// Get state from a state store
 		getResponse, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/state/" + DAPR_STATE_STORE + "/" + strconv.Itoa(orderId))
@@ -43,22 +42,14 @@ func main() {
 			fmt.Print(err.Error())
 			os.Exit(1)
 		}
-		result, err := ioutil.ReadAll(getResponse.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println("Getting Order: " + order)
-		log.Println(result)
+		result, _ := ioutil.ReadAll(getResponse.Body)
+		log.Println("Getting Order: ", string(result))
 
 		// Delete state from the state store
-		req, err := http.NewRequest(http.MethodDelete, DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE+"/"+strconv.Itoa(orderId), nil)
+		req, _ := http.NewRequest(http.MethodDelete, DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE+"/"+strconv.Itoa(orderId), nil)
 		client := &http.Client{}
-		deleteResponse, err := client.Do(req)
-		if err != nil {
-			log.Fatalln(err)
-		}
+		_, _ = client.Do(req)
 		log.Println("Deleting Order: " + order)
-		log.Println(deleteResponse)
 
 		time.Sleep(5000)
 	}

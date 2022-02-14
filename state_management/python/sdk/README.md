@@ -1,6 +1,6 @@
 # Dapr state management
 
-In this quickstart, you'll create a microservice to demonstrate how Dapr enables a state management pattern. The service will generate messages to store data in to the state store. See [Why State Management](#why-state-management) to understand when this pattern might be a good choice for your software architecture.
+In this quickstart, you'll create a microservice to demonstrate Dapr's state management API. The service generates messages to store data in a state store. See [Why state management](#why-state-management) to understand when this pattern might be a good choice for your software architecture.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-management/) link for more information about Dapr and State Managenment.
 

@@ -33,7 +33,7 @@ while (true) {
 
     // Delete state from the state store
     await httpClient.DeleteAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/{orderId.ToString()}");
-    Console.WriteLine("Deleted Order: " + order);
+    Console.WriteLine("Deleting Order: " + order);
     
     await Task.Delay(TimeSpan.FromSeconds(1));
 }

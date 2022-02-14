@@ -28,7 +28,7 @@ async function main() {
         // Delete state from the state store
         client.state.delete(STATE_STORE_NAME, orderId.toString());    
         result.then(function(val) {
-            console.log("Deleted Order: ", val);
+            console.log("Deleting Order: ", val);
         });
 
         sleep(5000);
