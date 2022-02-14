@@ -14,22 +14,22 @@ string DAPR_STORE_NAME = "statestore";
 var client = new DaprClientBuilder().Build();
 while(true) {
     Random random = new Random();
-    var orderId = random.Next(1,1000).ToString();
+    var orderId = random.Next(1,1000);
     var order = new Order(orderId);
 
     // Save state into the state store
-    await client.SaveStateAsync(DAPR_STORE_NAME, orderId, order.ToString());
+    await client.SaveStateAsync(DAPR_STORE_NAME, orderId.ToString(), order.ToString());
+    Console.WriteLine("Saving Order: " + order);
 
     // Get state from the state store
-    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, orderId);
-    Console.WriteLine("Result after get: " + result);
+    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, orderId.ToString());
+    Console.WriteLine("Getting Order: " + result);
     
     // Delete state from the state store
-    await client.DeleteStateAsync(DAPR_STORE_NAME, orderId);
-    Console.WriteLine("Order requested: " + order);
-    Console.WriteLine("Result: " + result);
+    await client.DeleteStateAsync(DAPR_STORE_NAME, orderId.ToString());
+    Console.WriteLine("Deleted Order: " + order);
     
     await Task.Delay(TimeSpan.FromSeconds(5));
 }
 
-public record Order([property: JsonPropertyName("orderId")] string orderId);
+public record Order([property: JsonPropertyName("orderId")] int orderId);

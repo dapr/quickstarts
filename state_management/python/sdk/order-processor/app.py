@@ -13,6 +13,7 @@ while True:
 
         # Save state into the state store
         client.save_state(DAPR_STORE_NAME, orderId, str(order))
+        logging.info('Saving Order: %s', order)
 
         # Get state from the state store
         result = client.get_state(DAPR_STORE_NAME, orderId)
@@ -20,7 +21,6 @@ while True:
 
         # Delete state from the state store
         client.delete_state(store_name=DAPR_STORE_NAME, key=orderId)
-        logging.info('Order requested: ' + str(order))
-        logging.info('Result: ' + str(result.data))
+        logging.info('Deleted Order: %s', order)
         
     sleep(random.randrange(50, 5000) / 1000)

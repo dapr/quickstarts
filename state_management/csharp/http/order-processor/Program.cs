@@ -11,12 +11,12 @@ httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTyp
 
 while (true) {
     Random random = new Random();
-    var orderId = random.Next(1,1000).ToString();
+    var orderId = random.Next(1,1000);
     var order = new Order(orderId);
     var orderJson = JsonSerializer.Serialize(
         new[] {
             new {
-                key = orderId,
+                key = orderId.ToString(),
                 value = order
             }
         }
@@ -25,13 +25,17 @@ while (true) {
 
     // Save state into a state store
     await httpClient.PostAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}", state);
-    Console.WriteLine("Order requested: " + order);
+    Console.WriteLine("Saving Order: " + order);
     
     // Get state from a state store
-    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/{orderId}");
-    Console.WriteLine("Result after get: " + response);
+    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/{orderId.ToString()}");
+    Console.WriteLine("Getting Order: " + response);
+
+    // Delete state from the state store
+    await httpClient.DeleteAsync($"{baseURL}/v1.0/state/{DAPR_STATE_STORE}/{orderId.ToString()}");
+    Console.WriteLine("Deleted Order: " + order);
     
     await Task.Delay(TimeSpan.FromSeconds(1));
 }
 
-public record Order([property: JsonPropertyName("orderId")] string orderId);
+public record Order([property: JsonPropertyName("orderId")] int orderId);

@@ -25,22 +25,20 @@ func main() {
 		if err := client.SaveState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId), []byte(order)); err != nil {
 			panic(err)
 		}
+		log.Print("Saving Order: " + string(order))
 
 		// Get state from the state store
 		result, err := client.GetState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId))
 		if err != nil {
 			panic(err)
 		}
-		log.Println("Result after get: ")
-		log.Println(string(result.Value))
+		log.Print("Getting Order: " + string(result.Value))
 
 		// Delete state from the state store
 		if err := client.DeleteState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId)); err != nil {
 			panic(err)
 		}
-		log.Println("Order requested: " + order)
-		log.Println("Result: ")
-		log.Println(string(result.Value))
+		log.Print("Deleted Order: " + string(order))
 
 		time.Sleep(5000)
 	}
