@@ -14,16 +14,19 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Order received : %s", string(data))
+	log.Printf("Order received : %s", string(data))
 	obj, err := json.Marshal(string(data))
 	if err != nil {
 		log.Println("Error in reading the result obj")
 	}
-	w.Write(obj)
+	_, err = w.Write(obj)
+	if err != nil {
+		log.Println("Error in writing the result obj")
+	}
 }
 
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/orders", getOrder).Methods("POST")
-	http.ListenAndServe(":6001", r)
+	_ = http.ListenAndServe(":6001", r)
 }

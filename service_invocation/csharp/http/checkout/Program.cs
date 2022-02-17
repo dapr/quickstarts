@@ -6,14 +6,14 @@ var baseURL = (Environment.GetEnvironmentVariable("BASE_URL") ?? "http://localho
 
 var client = new HttpClient();
 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+// Adding app id as part of th header
+client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
 
 for (int i = 1; i <= 10; i++) {
     var order = new Order(i);
     var orderJson = JsonSerializer.Serialize<Order>(order);
     var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
 
-    // Adding app id as part of th header
-    client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
     // Invoking a service
     var response = await client.PostAsync($"{baseURL}/orders", content);
     Console.WriteLine("Order passed: " + order);

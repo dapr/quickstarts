@@ -1,6 +1,6 @@
 # Dapr Service Invocation
 
-In this quickstart, you'll create a checkout service and a order processor service to demonstrate how Dapr enables a service invocation pattern. See [Why Service-Invocation](#why-service-invocation) to understand when this pattern might be a good choice for your software architecture.
+In this quickstart, you'll create a checkout service and a order processor service to demonstrate how Dapr enables a service invocation pattern. 
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/service-invocation/) link for more information about Dapr and Service Invocation.
 

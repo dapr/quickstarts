@@ -23,7 +23,10 @@ func main() {
 		order := "{\"orderId\":" + strconv.Itoa(i) + "}"
 		client := &http.Client{}
 		req, err := http.NewRequest("POST", DAPR_HOST+":"+DAPR_HTTP_PORT+"/orders", strings.NewReader(order))
-
+		if err != nil {
+			fmt.Print(err.Error())
+			os.Exit(1)
+		}
 		// Adding app id as part of th header
 		req.Header.Add("dapr-app-id", "order-processor")
 
