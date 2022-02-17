@@ -49,13 +49,13 @@ Dapr is currently under community development with preview releases. The master 
 
 | Quickstart                   | Description                                                                                                                                                                                    |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Hello-world](./hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
-| [Hello-kubernetes](./hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
-| [Distributed-calculator](./distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
-| [Pub-sub](./pub-sub)                | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
-| [Bindings](./bindings)            | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
-| [Observability](./observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
-| [Secret Store](./secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
+| [Hello-world](./tutorials/hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
+| [Hello-kubernetes](./tutorials/hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
+| [Distributed-calculator](./tutorials/distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
+| [Pub-sub](./tutorials/pub-sub)                | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
+| [Bindings](./tutorials/bindings)            | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
+| [Observability](./tutorials/observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
+| [Secret Store](./tutorials/secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
 
 ## SDKs
 
