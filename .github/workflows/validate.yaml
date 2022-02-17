@@ -8,13 +8,13 @@ name: Auto Validate Quickstarts
 on:
   push:
     branches:
-      - master
+      - feature/new_quickstarts
       - release-*
     tags:
       - v*
   pull_request:
     branches:
-      - master
+      - feature/new_quickstarts
       - release-*
 jobs:
   deploy:
