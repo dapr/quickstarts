@@ -58,7 +58,7 @@ jobs:
         run: docker buildx inspect --bootstrap
       - name: Build docker image
         run: | 
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
@@ -73,7 +73,7 @@ jobs:
       - name: publish image to dockerhub
         if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
@@ -95,7 +95,7 @@ jobs:
       - name: create docker manifest
         if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
@@ -110,7 +110,7 @@ jobs:
       - name: publish manifest to dockerhub
         if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
 
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
