@@ -160,6 +160,6 @@ jobs:
           pushd tutorials/observability
           make validate
           popd
-      - name: Linkcheck tutorials/README.md
+      - name: Linkcheck README.md
         run: |
           make validate        
