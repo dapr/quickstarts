@@ -6,8 +6,8 @@ from dapr.clients import DaprClient
 logging.basicConfig(level=logging.INFO)
 
 DAPR_STORE_NAME = "statestore"
-while True:
-    orderId = str(random.randint(1, 1000))
+for i in range(1, 10):
+    orderId = str(i)
     order = {'orderId': orderId}
     with DaprClient() as client:
 

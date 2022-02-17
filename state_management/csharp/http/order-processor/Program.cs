@@ -9,9 +9,8 @@ const string DAPR_STATE_STORE = "statestore";
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-while (true) {
-    Random random = new Random();
-    var orderId = random.Next(1,1000);
+for (int i = 1; i <= 10; i++) {
+    var orderId = i;
     var order = new Order(orderId);
     var orderJson = JsonSerializer.Serialize(
         new[] {

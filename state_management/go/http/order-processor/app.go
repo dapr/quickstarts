@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -24,8 +23,8 @@ func main() {
 	}
 
 	DAPR_STATE_STORE := "statestore"
-	for {
-		orderId := rand.Intn(1000-1) + 1
+	for i := 1; i <= 10; i++ {
+		orderId := i
 		order := "{\"orderId\":" + strconv.Itoa(orderId) + "}"
 		state, _ := json.Marshal([]map[string]string{
 			{"key": strconv.Itoa(orderId), "value": order},

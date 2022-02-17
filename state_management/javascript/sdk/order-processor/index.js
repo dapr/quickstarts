@@ -4,8 +4,8 @@ const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
 const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
 
 async function main() {
-    while(true) {
-        const orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+    for(var i = 1; i <= 10; i++) {
+        const orderId = i;
         const order = {orderId: orderId};
         const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
         const STATE_STORE_NAME = "statestore";
