@@ -1,4 +1,3 @@
-import random
 from time import sleep
 import logging
 from dapr.clients import DaprClient
@@ -23,4 +22,4 @@ for i in range(1, 10):
         client.delete_state(store_name=DAPR_STORE_NAME, key=orderId)
         logging.info('Deleting Order: %s', order)
         
-    sleep(random.randrange(50, 5000) / 1000)
+    sleep(1)

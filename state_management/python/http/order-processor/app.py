@@ -1,5 +1,4 @@
 import time
-import random
 import logging
 import requests
 import os

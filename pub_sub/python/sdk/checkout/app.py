@@ -1,13 +1,12 @@
 from dapr.clients import DaprClient
 import json
 import time
-import random
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
-while True:
-    order = {'orderId': random.randint(1, 1000)}
+for i in range(1, 10):
+    order = {'orderId': i}
 
     with DaprClient() as client:
         # Publish an event/message using Dapr PubSub
