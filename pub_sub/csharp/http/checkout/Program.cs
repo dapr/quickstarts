@@ -10,9 +10,8 @@ Console.WriteLine($"Publishing to baseURL: {baseURL}, Pubsub Name: {PUBSUBNAME},
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-while (true) {
-    Random random = new Random();
-    var order = new Order(random.Next(1,1000));
+for (int i = 1; i <= 10; i++) {
+    var order = new Order(i);
     var orderJson = JsonSerializer.Serialize<Order>(order);
     var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
 

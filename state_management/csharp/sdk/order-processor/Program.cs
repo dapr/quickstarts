@@ -12,9 +12,8 @@ using System.Text.Json.Serialization;
 
 string DAPR_STORE_NAME = "statestore";
 var client = new DaprClientBuilder().Build();
-while(true) {
-    Random random = new Random();
-    var orderId = random.Next(1,1000);
+for (int i = 1; i <= 10; i++) {
+    var orderId = i;
     var order = new Order(orderId);
 
     // Save state into the state store

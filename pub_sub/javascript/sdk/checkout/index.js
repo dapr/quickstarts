@@ -8,9 +8,8 @@ const PUBSUB_TOPIC = "orders";
 async function main() {
   const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
 
-  while (true) {
-    const rand = Math.floor(Math.random() * 1000);
-    const order = {orderId:  rand};
+  for(var i = 1; i <= 10; i++) {
+    const order = {orderId:  i};
 
     // Publish an event using Dapr pub/sub
     await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);

@@ -1,5 +1,4 @@
 import time
-import random
 import logging
 import requests
 import os
@@ -10,8 +9,8 @@ base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
 DAPR_STATE_STORE = 'statestore'
 
-while True:
-    orderId = str(random.randint(1, 1000))
+for i in range(1, 10):
+    orderId = str(i)
     order = {'orderId': orderId}
     state = [{
       'key': orderId,
