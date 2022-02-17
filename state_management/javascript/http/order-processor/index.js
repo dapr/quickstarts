@@ -5,8 +5,8 @@ const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
 const DAPR_STATE_STORE = 'statestore'
 
 async function main() {
-  while(true) {
-    const orderId = Math.floor(Math.random() * (1000 - 1) + 1);
+  for(var i = 1; i <= 10; i++) {
+    const orderId = i;
     const order = {orderId: orderId}; 
     const state = [{
       key: orderId.toString(),

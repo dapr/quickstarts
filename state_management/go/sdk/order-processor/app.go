@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"math/rand"
 	"strconv"
 	"time"
 
@@ -11,8 +10,8 @@ import (
 )
 
 func main() {
-	for {
-		orderId := rand.Intn(1000-1) + 1
+	for i := 1; i <= 10; i++ {
+		orderId := i
 		order := "{\"orderId\":" + strconv.Itoa(orderId) + "}"
 		client, err := dapr.NewClient()
 		STATE_STORE_NAME := "statestore"
