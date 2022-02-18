@@ -252,7 +252,7 @@ annotations:
 ...
  ```
 
-For this quickstart, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/quickstarts/tree/feature/new_quickstarts/tutorials/distributed-calculator/deploy/react-calculator.yaml#L36).
+For this quickstart, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/deploy/react-calculator.yaml#L36).
 
 Note you did not introduce any dependency on Zipkin into the calculator app code or deployment yaml files. The Zipkin Dapr component is configured to read tracing events and write these to a tracing backend.
 
@@ -319,7 +319,7 @@ kubectl get pods
 
 Then, open the distributed calculator UI.
 
-If this is the first time trying the distributed calculator, find more detailed instructions in the [distributed-calculator](https://github.com/dapr/quickstarts/tree/feature/new_quickstarts/tutorials/distributed-calculator/README.md) quickstart.
+If this is the first time trying the distributed calculator, find more detailed instructions in the [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md) quickstart.
 
 > **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing to take effect. You can do so by running:
 
