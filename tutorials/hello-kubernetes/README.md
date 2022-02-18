@@ -344,4 +344,4 @@ Now that you're successfully working with Dapr, you probably want to update the 
 
 ## Next steps
 
-- Explore additional [quickstarts](../README.md#quickstarts) and deploy them locally or on Kubernetes.
+- Explore additional [quickstarts](../../README.md#quickstarts) and deploy them locally or on Kubernetes.
