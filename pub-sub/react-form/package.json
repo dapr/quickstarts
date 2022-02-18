@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "request": "^2.88.0"
+    "axios": "^0.25.0"
   },
   "devDependencies": {
     "concurrently": "^4.1.1"

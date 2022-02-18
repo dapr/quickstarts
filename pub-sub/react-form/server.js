@@ -3,9 +3,10 @@
 // Licensed under the MIT License.
 // ------------------------------------------------------------
 
+import axios from "axios";
+
 const express = require('express');
 const path = require('path');
-const request = require('request');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -20,7 +21,7 @@ const pubsubName = 'pubsub';
 app.post('/publish', (req, res) => {
   console.log("Publishing: ", req.body);
   const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
-  request( { uri: publishUrl, method: 'POST', json: req.body } );
+  axios.post(publishUrl, req.body);
   res.sendStatus(200);
 });
 
