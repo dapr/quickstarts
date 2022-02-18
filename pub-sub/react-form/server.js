@@ -16,6 +16,7 @@ const daprUrl = `http://localhost:${daprPort}/v1.0`;
 const port = 8080;
 const pubsubName = 'pubsub';
 
+// Publish to topic using Dapr pub-sub
 app.post('/publish', (req, res) => {
   console.log("Publishing: ", req.body);
   const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
@@ -26,8 +27,8 @@ app.post('/publish', (req, res) => {
 // Serve static files
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// For all other requests, route to React client
-app.get('*', function (_req, res) {
+// Map default route to React client
+app.get('/', function (_req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
