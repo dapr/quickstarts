@@ -8,7 +8,7 @@ name: samples
 on:
   push:
     branches:
-      - master
+      - feature/new_quickstarts
       - release-*
     tags:
       - v*
@@ -16,7 +16,7 @@ on:
       - '**.md'
   pull_request:
     branches:
-      - master
+      - feature/new_quickstarts
       - release-*
   workflow_dispatch:
 jobs:
