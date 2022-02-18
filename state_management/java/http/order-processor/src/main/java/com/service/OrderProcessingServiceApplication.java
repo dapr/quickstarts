@@ -13,7 +13,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class OrderProcessingServiceApplication {
@@ -30,9 +29,8 @@ public class OrderProcessingServiceApplication {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         URI baseUrl = new URI(DAPR_HOST+":"+DAPR_HTTP_PORT);
         URI stateStoreUrl = new URI(baseUrl + "/v1.0/state/"+DAPR_STATE_STORE);
-        while (true) {
-            Random random = new Random();
-            int orderId = random.nextInt(1000 - 1) + 1;
+        for (int i = 1; i <= 10; i++) {
+            int orderId = i;
             Order order = new Order(orderId);
             State state = new State(String.valueOf(orderId), order);
             State[] payload = new State[] {state};

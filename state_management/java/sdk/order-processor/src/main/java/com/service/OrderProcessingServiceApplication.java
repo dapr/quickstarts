@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class OrderProcessingServiceApplication {
@@ -17,9 +15,8 @@ public class OrderProcessingServiceApplication {
 
     public static void main(String[] args) throws Exception {
         try (DaprClient client = new DaprClientBuilder().build()) {
-            while (true) {
-                Random random = new Random();
-                int orderId = random.nextInt(1000 - 1) + 1;
+            for (int i = 1; i <= 10; i++) {
+                int orderId = i;
                 Order order = new Order();
                 order.setOrderId(orderId);
 
