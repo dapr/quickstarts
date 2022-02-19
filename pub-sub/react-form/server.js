@@ -17,7 +17,7 @@ const port = 8080;
 const pubsubName = 'pubsub';
 
 // Publish to topic using Dapr pub-sub
-app.post('/publish', (req, res) => {
+app.post('/publish', async (req, res) => {
   console.log("Publishing: ", req.body);
   const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
   axios.post(publishUrl, req.body);
@@ -28,7 +28,7 @@ app.post('/publish', (req, res) => {
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Map default route to React client
-app.get('/', function (_req, res) {
+app.get('/', async function (_req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
