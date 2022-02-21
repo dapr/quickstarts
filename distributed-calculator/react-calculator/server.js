@@ -108,4 +108,4 @@ app.get('/', function (_req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-app.listen(process.env.PORT || port, () => console.debug(`Listening on port ${port}!`));
+app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
