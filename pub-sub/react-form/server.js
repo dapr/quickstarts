@@ -16,11 +16,11 @@ const daprUrl = `http://localhost:${daprPort}/v1.0`;
 const port = 8080;
 const pubsubName = 'pubsub';
 
-// Publish to topic using Dapr pub-sub
+// Publish to topic (messageType) using Dapr pub-sub
 app.post('/publish', async (req, res) => {
   console.log("Publishing: ", req.body);
   const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
-  axios.post(publishUrl, req.body);
+  await axios.post(publishUrl, req.body);
   res.sendStatus(200);
 });
 
