@@ -89,7 +89,7 @@ app.get('/state', async (req, res) => {
 app.post('/persist', async (req, res) => {
   //req.pipe(request(stateUrl)).pipe(res);
 
-  // Getting Dapr state
+  // Saving Dapr state
   const apiResponse = await axios.post(stateUrl, req.body);
   if (debugMode) {console.log('Saving state: ', req.body)};
 
