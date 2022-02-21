@@ -66,7 +66,7 @@ app.post('/calculate/divide', async (req, res) => {
   appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
-  const result = String(appResponse.data);
+  const result = String(Number(appResponse.data));
 
   res.send(result);
 });
