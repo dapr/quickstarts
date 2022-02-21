@@ -18,6 +18,8 @@ const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 
+const debugMode = process.env.DEBUG_MODE || false; // Emit debug level logs for State management
+
 /**
 The following routes forward requests (using pipe) from our React client to our dapr-enabled services. Our Dapr sidecar lives on localhost:<daprPort>. We invoke other Dapr enabled services by calling /v1.0/invoke/<DAPR_ID>/method/<SERVICE'S_ROUTE>.
 */
@@ -26,13 +28,11 @@ app.post('/calculate/add', async (req, res) => {
   const appUrl = `${daprUrl}/addapp/method/add`;
 
   // Dapr invoke add app
-  console.log('Adding: ', req.body)
   appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(appResponse.data);
-  console.log('Result: ', result);
-
+ 
   res.send(result); 
 });
 
@@ -40,13 +40,10 @@ app.post('/calculate/subtract', async (req, res) => {
   const appUrl = `${daprUrl}/subtractapp/method/subtract`;
   
   // Dapr invoke subtract app
-  console.log('Substracting: ', req.body)
   appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(appResponse.data);
-  console.log('Result: ', result);
-
   res.send(result); 
 });
 
@@ -54,12 +51,10 @@ app.post('/calculate/multiply', async (req, res) => {
   const appUrl = `${daprUrl}/multiplyapp/method/multiply`;
 
   // Dapr invoke multiply app
-  console.log('Multiplying: ', req.body)
   appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(appResponse.data);
-  console.log('Result: ', result);
 
   res.send(result);
 });
@@ -68,12 +63,10 @@ app.post('/calculate/divide', async (req, res) => {
   const appUrl = `${daprUrl}/divideapp/method/divide`;
 
   // Dapr invoke divide app
-  console.log('Dividing: ', req.body)
   appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(appResponse.data);
-  console.log('Result: ', result);
 
   res.send(result);
 });
@@ -83,11 +76,11 @@ app.get('/state', async (req, res) => {
 
   // Getting Dapr state
   apiResponse = await axios.get(`${stateUrl}/calculatorState`);
-  console.log('Getting state: ', 'calculatorState');
+  if (debugMode) {console.log('Getting state: ', 'calculatorState')};
 
   // Return expected decimal result to client
   const result = apiResponse.data;
-  console.log('Get state result: ', result);
+  if (debugMode) {console.log('Get state result: ', result)};
 
   res.send(result);
 });
@@ -98,11 +91,11 @@ app.post('/persist', async (req, res) => {
 
   // Getting Dapr state
   apiResponse = await axios.post(stateUrl, req.body);
-  console.log('Saving state: ', req.body)
+  if (debugMode) {console.log('Saving state: ', req.body)};
 
   // Return expected string result to client
   const result = String(apiResponse.data);
-  console.log('State save returned: ', result);
+  if (debugMode) {console.log('State save returned: ', result)};
 
   res.send(result);
 });
@@ -115,4 +108,4 @@ app.get('/', function (_req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
+app.listen(process.env.PORT || port, () => console.debug(`Listening on port ${port}!`));
