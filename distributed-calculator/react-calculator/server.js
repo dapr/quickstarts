@@ -87,7 +87,6 @@ app.get('/state', async (req, res) => {
 
 // Forward state persistence to Dapr state endpoint
 app.post('/persist', async (req, res) => {
-  //req.pipe(request(stateUrl)).pipe(res);
 
   // Saving Dapr state
   const apiResponse = await axios.post(stateUrl, req.body);
