@@ -572,7 +572,7 @@ The server is a basic express application that exposes a POST endpoint: `/publis
 app.use(bodyParser.json());
 ```
 
-This allows us to determine which topic to publish the message with. To publish messages against Dapr, the URL needs to look like: `http://localhost:<DAPR_URL>/publish/<PUBSUB_NAME>/<TOPIC>`, so the `publish` endpoint builds a URL and posts the JSON against it.  The POST also needs to return a success code in the response upon successful completion.   
+This allows us to determine which topic to publish the message with. To publish messages against Dapr, the URL needs to look like: `http://localhost:<DAPR_URL>/publish/<PUBSUB_NAME>/<TOPIC>`, so the `publish` endpoint builds a URL and posts the JSON against it. The POST request also needs to return a success code in the response upon successful completion.   
 
 ```js
   const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
