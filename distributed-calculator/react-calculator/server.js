@@ -28,7 +28,7 @@ app.post('/calculate/add', async (req, res) => {
   const appUrl = `${daprUrl}/addapp/method/add`;
 
   // Dapr invoke add app
-  appResponse = await axios.post(appUrl, req.body);
+  const appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(appResponse.data);
@@ -40,7 +40,7 @@ app.post('/calculate/subtract', async (req, res) => {
   const appUrl = `${daprUrl}/subtractapp/method/subtract`;
   
   // Dapr invoke subtract app
-  appResponse = await axios.post(appUrl, req.body);
+  const appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(appResponse.data);
@@ -51,7 +51,7 @@ app.post('/calculate/multiply', async (req, res) => {
   const appUrl = `${daprUrl}/multiplyapp/method/multiply`;
 
   // Dapr invoke multiply app
-  appResponse = await axios.post(appUrl, req.body);
+  const appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(appResponse.data);
@@ -63,7 +63,7 @@ app.post('/calculate/divide', async (req, res) => {
   const appUrl = `${daprUrl}/divideapp/method/divide`;
 
   // Dapr invoke divide app
-  appResponse = await axios.post(appUrl, req.body);
+  const appResponse = await axios.post(appUrl, req.body);
 
   // Return expected string result to client
   const result = String(Number(appResponse.data));
@@ -75,7 +75,7 @@ app.post('/calculate/divide', async (req, res) => {
 app.get('/state', async (req, res) => {
 
   // Getting Dapr state
-  apiResponse = await axios.get(`${stateUrl}/calculatorState`);
+  const apiResponse = await axios.get(`${stateUrl}/calculatorState`);
   if (debugMode) {console.log('Getting state: ', 'calculatorState')};
 
   // Return expected decimal result to client
@@ -90,7 +90,7 @@ app.post('/persist', async (req, res) => {
   //req.pipe(request(stateUrl)).pipe(res);
 
   // Getting Dapr state
-  apiResponse = await axios.post(stateUrl, req.body);
+  const apiResponse = await axios.post(stateUrl, req.body);
   if (debugMode) {console.log('Saving state: ', req.body)};
 
   // Return expected string result to client
