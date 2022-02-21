@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Map default route to React client
 app.get('/', async function (_req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  await res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
