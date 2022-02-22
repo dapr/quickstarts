@@ -9,7 +9,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
-app.use(bodyParser.json());
+
+app.use(express.json());
 
 const daprPort = process.env.DAPR_HTTP_PORT ?? 3500;
 const daprUrl = `http://localhost:${daprPort}/v1.0`;
