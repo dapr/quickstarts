@@ -575,9 +575,9 @@ app.use(bodyParser.json());
 This allows us to determine which topic to publish the message with. To publish messages against Dapr, the URL needs to look like: `http://localhost:<DAPR_URL>/publish/<PUBSUB_NAME>/<TOPIC>`, so the `publish` endpoint builds a URL and posts the JSON against it. The POST request also needs to return a success code in the response upon successful completion.   
 
 ```js
-  const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
+  const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body?.messageType}`;
   await axios.post(publishUrl, req.body);
-  res.sendStatus(200);
+  return res.sendStatus(200);
 ```
 
 Note how the `daprUrl` determines what port Dapr live on: 

@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+const daprPort = process.env.DAPR_HTTP_PORT ?? 3500;
 const daprUrl = `http://localhost:${daprPort}/v1.0`;
 const port = 8080;
 const pubsubName = 'pubsub';
@@ -19,9 +19,8 @@ const pubsubName = 'pubsub';
 // Publish to topic (messageType) using Dapr pub-sub
 app.post('/publish', async (req, res) => {
   console.log("Publishing: ", req.body);
-  const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
-  await axios.post(publishUrl, req.body);
-  res.sendStatus(200);
+  await axios.post(`${daprUrl}/publish/${pubsubName}/${req.body?.messageType}`, req.body);
+  return res.sendStatus(200);
 });
 
 // Serve static files

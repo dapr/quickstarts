@@ -616,18 +616,14 @@ The code below shows calls to the "add" and "subtract" services via the Dapr URL
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 
 app.post('/calculate/add', async (req, res) => {
-  const appUrl = `${daprUrl}/addapp/method/add`;
-  const appResponse = await axios.post(appUrl, req.body);
-  const result = String(appResponse.data);
-  res.send(result); 
+  const appResponse = await axios.post(`${daprUrl}/addapp/method/add`, req.body);
+  return res.send(`${appResponse.data}`); 
 });
 
 
 app.post('/calculate/subtract', async (req, res) => {
-  const appUrl = `${daprUrl}/subtractapp/method/subtract`;
-  const appResponse = await axios.post(appUrl, req.body);
-  const result = String(appResponse.data);
-  res.send(result); 
+  const appResponse = await axios.post(`${daprUrl}/subtractapp/method/subtract`, req.body);
+  return res.send(`${appResponse.data}`); 
 });
 ...
 ```
