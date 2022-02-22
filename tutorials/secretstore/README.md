@@ -97,7 +97,7 @@ spec:
 
 The component defines a local secret store with the secrets file path as the `secrets.json` file.
 
-> Note: You can also use a local secret store that uses [environment variables]((https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/envvar-secret-store/)) for secrets instead of a [local file](https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/file-secret-store/).
+> Note: You can also use a local secret store that uses [environment variables](https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/envvar-secret-store/) for secrets instead of a [local file](https://docs.dapr.io/operations/components/setup-secret-store/supported-secret-stores/file-secret-store/).
 
 ### Step 3 - Export Secret Store name and run Node.js app with Dapr
 
@@ -420,4 +420,4 @@ If you want to update the node app, you can do the following:
 
 ## Next steps:
 
-- Explore additional [quickstarts](../README.md#quickstarts)
+- Explore additional [quickstarts](../../README.md#quickstarts)

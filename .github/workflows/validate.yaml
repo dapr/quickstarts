@@ -9,12 +9,14 @@ on:
   push:
     branches:
       - master
+      - feature/new_quickstarts
       - release-*
     tags:
       - v*
   pull_request:
     branches:
       - master
+      - feature/new_quickstarts
       - release-*
 jobs:
   deploy:
@@ -127,37 +129,37 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate hello-world
         run: |
-          pushd hello-world
+          pushd tutorials/hello-world
           make validate
           popd
       - name: Validate hello-kubernetes
         run: |
-          pushd hello-kubernetes
+          pushd tutorials/hello-kubernetes
           make validate
           popd
       - name: Validate distributed-calculator
         run: |
-          pushd distributed-calculator
+          pushd tutorials/distributed-calculator
           make validate
           popd
       - name: Validate pub-sub
         run: |
-          pushd pub-sub
+          pushd tutorials/pub-sub
           make validate
           popd
       - name: Validate bindings
         run: |
-          pushd bindings
+          pushd tutorials/bindings
           make validate
           popd
       - name: Validate secretstore
         run: |
-          pushd secretstore
+          pushd tutorials/secretstore
           make validate
           popd
       - name: Validate observability
         run: |
-          pushd observability
+          pushd tutorials/observability
           make validate
           popd
       - name: Linkcheck README.md

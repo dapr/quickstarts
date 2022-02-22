@@ -492,4 +492,4 @@ while True:
 
 ## Next Steps
 
-- Explore additional [quickstarts](../README.md#quickstarts).
+- Explore additional [quickstarts](../../README.md#quickstarts).

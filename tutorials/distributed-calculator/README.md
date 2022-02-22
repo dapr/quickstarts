@@ -672,4 +672,4 @@ For more information on how to configure the files visit [How-To: Debug multiple
 
 ## Next Steps
 
-- Explore additional [quickstarts](../README.md#quickstarts).
+- Explore additional [quickstarts](../../README.md#quickstarts).
