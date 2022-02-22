@@ -546,7 +546,7 @@ kubectl delete -f deploy/zipkin.yaml
 
 ## Next steps
 
-- Explore additional [quickstarts](../README.md#quickstarts)
+- Explore additional [quickstarts](../../README.md#quickstarts)
 
 ## Troubleshooting
 
