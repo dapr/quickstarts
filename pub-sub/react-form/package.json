@@ -15,8 +15,8 @@
   "author": "Ryan Volum",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "request": "^2.88.0"
+    "express": "^4.17.3",
+    "axios": "^0.26.0"
   },
   "devDependencies": {
     "concurrently": "^4.1.1"

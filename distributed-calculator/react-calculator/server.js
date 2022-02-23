@@ -1,11 +1,14 @@
 const express = require('express');
 const path = require('path');
-const request = require('request');
+const bodyParser = require('body-parser');
+const axios = require('axios');
 
 const app = express();
 
+app.use(express.json());
+
 const port = 8080;
-const daprPort = process.env.DAPR_HTTP_PORT || 3500;
+const daprPort = process.env.DAPR_HTTP_PORT ?? 3500;
 
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 
@@ -19,37 +22,59 @@ The following routes forward requests (using pipe) from our React client to our 
 */
 
 app.post('/calculate/add', async (req, res) => {
-  const addUrl = `${daprUrl}/addapp/method/add`;
-  req.pipe(request(addUrl)).pipe(res);
+  // Invoke Dapr add app
+  const appResponse = await axios.post(`${daprUrl}/addapp/method/add`, req.body);
+
+  // Return expected string result to client
+  return res.send(`${appResponse.data}`); 
 });
 
 app.post('/calculate/subtract', async (req, res) => {
-  const subtractUrl = `${daprUrl}/subtractapp/method/subtract`;
-  req.pipe(request(subtractUrl)).pipe(res);
+  // Invoke Dapr subtract app
+  const appResponse = await axios.post(`${daprUrl}/subtractapp/method/subtract`, req.body);
+
+  // Return expected string result to client
+  return res.send(`${appResponse.data}`); 
 });
 
 app.post('/calculate/multiply', async (req, res) => {
-  const multiplyUrl = `${daprUrl}/multiplyapp/method/multiply`;
-  req.pipe(request(multiplyUrl)).pipe(res);
+  // Dapr invoke multiply app
+  const appResponse = await axios.post(`${daprUrl}/multiplyapp/method/multiply`, req.body);
+
+  // Return expected string result to client
+  return res.send(`${appResponse.data}`); 
 });
 
 app.post('/calculate/divide', async (req, res) => {
-  const divideUrl = `${daprUrl}/divideapp/method/divide`;
-  req.pipe(request(divideUrl)).pipe(res);
+  // Dapr invoke divide app
+  const appResponse = await axios.post(`${daprUrl}/divideapp/method/divide`, req.body);
+
+  // Return expected string result to client
+  return res.send(`${appResponse.data}`); 
 });
 
 // Forward state retrieval to Dapr state endpoint
-app.get('/state', async (req, res) => req.pipe(request(`${stateUrl}/calculatorState`)).pipe(res));
+app.get('/state', async (req, res) => {
+  // Getting Dapr state
+  const apiResponse = await axios.get(`${stateUrl}/calculatorState`);
+
+  return res.send(apiResponse.data);
+});
 
 // Forward state persistence to Dapr state endpoint
-app.post('/persist', async (req, res) => req.pipe(request(stateUrl)).pipe(res));
+app.post('/persist', async (req, res) => {
+  // Saving Dapr state
+  const apiResponse = await axios.post(stateUrl, req.body);
+
+  return res.send(apiResponse.data);
+});
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// For all other requests, route to React client
-app.get('*', function (_req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+// For default home request route to React client
+app.get('/', async function (_req, res) {
+  return await res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));
