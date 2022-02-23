@@ -10,7 +10,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class CheckoutServiceApplication {
@@ -27,9 +26,8 @@ public class CheckoutServiceApplication {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String uri = DAPR_HOST +":"+ DAPR_HTTP_PORT + "/v1.0/publish/"+PUBSUB_NAME+"/"+TOPIC;
-		while (true) {
-			Random random = new Random();
-			int orderId = random.nextInt(1000 - 1) + 1;
+		for (int i = 0; i <= 10; i++) {
+			int orderId = i;
 			JSONObject obj = new JSONObject();
 			obj.put("orderId", orderId);
 

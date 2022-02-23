@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class CheckoutServiceApplication {
@@ -17,9 +15,8 @@ public class CheckoutServiceApplication {
 		String TOPIC_NAME = "orders";
 		String PUBSUB_NAME = "order_pub_sub";
 
-		while(true) {
-			Random random = new Random();
-			int orderId = random.nextInt(1000-1) + 1;
+		for (int i = 0; i <= 10; i++) {
+			int orderId = i;
 			Order order = new Order(orderId);
 			DaprClient client = new DaprClientBuilder().build();
 
