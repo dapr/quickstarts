@@ -9,9 +9,8 @@
         "buildclient": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
     },
     "dependencies": {
-        "body-parser": "^1.18.3",
-        "express": "^4.16.4",
-        "request": "^2.88.0"
+        "express": "^4.17.3",
+        "axios": "^0.26.0"
     },
     "devDependencies": {
         "concurrently": "^4.0.1"

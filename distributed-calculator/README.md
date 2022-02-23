@@ -267,8 +267,8 @@ manual_pause_message: "Calculator APP running on http://localhost:8080. Please o
 expected_stdout_lines:
   - "86"
   - "18"
-  - "1.5294"
-  - "1768.0"
+  - "1.5294117647058822"
+  - "1768"
   - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
@@ -616,13 +616,14 @@ The code below shows calls to the "add" and "subtract" services via the Dapr URL
 const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 
 app.post('/calculate/add', async (req, res) => {
-  const addUrl = `${daprUrl}/addapp/method/add`;
-  req.pipe(request(addUrl)).pipe(res);
+  const appResponse = await axios.post(`${daprUrl}/addapp/method/add`, req.body);
+  return res.send(`${appResponse.data}`); 
 });
 
+
 app.post('/calculate/subtract', async (req, res) => {
-  const subtractUrl = `${daprUrl}/subtractapp/method/subtract`;
-  req.pipe(request(subtractUrl)).pipe(res);
+  const appResponse = await axios.post(`${daprUrl}/subtractapp/method/subtract`, req.body);
+  return res.send(`${appResponse.data}`); 
 });
 ...
 ```
