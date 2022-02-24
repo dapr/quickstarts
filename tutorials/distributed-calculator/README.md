@@ -306,7 +306,7 @@ name: "Curl test"
    86
    18
    1.5294117647058822
-   1768.0
+   1768
    
    {"operation":null,"total":"54","next":null}
    ```
@@ -529,7 +529,7 @@ expected_stdout_lines:
   - "86"
   - "18"
   - "1.5294"
-  - "1768.0"
+  - "1768"
   - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
@@ -567,7 +567,7 @@ You should get the following output:
    86
    18
    1.5294117647058822
-   1768.0
+   1768
    
    {"operation":null,"total":"54","next":null}
    ```
