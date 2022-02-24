@@ -6,7 +6,7 @@ var baseURL = (Environment.GetEnvironmentVariable("BASE_URL") ?? "http://localho
 
 var client = new HttpClient();
 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-// Adding app id as part of th header
+// Adding app id as part of the header
 client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
 
 for (int i = 1; i <= 10; i++) {

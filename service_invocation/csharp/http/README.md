@@ -1,6 +1,6 @@
 # Dapr Service Invocation
 
-In this quickstart, you'll create a checkout service and a order processor service to demonstrate how Dapr enables a service invocation pattern. 
+In this quickstart, you'll create a checkout service and a order processor service to demonstrate how Dapr enables a service invocation pattern. The checkout service will use Dapr's http proxying capability to invoke a method in the order processing service.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/service-invocation/) link for more information about Dapr and Service Invocation.
 
