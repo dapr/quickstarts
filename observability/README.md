@@ -384,7 +384,7 @@ expected_stdout_lines:
   - "86"
   - "18"
   - "1.5294"
-  - "1768.0"
+  - "1768"
   - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
