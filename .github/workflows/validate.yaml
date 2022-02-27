@@ -6,6 +6,7 @@
 name: Auto Validate Quickstarts
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
