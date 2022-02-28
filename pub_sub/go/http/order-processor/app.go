@@ -9,12 +9,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type JsonObj struct {
+	PubsubName string
+	Topic      string
+	Route      string
+}
+
 func getOrder(w http.ResponseWriter, r *http.Request) {
-	jsonData := []byte(`[{
-		PubsubName: "order_pub_sub",
-		Topic: "orders",
-		Route: "orders"
-	}]`)
+	jsonData := []JsonObj{
+		{
+			PubsubName: "order_pub_sub",
+			Topic:      "orders",
+			Route:      "orders",
+		},
+	}
 	obj, err := json.Marshal(jsonData)
 	if err != nil {
 		log.Println("Error in reading the result obj")
@@ -31,7 +39,7 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	log.Printf("Subscriber received: %s", string(data))
-	obj, err := json.Marshal(string(data))
+	obj, err := json.Marshal(data)
 	if err != nil {
 		log.Println("Error in reading the result obj")
 	}

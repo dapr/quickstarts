@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -32,19 +31,14 @@ func main() {
 		}
 
 		// Publish an event using Dapr pub/sub
-		response, err := client.Do(req)
+		client.Do(req)
 
 		if err != nil {
 			fmt.Print(err.Error())
 			os.Exit(1)
 		}
 
-		result, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		log.Println("Published data: ", string(result))
+		log.Println("Published data: ", string(order))
 
 		time.Sleep(1000)
 	}

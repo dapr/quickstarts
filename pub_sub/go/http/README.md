@@ -62,7 +62,7 @@ go build app.go
 3. Run the Go subscriber app with Dapr: 
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components --log-level debug -- go run app.go
+dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
 ```
 
 <!-- END_STEP -->
