@@ -67,7 +67,6 @@ jobs:
             popd
           done
       - name: docker login
-        if: github.event_name != 'pull_request'
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish image to dockerhub
