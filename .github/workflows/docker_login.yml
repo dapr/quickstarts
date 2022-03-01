@@ -9,7 +9,6 @@ on:
   push:
     branches:
       - master
-      - tanvi/new_branch
 
 jobs:
   build:
@@ -21,3 +20,6 @@ jobs:
       - name: docker login
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
+      - name: check pull rate limit
+        run: |
+          curl --user '${{ secrets.DOCKER_REGISTRY_ID }}:${{ secrets.DOCKER_REGISTRY_PASS }}' "https://auth.docker.io/token?service=registry.docker.io&scope=repository:ratelimitpreview/test:pull" -s | jq -r .
