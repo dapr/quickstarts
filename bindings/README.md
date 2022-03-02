@@ -156,6 +156,7 @@ expected_stdout_lines:
   - "== APP == {'data': {'orderId': 1}, 'operation': 'create'}"
   - "== APP == {'data': {'orderId': 2}, 'operation': 'create'}"
   - "== APP == {'data': {'orderId': 3}, 'operation': 'create'}"
+  - "== APP == <Response [204]>"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 -->
@@ -322,6 +323,7 @@ output_match_mode: substring
 expected_stdout_lines:
   - "{'data': {'orderId': " 
   - "{'data': {'orderId': "
+  - "<Response [204]>"
 -->
 
 ```bash
