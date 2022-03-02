@@ -23,6 +23,13 @@ jobs:
       TARGET_OS: ${{ matrix.target_os }}
       TARGET_ARCH: ${{ matrix.target_arch }}
       DOCKER_CLI_EXPERIMENTAL: enabled
+      GOVER: 1.17
+      GOLANGCILINT_VER: v1.31
+      GOOS: ${{ matrix.target_os }}
+      GOARCH: ${{ matrix.target_arch }}
+      GOPROXY: https://proxy.golang.org
+      ARCHIVE_OUTDIR: dist/archives
+      TEST_OUTPUT_FILE_PREFIX: test_report
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -55,57 +62,146 @@ jobs:
       - name: Build docker image
         run: | 
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
             make build
             popd
           done
-      - name: docker login
+     - name: GitHub container registry login
+        if: matrix.target_os != 'darwin'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push docker images to GitHub container registry
+        if: matrix.target_os != 'darwin'
         run: |
-          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
-      - name: publish image to dockerhub
-        run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
-          for sample in "${SAMPLE_LIST[@]}"; do
-            echo "Push image for ${sample}..."
-            pushd ${sample}
-            make push
-            popd
-          done
+          echo "Build docker image and push image..."
+          make docker-push TARGET_OS=${{ matrix.target_os }} TARGET_ARCH=${{ matrix.target_arch }} DAPR_REGISTRY=ghcr.io/${{ github.repository_owner }} DAPR_TAG=${{ env.REL_VERSION }}
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ matrix.target_os }}_${{ matrix.target_arch }}_test_unit.json
+          path: ${{ env.TEST_OUTPUT_FILE_PREFIX }}_unit.json
   publish:
-    name: Publish docker manifest
+    name: Publish docker image and binaries
     needs: build
-    runs-on: ubuntu-latest
     env:
-      DOCKER_CLI_EXPERIMENTAL: enabled
+      ARTIFACT_DIR: ./tutorials
+      HELM_PACKAGE_DIR: helm
+      DAPR_VERSION_ARTIFACT: dapr_version
+      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      HELMVER: v3.2.1
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out code
+      - name: Set up Helm ${{ env.HELMVER }}
+        uses: azure/setup-helm@v1
+        with:
+          version: ${{ env.HELMVER }}
+      - name: Check out code into the Go module directory
         uses: actions/checkout@v2
+      - name: Install Docker CE for buildx
+        run: |
+          sudo apt update
+          sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt update
+          sudo apt install docker-ce
+          docker -v
       - name: Parse release version and set REL_VERSION
         run: python ./.github/scripts/get_release_version.py
-      - name: create docker manifest
+      - name: Update Helm chart files for release version ${{ env.REL_VERSION }}
+        run: bash ./.github/scripts/set_helm_dapr_version.sh
+      - name: Generate helm chart manifest
+        run: make manifest-gen DAPR_REGISTRY=${{ env.DOCKER_REGISTRY }} DAPR_TAG=$REL_VERSION
+      - name: move helm chart manifest to artifact
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
-          for sample in "${SAMPLE_LIST[@]}"; do
-            echo "Building image for ${sample}..."
-            pushd ${sample}
-            make manifest-create
-            popd
+          mkdir -p ${{ env.ARTIFACT_DIR }}
+          mv ./dist/install/dapr.yaml ${{ env.ARTIFACT_DIR }}/dapr-operator.yaml
+      - name: download artifacts - dapr_linux_amd64
+        uses: actions/download-artifact@master
+        with:
+          name: dapr_linux_amd64
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: download artifacts - dapr_linux_arm
+        uses: actions/download-artifact@master
+        with:
+          name: dapr_linux_arm
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: download artifacts - dapr_linux_arm64
+        uses: actions/download-artifact@master
+        with:
+          name: dapr_linux_arm64
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: download artifacts - dapr_windows_amd64
+        uses: actions/download-artifact@master
+        with:
+          name: dapr_windows_amd64
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: download artifacts - dapr_darwin_amd64
+        uses: actions/download-artifact@master
+        with:
+          name: dapr_darwin_amd64
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: download artifacts - dapr_darwin_arm64
+        uses: actions/download-artifact@master
+        with:
+          name: dapr_darwin_arm64
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: download artifacts - dapr_grafana_dashboards
+        uses: actions/download-artifact@master
+        with:
+          name: dapr_grafana_dashboards
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: tar release binaries
+        run: |
+          IMAGE_ARCHS=(amd64 arm arm64)
+          for img_arch in "${IMAGE_ARCHS[@]}"; do
+            echo "Preparing linux_${img_arch} image..."
+            RELEASE_DIR=dist/linux_${img_arch}/tutorials/
+            mkdir -p $RELEASE_DIR
+            for tgzfile in $ARTIFACT_DIR/*linux_${img_arch}.tar.gz; do
+              echo "Extracting $tgzfile ..."
+              tar xzvf $tgzfile -C $RELEASE_DIR
+            done
           done
+      - name: generate checksum files
+        run: cd ${ARTIFACT_DIR} && for i in *; do sha256sum -b $i > "$i.sha256"; done && cd -
+      - name: lists artifacts
+        run: ls -l ${{ env.ARTIFACT_DIR }}
+      - name: publish binaries to github
+        if: startswith(github.ref, 'refs/tags/v')
+        run: |
+          echo "installing github-release-cli..."
+          sudo npm install --silent --no-progress -g github-release-cli@1.3.1
+          if [ "$LATEST_RELEASE" = "true" ]; then
+            export RELEASE_BODY=`cat ./docs/release_notes/v${REL_VERSION}.md`
+          else
+            export RELEASE_BODY="This is the release candidate ${REL_VERSION}"
+          fi
+          # Get the list of files
+          RELEASE_ARTIFACT=(${ARTIFACT_DIR}/*)
+          # Parse repository to get owner and repo names
+          OWNER_NAME="${GITHUB_REPOSITORY%%/*}"
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          export GITHUB_TOKEN=${{ secrets.DAPR_BOT_TOKEN }}
+          echo "Uploading Dapr Runtime Binaries to GitHub Release"
+          github-release upload \
+            --owner $OWNER_NAME --repo $REPO_NAME \
+            --tag "v${REL_VERSION}" \
+            --name "Dapr Runtime v${REL_VERSION}" \
+            --body "${RELEASE_BODY}" \
+            --prerelease true \
+            ${RELEASE_ARTIFACT[*]}
       - name: docker login
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
-      - name: publish manifest to dockerhub
+      - name: Build and push docker multiarch manifest
+        if: matrix.target_os != 'darwin'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
-          for sample in "${SAMPLE_LIST[@]}"; do
-            echo "Push image for ${sample}..."
-            pushd ${sample}
-            make manifest-push
-            popd
-          done
+          echo "Build docker multiarch image manifest and push it"
+          make docker-publish DAPR_REGISTRY=${{ secrets.DOCKER_REGISTRY }} DAPR_TAG=${{ env.REL_VERSION }}
