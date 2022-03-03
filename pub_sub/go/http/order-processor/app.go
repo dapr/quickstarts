@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,6 +14,10 @@ type JsonObj struct {
 	PubsubName string
 	Topic      string
 	Route      string
+}
+
+type Result struct {
+	Data string `json:"data"`
 }
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +43,12 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Subscriber received: %s", string(data))
+	var result Result
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println("Subscriber received: ", string(result.Data))
 	obj, err := json.Marshal(data)
 	if err != nil {
 		log.Println("Error in reading the result obj")

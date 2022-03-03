@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -38,7 +37,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		log.Println("Published data: ", string(order))
+		fmt.Println("Published data: ", string(order))
 
 		time.Sleep(1000)
 	}

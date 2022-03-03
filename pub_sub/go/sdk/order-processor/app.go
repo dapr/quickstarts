@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -28,7 +29,7 @@ func main() {
 }
 
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
-	log.Printf("Subscriber received: %s", e.Data)
+	fmt.Println("Subscriber received: ", e.Data)
 	return false, nil
 }
 

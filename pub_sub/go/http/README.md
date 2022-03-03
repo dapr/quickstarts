@@ -1,6 +1,6 @@
 # Dapr pub/sub
 
-In this quickstart, you'll create a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics.
+In this quickstart, you'll create a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a publish-subcribe API. The publisher generates messages for a specific topic, while subscribers listen for messages on specific topics.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
 
@@ -16,52 +16,71 @@ And one subscriber:
 
 ### Run Go message publisher with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd checkout
-```
-
-2. Install dependencies: 
+1. Navigate to the directory and install dependencies: 
 
 <!-- STEP
 name: Build Go file
-working_dir: ./checkout
 -->
 
 ```bash
+cd pub_sub/go/http/checkout
 go build app.go
 ```
+<!-- END_STEP -->
+2. Run the Go publisher app with Dapr: 
 
-3. Run the Go publisher app with Dapr: 
+<!-- STEP
+name: Run Go publisher
+expected_stdout_lines:
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP == Published data:  {"orderId":1}'
+  - '== APP == Published data:  {"orderId":2}'
+  - "Exited App successfully"
+  - "Exited Dapr successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 10
+-->
     
 ```bash
+cd pub_sub/go/http/checkout
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run app.go
 ```
 
 <!-- END_STEP -->
 ### Run Go message subscriber with Dapr
 
-1. Open a new terminal window and navigate to `order-processor` directory: 
-
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
+1. Navigate to the directory and install dependencies: 
 
 <!-- STEP
 name: Build Go file
-working_dir: ./order-processor
 -->
 
 ```bash
+cd pub_sub/go/http/order-processor
 go build app.go
 ```
+<!-- END_STEP -->
 
-3. Run the Go subscriber app with Dapr: 
+2. Run the Go subscriber app with Dapr: 
+
+<!-- STEP
+name: Run Go subscriber
+expected_stdout_lines:
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP == Subscriber received:  {"orderId":10}'
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+
 
 ```bash
+cd pub_sub/go/http/order-processor
 dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
 ```
 

@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -24,12 +24,12 @@ func main() {
 	for i := 1; i <= 10; i++ {
 		order := "{\"orderId\":" + strconv.Itoa(i) + "}"
 
-		// Dapr subscription routes orders topic to this route
+		// Publish an event using Dapr pub/sub
 		if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
 			panic(err)
 		}
 
-		log.Println("Published data: " + order)
+		fmt.Println("Published data: ", string(order))
 
 		time.Sleep(1000)
 	}
