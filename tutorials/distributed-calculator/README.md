@@ -267,11 +267,7 @@ manual_pause_message: "Calculator APP running on http://localhost:8080. Please o
 expected_stdout_lines:
   - "86"
   - "18"
-<<<<<<< HEAD
   - "1.5294117647058822"
-=======
-  - "1.5294"
->>>>>>> 90a125f (Added workflow dispatch to trigger the validation (#546))
   - "1768"
   - '"total":"54"'
 output_match_mode: substring
