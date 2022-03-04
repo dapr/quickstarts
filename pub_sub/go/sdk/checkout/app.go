@@ -22,7 +22,7 @@ func main() {
 	defer client.Close()
 	ctx := context.Background()
 	for i := 1; i <= 10; i++ {
-		order := "{\"orderId\":" + strconv.Itoa(i) + "}"
+		order := `{"orderId":` + strconv.Itoa(i) + `}`
 
 		// Publish an event using Dapr pub/sub
 		if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {

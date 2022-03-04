@@ -10,10 +10,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type JsonObj struct {
-	PubsubName string
-	Topic      string
-	Route      string
+type JSONObj struct {
+	PubsubName string `json:"pubsubName"`
+	Topic      string `json:"topic"`
+	Route      string `json:"route"`
 }
 
 type Result struct {
@@ -21,7 +21,7 @@ type Result struct {
 }
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
-	jsonData := []JsonObj{
+	jsonData := []JSONObj{
 		{
 			PubsubName: "order_pub_sub",
 			Topic:      "orders",
@@ -30,11 +30,11 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 	}
 	obj, err := json.Marshal(jsonData)
 	if err != nil {
-		log.Println("Error in reading the result obj")
+		log.Fatal("Error in reading the result obj")
 	}
 	_, err = w.Write(obj)
 	if err != nil {
-		log.Println("Error in writing the result obj")
+		log.Fatal("Error in writing the result obj")
 	}
 }
 
@@ -46,16 +46,16 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 	var result Result
 	err = json.Unmarshal(data, &result)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	fmt.Println("Subscriber received: ", string(result.Data))
 	obj, err := json.Marshal(data)
 	if err != nil {
-		log.Println("Error in reading the result obj")
+		log.Fatal("Error in reading the result obj")
 	}
 	_, err = w.Write(obj)
 	if err != nil {
-		log.Println("Error in writing the result obj")
+		log.Fatal("Error in writing the result obj")
 	}
 }
 
