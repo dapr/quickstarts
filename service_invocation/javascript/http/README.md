@@ -12,55 +12,77 @@ And one order-processor service:
  
 - Node order-processor service `order-processor`
 
-### Run Node checkout with Dapr
+### Run Node order-processor with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd checkout
-```
-
-2. Install dependencies: 
+1. Open a new terminal window and navigate to `order-processor` directory and install dependencies: 
 
 <!-- STEP
 name: Install Node dependencies
-working_dir: ./checkout
 -->
 
 ```bash
+cd service_invocation/javascript/http/order-processor
 npm install
-```
-
-3. Run the Node checkout app with Dapr: 
-    
-```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
 <!-- END_STEP -->
-### Run Node order-processor with Dapr
-
-1. Open a new terminal window and navigate to `order-processor` directory: 
-
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
-working_dir: ./order-processor
--->
-
-```bash
-npm install
-```
 
 3. Run the Node order-processor app with Dapr: 
 
+<!-- STEP
+name: Run order-processor service
+expected_stdout_lines:
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP == Order received: { orderId: 10 }'
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+
 ```bash
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+cd service_invocation/javascript/http/order-processor
+dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+```
+
+<!-- END_STEP -->
+
+### Run Node checkout with Dapr
+
+1. Open a new terminal window and navigate to `checkout` directory and install dependencies: 
+
+<!-- STEP
+name: Install Node dependencies
+-->
+
+```bash
+cd service_invocation/javascript/http/checkout
+npm install
+```
+
+<!-- END_STEP -->
+
+2. Run the Node checkout app with Dapr: 
+
+<!-- STEP
+name: Run checkout service
+expected_stdout_lines:
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP == Order passed: {"orderId":1}'
+  - '== APP == Order passed: {"orderId":2}'
+  - "Exited App successfully"
+  - "Exited Dapr successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+    
+```bash
+cd service_invocation/javascript/http/checkout
+dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
 <!-- END_STEP -->

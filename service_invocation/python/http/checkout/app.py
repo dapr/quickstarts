@@ -11,7 +11,7 @@ base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
 # Adding app id as part of the header
 headers = {'dapr-app-id': 'order-processor'}
 
-for i in range(1, 10):
+for i in range(1, 11):
     order = {'orderId': i}
 
     # Invoking a service
@@ -20,6 +20,6 @@ for i in range(1, 10):
         data=json.dumps(order),
         headers=headers
     )
-    logging.info('Order passed: ' + json.dumps(order))
+    print('Order passed: ' + json.dumps(order))
 
     time.sleep(1)
