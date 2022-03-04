@@ -100,7 +100,7 @@ name: Curl validate
 
 
 ```bash
-curl -s http://localhost:9411/api/v2/traces?spanName=calllocal%2Fhello-tracing%2Fneworder -H  accept:application/json -o output.json && python -m json.tool output.json
+curl -s "http://localhost:9411/api/v2/traces?spanName=calllocal%2Fhello-tracing%2Fneworder" -H "accept:application/json" -o output.json && python -m json.tool output.json
 ```
 <!-- END_STEP -->
 

@@ -154,9 +154,7 @@ output_match_mode: substring
 expected_stdout_lines: 
   - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == {'data': {'orderId': 1}, 'operation': 'create'}"
-  - "== APP == <Response [204]>"
   - "== APP == {'data': {'orderId': 2}, 'operation': 'create'}"
-  - "== APP == <Response [204]>"
   - "== APP == {'data': {'orderId': 3}, 'operation': 'create'}"
   - "== APP == <Response [204]>"
   - "Exited Dapr successfully"
@@ -324,7 +322,6 @@ name: Read Python Logs
 output_match_mode: substring
 expected_stdout_lines:
   - "{'data': {'orderId': " 
-  - "<Response [204]>"
   - "{'data': {'orderId': "
   - "<Response [204]>"
 -->
