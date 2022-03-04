@@ -1,0 +1,21 @@
+{
+    "name": "checkout",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "start:dapr": "dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm run start"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.26.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.9.0",
+        "eslint-plugin-react": "^7.28.0"
+    }
+}
