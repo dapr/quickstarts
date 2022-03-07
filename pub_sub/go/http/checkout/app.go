@@ -36,7 +36,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		fmt.Println("Published data: ", string(order))
+		fmt.Sprintf("Published data: ", order)
 
 		time.Sleep(1000)
 	}
