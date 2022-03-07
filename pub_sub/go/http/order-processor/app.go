@@ -28,11 +28,11 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 			Route:      "orders",
 		},
 	}
-	obj, err := json.Marshal(jsonData)
+	jsonBytes, err := json.Marshal(jsonData)
 	if err != nil {
 		log.Fatal("Error in reading the result obj")
 	}
-	_, err = w.Write(obj)
+	_, err = w.Write(jsonBytes)
 	if err != nil {
 		log.Fatal("Error in writing the result obj")
 	}
