@@ -14,18 +14,18 @@ const PUBSUB_NAME = "order_pub_sub"
 const PUBSUB_TOPIC = "orders"
 
 func main() {
-	DAPR_HOST := "http://localhost"
+	daprHost := "http://localhost"
 	if value, ok := os.LookupEnv("DAPR_HOST"); ok {
-		DAPR_HOST = value
+		daprHost = value
 	}
-	DAPR_HTTP_PORT := "3500"
+	daprHttpPost := "3500"
 	if value, ok := os.LookupEnv("DAPR_HTTP_PORT"); ok {
-		DAPR_HTTP_PORT = value
+		daprHttpPost = value
 	}
 	for i := 1; i <= 10; i++ {
 		order := `{"orderId":` + strconv.Itoa(i) + `}`
 		client := http.Client{}
-		req, err := http.NewRequest("POST", DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/publish/"+PUBSUB_NAME+"/"+PUBSUB_TOPIC, strings.NewReader(order))
+		req, err := http.NewRequest("POST", daprHost+":"+daprHttpPost+"/v1.0/publish/"+PUBSUB_NAME+"/"+PUBSUB_TOPIC, strings.NewReader(order))
 		if err != nil {
 			log.Fatal(err.Error())
 			os.Exit(1)
