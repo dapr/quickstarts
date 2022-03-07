@@ -43,6 +43,6 @@ func main() {
 			log.Fatal(err)
 		}
 
-		log.Println("Order passed: ", string(result))
+		fmt.Println("Order passed: ", string(result))
 	}
 }
