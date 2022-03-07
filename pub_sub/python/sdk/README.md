@@ -16,22 +16,17 @@ And one subscriber:
 
 ### Run Python message publisher with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd checkout
-```
-
-2. Install dependencies: 
+1. Install dependencies: 
 
 <!-- STEP
 name: Install python dependencies
-working_dir: ./checkout
 -->
 
 ```bash
+cd pub_sub/python/sdk/checkout
 pip3 install -r requirements.txt 
 ```
+<!-- END_STEP -->
 
 3. Run the Python publisher app with Dapr: 
 
@@ -39,10 +34,10 @@ pip3 install -r requirements.txt
 name: Run python publisher
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
-  - "Exited Dapr successfully"
+  - '== APP == INFO:root:Published data: {"orderId": 1}'
+  - '== APP == INFO:root:Published data: {"orderId": 2}'
   - "Exited App successfully"
+  - "Exited Dapr successfully"
 expected_stderr_lines:
 output_match_mode: substring
 working_dir: ./checkout
@@ -57,31 +52,24 @@ dapr run --app-id checkout --components-path ../../../components/ -- python3 app
 <!-- END_STEP -->
 ### Run Python message subscriber with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
-
 <!-- STEP
-name: Install python dependencies
-working_dir: ./order-processor
+name: run
 -->
 
 ```bash
+cd pub_sub/python/sdk/order-processor-fastapi
 pip3 install -r requirements.txt 
 ```
 
-3. Run the Python subscriber app with Dapr: 
+<!-- END_STEP -->
+
+2. Run the Python subscriber app with Dapr: 
 
 <!-- STEP
 name: Run python subscriber
 expected_stdout_lines:
+  - '== APP == Subscriber received : 4'
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -93,7 +81,7 @@ sleep: 10
 
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- app.py
 ```
 
 <!-- END_STEP -->
