@@ -55,7 +55,6 @@ jobs:
       - name: Build docker image
         run: | 
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -68,7 +67,32 @@ jobs:
       - name: publish image to dockerhub
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make push
+            popd
+          done
+      - name: GitHub container registry login
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build docker image
+        run: | 
+          SAMPLE_REGISTRY=ghrc.io/dapr/samples
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make build
+            popd
+          done
+      - name: publish image to ghcr
+        run: |
+          SAMPLE_REGISTRY=ghrc.io/dapr/samples
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
@@ -89,7 +113,6 @@ jobs:
       - name: create docker manifest
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -102,7 +125,6 @@ jobs:
       - name: publish manifest to dockerhub
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
