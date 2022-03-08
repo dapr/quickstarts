@@ -25,7 +25,7 @@ And one subscriber:
 1. Install dependencies:
 
 <!-- STEP
-name: Install Dotnet dependencies
+name: Install Java dependencies
 -->
 
 ```bash
@@ -36,7 +36,7 @@ mvn clean install
 
 2. Run the Java publisher app with Dapr:
 <!-- STEP
-name: Run Dotnet publisher
+name: Run Java publisher
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
   - 'Published data: 1'
@@ -60,7 +60,7 @@ sleep: 10
 1. Navigate to the directory and install dependencies:
 
 <!-- STEP
-name: Install Dotnet dependencies
+name: Install Java dependencies
 -->
 
 ```bash
@@ -71,7 +71,7 @@ mvn clean install
 
 2. Run the Java publisher app with Dapr:
 <!-- STEP
-name: Run Dotnet publisher
+name: Run Java publisher
 working_dir: ./checkout
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
@@ -95,7 +95,7 @@ sleep: 10
 
 1. Navigate to directory and install dependencies:
 <!-- STEP
-name: Install Dotnet dependencies
+name: Install Java dependencies
 -->
 
 ```bash
@@ -106,7 +106,7 @@ mvn clean install
 
 2. Run the Java subscriber app with Dapr:
 <!-- STEP
-name: Run Dotnet publisher
+name: Run Java publisher
 working_dir: ./order-processor
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
