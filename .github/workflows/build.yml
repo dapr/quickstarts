@@ -131,3 +131,26 @@ jobs:
             make manifest-push
             popd
           done
+      - name: create ghcr manifest
+        run: |
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_REGISTRY=ghrc.io/dapr/samples
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make manifest-create
+            popd
+          done
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
+      - name: publish manifest to ghcr
+        run: |
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_REGISTRY=ghrc.io/dapr/samples
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make manifest-push
+            popd
+          done
