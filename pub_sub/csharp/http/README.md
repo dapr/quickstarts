@@ -45,6 +45,7 @@ expected_stdout_lines:
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
+working_dir: ./checkout
 output_match_mode: substring
 working_dir: ./checkout
 background: true
@@ -52,7 +53,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkout --components-path ../../../components/ -- dotnet run
+dapr run --app-id checkout --components-path ../../../components/ -- dotnet run --project .
 ```
 
 <!-- END_STEP -->
@@ -87,6 +88,7 @@ expected_stdout_lines:
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
+working_dir: ./order-processor
 output_match_mode: substring
 working_dir: ./order-processor
 background: true
@@ -95,7 +97,7 @@ sleep: 10
 
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 7001 -- dotnet run
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 7001 -- dotnet run --project .
 ```
 
 <!-- END_STEP -->
