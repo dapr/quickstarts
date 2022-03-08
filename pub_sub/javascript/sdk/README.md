@@ -16,84 +16,68 @@ And one subscriber:
 
 ### Run Node message publisher with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd checkout
-```
-
-2. Install dependencies: 
+1. Install dependencies: 
 
 <!-- STEP
 name: Install Node dependencies
-working_dir: ./checkout
 -->
 
 ```bash
+cd pub_sub/javascript/sdk/checkout
 npm install
 ```
-
+<!-- END_STEP -->
 3. Run the Node publisher app with Dapr: 
 
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
-  - "Exited Dapr successfully"
+  - '== APP == Published data: {"orderId":2}'
+  - '== APP == Published data: {"orderId":3}'
   - "Exited App successfully"
+  - "Exited Dapr successfully"
 expected_stderr_lines:
 output_match_mode: substring
-working_dir: ./checkout
 background: true
 sleep: 10
 -->
     
 ```bash
-npm start:dapr
+dapr run --app-id checkout --components-path pub_sub/components/  --app-port 5001 -- node pub_sub/javascript/sdk/checkout/
 ```
 
 <!-- END_STEP -->
 ### Run Node message subscriber with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
+1. Install dependencies: 
 
 <!-- STEP
 name: Install Node dependencies
-working_dir: ./order-processor
 -->
 
 ```bash
+cd pub_sub/javascript/sdk/order-processor
 npm install
 ```
-
-3. Run the Node subscriber app with Dapr: 
+<!-- END_STEP -->
+3. Run the Node publisher app with Dapr: 
 
 <!-- STEP
-name: Run Node subscriber
+name: Run Node publisher
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
+  - '== APP == Subscriber received: {"orderId":6}'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
-working_dir: ./order-processor
 background: true
 sleep: 10
 -->
-
-
+    
 ```bash
-npm start:dapr
+dapr run --app-id checkout --components-path pub_sub/components/  --app-port 5001 -- node pub_sub/javascript/sdk/order-processor/
 ```
 
 <!-- END_STEP -->
