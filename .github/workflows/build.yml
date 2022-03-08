@@ -154,4 +154,3 @@ jobs:
             make manifest-push
             popd
           done
-      
