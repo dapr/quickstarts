@@ -74,7 +74,6 @@ jobs:
             popd
           done
       - name: GitHub container registry login
-        if: matrix.target_os != 'darwin' && github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
@@ -82,20 +81,22 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         run: | 
+          SAMPLE_REGISTRY=ghrc.io/dapr/samples
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
-            make buildghrc
+            make build
             popd
           done
       - name: publish image to ghcr
         run: |
+          SAMPLE_REGISTRY=ghrc.io/dapr/samples
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
-            make pushghrc
+            make push
             popd
           done
   publish:

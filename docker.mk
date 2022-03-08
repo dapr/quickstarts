@@ -6,7 +6,6 @@
 # Common make targets for samples' Docker images.
 
 SAMPLE_REGISTRY        ?= docker.io/dapriosamples
-GHRC_REGISTRY          ?= ghrc.io/dapr/samples
 TARGET_OS              ?= linux
 TARGET_ARCH            ?= amd64
 REL_VERSION            ?= latest
@@ -78,33 +77,3 @@ endef
 
 # Generate docker manifest create
 $(foreach ITEM,$(APPS),$(eval $(call genDockerManifestPush,$(ITEM))))
-
-PHONY: buildghrc
-
-BUILDGHRC_APPS:=$(foreach ITEM,$(APPS),buildghrc-$(ITEM))
-buildghrc: $(BUILDGHRC_APPS)
-
-# Generate docker image build targets for GHRC
-define genDockerImageBuildForGHRC
-.PHONY: buildghrc-$(1)
-buildghrc-$(1):
-	$(DOCKER) build -f $(1)/$(DOCKERFILE) $(1)/. -t $(GHRC_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH) --platform $(TARGET_OS)/$(TARGET_ARCH)
-endef
-
-# Generate docker image build targets for GHRC
-$(foreach ITEM,$(APPS),$(eval $(call genDockerImageBuildForGHRC,$(ITEM))))
-
-# push docker image to the ghrc registry
-.PHONY: pushghrc
-PUSHGHRC_APPS:=$(foreach ITEM,$(APPS),pushghrc-$(ITEM))
-pushghrc: $(PUSHGHRC_APPS)
-
-# Generate docker image push targets for GHRC
-define genDockerImagePushToGHRC
-.PHONY: pushghrc-$(1)
-pushghrc-$(1):
-	$(DOCKER) push $(GHRC_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH)
-endef
-
-# Generate docker image push targets for GHRC
-$(foreach ITEM,$(APPS),$(eval $(call genDockerImagePushToGHRC,$(ITEM))))
