@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: node-subscriber
-        image: dapriosamples/pubsub-node-subscriber:latest
+        image: ghrc.io/dapr/samples/pubsub-node-subscriber:latest
         ports:
         - containerPort: 3000
         imagePullPolicy: Always

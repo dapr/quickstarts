@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: dapriosamples/secretstorenode:latest
+        image: ghrc.io/dapr/samples/secretstorenode:latest
         env:
         - name: SECRET_STORE
           value: "kubernetes"
