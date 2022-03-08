@@ -6,6 +6,7 @@
 # Common make targets for samples' Docker images.
 
 SAMPLE_REGISTRY        ?= docker.io/dapriosamples
+GHRC_REGISTRY          ?= ghrc.io/dapr/samples
 TARGET_OS              ?= linux
 TARGET_ARCH            ?= amd64
 REL_VERSION            ?= latest
