@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: multiply
-        image: dapriosamples/distributed-calculator-slow-python:latest
+        image: ghrc.io/dapr/samples/distributed-calculator-slow-python:latest
         ports:
         - containerPort: 5001
         imagePullPolicy: Always

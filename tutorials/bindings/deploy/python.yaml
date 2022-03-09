@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
       - name: python
-        image: docker.io/dapriosamples/bindings-pythonapp:latest
+        image: ghrc.io/dapr/samples/bindings-pythonapp:latest

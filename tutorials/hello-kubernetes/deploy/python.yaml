@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
       - name: python
-        image: dapriosamples/hello-k8s-python:latest
+        image: ghrc.io/dapr/samples/hello-k8s-python:latest
