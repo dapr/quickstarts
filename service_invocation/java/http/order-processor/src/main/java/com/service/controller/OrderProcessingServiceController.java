@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class OrderProcessingServiceController {
-    @PostMapping(path = "/neworder", consumes = MediaType.ALL_VALUE)
+    @PostMapping(path = "/orders", consumes = MediaType.ALL_VALUE)
     public String processOrders(@RequestBody Order body) {
         System.out.println("Order received: "+ body.getOrderId());
         return "CID" + body.getOrderId();

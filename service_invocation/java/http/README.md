@@ -44,14 +44,6 @@ name: Run Java checkout service
 expected_stdout_lines:
   - "== APP == Order passed: 1"
   - "== APP == Order passed: 2"
-  - "== APP == Order passed: 3"
-  - "== APP == Order passed: 4"
-  - "== APP == Order passed: 5"
-  - "== APP == Order passed: 6"
-  - "== APP == Order passed: 7"
-  - "== APP == Order passed: 8"
-  - "== APP == Order passed: 9"
-  - "== APP == Order passed: 10"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -90,14 +82,6 @@ name: Run Java checkout service
 expected_stdout_lines:
   - "== APP == Order received: 1"
   - "== APP == Order received: 2"
-  - "== APP == Order received: 3"
-  - "== APP == Order received: 4"
-  - "== APP == Order received: 5"
-  - "== APP == Order received: 6"
-  - "== APP == Order received: 7"
-  - "== APP == Order received: 8"
-  - "== APP == Order received: 9"
-  - "== APP == Order received: 10"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
