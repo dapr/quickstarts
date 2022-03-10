@@ -13,7 +13,7 @@ If you are already familiar with Dapr, the tutorials in this repository reflect 
 ## How to use this repository
 
 ### Quickstarts
-A good place to start is the quickstarts at the root of the repository. Choose a Dapr building block, such as [service invocation](./service_invocation) or [pubsub](./pubsub) and familiarize yourself with the capability and how you can use its.  
+A good place to start is the quickstarts at the root of the repository. Choose a Dapr building block, such as [service invocation](./service_invocation) or [pubsub](./pubsub) and familiarize yourself with the capability and how you can use it.  
 
 | Dapr Quickstart | Description |
 |:--------------------:|:--------------------:|
