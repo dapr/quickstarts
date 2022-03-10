@@ -7,7 +7,7 @@
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr/) instructions.
 
 ### Quickstarts
-Pick a building block API, (for example Pub-Sub, State Management) and rapidly try it out in your favorite language SDK (recommended), or via HTTP. Visit the [Dapr Docs Quickstarts Guide]() for a comprehensive walkthrough of each example. 
+Pick a building block API (for example, pub-sub, state management) and rapidly try it out in your favorite language SDK (recommended), or via HTTP. Visit the [Dapr Docs Quickstarts Guide]() for a comprehensive walkthrough of each example. 
 
 | Dapr Quickstart | Description |
 |:--------------------:|:--------------------:|
