@@ -81,7 +81,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         env:
-          SAMPLE_REGISTRY: ghrc.io/dapr/samples
+          SAMPLE_REGISTRY: ghrc.io/tanvigour/samples
         run: | 
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -92,7 +92,7 @@ jobs:
           done
       - name: publish image to ghcr
         env:
-          SAMPLE_REGISTRY: ghrc.io/dapr/samples
+          SAMPLE_REGISTRY: ghrc.io/tanvigour/samples
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -141,7 +141,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: create ghcr manifest
         env: 
-          SAMPLE_REGISTRY: ghrc.io/dapr/samples
+          SAMPLE_REGISTRY: ghrc.io/tanvigour/samples
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           
@@ -156,7 +156,7 @@ jobs:
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish manifest to ghcr
         env: 
-          SAMPLE_REGISTRY: ghrc.io/dapr/samples
+          SAMPLE_REGISTRY: ghrc.io/tanvigour/samples
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
