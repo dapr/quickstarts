@@ -6,20 +6,14 @@
 
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr/) instructions.
 
-This repository is designed to help you explore different Dapr capabilities. Included are a collection of quickstarts and tutorials that are aimed to get you started with Dapr quickly. You can go through the quickstarts based on the areas you would like to explore. Each quickstart highlights a different Dapr capability and includes sample code for a handful of different languages. Be sure to visit the [Dapr Docs Quickstarts Guide]() for a comprehensive walkthrough of each example. 
-
-If you are already familiar with Dapr, the tutorials in this repository reflect more advanced scenarios, often combining multiple Dapr capabilities across many languages.
-
-## How to use this repository
-
 ### Quickstarts
-A good place to start is the quickstarts at the root of the repository. Choose a Dapr building block, such as [service invocation](./service_invocation) or [pubsub](./pubsub) and familiarize yourself with the capability and how you can use it.  
+Pick a building block API (e.g. Pub-Sub, State Management) and rapidly try it out in your favorite language SDK (recommended), or via HTTP REST. Be sure to visit the [Dapr Docs Quickstarts Guide]() for a comprehensive walkthrough of each example. 
 
 | Dapr Quickstart | Description |
 |:--------------------:|:--------------------:|
-| [Publish and Subscribe](./pub_sub) | Highlights how to send messages to a topic with one service and subscribe to that topic with another service. |
-| [Service Invocation](./service_invocation) | Highlights how to discover and securely invoke methods across services.  |
-| [State Management](./state_management/) | Highlights how to store data as key/value pairs in supported state stores. |
+| [Publish and Subscribe](./pub_sub) | Demonstrates how to send messages to a topic with one service and subscribe to that topic with another service. |
+| [Service Invocation](./service_invocation) |  Demonstrates to discover and securely invoke methods across services.  |
+| [State Management](./state_management/) | Demonstrates how to store data as key/value pairs in supported state stores. |
 | Bindings | Coming soon... | 
 | Actors | Coming soon... |
 | Observability | Coming soon... |
@@ -27,58 +21,17 @@ A good place to start is the quickstarts at the root of the repository. Choose a
 | Configuration | Coming soon... |
 
 ### Tutorials
-The hello-world tutorial demonstrates how to run Dapr in standalone mode locally on your machine and demonstrates state management and service invocation in a simple application.
+Go deeper into a topic or scenario, oftentimes using building block APIs together to solve problems (e.g. build a distributed calculator, build and deploy an app to Kubernetes).
 
-If you are familiar with Kubernetes and want to see how to run the hello-world tutorial in a Kubernetes environment, look for the *hello-kubernetes* in the tutorials directory. Other tutorials such as *pub-sub*, *bindings* and the *distributed-calculator* explore different Dapr capabilities including instructions for running both locally and on Kubernetes and can be completed in any order. A full list of the tutorials can be found [below](#tutorials).
+| Tutorials  | Description                                                                                                                                                              |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Hello-world](./tutorials/hello-world)                       | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                              |
+| [Hello-kubernetes](./tutorials/hello-kubernetes)             | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management                         |
+| [Distributed-calculator](./tutorials/distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management.                                                                                                                  |
+| [Pub-sub](./tutorials/pub-sub)                               | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                        |
+| [Bindings](./tutorials/bindings)                             | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.          |
+| [Observability](./tutorials/observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component.                                                              |
+| [Secret Store](./tutorials/secretstore)                      | Demonstrates the use of Dapr Secrets API to access secret stores.                                                      |
 
-At anytime, you can explore the [Dapr documentation](https://docs.dapr.io/) or [SDK specific samples](#sdks) and come back to try additional tutorials. 
-
-When you're done, consider exploring the [Dapr samples repository](https://github.com/dapr/samples) for additional code samples contributed by the community that show more advanced or specific usages of Dapr.
-
-If you would like to jump in right away by using [GitHub Codespaces](https://github.com/features/codespaces), you can click on "Code" in this repo and "Open with Codespaces", which will let you get started right away with [`dapr init`](https://docs.dapr.io/getting-started/install-dapr-selfhost/). The Codespace will be based off a personal fork of this repo (if you have not already forked this repo, one will be created for you), so feel free to explore!
->Note GitHub Codespaces currently requires GitHub Team and Enterprise Cloud plans plus configuration by organization owners.  See the [CodeSpaces FAQ](https://github.com/features/codespaces) for current information on pre-reqs.  
-
-| Tutorials  | Description                                                                                                                                                        |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Hello-world](./tutorials/hello-world)            | Demonstrates how to run Dapr locally. Highlights service invocation and state management.                                                                                                      |
-| [Hello-kubernetes](./tutorials/hello-kubernetes)       | Demonstrates how to run Dapr in Kubernetes. Highlights service invocation and state management.                                                                                                |
-| [Distributed-calculator](./tutorials/distributed-calculator) | Demonstrates a distributed calculator application that uses Dapr services to power a React web app. Highlights polyglot (multi-language) programming, service invocation and state management. |
-| [Pub-sub](./tutorials/pub-sub)                | Demonstrates how to use Dapr to enable pub-sub applications. Uses Redis as a pub-sub component.                                                                                          |
-| [Bindings](./tutorials/bindings)            | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.                                                                            |
-| [Observability](./tutorials/observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
-| [Secret Store](./tutorials/secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
-
-
-## Supported Dapr Runtime version
-
-| Dapr Quickstart Version  | Dapr Runtime Version |
-|:--------------------:|:--------------------:|
-| [v1.6.0](https://github.com/dapr/quickstarts/tree/v1.6.0) | [v1.6.0](https://github.com/dapr/dapr/tree/v1.6.0) |
-| [v1.5.0](https://github.com/dapr/quickstarts/tree/v1.5.0) | [v1.5.0](https://github.com/dapr/dapr/tree/v1.5.0) |
-| [v1.4.0](https://github.com/dapr/quickstarts/tree/v1.4.0) | [v1.4.0](https://github.com/dapr/dapr/tree/v1.4.0) |
-| [v1.3.0](https://github.com/dapr/quickstarts/tree/v1.3.0) | [v1.3.0](https://github.com/dapr/dapr/tree/v1.3.0) |
-| [v1.2.0](https://github.com/dapr/quickstarts/tree/v1.2.0) | [v1.2.0](https://github.com/dapr/dapr/tree/v1.2.0) |
-| [v1.1.0](https://github.com/dapr/quickstarts/tree/v1.1.0) | [v1.1.0](https://github.com/dapr/dapr/tree/v1.1.0) |
-| [v1.0.0](https://github.com/dapr/quickstarts/tree/v1.0.0) | [v1.0.0](https://github.com/dapr/dapr/tree/v1.0.0) |
-
-## SDKs
-
-Find SDK-specific samples in the links below:
-
-- **[.NET SDK](https://github.com/dapr/dotnet-sdk)**
-  - **[Getting Started with ASP.NET Core](https://github.com/dapr/dotnet-sdk/tree/master/examples/AspNetCore)** - Samples for developing ASP.NET applications using the Dapr .NET SDK
-  - **[Getting Started with .NET Actors](https://docs.dapr.io/developing-applications/sdks/dotnet/dotnet-actors/dotnet-actors-howto/)** - Tutorial for developing actor applications using the Dapr .NET SDK including **[actor samples](https://github.com/dapr/dotnet-sdk/tree/master/examples/Actor)**
-- **[Java SDK](https://github.com/dapr/java-sdk)**
-  - **[Examples](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples)** - Examples for developing Java applications using Dapr
-  - **[Example for Java Actors](https://github.com/dapr/java-sdk/tree/master/examples/src/main/java/io/dapr/examples/actors)** - Example for developing an actor application using the Java SDK.
-- **[Go SDK](https://github.com/dapr/go-sdk)** 
-  - **[Examples](https://github.com/dapr/go-sdk/tree/master/examples)** using the client library to connect to Dapr API, and how to create a Dapr application in either HTTP or gRPC.
-- **[Javascript SDK](https://github.com/dapr/js-sdk)**
-  - **[Examples](https://github.com/dapr/js-sdk/tree/master/examples)** - Examples for developing Javascript applications using Dapr
-- **[Python SDK](https://github.com/dapr/python-sdk)**
-  - **[Examples](https://github.com/dapr/python-sdk/tree/master/examples)** - Examples for developing Python applications using Dapr
-  - **[Example for Python Actors](https://github.com/dapr/python-sdk/tree/master/examples/demo_actor)** - Example for developing an actor application using the Python SDK.
-  
 ## Code of Conduct
 
 Please refer to our [Dapr Community Code of Conduct](https://github.com/dapr/community/blob/master/CODE-OF-CONDUCT.md)
