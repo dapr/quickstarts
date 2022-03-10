@@ -80,8 +80,9 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
+        env:
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
         run: | 
-          SAMPLE_REGISTRY=ghrc.io/dapr/samples
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
@@ -90,8 +91,9 @@ jobs:
             popd
           done
       - name: publish image to ghcr
+        env:
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
         run: |
-          SAMPLE_REGISTRY=ghrc.io/dapr/samples
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
@@ -138,9 +140,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: create ghcr manifest
+        env: 
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-          SAMPLE_REGISTRY=ghrc.io/dapr/samples
+          
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -151,9 +155,10 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish manifest to ghcr
+        env: 
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-          SAMPLE_REGISTRY=ghrc.io/dapr/samples
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
