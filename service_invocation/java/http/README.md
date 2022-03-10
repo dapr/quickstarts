@@ -15,7 +15,10 @@ And one order processor service:
 ## Pre-requisites
 
 * [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr/).
-* Java JDK 11 (or greater): [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11) or [OpenJDK](https://jdk.java.net/11/).
+* Java JDK 11 (or greater):
+    * [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
+    * [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
+    * [OpenJDK 11](https://jdk.java.net/11/)
 * [Apache Maven](https://maven.apache.org/install.html) version 3.x.
 
 ### Run Java checkout service with Dapr
