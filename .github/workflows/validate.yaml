@@ -163,16 +163,6 @@ jobs:
           pushd tutorials/observability
           make validate
           popd
-      - name: Validate csharp pubsub http
-        run: |
-          pushd pub_sub/csharp/http
-          make validate
-          popd
-      - name: Validate csharp pubsub sdk
-        run: |
-          pushd pub_sub/csharp/sdk
-          make validate
-          popd
       - name: Validate Go pubsub http
         run: |
           pushd pub_sub/go/http
