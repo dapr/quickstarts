@@ -57,7 +57,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.CR_PAT }}
       - name: Build docker image
         env:
           SAMPLE_REGISTRY: ghrc.io/tanvigour/samples
@@ -96,7 +96,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.CR_PAT }}
       - name: create ghcr manifest
         env: 
           SAMPLE_REGISTRY: ghrc.io/tanvigour/samples
