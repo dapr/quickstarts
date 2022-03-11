@@ -5,7 +5,7 @@
 #
 # Common make targets for samples' Docker images.
 
-SAMPLE_REGISTRY        ?= docker.io/tanvigour/samples
+SAMPLE_REGISTRY        ?= docker.io/tanvigour
 TARGET_OS              ?= linux
 TARGET_ARCH            ?= amd64
 REL_VERSION            ?= latest
