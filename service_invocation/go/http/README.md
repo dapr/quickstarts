@@ -21,7 +21,7 @@ name: Build Go file
 -->
 
 ```bash
-cd service_invocation/go/http/order-processor
+cd ./order-processor
 go build app.go
 ```
 
@@ -43,7 +43,7 @@ sleep: 10
 -->
 
 ```bash
-cd service_invocation/go/http/order-processor
+cd ./order-processor
 dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run app.go
 ```
 
@@ -58,7 +58,7 @@ name: Build Go file
 -->
 
 ```bash
-cd service_invocation/go/http/checkout
+cd ./checkout
 go build app.go
 ```
 <!-- END_STEP -->
@@ -80,7 +80,7 @@ sleep: 10
 -->
     
 ```bash
-cd service_invocation/go/http/checkout
+cd ./checkout
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- go run app.go
 ```
 
