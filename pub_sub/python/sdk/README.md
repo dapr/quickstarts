@@ -23,7 +23,7 @@ name: Install python dependencies
 -->
 
 ```bash
-cd pub_sub/python/sdk/checkout
+cd ./checkout
 pip3 install -r requirements.txt 
 ```
 <!-- END_STEP -->
@@ -57,7 +57,7 @@ name: run
 -->
 
 ```bash
-cd pub_sub/python/sdk/order-processor-fastapi
+cd ./order-processor
 pip3 install -r requirements.txt 
 ```
 
@@ -81,7 +81,7 @@ sleep: 10
 
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- app.py
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
 ```
 
 <!-- END_STEP -->

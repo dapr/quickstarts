@@ -23,7 +23,7 @@ name: Install Dotnet dependencies
 -->
 
 ```bash
-cd pub_sub/csharp/sdk/checkout
+cd ./checkout
 dotnet restore
 dotnet build
 ```
@@ -34,10 +34,10 @@ dotnet build
 name: Run Dotnet publisher
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
-  - "Exited Dapr successfully"
+  - '== APP == Published data: Order { OrderId = 1 }'
+  - '== APP == Published data: Order { OrderId = 2 }'
   - "Exited App successfully"
+  - "Exited Dapr successfully"
 expected_stderr_lines:
 working_dir: ./checkout
 output_match_mode: substring
@@ -59,7 +59,7 @@ name: Install Dotnet dependencies
 -->
 
 ```bash
-cd pub_sub/csharp/sdk/order-processor
+cd ./order-processor
 dotnet restore
 dotnet build
 ```
@@ -70,13 +70,12 @@ dotnet build
 name: Run Dotnet subscriber
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
+  - '== APP == Subscriber received : Order { OrderId = 2 }'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
-output_match_mode: substring
 working_dir: ./order-processor
+output_match_mode: substring
 background: true
 sleep: 10
 -->

@@ -22,40 +22,6 @@ And one subscriber:
 
 ### Run Java message publisher app with Dapr
 
-1. Install dependencies:
-
-<!-- STEP
-name: Install Java dependencies
--->
-
-```bash
-cd pub_sub/java/http/checkout
-mvn clean install
-```
-<!-- END_STEP -->
-
-2. Run the Java publisher app with Dapr:
-<!-- STEP
-name: Run Java publisher
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - 'Published data: 1'
-  - 'Published data: 2'
-  - "Exited App successfully"
-  - "Exited Dapr successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 10
--->
-
-```bash
- dapr run --app-id checkout --components-path pub_sub/components -- java -jar pub_sub/java/http/checkout/target/CheckoutService-0.0.1-SNAPSHOT.jar
-```
-<!-- END_STEP -->
-
-### Run Java message subscriber app with Dapr
-
 
 1. Navigate to the directory and install dependencies:
 
