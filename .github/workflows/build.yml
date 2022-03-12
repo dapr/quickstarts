@@ -14,10 +14,6 @@ on:
       - v*
     paths-ignore: 
       - '**.md'
-  pull_request:
-    branches:
-      - master
-      - release-*
   workflow_dispatch:
 jobs:
   build:
@@ -58,8 +54,7 @@ jobs:
         run: docker buildx inspect --bootstrap
       - name: Build docker image
         run: | 
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
-
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -67,14 +62,39 @@ jobs:
             popd
           done
       - name: docker login
-        if: github.event_name != 'pull_request'
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish image to dockerhub
-        if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
-
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make push
+            popd
+          done
+      - name: GitHub container registry login
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build docker image
+        env:
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
+        run: | 
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make build
+            popd
+          done
+      - name: publish image to ghcr
+        env:
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
+        run: |
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
@@ -93,10 +113,8 @@ jobs:
       - name: Parse release version and set REL_VERSION
         run: python ./.github/scripts/get_release_version.py
       - name: create docker manifest
-        if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
-
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -104,14 +122,43 @@ jobs:
             popd
           done
       - name: docker login
-        if: github.event_name != 'pull_request'
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish manifest to dockerhub
-        if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings middleware observability secretstore)
-
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make manifest-push
+            popd
+          done
+      - name: GitHub container registry login
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: create ghcr manifest
+        env: 
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
+        run: |
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make manifest-create
+            popd
+          done
+      - name: docker login
+        run: |
+          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
+      - name: publish manifest to ghcr
+        env: 
+          SAMPLE_REGISTRY:ghrc.io/dapr/samples
+        run: |
+          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}

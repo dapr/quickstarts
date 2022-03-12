@@ -134,7 +134,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id python-subscriber --app-port 5000 python3 app.py
+dapr run --app-id python-subscriber --app-port 5001 python3 app.py
 ```
 
 <!-- END_STEP -->
@@ -566,17 +566,18 @@ fetch('/publish', {
 
 #### Server
 
-The server is a basic express application that exposes a POST endpoint: `/publish`. This takes the requests from the client and publishes them against Dapr. `body-parser` is used to parse the JSON out of the incoming requests:
+The server is a basic express application that exposes a POST endpoint: `/publish`. This takes the requests from the client and publishes them against Dapr. Express's built in JSON middleware function is used to parse the JSON out of the incoming requests:
 
 ```js
-app.use(bodyParser.json());
+app.use(express.json());
 ```
 
-This allows us to determine which topic to publish the message with. To publish messages against Dapr, the URL needs to look like: `http://localhost:<DAPR_URL>/publish/<PUBSUB_NAME>/<TOPIC>`, so the `publish` endpoint builds a URL and posts the JSON against it: 
+This allows us to determine which topic to publish the message with. To publish messages against Dapr, the URL needs to look like: `http://localhost:<DAPR_URL>/publish/<PUBSUB_NAME>/<TOPIC>`, so the `publish` endpoint builds a URL and posts the JSON against it. The POST request also needs to return a success code in the response upon successful completion.   
 
 ```js
-const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body.messageType}`;
-request( { uri: publishUrl, method: 'POST', json: req.body } );
+  const publishUrl = `${daprUrl}/publish/${pubsubName}/${req.body?.messageType}`;
+  await axios.post(publishUrl, req.body);
+  return res.sendStatus(200);
 ```
 
 Note how the `daprUrl` determines what port Dapr live on: 
@@ -587,10 +588,10 @@ const daprUrl = `http://localhost:${process.env.DAPR_HTTP_PORT || 3500}/v1.0`;
 
 By default, Dapr live on 3500, but if we're running Dapr locally and set it to a different port (using the `--app-port` flag in the CLI `run` command), then that port will be injected into the application as an environment variable.
 
-The server also hosts the React application itself by forwarding all other requests to the built client code:
+The server also hosts the React application itself by forwarding default home page `/` route requests to the built client code:
 
 ```js
-app.get('*', function (_req, res) {
+app.get('/', function (_req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 ```
