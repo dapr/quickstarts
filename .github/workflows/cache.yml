@@ -1,8 +1,9 @@
 name: Cache Docker 3rd Party Images
 
 on:
-  schedule:
-    - cron: '0 0 1 * *' # trigger on the 1st of every month at midnight
+  push:
+    branches:
+      - 'master'
 
 jobs:
   docker:
@@ -24,17 +25,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - # copy 3rd party zookeeper image from dockerhub to quay and ghcr
+      - # copy multiplatform image from dockerhub to quay and ghcr
         name: Push Image to target registries
         uses: akhilerm/tag-push-action@v2.0.0
         with:
-          src: wurstmeister/zookeeper:latest
+          src: docker.io/paulyuk/kafka:latest
           dst: |
-            ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/zookeeper:latest
-      - # copy 3rd party kafka image from dockerhub to quay and ghcr
-        name: Push Image to target registries
-        uses: akhilerm/tag-push-action@v2.0.0
-        with:
-          src: wurstmeister/kafka:latest
-          dst: |
-            ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/kakfa:latest
+            ghcr.io/paulyuk/paulyuk:latest
