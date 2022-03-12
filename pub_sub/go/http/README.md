@@ -23,7 +23,7 @@ name: Build Go file
 -->
 
 ```bash
-cd pub_sub/go/http/checkout
+cd ./checkout
 go build app.go
 ```
 <!-- END_STEP -->
@@ -44,7 +44,7 @@ sleep: 10
 -->
     
 ```bash
-cd pub_sub/go/http/checkout
+cd ./checkout
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run app.go
 ```
 
@@ -58,7 +58,7 @@ name: Build Go file
 -->
 
 ```bash
-cd pub_sub/go/http/order-processor
+cd ./order-processor
 go build app.go
 ```
 <!-- END_STEP -->
@@ -80,7 +80,7 @@ sleep: 10
 
 
 ```bash
-cd pub_sub/go/http/order-processor
+cd ./order-processor
 dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
 ```
 
