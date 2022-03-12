@@ -21,7 +21,7 @@ name: Install Python dependencies
 -->
 
 ```bash
-cd service_invocation/python/http/order-processor
+cd ./order-processor
 pip3 install -r requirements.txt 
 ```
 
@@ -43,7 +43,7 @@ sleep: 10
 -->
 
 ```bash
-cd service_invocation/python/http/order-processor
+cd ./order-processor
 dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
@@ -58,7 +58,7 @@ name: Install Python dependencies
 -->
 
 ```bash
-cd service_invocation/python/http/checkout
+cd ./checkout
 pip3 install -r requirements.txt 
 ```
 
@@ -81,7 +81,7 @@ sleep: 10
 -->
     
 ```bash
-cd service_invocation/python/http/checkout
+cd ./checkout
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 

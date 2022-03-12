@@ -21,7 +21,7 @@ name: Install Dotnet dependencies
 -->
 
 ```bash
-cd service_invocation/csharp/http/order-processor
+cd ./order-processor
 dotnet restore
 dotnet build
 ```
@@ -44,7 +44,7 @@ sleep: 10
 -->
 
 ```bash
-cd service_invocation/csharp/http/order-processor
+cd ./order-processor
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
@@ -59,7 +59,7 @@ name: Install Dotnet dependencies
 -->
 
 ```bash
-cd service_invocation/csharp/http/checkout
+cd ./checkout
 dotnet restore
 dotnet build
 ```
@@ -83,7 +83,7 @@ sleep: 10
 -->
     
 ```bash
-cd service_invocation/csharp/http/checkout
+cd ./checkout
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
