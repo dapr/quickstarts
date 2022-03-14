@@ -5,7 +5,7 @@
 #
 # Common make targets for samples' Docker images.
 
-SAMPLE_REGISTRY        ?= docker.io/tanvigour
+SAMPLE_REGISTRY        ?= docker.io/dapriosamples
 TARGET_OS              ?= linux
 TARGET_ARCH            ?= amd64
 REL_VERSION            ?= latest
