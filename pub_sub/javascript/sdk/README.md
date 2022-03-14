@@ -23,7 +23,7 @@ name: Install Node dependencies
 -->
 
 ```bash
-cd pub_sub/javascript/sdk/checkout
+cd ./checkout
 npm install
 ```
 <!-- END_STEP -->
@@ -38,13 +38,14 @@ expected_stdout_lines:
   - "Exited App successfully"
   - "Exited Dapr successfully"
 expected_stderr_lines:
+working_dir: ./checkout
 output_match_mode: substring
 background: true
 sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkout --components-path pub_sub/components/  --app-port 5001 -- node pub_sub/javascript/sdk/checkout/
+dapr run --app-id checkout --components-path ../../../components/  --app-port 5001 -- node .
 ```
 
 <!-- END_STEP -->
@@ -57,7 +58,7 @@ name: Install Node dependencies
 -->
 
 ```bash
-cd pub_sub/javascript/sdk/order-processor
+cd ./order-processor
 npm install
 ```
 <!-- END_STEP -->
@@ -66,18 +67,19 @@ npm install
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
+  - '== APP == Subscriber received: {"orderId":2}'
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Subscriber received: {"orderId":6}'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
+working_dir: ./order-processor
 output_match_mode: substring
 background: true
 sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkout --components-path pub_sub/components/  --app-port 5001 -- node pub_sub/javascript/sdk/order-processor/
+dapr run --app-id checkout --components-path ../../../components/  --app-port 5001 -- node .
 ```
 
 <!-- END_STEP -->
