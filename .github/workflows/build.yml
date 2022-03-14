@@ -151,9 +151,6 @@ jobs:
             make manifest-create
             popd
           done
-      - name: docker login
-        run: |
-          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish manifest to ghcr
         env: 
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
