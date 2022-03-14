@@ -23,7 +23,7 @@ name: Install Node dependencies
 -->
 
 ```bash
-cd pub_sub/javascript/http/checkout
+cd ./checkout
 npm install
 ```
 <!-- END_STEP -->
@@ -58,7 +58,7 @@ name: Install Node dependencies
 -->
 
 ```bash
-cd pub_sub/javascript/http/order-processor
+cd ./order-processor
 npm install
 ```
 <!-- END_STEP -->
@@ -67,8 +67,8 @@ npm install
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
+  - '== APP == Subscriber received: { orderId: 2 }'
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Subscriber received: {"orderId":6}'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:

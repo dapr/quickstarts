@@ -16,38 +16,31 @@ And one subscriber:
 
 ### Run Dotnet message publisher with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd checkout
-```
-
-2. Install dependencies: 
+1. Navigate to the directory and install dependencies: 
 
 <!-- STEP
 name: Install Dotnet dependencies
-working_dir: ./checkout
 -->
 
 ```bash
+cd ./checkout
 dotnet restore
 dotnet build
 ```
-
-3. Run the Dotnet publisher app with Dapr: 
+<!-- END_STEP -->
+2. Run the Dotnet publisher app with Dapr: 
 
 <!-- STEP
 name: Run Dotnet publisher
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
-  - "Exited Dapr successfully"
+  - '== APP == Published data: Order { OrderId = 1 }'
+  - '== APP == Published data: Order { OrderId = 2 }'
   - "Exited App successfully"
+  - "Exited Dapr successfully"
 expected_stderr_lines:
 working_dir: ./checkout
 output_match_mode: substring
-working_dir: ./checkout
 background: true
 sleep: 10
 -->
@@ -59,38 +52,30 @@ dapr run --app-id checkout --components-path ../../../components/ -- dotnet run 
 <!-- END_STEP -->
 ### Run Dotnet message subscriber with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory: 
-
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
+1. Navigate to the directory and install dependencies: 
 
 <!-- STEP
 name: Install Dotnet dependencies
-working_dir: ./order-processor
 -->
 
 ```bash
+cd ./order-processor
 dotnet restore
 dotnet build
 ```
-
-3. Run the Dotnet subscriber app with Dapr: 
+<!-- END_STEP -->
+2. Run the Dotnet subscriber app with Dapr: 
 
 <!-- STEP
 name: Run Dotnet subscriber
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
+  - '== APP == Subscriber received : 2'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./order-processor
 output_match_mode: substring
-working_dir: ./order-processor
 background: true
 sleep: 10
 -->
