@@ -21,7 +21,7 @@ name: Install Node dependencies
 -->
 
 ```bash
-cd service_invocation/javascript/http/order-processor
+cd ./order-processor
 npm install
 ```
 
@@ -43,7 +43,7 @@ sleep: 10
 -->
 
 ```bash
-cd service_invocation/javascript/http/order-processor
+cd ./order-processor
 dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
@@ -58,7 +58,7 @@ name: Install Node dependencies
 -->
 
 ```bash
-cd service_invocation/javascript/http/checkout
+cd ./checkout
 npm install
 ```
 
@@ -81,7 +81,7 @@ sleep: 10
 -->
     
 ```bash
-cd service_invocation/javascript/http/checkout
+cd ./checkout
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 

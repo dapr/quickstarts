@@ -17,44 +17,13 @@ And one subscriber:
 ## Pre-requisites
 
 * [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr/).
-* Java JDK 11 (or greater): [Oracle JDK](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11) or [OpenJDK](https://jdk.java.net/11/).
+* Java JDK 11 (or greater):
+    * [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
+    * [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
+    * [OpenJDK 11](https://jdk.java.net/11/)
 * [Apache Maven](https://maven.apache.org/install.html) version 3.x.
 
 ### Run Java message publisher app with Dapr
-
-1. Install dependencies:
-
-<!-- STEP
-name: Install Java dependencies
--->
-
-```bash
-cd pub_sub/java/http/checkout
-mvn clean install
-```
-<!-- END_STEP -->
-
-2. Run the Java publisher app with Dapr:
-<!-- STEP
-name: Run Java publisher
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - 'Published data: 1'
-  - 'Published data: 2'
-  - "Exited App successfully"
-  - "Exited Dapr successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 10
--->
-
-```bash
- dapr run --app-id checkout --components-path pub_sub/components -- java -jar pub_sub/java/http/checkout/target/CheckoutService-0.0.1-SNAPSHOT.jar
-```
-<!-- END_STEP -->
-
-### Run Java message subscriber app with Dapr
 
 
 1. Navigate to the directory and install dependencies:
@@ -119,6 +88,6 @@ background: true
 sleep: 10
 -->
 ```bash
- dapr run --app-port 8080 --app-id order-processor --components-path ../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+ dapr run --app-port 8081 --app-id order-processor --components-path ../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 <!-- END_STEP -->

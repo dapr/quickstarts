@@ -237,7 +237,7 @@ jobs:
         run: |
           pushd service_invocation/python/http
           make validate
-          popd
+          popd     
       - name: Linkcheck README.md
         run: |
           make validate        
