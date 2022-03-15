@@ -32,7 +32,6 @@ go build app.go
 <!-- STEP
 name: Run Go publisher
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Published data:  {"orderId":1}'
   - '== APP == Published data:  {"orderId":2}'
   - "Exited App successfully"
