@@ -163,16 +163,6 @@ jobs:
           pushd tutorials/observability
           make validate
           popd
-      - name: Validate Csharp pubsub http
-        run: |
-          pushd pub_sub/csharp/http
-          make validate
-          popd
-      - name: Validate Csharp pubsub sdk
-        run: |
-          pushd pub_sub/csharp/sdk
-          make validate
-          popd
       - name: Validate Go pubsub http
         run: |
           pushd pub_sub/go/http
@@ -213,11 +203,6 @@ jobs:
           pushd pub_sub/python/sdk
           make validate
           popd
-      - name: Validate csharp service invocation
-        run: |
-          pushd service_invocation/csharp/http
-          make validate
-          popd
       - name: Validate go service invocation
         run: |
           pushd service_invocation/go/http
@@ -233,7 +218,7 @@ jobs:
           pushd service_invocation/javascript/http
           make validate
           popd
-      - name: Validate csharp service invocation
+      - name: Validate python service invocation
         run: |
           pushd service_invocation/python/http
           make validate
