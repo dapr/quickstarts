@@ -45,7 +45,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkout --components-path ../../../components/  --app-port 5000 -- node .
+dapr run --app-id checkout --components-path ../../../components/  --app-port 5001 -- node .
 ```
 
 <!-- END_STEP -->
@@ -83,3 +83,8 @@ dapr run --app-id checkout --components-path ../../../components/  --app-port 50
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```

@@ -85,3 +85,7 @@ dapr run --app-id order-processor --components-path ../../../components/ --app-p
 ```
 
 <!-- END_STEP -->
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```

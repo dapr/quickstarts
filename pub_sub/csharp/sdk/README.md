@@ -82,7 +82,12 @@ sleep: 10
 
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 7002 -- dotnet run --project .
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 7001 -- dotnet run --project .
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```
