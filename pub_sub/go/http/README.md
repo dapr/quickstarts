@@ -68,8 +68,8 @@ go build app.go
 <!-- STEP
 name: Run Go subscriber
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Subscriber received:  {"orderId":10}'
+  - "You're up and running! Both Dapr and your app logs will appear here."
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
