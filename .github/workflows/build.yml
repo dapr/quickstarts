@@ -14,6 +14,10 @@ on:
       - v*
     paths-ignore: 
       - '**.md'
+  pull_request:
+    branches:
+      - master
+      - release-*
   workflow_dispatch:
 jobs:
   build:
@@ -53,6 +57,7 @@ jobs:
       - name: Check platforms buildx supports
         run: docker buildx inspect --bootstrap
       - name: Build docker image
+        if: github.event_name != 'pull_request'
         run: | 
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -62,9 +67,11 @@ jobs:
             popd
           done
       - name: docker login
+        if: github.event_name != 'pull_request'
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish image to dockerhub
+        if: github.event_name != 'pull_request'
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -74,12 +81,14 @@ jobs:
             popd
           done
       - name: GitHub container registry login
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
+        if: github.event_name != 'pull_request'
         env:
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: | 
@@ -91,6 +100,7 @@ jobs:
             popd
           done
       - name: publish image to ghcr
+        if: github.event_name != 'pull_request'
         env:
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
@@ -113,6 +123,7 @@ jobs:
       - name: Parse release version and set REL_VERSION
         run: python ./.github/scripts/get_release_version.py
       - name: create docker manifest
+        if: github.event_name != 'pull_request'
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -122,9 +133,11 @@ jobs:
             popd
           done
       - name: docker login
+        if: github.event_name != 'pull_request'
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish manifest to dockerhub
+        if: github.event_name != 'pull_request'
         run: |
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -134,12 +147,14 @@ jobs:
             popd
           done
       - name: GitHub container registry login
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: create ghcr manifest
+        if: github.event_name != 'pull_request'
         env: 
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
@@ -152,6 +167,7 @@ jobs:
             popd
           done
       - name: publish manifest to ghcr
+        if: github.event_name != 'pull_request'
         env: 
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
