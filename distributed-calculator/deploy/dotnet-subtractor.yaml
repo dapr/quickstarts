@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: subtract
-        image: dapriosamples/distributed-calculator-csharp:latest
+        image: ghcr.io/dapr/samples/distributed-calculator-csharp:latest
         ports:
         - containerPort: 80
         imagePullPolicy: Always
