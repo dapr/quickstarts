@@ -57,7 +57,6 @@ jobs:
       - name: Check platforms buildx supports
         run: docker buildx inspect --bootstrap
       - name: Build docker image
-        if: github.event_name != 'pull_request'
         run: | 
           SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -88,7 +87,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
-        if: github.event_name != 'pull_request'
         env:
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: | 
