@@ -130,12 +130,12 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate Java pubsub
         run: |
-          pushd pubsub/java/http
+          pushd pub_sub/java/http
           make validate
           popd
       - name: Validate Java sdk pubsub
         run: |
-          pushd pubsub/java/sdk
+          pushd pub_sub/java/sdk
           make validate
           popd
       - name: Linkcheck README.md

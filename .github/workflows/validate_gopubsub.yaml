@@ -130,12 +130,12 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate Go http pubsub
         run: |
-          pushd pubsub/go/http
+          pushd pub_sub/go/http
           make validate
           popd
       - name: Validate Go sdk pubsub
         run: |
-          pushd pubsub/go/sdk
+          pushd pub_sub/go/sdk
           make validate
           popd
       - name: Linkcheck README.md
