@@ -1,11 +1,11 @@
 version: '2'
 services:
   zookeeper:
-    image: wurstmeister/zookeeper:latest
+    image: ghcr.io/dapr/3rdparty/zookeeper:latest
     ports:
       - "2181:2181"
   kafka:
-    image: wurstmeister/kafka:latest
+    image: ghcr.io/dapr/3rdparty/kafka:latest
     ports:
       - "9092:9092"
     environment:
