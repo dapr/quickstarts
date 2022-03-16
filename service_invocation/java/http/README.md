@@ -77,7 +77,7 @@ working_dir: ./order-processor
 ```bash
 mvn clean install
 ```
-
+<!-- END_STEP -->
 3. Run the Java order-processor app with Dapr:
 
 <!-- STEP
