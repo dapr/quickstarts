@@ -3,7 +3,7 @@
 # Licensed under the MIT License.
 # ------------------------------------------------------------
 
-name: Auto Validate Quickstarts
+name: Auto Validate New Quickstarts
 
 on:
   workflow_dispatch:
@@ -128,41 +128,16 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate hello-world
+      - name: Validate JS pubsub http
         run: |
-          pushd tutorials/hello-world
+          pushd pub_sub/javascript/http
           make validate
           popd
-      - name: Validate hello-kubernetes
+      - name: Validate JS pubsub sdk
         run: |
-          pushd tutorials/hello-kubernetes
-          make validate
-          popd
-      - name: Validate distributed-calculator
-        run: |
-          pushd tutorials/distributed-calculator
-          make validate
-          popd
-      - name: Validate pub-sub
-        run: |
-          pushd tutorials/pub-sub
-          make validate
-          popd
-      - name: Validate bindings
-        run: |
-          pushd tutorials/bindings
-          make validate
-          popd
-      - name: Validate secretstore
-        run: |
-          pushd tutorials/secretstore
-          make validate
-          popd
-      - name: Validate observability
-        run: |
-          pushd tutorials/observability
+          pushd pub_sub/javascript/sdk
           make validate
           popd
       - name: Linkcheck README.md
         run: |
-          make validate        
+          make validate  
