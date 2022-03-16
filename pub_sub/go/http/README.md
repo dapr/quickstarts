@@ -84,3 +84,8 @@ dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-htt
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```
