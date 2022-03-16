@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: dapriosamples/hello-k8s-node:latest
+        image: ghcr.io/dapr/samples/hello-k8s-node:latest
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
