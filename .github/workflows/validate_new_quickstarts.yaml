@@ -146,16 +146,6 @@ jobs:
           pushd pub_sub/go/sdk
           make validate
           popd
-      - name: Validate Java pubsub
-        run: |
-          pushd pub_sub/java/http
-          make validate
-          popd
-      - name: Validate Java sdk pubsub
-        run: |
-          pushd pub_sub/java/sdk
-          make validate
-          popd
       - name: Validate JS http pubsub
         run: |
           pushd pub_sub/javascript/http
