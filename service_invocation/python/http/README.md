@@ -37,7 +37,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 10
+sleep: 15
 -->
 
 ```bash
@@ -73,7 +73,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 10
+sleep: 15
 -->
     
 ```bash
