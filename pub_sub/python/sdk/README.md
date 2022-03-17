@@ -33,11 +33,9 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run python publisher
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == INFO:root:Published data: {"orderId": 1}'
   - '== APP == INFO:root:Published data: {"orderId": 2}'
   - "Exited App successfully"
-  - "Exited Dapr successfully"
 expected_stderr_lines:
 output_match_mode: substring
 working_dir: ./checkout
@@ -69,8 +67,6 @@ pip3 install -r requirements.txt
 name: Run python subscriber
 expected_stdout_lines:
   - '== APP == Subscriber received : 4'
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -85,3 +81,8 @@ dapr run --app-id order-processor --components-path ../../../components/ --app-p
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```
