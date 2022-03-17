@@ -81,3 +81,8 @@ dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- go run 
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```
