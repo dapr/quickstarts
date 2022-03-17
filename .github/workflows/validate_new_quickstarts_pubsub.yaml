@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-name: Auto Validate New Quickstarts
+name: Auto Validate New Quickstarts - PubSub
 
 on:
   workflow_dispatch:
@@ -164,21 +164,6 @@ jobs:
       - name: Validate python sdk pubsub
         run: |
           pushd pub_sub/python/sdk
-          make validate
-          popd
-      - name: Validate JS http service invocation
-        run: |
-          pushd service_invocation/javascript/http
-          make validate
-          popd
-      - name: Validate Python http service invocation
-        run: |
-          pushd service_invocation/python/http
-          make validate
-          popd
-      - name: Validate Go http service invocation
-        run: |
-          pushd service_invocation/go/http
           make validate
           popd
       - name: Linkcheck README.md
