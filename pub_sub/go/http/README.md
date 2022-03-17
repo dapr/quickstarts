@@ -32,11 +32,9 @@ go build app.go
 <!-- STEP
 name: Run Go publisher
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Published data:  {"orderId":1}'
   - '== APP == Published data:  {"orderId":2}'
   - "Exited App successfully"
-  - "Exited Dapr successfully"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -68,9 +66,7 @@ go build app.go
 <!-- STEP
 name: Run Go subscriber
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Subscriber received:  {"orderId":10}'
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -85,3 +81,8 @@ dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-htt
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```

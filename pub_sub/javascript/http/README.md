@@ -32,11 +32,9 @@ npm install
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Published data: {"orderId":2}'
   - '== APP == Published data: {"orderId":3}'
   - "Exited App successfully"
-  - "Exited Dapr successfully"
 expected_stderr_lines:
 working_dir: ./checkout
 output_match_mode: substring
@@ -67,9 +65,7 @@ npm install
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
-  - '== APP == Subscriber received: { orderId: 2 }'
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./order-processor
@@ -83,3 +79,8 @@ dapr run --app-id checkout --components-path ../../../components/  --app-port 50
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```
