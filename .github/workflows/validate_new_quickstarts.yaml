@@ -166,6 +166,21 @@ jobs:
           pushd pub_sub/python/sdk
           make validate
           popd
+      - name: Validate Go http service invocation
+        run: |
+          pushd service_invocation/go/http
+          make validate
+          popd
+      - name: Validate JS http service invocation
+        run: |
+          pushd service_invocation/javascript/http
+          make validate
+          popd
+      - name: Validate Python http service invocation
+        run: |
+          pushd service_invocation/python/http
+          make validate
+          popd
       - name: Linkcheck README.md
         run: |
           make validate        
