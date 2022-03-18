@@ -33,9 +33,7 @@ dotnet build
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Order received : Order { orderId = 10 }'
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -71,11 +69,9 @@ dotnet build
 <!-- STEP
 name: Run checkout service
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Order passed: Order { OrderId = 1 }'
   - '== APP == Order passed: Order { OrderId = 2 }'
   - "Exited App successfully"
-  - "Exited Dapr successfully"
 expected_stderr_lines:
 output_match_mode: substring
 background: true

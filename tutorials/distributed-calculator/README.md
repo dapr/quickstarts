@@ -22,13 +22,12 @@ Clone the quickstarts repository
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 ### - Run locally
-1. Install [Docker](https://www.docker.com/products/docker-desktop)
-2. Install [.Net Core SDK 3.1](https://dotnet.microsoft.com/download)
-3. Install [Dapr CLI](https://github.com/dapr/cli)
-4. Install [Go](https://golang.org/doc/install)
-5. Install [Python3](https://www.python.org/downloads/)
-6. Install [Npm](https://www.npmjs.com/get-npm)
-7. Install [Node](https://nodejs.org/en/download/)
+1. Install [.Net Core SDK 3.1](https://dotnet.microsoft.com/download)
+2. Install [Dapr CLI](https://github.com/dapr/cli)
+3. Install [Go](https://golang.org/doc/install)
+4. Install [Python3](https://www.python.org/downloads/)
+5. Install [Npm](https://www.npmjs.com/get-npm)
+6. Install [Node](https://nodejs.org/en/download/)
 
 ### - Run in Kubernetes environment
 1. Dapr-enabled Kubernetes cluster. Follow [these instructions](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/) to set this up.

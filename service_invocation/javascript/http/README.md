@@ -32,14 +32,12 @@ npm install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Order received: { orderId: 10 }'
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 10
+sleep: 15
 -->
 
 ```bash
@@ -69,15 +67,13 @@ npm install
 <!-- STEP
 name: Run checkout service
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == Order passed: {"orderId":1}'
   - '== APP == Order passed: {"orderId":2}'
   - "Exited App successfully"
-  - "Exited Dapr successfully"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 10
+sleep: 15
 -->
     
 ```bash
@@ -86,3 +82,8 @@ dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm sta
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```
