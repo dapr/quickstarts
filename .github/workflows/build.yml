@@ -82,6 +82,36 @@ jobs:
             make push
             popd
           done
+      - name: GitHub container registry login
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build docker image
+        env:
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
+        run: | 
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make build
+            popd
+          done
+      - name: publish image to ghcr
+        if: github.event_name != 'pull_request'
+        env:
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
+        run: |
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make push
+            popd
+          done
   publish:
     name: Publish docker manifest
     needs: build
@@ -106,6 +136,37 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish manifest to dockerhub
+        run: |
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Push image for ${sample}..."
+            pushd ${sample}
+            make manifest-push
+            popd
+          done
+      - name: GitHub container registry login
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: create ghcr manifest
+        if: github.event_name != 'pull_request'
+        env: 
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
+        run: |
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
+          for sample in "${SAMPLE_LIST[@]}"; do
+            echo "Building image for ${sample}..."
+            pushd ${sample}
+            make manifest-create
+            popd
+          done
+      - name: publish manifest to ghcr
+        if: github.event_name != 'pull_request'
+        env: 
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
