@@ -1,7 +1,15 @@
-# ------------------------------------------------------------
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
-# ------------------------------------------------------------
+#
+# Copyright 2021 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 name: samples
 
@@ -9,15 +17,12 @@ on:
   push:
     branches:
       - master
+      - feature/new_quickstarts
       - release-*
     tags:
       - v*
     paths-ignore: 
       - '**.md'
-  pull_request:
-    branches:
-      - master
-      - release-*
   workflow_dispatch:
 jobs:
   build:
@@ -58,7 +63,7 @@ jobs:
         run: docker buildx inspect --bootstrap
       - name: Build docker image
         run: | 
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -66,13 +71,11 @@ jobs:
             popd
           done
       - name: docker login
-        if: github.event_name != 'pull_request'
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish image to dockerhub
-        if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
@@ -90,7 +93,7 @@ jobs:
         env:
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: | 
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -102,7 +105,7 @@ jobs:
         env:
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
@@ -121,9 +124,8 @@ jobs:
       - name: Parse release version and set REL_VERSION
         run: python ./.github/scripts/get_release_version.py
       - name: create docker manifest
-        if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -131,13 +133,11 @@ jobs:
             popd
           done
       - name: docker login
-        if: github.event_name != 'pull_request'
         run: |
           docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
       - name: publish manifest to dockerhub
-        if: github.event_name != 'pull_request'
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}
@@ -156,8 +156,7 @@ jobs:
         env: 
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
-          
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Building image for ${sample}..."
             pushd ${sample}
@@ -169,7 +168,7 @@ jobs:
         env: 
           SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
-          SAMPLE_LIST=(hello-kubernetes distributed-calculator pub-sub bindings observability secretstore)
+          SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
             echo "Push image for ${sample}..."
             pushd ${sample}

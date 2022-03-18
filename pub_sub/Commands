@@ -1,0 +1,63 @@
+The default pubsub.yaml($HOME/.dapr/components) file is used. And rabbit mq is used for pub sub implementation. Below are the contents of pubsub.yaml file.
+The other way to include pubsub.yaml is to create a components directory and create a file called pubsub.yaml and add the below contents to the file. 
+And then modify the dapr run command to include components directory path using "--components-path". 
+
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: order_pub_sub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqp://localhost:5672"
+  - name: durable
+    value: "false"
+  - name: deletedWhenUnused
+    value: "false"
+  - name: autoAck
+    value: "false"
+  - name: reconnectWait
+    value: "0"
+  - name: concurrency
+    value: parallel
+scopes:
+  - orderprocessing
+  - checkout
+
+
+Start a RabbitMQ message broker by entering the following command:
+docker run -d -p 5672:5672 -p 15672:15672 --name dtc-rabbitmq rabbitmq:3-management-alpine
+
+
+
+Java:
+
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ../../components mvn spring-boot:run
+
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --components-path ../../components mvn spring-boot:run
+
+Python:
+
+dapr run --app-id orderprocessing --app-port 6001 --dapr-grpc-port 3601 --app-protocol grpc --components-path ../components  python3 OrderProcessingService.py
+
+dapr run --app-id checkout --app-port 6002 --dapr-grpc-port 3602 --app-protocol grpc --components-path ../components  python3 CheckoutService.py
+
+GO:
+
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ../../components go run OrderProcessingService.go
+
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --components-path ../../components go run CheckoutService.go
+
+CSharp:
+
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --app-ssl --components-path ../../components dotnet run
+
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --app-ssl --components-path ../../components dotnet run
+
+Javascript:
+
+dapr run --app-id orderprocessing --app-port 6001 --dapr-http-port 3601 --dapr-grpc-port 60001 --components-path ../../components npm start
+
+dapr run --app-id checkout --app-port 6002 --dapr-http-port 3602 --dapr-grpc-port 60002 --components-path ../../components npm start
