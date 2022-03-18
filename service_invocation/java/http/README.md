@@ -50,7 +50,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 10
+sleep: 15
 -->
 
 ```bash
@@ -77,7 +77,7 @@ working_dir: ./order-processor
 ```bash
 mvn clean install
 ```
-
+<!-- END_STEP -->
 3. Run the Java order-processor app with Dapr:
 
 <!-- STEP
