@@ -7,7 +7,7 @@ This tutorial shows you how to use the Dapr secrets API to access secrets from s
 
 
 ### Prerequisites to run Locally 
-- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr/)
+- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Postman](https://www.getpostman.com/) [Optional]
 
@@ -29,7 +29,7 @@ cd quickstarts
 
 ### Step 1 - Setup Dapr on your local machine
 
-Follow [instructions](https://docs.dapr.io/getting-started/install-dapr/) to download and install the Dapr CLI and initialize Dapr.
+Follow [instructions](https://docs.dapr.io/getting-started/install-dapr-cli/) to download and install the Dapr CLI and initialize Dapr.
 
 ### Step 2 - Understand the code and configuration
 
