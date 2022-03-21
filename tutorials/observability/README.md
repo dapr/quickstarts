@@ -156,8 +156,8 @@ This quickstart builds on the [distributed calculator](../distributed-calculator
 
 1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory via `cd quickstarts/tutorials/obervability`.
 2. [Install Dapr on Kubernetes](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
-3. [Configure Redis](https://docs.dapr.io/getting-started/install-dapr-selfhost/) as a state store for Dapr.
-4. Configure host and password for Redis state store Component in `../distributed-calculator/deploy/redis.yaml`.
+3. [Configure Redis](https://docs.dapr.io/getting-started/tutorials/configure-state-pubsub/#step-1-create-a-redis-store) as a state store for Dapr.
+4. Review the host and password for Redis state store Component in `../distributed-calculator/deploy/redis.yaml`.
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 ## Configure Dapr tracing in the cluster
@@ -454,7 +454,7 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 
 ![Zipkin](./img/zipkin-2.png)
 
-Now look for any performance issues by filtering on any requests that have taken longer than 250 ms using the `minDuration` criteria:
+Now look for any performance issues by filtering on any requests that have take too long. You can use `minDuration` criteria to query for long requests only:
 
 ![Zipkin](./img/zipkin-3.png)
 
@@ -478,7 +478,7 @@ name: Curl validate
 -->
 
 ```bash
-curl -s http://localhost:19411/api/v2/traces?minDuration=250000 -H accept:application/json -o output.json && python3 -m json.tool output.json
+curl -s http://localhost:19411/api/v2/traces -H accept:application/json -o output.json && python3 -m json.tool output.json
 ```
 
 <!-- END_STEP -->
