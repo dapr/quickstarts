@@ -18,7 +18,7 @@ Dapr allows us to deploy the same microservices from the local machines to Kuber
 
 ### Prerequisites to Run Locally
 
-- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr/)
+- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/-cli/)
 - [Node.js version 8 or greater](https://nodejs.org/en/)
 - [Python 3.4 or greater](https://www.python.org/)
 

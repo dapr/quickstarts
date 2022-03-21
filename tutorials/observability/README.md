@@ -156,9 +156,7 @@ This quickstart builds on the [distributed calculator](../distributed-calculator
 
 1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory via `cd quickstarts/obervability`.
 2. [Install Dapr on Kubernetes](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
-<!-- IGNORE_LINKS -->
-3. [Configure Redis](https://docs.dapr.io/getting-started/configure-redis/) as a state store for Dapr.
-<!-- END_IGNORE -->
+3. [Configure Redis](https://docs.dapr.io/getting-started/tutorials/configure-state-pubsub/#step-1-create-a-redis-store) as a state store for Dapr.
 4. Configure host and password for Redis state store Component in `../distributed-calculator/deploy/redis.yaml`.
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.

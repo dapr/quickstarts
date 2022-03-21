@@ -362,9 +362,7 @@ working_dir: "./node"
 ## Running the quickstart in a Kubernetes environment
 1. Navigate to the deploy directory in this quickstart directory: `cd deploy`
    > **Note**: `appconfig.yaml` is not used directly for this quickstart but is present for the [observability quickstart](../observability).
-<!-- IGNORE_LINKS -->
-2. Follow [these instructions](https://docs.dapr.io/getting-started/configure-redis/) to create and configure a Redis store
-<!-- END_IGNORE -->
+2. Follow [these instructions](https://docs.dapr.io/getting-started/tutorials/configure-state-pubsub/#step-1-create-a-redis-store) to create and configure a Redis store
 3. Deploy all of your resources: 
 
 
