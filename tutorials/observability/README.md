@@ -100,7 +100,7 @@ name: Curl validate
 
 
 ```bash
-curl -s "http://localhost:9411/api/v2/traces?spanName=calllocal%2Fhello-tracing%2Fneworder" -H "accept:application/json" -o output.json && python -m json.tool output.json
+curl -s "http://localhost:9411/api/v2/traces?spanName=calllocal%2Fhello-tracing%2Fneworder" -H "accept:application/json" -o output.json && python3 -m json.tool output.json
 ```
 <!-- END_STEP -->
 
@@ -154,10 +154,10 @@ dapr stop --app-id hello-tracing
 
 This quickstart builds on the [distributed calculator](../distributed-calculator/README.md) quickstart and requires Dapr to be installed on a Kubernetes cluster along with a state store. It is suggested to go through the distributed calculator quickstart before this one. If you have not done this then:
 
-1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory via `cd quickstarts/obervability`.
+1. Clone this repo using `git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git` and go to the directory via `cd quickstarts/tutorials/obervability`.
 2. [Install Dapr on Kubernetes](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
-3. [Configure Redis](https://docs.dapr.io/getting-started/configure-redis/) as a state store for Dapr.
-4. Configure host and password for Redis state store Component in `../distributed-calculator/deploy/redis.yaml`.
+3. [Configure Redis](https://docs.dapr.io/getting-started/tutorials/configure-state-pubsub/#step-1-create-a-redis-store) as a state store for Dapr.
+4. Review the host and password for Redis state store Component in `../distributed-calculator/deploy/redis.yaml`.
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 ## Configure Dapr tracing in the cluster
@@ -252,7 +252,7 @@ annotations:
 ...
  ```
 
-For this quickstart, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/deploy/react-calculator.yaml#L36).
+For this quickstart, a configuration has already been enabled for every service in the distributed calculator app. You can find the annotation in each one of the calculator yaml files. For example review the yaml file for the calculator front end service [here](https://github.com/dapr/quickstarts/blob/master/tutorials/distributed-calculator/deploy/react-calculator.yaml#L36).
 
 Note you did not introduce any dependency on Zipkin into the calculator app code or deployment yaml files. The Zipkin Dapr component is configured to read tracing events and write these to a tracing backend.
 
@@ -319,7 +319,7 @@ kubectl get pods
 
 Then, open the distributed calculator UI.
 
-If this is the first time trying the distributed calculator, find more detailed instructions in the [distributed-calculator](https://github.com/dapr/quickstarts/blob/master/distributed-calculator/README.md) quickstart.
+If this is the first time trying the distributed calculator, find more detailed instructions in the [distributed-calculator](https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator) tutorial.
 
 > **Note:** If the distributed calculator is already running on your cluster you will need to restart it for the tracing to take effect. You can do so by running:
 
@@ -454,7 +454,7 @@ Dapr adds a HTTP/gRPC middleware to the Dapr sidecar. The middleware intercepts 
 
 ![Zipkin](./img/zipkin-2.png)
 
-Now look for any performance issues by filtering on any requests that have taken longer than 250 ms using the `minDuration` criteria:
+Now look for any performance issues by filtering on any requests that have take too long. You can use `minDuration` criteria to query for long requests only:
 
 ![Zipkin](./img/zipkin-3.png)
 
@@ -478,7 +478,7 @@ name: Curl validate
 -->
 
 ```bash
-curl -s http://localhost:19411/api/v2/traces?minDuration=250000 -H accept:application/json -o output.json && python -m json.tool output.json
+curl -s http://localhost:19411/api/v2/traces -H accept:application/json -o output.json && python3 -m json.tool output.json
 ```
 
 <!-- END_STEP -->
