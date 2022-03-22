@@ -237,8 +237,9 @@ Now that Zipkin is deployed, you can access the Zipkin UI by creating a tunnel t
 ```bash
 kubectl port-forward svc/zipkin 19411:9411
 ```
-
+<!-- IGNORE_LINKS -->
 On your browser go to [http://localhost:19411](http://localhost:19411). You should be able to see the Zipkin dashboard.
+<!-- END_IGNORE -->
 
 ### Instrument the application for tracing and deploy it
 
