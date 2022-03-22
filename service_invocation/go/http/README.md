@@ -27,7 +27,7 @@ go build app.go
 
 <!-- END_STEP -->
 
-3. Run the Go order-processor app with Dapr: 
+2. Run the Go order-processor app with Dapr: 
 
 <!-- STEP
 name: Run order-processor service

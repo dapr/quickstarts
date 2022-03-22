@@ -42,7 +42,7 @@ func main() {
 			os.Exit(1)
 		}
 		result, _ := ioutil.ReadAll(getResponse.Body)
-		log.Println("Getting Order: ", string(result))
+		fmt.Println("Getting Order: ", string(result))
 
 		// Delete state from the state store
 		req, _ := http.NewRequest(http.MethodDelete, DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/state/"+DAPR_STATE_STORE+"/"+strconv.Itoa(orderId), nil)
