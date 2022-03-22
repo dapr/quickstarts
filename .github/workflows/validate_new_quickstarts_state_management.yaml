@@ -156,16 +156,16 @@ jobs:
           pushd state_management/csharp/sdk
           make validate
           popd
-      - name: Validate Java http State Management
-        run: |
-          pushd state_management/java/http
-          make validate
-          popd
-      - name: Validate Java sdk State Management
-        run: |
-          pushd state_management/java/sdk
-          make validate
-          popd
+      # - name: Validate Java http State Management
+      #   run: |
+      #     pushd state_management/java/http
+      #     make validate
+      #     popd
+      # - name: Validate Java sdk State Management
+      #   run: |
+      #     pushd state_management/java/sdk
+      #     make validate
+      #     popd
       - name: Validate Python http State Management
         run: |
           pushd state_management/python/http
