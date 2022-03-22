@@ -232,13 +232,13 @@ kubectl apply -f ./deploy/zipkin.yaml
 
 <!-- END_STEP -->
 
-Now that Zipkin is deployed, you can access the Zipkin UI by creating a tunnel to the internal Zipkin service you just created by running:
+Now that Zipkin is deployed, you can access the Zipkin UI by creating a tunnel to the internal Zipkin service you just created by running (with port 19411 chosen to avoid conflicts with Dapr CLI running Zipkin in self-hosted mode):
 
 ```bash
-kubectl port-forward svc/zipkin 9411:9411
+kubectl port-forward svc/zipkin 19411:9411
 ```
 
-On your browser go to [http://localhost:9411](http://localhost:9411). You should be able to see the Zipkin dashboard.
+On your browser go to [http://localhost:19411](http://localhost:19411). You should be able to see the Zipkin dashboard.
 
 ### Instrument the application for tracing and deploy it
 
@@ -478,7 +478,7 @@ name: Curl validate
 -->
 
 ```bash
-curl -s http://localhost:19411/api/v2/traces -H accept:application/json -o output.json && python3 -m json.tool output.json
+curl -s http://localhost:19411/api/v2/traces?minDuration=250000 -H accept:application/json -o output.json && python3 -m json.tool output.json
 ```
 
 <!-- END_STEP -->
