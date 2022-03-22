@@ -21,7 +21,7 @@ name: Install Dotnet dependencies
 ```bash
 cd ./order-processor
 dotnet restore
-dotnet build
+dotnet build -f net5
 ```
 
 <!-- END_STEP -->
