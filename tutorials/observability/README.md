@@ -349,7 +349,7 @@ To show how observability can help discover and troubleshoot issues on a distrib
 <!-- STEP
 name: Deploy mmdified multiply app
 expected_stdout_lines:
-  - 'deployment.apps/multiplyapp configured'
+  - 'deployment.apps/multiplyapp unchanged'
 -->
 
 ```bash
