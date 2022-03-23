@@ -16,25 +16,33 @@ This quickstart includes one service:
 
 ### Run Node service with Dapr
 
-1. Open a new terminal window and navigate to `order-processor` directory: 
-
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
+. Navigate to folder and install dependencies: 
 
 <!-- STEP
 name: Install Node dependencies
-working_dir: ./order-processor
 -->
 
 ```bash
+cd ./order-processor
 npm install
 ```
+<!-- END_STEP -->
 
 3. Run the Node service app with Dapr: 
-    
+
+<!-- STEP
+name: Run Node publisher
+expected_stdout_lines:
+  - '== APP == Getting Order:  { orderId: 10 }'
+  - '== APP == Deleting Order:  { orderId: 10 }'
+  - "Exited App successfully"
+expected_stderr_lines:
+working_dir: ./order-processor
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+
 ```bash
 dapr run --app-id order-processor --components-path ../../../components/ -- npm start
 ```
