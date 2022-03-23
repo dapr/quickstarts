@@ -20,11 +20,12 @@ name: Install Dotnet dependencies
 
 ```bash
 cd ./order-processor
+dotnet restore
+dotnet build
 ```
 
 <!-- END_STEP -->
-
-2. Open a new terminal window and navigate to `order-processor` directory and run the Dotnet service app with Dapr: 
+2. Run the Dotnet service app with Dapr: 
 
 <!-- STEP
 name: Run order-processor service

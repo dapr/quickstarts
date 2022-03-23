@@ -146,16 +146,6 @@ jobs:
           pushd state_management/go/sdk
           make validate
           popd
-      - name: Validate Dotnet http State Management
-        run: |
-          pushd state_management/csharp/http
-          make validate
-          popd
-      - name: Validate Dotnet sdk State Management
-        run: |
-          pushd state_management/csharp/sdk
-          make validate
-          popd
       # - name: Validate Java http State Management
       #   run: |
       #     pushd state_management/java/http

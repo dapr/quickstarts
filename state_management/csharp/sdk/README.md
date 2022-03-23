@@ -20,6 +20,8 @@ name: Install Dotnet dependencies
 
 ```bash
 cd ./order-processor
+dotnet restore
+dotnet build
 ```
 
 <!-- END_STEP -->
