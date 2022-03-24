@@ -14,25 +14,37 @@ This quickstart includes one service:
 
 1. Open a new terminal window and navigate to `order-processor` directory: 
 
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
-
 <!-- STEP
 name: Build Go file
-working_dir: ./order-processor
 -->
 
 ```bash
+cd ./order-processor
 go build app.go
 ```
 
-3. Run the Go service app with Dapr: 
+<!-- END_STEP -->
+2. Run the Go service app with Dapr: 
+
+<!-- STEP
+name: Run order-processor service
+expected_stdout_lines:
+  - '== APP == Getting Order:  "{\"orderId\":1}"'
+  - '== APP == Getting Order:  "{\"orderId\":2}"'
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
     
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- go run app.go
+cd ./order-processor
+dapr run --app-id order-processor --components-path ../../../components -- go run app.go
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id order-processor
+```

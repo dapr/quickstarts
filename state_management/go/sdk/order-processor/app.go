@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"strconv"
 	"time"
@@ -26,7 +27,7 @@ func main() {
 
 		// Get state from the state store
 		result, _ := client.GetState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId))
-		log.Print("Getting Order: " + string(result.Value))
+		fmt.Println("Getting Order: " + string(result.Value))
 
 		// Delete state from the state store
 		_ = client.DeleteState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId))

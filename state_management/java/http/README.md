@@ -23,18 +23,37 @@ This quickstart includes one service:
 
 1. Open a new terminal window and navigate to `order-processor` directory:
 
-```bash
-cd order-processor
-```
-
-2. Install dependencies:
+<!-- STEP
+name: Build Java file
+-->
 
 ```bash
+cd ./order-processor
 mvn clean install
 ```
 
-3. Run the Java service app with Dapr:
+<!-- END_STEP -->
+2. Run the Java service app with Dapr: 
+
+<!-- STEP
+name: Run order-processor service
+expected_stdout_lines:
+  - '== APP == Getting Order:  "{\"orderId\":1}"'
+  - '== APP == Getting Order:  "{\"orderId\":2}"'
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
+    
+```bash
+cd ./order-processor
+dapr run --app-id order-processor --components-path ../../../components/ -- java -jar target/order-processor-0.0.1-SNAPSHOT.jar
+```
+
+<!-- END_STEP -->
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- java -jar target/order-processor-0.0.1-SNAPSHOT.jar
+dapr stop --app-id order-processor
 ```
