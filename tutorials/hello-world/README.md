@@ -1,6 +1,6 @@
 # Hello World
 
-This tutorial will demonstrate how to get Dapr running locally on your machine. You'll be deploying a Node.js app that subscribes to order messages and persists them. The following architecture diagram illustrates the components that make up the first part sample: 
+This tutorial will demonstrate how to get Dapr running locally on your machine. You'll be deploying a Node.js app that subscribes to order messages and persists them. The following architecture diagram illustrates the components that make up the first part sample:
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -11,27 +11,27 @@ Later on, you'll deploy a Python app to act as the publisher. The architecture d
 ## Prerequisites
 This quickstart requires you to have the following installed on your machine:
 - [Docker](https://docs.docker.com/)
-- [Node.js version 8 or greater](https://nodejs.org/en/) 
-- [Python 3.x](https://www.python.org/downloads/): Note: When running this quickstart on Windows, it best to install Python from python.org rather than from the Windows store. 
+- [Node.js version 8 or greater](https://nodejs.org/en/)
+- [Python 3.x](https://www.python.org/downloads/): Note: When running this quickstart on Windows, it best to install Python from python.org rather than from the Windows store.
 - [Postman](https://www.getpostman.com/) [Optional]
 
-## Step 1 - Setup Dapr 
+## Step 1 - Setup Dapr
 
 Follow [instructions](https://docs.dapr.io/getting-started/install-dapr-cli/) to download and install the Dapr CLI and initialize Dapr.
 
 ## Step 2 - Understand the code
 
-Now that Dapr is set up locally, clone the repo, then navigate to the Hello World quickstart: 
+Now that Dapr is set up locally, clone the repo, then navigate to the Node.js version of the Hello World quickstart:
 
 ```sh
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
-cd quickstarts/hello-world
+cd quickstarts/hello-world/node
 ```
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 
-In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, take a look at the top of the file: 
+In the `app.js` you'll find a simple `express` application, which exposes a few routes and handlers. First, take a look at the top of the file:
 
 ```js
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
@@ -109,7 +109,7 @@ app.get('/order', (_req, res) => {
 });
 ```
 
-This calls out to the Redis cache to retrieve the latest value of the "order" key, which effectively allows the Node.js app to be _stateless_. 
+This calls out to the Redis cache to retrieve the latest value of the "order" key, which effectively allows the Node.js app to be _stateless_.
 
 ## Step 3 - Run the Node.js app with Dapr
 
@@ -122,7 +122,7 @@ name: "npm install"
 working_dir: node
 -->
 
-1. Install dependencies: 
+1. Install dependencies:
 
    ```bash
    npm install
@@ -159,7 +159,7 @@ working_dir: node
 sleep: 5
 -->
 
-2. Run Node.js app with Dapr: 
+2. Run Node.js app with Dapr:
    ```bash
    dapr run --app-id nodeapp --app-port 3000 --dapr-http-port 3500 node app.js
    ```
@@ -188,7 +188,7 @@ spec:
 ...
 ```
 
-You can see the yaml file defined the state store to be Redis and is naming it `statestore`. This is the name which was used in `app.js` to make the call to the state store in the application: 
+You can see the yaml file defined the state store to be Redis and is naming it `statestore`. This is the name which was used in `app.js` to make the call to the state store in the application:
 
 ```js
 const stateStoreName = `statestore`;
@@ -199,7 +199,7 @@ While in this tutorial the default yaml files were used, usually a developer wou
 
 > **Optional**: Now it would be a good time to get acquainted with the [Dapr dashboard](https://docs.dapr.io/reference/cli/dapr-dashboard/). Which is a convenient interface to check status and information of applications running on Dapr. The following command will make it available on http://localhost:9999/.
 
-```bash 
+```bash
 dapr dashboard -p 9999
 ```
 
@@ -248,7 +248,7 @@ POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
 {
   "data": {
     "orderId": "42"
-  } 
+  }
 }
 ```
 
@@ -267,7 +267,7 @@ In your terminal, you should see logs indicating that the message was received a
 Now, to verify the order was successfully persisted to the state store, create a GET request against: `http://localhost:3500/v1.0/invoke/nodeapp/method/order`. **Note**: Again, be sure to reflect the right port if you chose a port other than 3500.
 
 <!-- STEP
-expected_stdout_lines: 
+expected_stdout_lines:
   - '{"orderId":"42"}'
 expected_stderr_lines:
 name: Persistence test curl
@@ -282,7 +282,7 @@ curl http://localhost:3500/v1.0/invoke/nodeapp/method/order
 or use Dapr CLI
 
 <!-- STEP
-expected_stdout_lines: 
+expected_stdout_lines:
   - '{"orderId":"42"}'
   - "App invoked successfully"
 expected_stderr_lines:
@@ -362,7 +362,7 @@ working_dir: python
 sleep: 30
 -->
 
-2. Start the Python App with Dapr: 
+2. Start the Python App with Dapr:
 
    ```bash
    dapr run --app-id pythonapp python3 app.py
@@ -406,10 +406,10 @@ sleep: 30
 
 ## Step 7 - Cleanup
 
-To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new terminal: 
+To stop your services from running, simply stop the "dapr run" process. Alternatively, you can spin down each of your services with the Dapr CLI "stop" command. For example, to spin down both services, run these commands in a new terminal:
 
 <!-- STEP
-expected_stdout_lines: 
+expected_stdout_lines:
   - 'app stopped successfully: nodeapp'
   - 'app stopped successfully: pythonapp'
 expected_stderr_lines:
