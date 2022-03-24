@@ -43,11 +43,9 @@ mvn clean install
 name: Run Java publisher
 working_dir: ./checkout
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - 'Published data: 1'
   - 'Published data: 2'
   - "Exited App successfully"
-  - "Exited Dapr successfully"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -55,7 +53,7 @@ sleep: 10
 -->
 
 ```bash
- dapr run --app-id checkout --components-path ../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+ dapr run --app-id checkout --components-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 <!-- END_STEP -->
 
@@ -78,9 +76,7 @@ mvn clean install
 name: Run Java publisher
 working_dir: ./order-processor
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - 'Subscriber received: 2'
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -88,6 +84,11 @@ background: true
 sleep: 10
 -->
 ```bash
- dapr run --app-port 8080 --app-id order-processor --components-path ../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+ dapr run --app-port 8080 --app-id order-processor --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```

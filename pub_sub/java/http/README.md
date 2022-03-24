@@ -15,8 +15,7 @@ And one subscriber:
 - Java subscriber `order-processor`
 
 ## Pre-requisites
-
-* [Dapr and Dapr Cli]( https://docs.dapr.io/getting-started/install-dapr-cli/).
+* [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/).
 * Java JDK 11 (or greater):
     * [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
     * [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
@@ -42,11 +41,9 @@ mvn clean install
 <!-- STEP
 name: Run Java publisher
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - 'Published data: 1'
   - 'Published data: 2'
   - "Exited App successfully"
-  - "Exited Dapr successfully"
 expected_stderr_lines:
 working_dir: ./checkout
 output_match_mode: substring
@@ -77,9 +74,7 @@ mvn clean install
 <!-- STEP
 name: Run Java publisher
 expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
   - 'Subscriber received: 2'
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./order-processor
@@ -91,3 +86,8 @@ sleep: 10
  dapr run --app-port 8080 --app-id order-processor --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
+```

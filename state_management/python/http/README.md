@@ -14,25 +14,37 @@ This quickstart includes one service:
 
 1. Open a new terminal window and navigate to `order-processor` directory: 
 
-```bash
-cd order-processor
-```
-
-2. Install dependencies: 
-
 <!-- STEP
 name: Install python dependencies
-working_dir: ./order-processor
 -->
 
 ```bash
+cd ./order-processor
 pip3 install -r requirements.txt 
 ```
 
-3. Run the Python service app with Dapr: 
+<!-- END_STEP -->
+2. Run the Python service app with Dapr: 
+
+<!-- STEP
+name: Run order-processor service
+expected_stdout_lines:
+  - "== APP == INFO:root:Saving Order: {'orderId': '1'}"
+  - "== APP == INFO:root:Saving Order: {'orderId': '2'}"
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
     
 ```bash
+cd ./order-processor
 dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id order-processor
+```

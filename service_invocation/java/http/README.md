@@ -14,7 +14,7 @@ And one order processor service:
 
 ## Pre-requisites
 
-* [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/)).
+* [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/).
 * Java JDK 11 (or greater):
     * [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
     * [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
@@ -50,7 +50,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 10
+sleep: 15
 -->
 
 ```bash
@@ -77,7 +77,7 @@ working_dir: ./order-processor
 ```bash
 mvn clean install
 ```
-
+<!-- END_STEP -->
 3. Run the Java order-processor app with Dapr:
 
 <!-- STEP

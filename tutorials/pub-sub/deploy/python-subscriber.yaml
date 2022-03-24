@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: python-subscriber
-        image: dapriosamples/pubsub-python-subscriber:latest
+        image: ghcr.io/dapr/samples/pubsub-python-subscriber:latest
         ports:
         - containerPort: 5001
         imagePullPolicy: Always
