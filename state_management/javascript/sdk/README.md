@@ -28,7 +28,7 @@ npm install
 ```
 <!-- END_STEP -->
 
-3. Run the Node service app with Dapr: 
+2. Run the Node service app with Dapr: 
 
 <!-- STEP
 name: Run Node publisher
