@@ -16,7 +16,7 @@ This quickstart includes one service:
 
 ### Run Node service with Dapr
 
-. Navigate to folder and install dependencies: 
+1. Navigate to folder and install dependencies: 
 
 <!-- STEP
 name: Install Node dependencies
