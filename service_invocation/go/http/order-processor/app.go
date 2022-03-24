@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -16,11 +15,7 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	fmt.Println("Order received : ", string(data))
-	obj, err := json.Marshal(string(data))
-	if err != nil {
-		log.Println("Error in reading the result obj")
-	}
-	_, err = w.Write(obj)
+	_, err = w.Write(data)
 	if err != nil {
 		log.Println("Error in writing the result obj")
 	}
