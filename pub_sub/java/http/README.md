@@ -15,7 +15,6 @@ And one subscriber:
 - Java subscriber `order-processor`
 
 ## Pre-requisites
-
 * [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/).
 * Java JDK 11 (or greater):
     * [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
