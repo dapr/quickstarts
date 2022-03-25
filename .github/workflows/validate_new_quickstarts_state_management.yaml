@@ -166,6 +166,16 @@ jobs:
           pushd state_management/python/sdk
           make validate
           popd
+      - name: Validate Javascript http state Management
+        run: |
+          pushd state_management/javascript/http
+          make validate
+          popd
+      - name: Validate Javascript sdk state Management
+        run: |
+          pushd state_management/javascript/sdk
+          make validate
+          popd
       - name: Linkcheck README.md
         run: |
           make validate        
