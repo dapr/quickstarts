@@ -15,7 +15,7 @@ Also, unless you have already done so, clone the repository with the quickstarts
 
 ```
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
-cd quickstarts/hello-kubernetes
+cd quickstarts/tutorials/hello-kubernetes
 ```
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
@@ -213,7 +213,7 @@ dapr dashboard -k -p 9999
 
 ## Step 5 - Deploy the Python app with the Dapr sidecar
 
-Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/hello-kubernetes/python` and open `app.py`.
+Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/tutorials/hello-kubernetes/python` and open `app.py`.
 
 At a quick glance, this is a basic Python app that posts JSON messages to `localhost:3500`, which is the default listening port for Dapr. You can invoke the Node.js application's `neworder` endpoint by posting to `v1.0/invoke/nodeapp/method/neworder`. The message contains some `data` with an orderId that increments once per second:
 
