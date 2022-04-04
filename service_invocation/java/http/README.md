@@ -21,44 +21,6 @@ And one order processor service:
     * [OpenJDK 11](https://jdk.java.net/11/)
 * [Apache Maven](https://maven.apache.org/install.html) version 3.x.
 
-### Run Java checkout service with Dapr
-
-1. Open a new terminal window and navigate to `checkout` directory:
-
-```bash
-cd checkout
-```
-
-2. Install dependencies:
-
-<!-- STEP
-name: Install maven dependencies
-working_dir: ./checkout
--->
-
-```bash
-mvn clean install
-```
-
-3. Run the Java checkout app with Dapr:
-
-<!-- STEP
-name: Run Java checkout service
-expected_stdout_lines:
-  - "== APP == Order passed: 1"
-  - "== APP == Order passed: 2"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
--->
-
-```bash
-dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
-```
-
-<!-- END_STEP -->
-
 ### Run Java order-processor with Dapr
 
 1. Open a new terminal window and navigate to `order-processor` directory:
@@ -97,3 +59,44 @@ dapr run --app-id order-processor --app-port 6001 --app-protocol http --dapr-htt
 
 <!-- END_STEP -->
 
+### Run Java checkout service with Dapr
+
+1. Open a new terminal window and navigate to `checkout` directory:
+
+```bash
+cd checkout
+```
+
+2. Install dependencies:
+
+<!-- STEP
+name: Install maven dependencies
+working_dir: ./checkout
+-->
+
+```bash
+mvn clean install
+```
+
+3. Run the Java checkout app with Dapr:
+
+<!-- STEP
+name: Run Java checkout service
+expected_stdout_lines:
+  - "== APP == Order passed: 1"
+  - "== APP == Order passed: 2"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
+
+```bash
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+```
+
+<!-- END_STEP -->
+
+```bash
+dapr stop --app-id order-processor
+```

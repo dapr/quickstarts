@@ -14,39 +14,6 @@ And one subscriber:
  
 - Python subscriber `order-processor`
 
-### Run Python message publisher with Dapr
-
-1. Install dependencies: 
-
-<!-- STEP
-name: Install python dependencies
--->
-
-```bash
-cd ./checkout
-pip3 install -r requirements.txt 
-```
-<!-- END_STEP -->
-3. Run the Python publisher app with Dapr: 
-
-<!-- STEP
-name: Run python publisher
-expected_stdout_lines:
-  - '== APP == INFO:root:Published data: {"orderId": 1}'
-  - '== APP == INFO:root:Published data: {"orderId": 2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-working_dir: ./checkout
-background: true
-sleep: 10
--->
-    
-```bash
-dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
-```
-
-<!-- END_STEP -->
 ### Run Python message subscriber with Dapr
 
 2. Install dependencies: 
@@ -77,6 +44,40 @@ sleep: 10
 
 ```bash
 dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
+```
+
+<!-- END_STEP -->
+
+### Run Python message publisher with Dapr
+
+1. Install dependencies: 
+
+<!-- STEP
+name: Install python dependencies
+-->
+
+```bash
+cd ./checkout
+pip3 install -r requirements.txt 
+```
+<!-- END_STEP -->
+3. Run the Python publisher app with Dapr: 
+
+<!-- STEP
+name: Run python publisher
+expected_stdout_lines:
+  - '== APP == INFO:root:Published data: {"orderId": 1}'
+  - '== APP == INFO:root:Published data: {"orderId": 2}'
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+working_dir: ./checkout
+background: true
+sleep: 10
+-->
+    
+```bash
+dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->

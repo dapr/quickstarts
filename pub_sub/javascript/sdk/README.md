@@ -14,6 +14,39 @@ And one subscriber:
  
 - Node subscriber `order-processor`
 
+### Run Node message subscriber with Dapr
+
+1. Install dependencies: 
+
+<!-- STEP
+name: Install Node dependencies
+-->
+
+```bash
+cd ./order-processor
+npm install
+```
+<!-- END_STEP -->
+3. Run the Node publisher app with Dapr: 
+
+<!-- STEP
+name: Run Node publisher
+expected_stdout_lines:
+  - '== APP == Subscriber received: {"orderId":2}'
+  - "Exited App successfully"
+expected_stderr_lines:
+working_dir: ./order-processor
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+    
+```bash
+dapr run --app-id checkout --components-path ../../../components/  --app-port 5001 -- node .
+```
+
+<!-- END_STEP -->
+
 ### Run Node message publisher with Dapr
 
 1. Install dependencies: 
@@ -37,38 +70,6 @@ expected_stdout_lines:
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./checkout
-output_match_mode: substring
-background: true
-sleep: 10
--->
-    
-```bash
-dapr run --app-id checkout --components-path ../../../components/  --app-port 5001 -- node .
-```
-
-<!-- END_STEP -->
-### Run Node message subscriber with Dapr
-
-1. Install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
--->
-
-```bash
-cd ./order-processor
-npm install
-```
-<!-- END_STEP -->
-3. Run the Node publisher app with Dapr: 
-
-<!-- STEP
-name: Run Node publisher
-expected_stdout_lines:
-  - '== APP == Subscriber received: {"orderId":2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./order-processor
 output_match_mode: substring
 background: true
 sleep: 10
