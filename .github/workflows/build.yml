@@ -42,11 +42,11 @@ jobs:
         exclude:
           - os: windows-latest
             target_arch: arm
-          - os: macOS-11
+          - os: macOS-latest
             target_arch: arm
           - os: windows-latest
             target_arch: arm64
-          - os: macOS-11
+          - os: macOS-latest
             target_arch: arm64
     steps:
       - name: Check Docker version
