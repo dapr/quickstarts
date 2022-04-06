@@ -39,7 +39,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-11]
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-11'
@@ -85,7 +85,7 @@ jobs:
         run: |
           brew install kubernetes-cli || brew link --overwrite kubernetes-cli
           brew install minikube
-          minikube start --driver=virtualbox --memory 4096 --host-only-cidr "192.168.59.1/24"
+          minikube start --memory 4096 --host-only-cidr "192.168.59.1/24"
       - name: Get KinD info
         if: matrix.os == 'ubuntu-latest'
         run: |
