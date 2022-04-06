@@ -21,8 +21,7 @@ name: Install Python dependencies
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt 
+pip3 install -r ./order-processor/requirements.txt 
 ```
 
 <!-- END_STEP -->
@@ -37,12 +36,12 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 15
+sleep: 5
+timeout_seconds: 30
 -->
 
 ```bash
-cd ./order-processor
-dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 python3 ./order-processor/app.py
 ```
 
 <!-- END_STEP -->
@@ -56,8 +55,7 @@ name: Install Python dependencies
 -->
 
 ```bash
-cd ./checkout
-pip3 install -r requirements.txt 
+pip3 install -r ./checkout/requirements.txt 
 ```
 
 <!-- END_STEP -->
@@ -71,14 +69,14 @@ expected_stdout_lines:
   - '== APP == Order passed: {"orderId": 2}'
   - "Exited App successfully"
 expected_stderr_lines:
-output_match_mode: substring
 background: true
-sleep: 15
+output_match_mode: substring
+sleep: 5
+timeout_seconds: 10
 -->
     
 ```bash
-cd ./checkout
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3502 python3 ./checkout/app.py
 ```
 
 <!-- END_STEP -->
