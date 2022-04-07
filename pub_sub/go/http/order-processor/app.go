@@ -67,7 +67,7 @@ func main() {
 	// Dapr subscription routes orders topic to this route
 	r.HandleFunc("/orders", postOrder).Methods("POST")
 
-	if err := http.ListenAndServe(":6001", r); err != nil {
+	if err := http.ListenAndServe(":6002", r); err != nil {
 		log.Panic(err)
 	}
 }

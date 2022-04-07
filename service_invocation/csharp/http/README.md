@@ -84,3 +84,7 @@ dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet 
 ```
 
 <!-- END_STEP -->
+
+```bash
+dapr stop --app-id order-processor
+```

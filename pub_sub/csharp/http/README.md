@@ -14,42 +14,6 @@ And one subscriber:
  
 - Dotnet subscriber `order-processor`
 
-### Run Dotnet message publisher with Dapr
-
-1. Navigate to the directory and install dependencies: 
-
-<!-- STEP
-name: Install Dotnet dependencies
--->
-
-```bash
-cd ./checkout
-dotnet restore
-dotnet build
-```
-<!-- END_STEP -->
-2. Run the Dotnet publisher app with Dapr: 
-
-<!-- STEP
-name: Run Dotnet publisher
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Published data: Order { OrderId = 1 }'
-  - '== APP == Published data: Order { OrderId = 2 }'
-  - "Exited App successfully"
-  - "Exited Dapr successfully"
-expected_stderr_lines:
-working_dir: ./checkout
-output_match_mode: substring
-background: true
-sleep: 10
--->
-    
-```bash
-dapr run --app-id checkout --components-path ../../../components/ -- dotnet run --project .
-```
-
-<!-- END_STEP -->
 ### Run Dotnet message subscriber with Dapr
 
 1. Navigate to the directory and install dependencies: 
@@ -86,3 +50,43 @@ dapr run --app-id order-processor --components-path ../../../components/ --app-p
 ```
 
 <!-- END_STEP -->
+### Run Dotnet message publisher with Dapr
+
+1. Navigate to the directory and install dependencies: 
+
+<!-- STEP
+name: Install Dotnet dependencies
+-->
+
+```bash
+cd ./checkout
+dotnet restore
+dotnet build
+```
+<!-- END_STEP -->
+2. Run the Dotnet publisher app with Dapr: 
+
+<!-- STEP
+name: Run Dotnet publisher
+expected_stdout_lines:
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP == Published data: Order { OrderId = 1 }'
+  - '== APP == Published data: Order { OrderId = 2 }'
+  - "Exited App successfully"
+  - "Exited Dapr successfully"
+expected_stderr_lines:
+working_dir: ./checkout
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+    
+```bash
+dapr run --app-id checkout --components-path ../../../components/ -- dotnet run --project .
+```
+
+<!-- END_STEP -->
+
+```bash
+dapr stop --app-id order-processor
+```

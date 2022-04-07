@@ -14,39 +14,6 @@ And one subscriber:
  
 - Go subscriber `order-processor`
 
-### Run Go message publisher with Dapr
-
-1. Navigate to the directory and install dependencies: 
-
-<!-- STEP
-name: Build Go file
--->
-
-```bash
-cd ./checkout
-go build app.go
-```
-<!-- END_STEP -->
-2. Run the Go publisher app with Dapr: 
-
-<!-- STEP
-name: Run Go publisher
-expected_stdout_lines:
-  - '== APP == Published data:  {"orderId":1}'
-  - '== APP == Published data:  {"orderId":2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 10
--->
-    
-```bash
-cd ./checkout
-dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run app.go
-```
-
-<!-- END_STEP -->
 ### Run Go message subscriber with Dapr
 
 1. Navigate to the directory and install dependencies: 
@@ -71,13 +38,47 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 10
+sleep: 15
 -->
 
 
 ```bash
 cd ./order-processor
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
+dapr run --app-port 6002 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
+```
+
+<!-- END_STEP -->
+
+### Run Go message publisher with Dapr
+
+1. Navigate to the directory and install dependencies: 
+
+<!-- STEP
+name: Build Go file
+-->
+
+```bash
+cd ./checkout
+go build app.go
+```
+<!-- END_STEP -->
+2. Run the Go publisher app with Dapr: 
+
+<!-- STEP
+name: Run Go publisher
+expected_stdout_lines:
+  - '== APP == Published data:  {"orderId":1}'
+  - '== APP == Published data:  {"orderId":2}'
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
+    
+```bash
+cd ./checkout
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run app.go
 ```
 
 <!-- END_STEP -->

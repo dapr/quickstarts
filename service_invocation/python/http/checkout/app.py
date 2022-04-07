@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
 # Adding app id as part of the header
-headers = {'dapr-app-id': 'order-processor'}
+headers = {'dapr-app-id': 'order-processor', 'content-type': 'application/json'}
 
 for i in range(1, 11):
     order = {'orderId': i}

@@ -14,6 +14,40 @@ And one subscriber:
  
 - Python subscriber `order-processor`
 
+### Run Python message subscriber with Dapr
+
+<!-- STEP
+name: run
+-->
+
+```bash
+cd ./order-processor
+pip3 install -r requirements.txt 
+```
+
+<!-- END_STEP -->
+
+2. Run the Python subscriber app with Dapr: 
+
+<!-- STEP
+name: Run python subscriber
+expected_stdout_lines:
+  - '== APP == Subscriber received : 4'
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+working_dir: ./order-processor
+background: true
+sleep: 10
+-->
+
+
+```bash
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
+```
+
+<!-- END_STEP -->
+
 ### Run Python message publisher with Dapr
 
 1. Install dependencies: 
@@ -45,39 +79,6 @@ sleep: 10
     
 ```bash
 dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
-```
-
-<!-- END_STEP -->
-### Run Python message subscriber with Dapr
-
-<!-- STEP
-name: run
--->
-
-```bash
-cd ./order-processor
-pip3 install -r requirements.txt 
-```
-
-<!-- END_STEP -->
-
-2. Run the Python subscriber app with Dapr: 
-
-<!-- STEP
-name: Run python subscriber
-expected_stdout_lines:
-  - '== APP == Subscriber received : 4'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-working_dir: ./order-processor
-background: true
-sleep: 10
--->
-
-
-```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
 ```
 
 <!-- END_STEP -->
