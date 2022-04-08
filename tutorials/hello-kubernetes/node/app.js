@@ -28,7 +28,7 @@ const port = 3000;
 
 app.get('/order', async (_req, res) => {
     try {
-        const response = await fetch(`${stateUrl}/order`)
+        const response = await fetch(`${stateUrl}/order`);
         if (!response.ok) {
             throw "Could not get state.";
         }
@@ -58,7 +58,7 @@ app.post('/neworder', async (req, res) => {
             headers: {
                 "Content-Type": "application/json"
             }
-        })
+        });
         if (!response.ok) {
             throw "Failed to persist state.";
         }
