@@ -2,12 +2,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) 
+if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 
-app.MapPost("/orders", async (Order order) 
+app.MapPost("/orders", (Order order) =>
 {
     Console.WriteLine("Order received : " + order);
     return order.ToString();
@@ -15,4 +15,4 @@ app.MapPost("/orders", async (Order order)
 
 await app.RunAsync();
 
-public record Order([property: JsonPropertyName("orderId")] int orderId); 
+public record Order(int orderId);
