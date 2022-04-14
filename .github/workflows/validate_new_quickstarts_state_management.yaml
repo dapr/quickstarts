@@ -45,7 +45,6 @@ jobs:
         if: matrix.os == 'macos-latest'
         uses: docker-practice/actions-setup-docker@master
         with:
-          docker_buildx: false
           docker_version: 20.10
       - name: Configure KinD
         if: matrix.os == 'ubuntu-latest'
