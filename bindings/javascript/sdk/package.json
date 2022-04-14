@@ -1,0 +1,18 @@
+{
+    "name": "binding",
+    "version": "1.0.0",
+    "description": "",
+    "main": "input.js",
+    "type": "module",
+    "scripts": {
+        "start": "node input.js",
+        "start:dapr": " dapr run --app-id javascript-input-binding --app-protocol http --app-port 3500 --dapr-http-port 5051 node input.js --components-path ../../components"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.25.0",
+        "dapr-client": "^2.0.1"
+    }
+}
