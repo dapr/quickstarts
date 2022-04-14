@@ -43,7 +43,7 @@ jobs:
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@v1
+        uses: docker-practice/actions-setup-docker@1.0.8
         with:
           docker_buildx: false
           docker_version: 20.10
