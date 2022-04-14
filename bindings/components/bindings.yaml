@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sample-topic
+  name: orders
 spec:
   type: bindings.kafka
   version: v1

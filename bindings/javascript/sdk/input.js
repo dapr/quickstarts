@@ -13,15 +13,15 @@ limitations under the License.
 
 import { DaprServer } from "dapr-client";
 
-const daprHost = "127.0.0.1"; 
+const daprHost = "http://localhost"; 
 const daprPort = "5051"; 
-const serverHost = "127.0.0.1";
+const serverHost = "http://localhost";
 const serverPort = "3500";
+const bindingName = "orders";
 
 async function start() {
-  const server = new DaprServer(serverHost, serverPort, daprHost, daprPort);;
-  const bindingName = "sample-topic";
-  const response = await server.binding.receive(bindingName, async (data) => console.log(`Javascript - Kafka SDK input binding: ${JSON.stringify(data)}`));
+  const server = new DaprServer(serverHost, serverPort, daprHost, daprPort);
+  await server.binding.receive(bindingName, async (data) => console.log(`Input binding: ${JSON.stringify(data)}`));
   await server.start();
 }
 

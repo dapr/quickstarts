@@ -9,16 +9,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# dapr run --app-id python-input-binding-sdk --app-protocol grpc --app-port 50051 --components-path ../../components python3 input.py
-# pip3 install dapr dapr-ext-grpc
+# 
 
 from dapr.ext.grpc import App, BindingRequest
 
 app = App()
-bindingName = "sample-topic"
+bindingName = "orders"
 
 @app.binding(bindingName)
 def binding(request: BindingRequest):
-    print('Python - Kafka SDK input binding: {}'.format(request.text()), flush=True)
+    print('Input binding: {}'.format(request.text()), flush=True)
 
 app.run(50051)

@@ -10,15 +10,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-//dapr run --app-id csharp-output-binding-http --app-port 6060 --dapr-http-port 6061 -- dotnet run --project output.csproj --components-path ../../../components
-
-const string daprHost = "http://localhost";
-const string daprHttpPort = "6061";
-const string bindingName = "sample-topic";
+var daprHost = "http://localhost";
+var daprHttpPort = "6061";
+var bindingName = "orders";
+var operation = "create"; 
 
 var baseURL = daprHost + ":" + daprHttpPort; 
 
@@ -27,12 +27,12 @@ httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTyp
 
 for (int i = 1; i <= 10; i++) {
     var order = new Order(i);
-    var daprData = new DaprData(order, "create");
+    var daprData = new DaprData(order, operation);
     var orderJson = JsonSerializer.Serialize<DaprData>(daprData);
     var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
     // Publish an event/message using Dapr PubSub via HTTP Post
     var response = httpClient.PostAsync($"{baseURL}/v1.0/bindings/{bindingName}", content);
-    Console.WriteLine("C# - Kafka HTTP output binding: " + orderJson);
+    Console.WriteLine("Output binding: " + orderJson);
 
     await Task.Delay(TimeSpan.FromSeconds(0.2));
 }

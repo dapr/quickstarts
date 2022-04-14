@@ -10,13 +10,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// dapr run --app-id javascript-output-binding-http node output.js --components-path ../../components
 
 import axios from "axios";
 
-const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
-const KAFKA_TOPIC = process.env.DAPR_KAFKA_TOPIC || "sample-topic";
+const daprHost = "http://localhost"; 
+const daprHttpPort = "5051"; 
+const kafkaTopic = "orders";
 
 async function main() {
   for(var i = 1; i <= 10; i++) {
@@ -25,9 +24,9 @@ async function main() {
         operation: "create"
     };
     // Publish a Kafka event using an output binding
-    await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/bindings/${KAFKA_TOPIC}`, order)
+    await axios.post(`${daprHost}:${daprHttpPort}/v1.0/bindings/${kafkaTopic}`, order)
       .then(function (response) {
-        console.log("Javascript - Kafka HTTP output binding: " + response.config.data);
+        console.log("Output binding: " + response.config.data);
       })
       .catch(function (error) {
         console.log(error);

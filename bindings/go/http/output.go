@@ -27,14 +27,8 @@ import (
 
 func main() {
 	daprHost := "http://localhost"
-	if value, ok := os.LookupEnv("DAPR_HOST"); ok {
-		daprHost = value
-	}
 	daprHttpPort := "6061"
-	if value, ok := os.LookupEnv("DAPR_HTTP_PORT"); ok {
-		daprHttpPort = value
-	}
-	bindingName := "sample-topic"
+	bindingName := "orders"
 
 	for i := 1; i <= 10; i++ {
 		order := `{ "data" : {"OrderId":` + strconv.Itoa(i) + `}, "operation": "create" }`
@@ -50,7 +44,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		fmt.Println("Golang - Kafka HTTP output binding: ", order)
+		fmt.Println("Output binding: ", order)
 
 		time.Sleep(1000)
 	}

@@ -10,25 +10,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 using System;
 using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
-
-//dapr run --app-id csharp-input-binding-http --app-port 7001 --components-path ../../../components -- dotnet run --project input.csproj 
-
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
+var bindingName = "orders";
 
 if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 
 // Dapr Kafka input binding
-
-app.MapPost("/sample-topic", (Order requestData) => {
-    Console.WriteLine("C# - Kafka HTTP input binding: { \"orderId\": " + requestData.OrderId + "}");
+app.MapPost(bindingName, (Order requestData) => {
+    Console.WriteLine("Input binding: { \"orderId\": " + requestData.OrderId + "}");
     return Results.Ok(requestData.OrderId);
 });
 

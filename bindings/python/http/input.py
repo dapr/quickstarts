@@ -10,7 +10,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# dapr run --app-id python-input-binding-http --app-port 5001 python3 input.py --components-path ../../components
 
 from flask import Flask, request, jsonify
 import logging
@@ -20,10 +19,10 @@ app = Flask(__name__)
 logger = logging.getLogger('werkzeug')
 
 # Dapr input binding
-@app.route('/sample-topic', methods=['POST'])
+@app.route('/orders', methods=['POST'])
 def process_binding():
-    event_orderid = request.data.decode('utf-8')
-    logger.info('Python - Kafka HTTP input binding: ' + event_orderid)
-    return 'Python - Kafka HTTP input binding: ' + event_orderid
+    eventOrderid = request.data.decode('utf-8')
+    logger.info('Input binding: ' + eventOrderid)
+    return 'Input binding: ' + eventOrderid
 
 app.run(port=5001)

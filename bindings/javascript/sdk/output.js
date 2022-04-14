@@ -14,18 +14,18 @@ limitations under the License.
 
 import { DaprClient } from 'dapr-client';
 
-const daprHost = "127.0.0.1"; 
+const daprHost = "http://localhost"; 
 const httpPort = "6000";
 
 async function main() {
   const client = new DaprClient(daprHost, httpPort);
-  const bindingName = "sample-topic";
+  const bindingName = "orders";
   for(var i = 1; i <= 10; i++) {
     const order = {orderId:  i};
     
     // Publish a Kafka event using an output binding
     await client.binding.send(bindingName, "create", order);
-    console.log("Javascript - Kafka SDK output binding: " + JSON.stringify(order));
+    console.log("Output binding: " + JSON.stringify(order));
 
     await sleep(100);
   }

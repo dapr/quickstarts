@@ -10,20 +10,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 using System;
 using Dapr.Client;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-var bindingName = "sample-topic";
+var bindingName = "orders";
+var opration = "create";
 
 for (int i = 1; i <= 10; i++) {
     var order = new Order(i);
     using var client = new DaprClientBuilder().Build();
 
     // Publish a Kafka message using output binding
-    await client.InvokeBindingAsync(bindingName, "create", order);
-    Console.WriteLine("C# - Kafka SDK output binding: " + order);
+    await client.InvokeBindingAsync(bindingName, opration, order);
+    Console.WriteLine("Output binding: " + order);
 
     await Task.Delay(TimeSpan.FromSeconds(0.2));
 }

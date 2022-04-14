@@ -13,8 +13,6 @@ limitations under the License.
 
 package main
 
-// dapr run --app-id go-input-binding-http --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 go run input.go --components-path ../../components
-
 import (
 	"fmt"
 	"io/ioutil"
@@ -29,12 +27,12 @@ func processBinding(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Golang - Kafka HTTP input binding: ", string(data))
+	fmt.Println("Input binding: ", string(data))
 }
 
 func main() {
 	daprPort := ":6002"
-	bindingName := "/sample-topic"
+	bindingName := "/orders"
 	r := mux.NewRouter()
 
 	// Dapr binding function

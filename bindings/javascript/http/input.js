@@ -10,7 +10,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// dapr run --app-id javascript-input-binding-http --app-port 3500 node input.js --components-path ../../components
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -21,8 +20,8 @@ app.use(bodyParser.json());
 
 const port = 3500;
 
-app.post('/sample-topic', (req, res) => {
-    console.log("Javascript - Kafka HTTP input binding: " + JSON.stringify(req.body));
+app.post('/orders', (req, res) => {
+    console.log("Input binding: " + JSON.stringify(req.body));
     res.status(200).send();
 });
 

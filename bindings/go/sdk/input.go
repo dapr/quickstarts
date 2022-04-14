@@ -25,7 +25,7 @@ import (
 )
 
 func main() {
-	bindingName := "/sample-topic"
+	bindingName := "/orders"
 	daprPort := ":6101"
 	s := daprd.NewService(daprPort)
 
@@ -39,6 +39,6 @@ func main() {
 }
 
 func runHandler(ctx context.Context, in *common.BindingEvent) (out []byte, err error) {
-	fmt.Println("Golang - Kafka SDK input binding: ", string(in.Data))
+	fmt.Println("Input binding: ", string(in.Data))
 	return nil, nil
 }

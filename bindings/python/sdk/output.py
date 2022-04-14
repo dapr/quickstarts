@@ -17,7 +17,7 @@ import time
 from dapr.clients import DaprClient
 
 with DaprClient() as d:
-    bindingName = "sample-topic"
+    bindingName = "orders"
     operation = "create"
     n = 0
     while n < 10:
@@ -25,7 +25,7 @@ with DaprClient() as d:
         req_data = {
             'orderId': n
         }
-        print ('Python - Kafka SDK output binding: orderId: ' + str(n),flush=True)
+        print ('Output binding: orderId: ' + str(n),flush=True)
 
         # Output message to Kafka using an output bindin
         resp = d.invoke_binding(bindingName, operation, json.dumps(req_data))

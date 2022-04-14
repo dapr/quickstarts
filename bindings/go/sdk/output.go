@@ -26,7 +26,7 @@ import (
 
 //code
 func main() {
-	bindingName := "sample-topic"
+	bindingName := "orders"
 	bindingOperation := "create"
 	for i := 1; i <= 10; i++ {
 		time.Sleep(5000)
@@ -40,6 +40,6 @@ func main() {
 		//Using Dapr SDK to invoke output binding
 		in := &dapr.InvokeBindingRequest{Name: bindingName, Operation: bindingOperation, Data: []byte(order)}
 		err = client.InvokeOutputBinding(ctx, in)
-		fmt.Println("Golang - Kafka SDK output binding: ", order)
+		fmt.Println("Output binding: ", order)
 	}
 }
