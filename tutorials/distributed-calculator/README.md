@@ -394,6 +394,8 @@ Each of the services will spin up a pod with two containers: one for your servic
 
 <!-- STEP
 name: "Deploy Kubernetes"
+sleep: 60
+timeout_seconds: 50
 expected_stdout_lines:
   - 'deployment "addapp" successfully rolled out'
   - 'deployment "subtractapp" successfully rolled out'
