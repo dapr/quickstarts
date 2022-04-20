@@ -29,7 +29,7 @@ npm install
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
-  - "== APP == Fetched Secret:  { secret: 'Order processor pass key' }"
+  - "== APP == Fetched Secret:  { secret: 'YourPasskeyHere' }"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./order-processor

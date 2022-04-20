@@ -7,4 +7,5 @@ var client = new DaprClientBuilder().Build();
 
 // Get secret from a local secret store
 var secret = await client.GetSecretAsync(DAPR_SECRET_STORE, SECRET_NAME);
-Console.WriteLine($"Fetched Secret: {string.Join(", ", secret)}");
+var secretValue = string.Join(", ", secret);
+Console.WriteLine($"Fetched Secret: {secretValue}");

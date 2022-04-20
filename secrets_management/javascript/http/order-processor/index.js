@@ -7,10 +7,8 @@ const SECRET_NAME = "secret";
 
 async function main() {
   // Get secret from a local secret store
-  await axios.get(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/secrets/${DAPR_SECRET_STORE}/${SECRET_NAME}`)
-  .then(function (secret) {
-    console.log("Fetched Secret: ", secret.data);
-  });
+  const secret = await axios.get(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/secrets/${DAPR_SECRET_STORE}/${SECRET_NAME}`);
+  console.log("Fetched Secret: ", secret.data);
 }
 
 main().catch(e => console.error(e))

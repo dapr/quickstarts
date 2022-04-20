@@ -7,7 +7,7 @@ const SECRET_NAME = "secret";
 
 async function main() {
     const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT, CommunicationProtocolEnum.HTTP);
-    var secret = await client.secret.get(DAPR_SECRET_STORE, SECRET_NAME);
+    const secret = await client.secret.get(DAPR_SECRET_STORE, SECRET_NAME);
     console.log("Fetched Secret: " + JSON.stringify(secret));
 }
 

@@ -96,7 +96,12 @@ component.dapr.io/statestore created
 
 <!-- STEP
 name: Deploy Node App
+<<<<<<< HEAD
 sleep: 80
+=======
+sleep: 70
+timeout_seconds: 80
+>>>>>>> 092452b3 (Changes based on the review comments)
 expected_stdout_lines:
   - "service/nodeapp created"
   - "deployment.apps/nodeapp created"

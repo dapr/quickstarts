@@ -29,7 +29,7 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP == INFO:root:Fetched Secret: {'secret': 'Order processor pass key'}"
+  - "== APP == INFO:root:Fetched Secret: {'secret': 'YourPasskeyHere'}"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
