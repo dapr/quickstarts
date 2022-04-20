@@ -5,7 +5,7 @@ And then modify the dapr run command to include components directory path using 
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: order_pub_sub
+  name: orderpubsub
 spec:
   type: pubsub.rabbitmq
   version: v1

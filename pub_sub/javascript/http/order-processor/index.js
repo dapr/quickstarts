@@ -7,7 +7,7 @@ app.use(bodyParser.json({ type: 'application/*+json' }));
 app.get('/dapr/subscribe', (_req, res) => {
     res.json([
         {
-            pubsubname: "order_pub_sub",
+            pubsubname: "orderpubsub",
             topic: "orders",
             route: "orders"
         }

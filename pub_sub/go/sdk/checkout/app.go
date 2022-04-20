@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	PUBSUB_NAME  = "order_pub_sub"
+	PUBSUB_NAME  = "orderpubsub"
 	PUBSUB_TOPIC = "orders"
 )
 

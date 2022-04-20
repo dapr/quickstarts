@@ -19,7 +19,7 @@ public class CheckoutServiceApplication {
 			.connectTimeout(Duration.ofSeconds(10))
 			.build();
 
-	private static final String PUBSUB_NAME = "order_pub_sub";
+	private static final String PUBSUB_NAME = "orderpubsub";
 	private static final String TOPIC = "orders";
 	private static String DAPR_HOST = System.getenv().getOrDefault("DAPR_HOST", "http://localhost");
 	private static String DAPR_HTTP_PORT = System.getenv().getOrDefault("DAPR_HTTP_PORT", "3500");

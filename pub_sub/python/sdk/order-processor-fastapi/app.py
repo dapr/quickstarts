@@ -7,6 +7,6 @@ dapr_app = DaprApp(app)
 
 
 # Dapr subscription routes orders topic to this route
-@dapr_app.subscribe(pubsub='order_pub_sub', topic='orders')
+@dapr_app.subscribe(pubsub='orderpubsub', topic='orders')
 def orders_subscriber(detail):
     print('got here')

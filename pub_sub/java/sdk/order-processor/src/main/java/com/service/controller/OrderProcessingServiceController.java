@@ -19,7 +19,7 @@ public class OrderProcessingServiceController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderProcessingServiceController.class);
 
-    @Topic(name = "orders", pubsubName = "order_pub_sub")
+    @Topic(name = "orders", pubsubName = "orderpubsub")
     @PostMapping(path = "/orders", consumes = MediaType.ALL_VALUE)
     public Mono<ResponseEntity> getCheckout(@RequestBody(required = false) CloudEvent<Order> cloudEvent) {
         return Mono.fromSupplier(() -> {

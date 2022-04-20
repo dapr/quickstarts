@@ -24,11 +24,11 @@ public class OrderProcessingServiceController {
     @GetMapping(path = "/dapr/subscribe", produces = MediaType.APPLICATION_JSON_VALUE)
     public DaprSubscription[] getSubscription() {
         DaprSubscription daprSubscription = DaprSubscription.builder()
-                .pubSubName("order_pub_sub")
+                .pubSubName("orderpubsub")
                 .topic("orders")
                 .route("orders")
                 .build();
-        logger.info("Subscribed to Pubsubname {} and topic {}", "order_pub_sub", "orders");
+        logger.info("Subscribed to Pubsubname {} and topic {}", "orderpubsub", "orders");
         DaprSubscription[] arr = new DaprSubscription[]{daprSubscription};
         return arr;
     }
