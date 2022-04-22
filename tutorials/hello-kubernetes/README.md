@@ -94,6 +94,8 @@ component.dapr.io/statestore created
 
 ## Step 3 - Deploy the Node.js app with the Dapr sidecar
 
+If you want to see the API logs, add `dapr.io/enable-api-logging: "true"` annotation to node.yaml file.
+
 <!-- STEP
 name: Deploy Node App
 sleep: 60
@@ -241,6 +243,8 @@ expected_stdout_lines:
 -->
 
 Deploy the Python app to your Kubernetes cluster:
+
+If you want to see the API logs, add `dapr.io/enable-api-logging: "true"` annotation to python.yaml file.
 
 ```bash
 kubectl apply -f ./deploy/python.yaml
