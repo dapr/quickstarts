@@ -94,6 +94,8 @@ component.dapr.io/statestore created
 
 ## Step 3 - Deploy the Node.js app with the Dapr sidecar
 
+`dapr.io/enable-api-logging: "true"` annotation is added to node.yaml file by default to see the API logs.
+
 <!-- STEP
 name: Deploy Node App
 sleep: 60
@@ -242,6 +244,8 @@ expected_stdout_lines:
 
 Deploy the Python app to your Kubernetes cluster:
 
+`dapr.io/enable-api-logging: "true"` annotation is added to python.yaml file by default to see the API logs.
+
 ```bash
 kubectl apply -f ./deploy/python.yaml
 ```
@@ -293,7 +297,35 @@ Got a new order! Order ID: 3
 Successfully persisted state
 ```
 
-## Step 7 - Confirm successful persistence
+## Step 7 - Observe API call logs
+
+Now that the Node.js and Python applications are deployed, watch API call logs come through:
+
+Get the API call logs of the Node.js app:
+
+<!-- STEP
+expected_stdout_lines:
+  - 'level=info msg="HTTP API Called: POST /v1.0/state/statestore"'
+expected_stderr_lines:
+output_match_mode: substring
+name: Read nodeapp logs
+-->
+
+```bash
+POD=$(kubectl get pod -l app=node -o jsonpath="{.items[0].metadata.name}")
+kubectl logs $POD daprd
+```
+
+<!-- END_STEP -->
+
+If API logs are logged, you should see logs like this:
+
+```
+time="2022-04-25T22:46:09.82121774Z" level=info msg="HTTP API Called: POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
+time="2022-04-25T22:46:10.828764787Z" level=info msg="HTTP API Called: POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
+```
+
+## Step 8 - Confirm successful persistence
 
 Call the Node.js app's order endpoint to get the latest order. Grab the external IP address that you saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
 
@@ -304,7 +336,7 @@ curl $NODE_APP/order
 
 You should see the latest JSON in response!
 
-## Step 8 - Cleanup
+## Step 9 - Cleanup
 
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 

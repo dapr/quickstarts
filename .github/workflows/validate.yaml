@@ -48,7 +48,6 @@ jobs:
           docker_buildx: false
           docker_version: 20.10
       - name: Configure KinD
-        if: matrix.os == 'ubuntu-latest'
         # Generate a KinD configuration file that uses:
         # A couple of worker nodes: this is needed to run both
         #     ZooKeeper + Kakfa
@@ -74,20 +73,12 @@ jobs:
           cat kind.yaml
 
       - name: Create KinD Cluster - Linux
-        if: matrix.os == 'ubuntu-latest' 
         uses: helm/kind-action@v1.0.0
         with:
           config: kind.yaml
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
-      - name: Install minikube - MacOS
-        if: matrix.os == 'macos-latest' 
-        run: |
-          brew install kubernetes-cli || brew link --overwrite kubernetes-cli
-          brew install minikube
-          minikube start --memory 1900 --host-only-cidr "192.168.59.1/24"
       - name: Get KinD info
-        if: matrix.os == 'ubuntu-latest'
         run: |
           kubectl cluster-info --context kind-kind
           NODE_IP=$(kubectl get nodes \
