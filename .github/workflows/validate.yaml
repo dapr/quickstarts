@@ -80,12 +80,10 @@ jobs:
           config: kind.yaml
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
-      - name: Install minikube - MacOS
+      - name: Install kind - MacOS
         if: matrix.os == 'macos-latest' 
         run: |
-          brew install kubernetes-cli || brew link --overwrite kubernetes-cli
-          brew install minikube
-          minikube start --memory 1900 --host-only-cidr "192.168.59.1/24"
+          brew install kind
       - name: Get KinD info
         if: matrix.os == 'ubuntu-latest'
         run: |
