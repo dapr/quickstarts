@@ -3,12 +3,11 @@ import json
 
 app = Flask(__name__)
 
-
 # Register Dapr pub/sub subscriptions
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
     subscriptions = [{
-        'pubsubname': 'order_pub_sub',
+        'pubsubname': 'orderpubsub',
         'topic': 'orders',
         'route': 'orders'
     }]

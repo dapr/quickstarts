@@ -13,7 +13,7 @@ public class CheckoutServiceApplication {
 
 	public static void main(String[] args) throws InterruptedException{
 		String TOPIC_NAME = "orders";
-		String PUBSUB_NAME = "order_pub_sub";
+		String PUBSUB_NAME = "orderpubsub";
 
 		for (int i = 0; i <= 10; i++) {
 			int orderId = i;

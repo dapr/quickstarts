@@ -8,7 +8,7 @@ if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 
 // Register Dapr pub/sub subscriptions
 app.MapGet("/dapr/subscribe", () => {
-    var sub = new DaprSubscription(PubsubName: "order_pub_sub", Topic: "orders", Route: "orders");
+    var sub = new DaprSubscription(PubsubName: "orderpubsub", Topic: "orders", Route: "orders");
     Console.WriteLine("Dapr pub/sub is subscribed to: " + sub);
     return Results.Json(new DaprSubscription[]{sub});
 });

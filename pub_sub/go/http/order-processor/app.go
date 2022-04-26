@@ -23,7 +23,7 @@ type Result struct {
 func getOrder(w http.ResponseWriter, r *http.Request) {
 	jsonData := []JSONObj{
 		{
-			PubsubName: "order_pub_sub",
+			PubsubName: "orderpubsub",
 			Topic:      "orders",
 			Route:      "orders",
 		},

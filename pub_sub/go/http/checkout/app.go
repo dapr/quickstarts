@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const PUBSUB_NAME = "order_pub_sub"
+const PUBSUB_NAME = "orderpubsub"
 const PUBSUB_TOPIC = "orders"
 
 func main() {

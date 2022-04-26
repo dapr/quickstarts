@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
-PUBSUB_NAME = 'order_pub_sub'
+PUBSUB_NAME = 'orderpubsub'
 TOPIC = 'orders'
 logging.info('Publishing to baseURL: %s, Pubsub Name: %s, Topic: %s' % (
             base_url, PUBSUB_NAME, TOPIC))

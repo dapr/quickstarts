@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/dapr/subscribe', methods=['GET'])
 def subscribe():
     subscriptions = [{
-        'pubsubname': 'order_pub_sub',
+        'pubsubname': 'orderpubsub',
         'topic': 'orders',
         'route': 'orders'
     }]
