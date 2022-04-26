@@ -338,7 +338,7 @@ kubectl logs --selector=app=python -c daprd --tail=-1
 
 <!-- END_STEP -->
 
-If API logs are logged, you should see logs like this:
+When save state API calls are made, you should see logs similar to this:
 
 ```
 time="2022-04-25T22:46:09.82121774Z" level=info msg="HTTP API Called: POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
