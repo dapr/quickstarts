@@ -49,51 +49,42 @@ jobs:
           docker_version: 20.10
       - name: Configure KinD
         # Generate a KinD configuration file that uses:
-        # (a) a couple of worker nodes: this is needed to run both
-        #     ZooKeeper + Kakfa, and
-        # (b) a local registry: Due to `kind load` performance
-        #     https://github.com/kubernetes-sigs/kind/issues/1165, using
-        #     a local repository speeds up the image pushes into KinD
-        #     significantly.
-      working-directory: ./
-      run: |
-        cat > kind.yaml <<EOF
-        apiVersion: kind.x-k8s.io/v1alpha4
-        kind: Cluster
-        nodes:
-        - role: control-plane
-          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
-        - role: worker
-          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
-        - role: worker
-          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
-        - role: worker
-          image: kindest/node:${{ matrix.k8s-version }}@${{ matrix.kind-image-sha }}
-        containerdConfigPatches:
-        - |-
-          [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:$REGISTRY_PORT"]
-            endpoint = ["http://$REGISTRY_NAME:$REGISTRY_PORT"]
-        EOF
-        # Log the generated kind.yaml for easy reference.
-        cat kind.yaml
-        # Set log target directory
-        echo "DAPR_CONTAINER_LOG_PATH=$GITHUB_WORKSPACE/container_logs/${{ matrix.k8s-version }}_${{ matrix.mode }}" >> $GITHUB_ENV
+        # A couple of worker nodes: this is needed to run both
+        #     ZooKeeper + Kakfa
+        working-directory: ./
+        run: |
+          cat > kind.yaml <<EOF
+          apiVersion: kind.x-k8s.io/v1alpha4
+          kind: Cluster
+          nodes:
+          - role: control-plane
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          - role: worker
+            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
+          EOF
+  
+          # Log the generated kind.yaml for easy reference.
+          cat kind.yaml
 
-      - name: Create KinD Cluster
-      uses: helm/kind-action@v1.0.0
-      with:
-        config: kind.yaml
-        cluster_name: kind
-        version: ${{ matrix.kind-version }}
-
-    - name: Get KinD info
-      run: |
-        kubectl cluster-info --context kind-kind
-        NODE_IP=$(kubectl get nodes \
-                  -lkubernetes.io/hostname!=kind-control-plane \
-                  -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
-        echo "MINIKUBE_NODE_IP=$NODE_IP" >> $GITHUB_ENV
-        
+      - name: Create KinD Cluster - Linux
+        uses: helm/kind-action@v1.0.0
+        with:
+          config: kind.yaml
+          cluster_name: kind
+          version: ${{ env.KIND_VERSION }}
+      - name: Get KinD info
+        run: |
+          kubectl cluster-info --context kind-kind
+          NODE_IP=$(kubectl get nodes \
+                    -lkubernetes.io/hostname!=kind-control-plane \
+                    -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
+          echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
