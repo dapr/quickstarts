@@ -16,6 +16,7 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "pythonapp"
+        dapr.io/enable-api-logging: "true"
     spec:
       containers:
       - name: python

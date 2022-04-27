@@ -47,53 +47,6 @@ jobs:
         with:
           docker_buildx: false
           docker_version: 20.10
-      - name: Configure KinD
-        if: matrix.os == 'ubuntu-latest'
-        # Generate a KinD configuration file that uses:
-        # A couple of worker nodes: this is needed to run both
-        #     ZooKeeper + Kakfa
-        working-directory: ./
-        run: |
-          cat > kind.yaml <<EOF
-          apiVersion: kind.x-k8s.io/v1alpha4
-          kind: Cluster
-          nodes:
-          - role: control-plane
-            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
-          - role: worker
-            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
-          - role: worker
-            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
-          - role: worker
-            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
-          - role: worker
-            image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
-          EOF
-  
-          # Log the generated kind.yaml for easy reference.
-          cat kind.yaml
-
-      - name: Create KinD Cluster - Linux
-        if: matrix.os == 'ubuntu-latest' 
-        uses: helm/kind-action@v1.0.0
-        with:
-          config: kind.yaml
-          cluster_name: kind
-          version: ${{ env.KIND_VERSION }}
-      - name: Install minikube - MacOS
-        if: matrix.os == 'macos-latest' 
-        run: |
-          brew install kubernetes-cli || brew link --overwrite kubernetes-cli
-          brew install minikube
-          minikube start --memory 1900 --host-only-cidr "192.168.59.1/24"
-      - name: Get KinD info
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          kubectl cluster-info --context kind-kind
-          NODE_IP=$(kubectl get nodes \
-                    -lkubernetes.io/hostname!=kind-control-plane \
-                    -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
-          echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
@@ -121,14 +74,6 @@ jobs:
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
           dapr --version
-      - name: Install Dapr - Kubernetes
-        run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo update
-          helm install redis bitnami/redis
-          dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
-          kubectl get nodes -o wide
-          for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
       - name: Check out code 
         uses: actions/checkout@v2
       - name: Install utilities dependencies

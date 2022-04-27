@@ -39,10 +39,10 @@ jobs:
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-10.15]
     steps:
       - name: Install docker - MacOS
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-10.15'
         uses: docker-practice/actions-setup-docker@1.0.8
         with:
           docker_buildx: false
@@ -81,11 +81,11 @@ jobs:
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
       - name: Install minikube - MacOS
-        if: matrix.os == 'macos-latest' 
+        if: matrix.os == 'macos-10.15' 
         run: |
           brew install kubernetes-cli || brew link --overwrite kubernetes-cli
           brew install minikube
-          minikube start --memory 1900 --host-only-cidr "192.168.59.1/24"
+          minikube start --driver=virtualbox --memory 4096 --host-only-cidr "192.168.59.1/24"
       - name: Get KinD info
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -173,4 +173,4 @@ jobs:
           popd
       - name: Linkcheck README.md
         run: |
-          make validate        
+          make validate
