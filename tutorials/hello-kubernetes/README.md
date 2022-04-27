@@ -94,8 +94,6 @@ component.dapr.io/statestore created
 
 ## Step 3 - Deploy the Node.js app with the Dapr sidecar
 
-`dapr.io/enable-api-logging: "true"` annotation is added to node.yaml file by default to see the API logs.
-
 <!-- STEP
 name: Deploy Node App
 sleep: 90
@@ -122,6 +120,8 @@ This will deploy the Node.js app to Kubernetes. The Dapr control plane will auto
 `dapr.io/enabled: true` - this tells the Dapr control plane to inject a sidecar to this deployment.
 
 `dapr.io/app-id: nodeapp` - this assigns a unique id or name to the Dapr application, so it can be sent messages to and communicated with by other Dapr apps.
+
+`dapr.io/enable-api-logging: "true"` - this is added to node.yaml file by default to see the API logs.
 
 You'll also see the container image that you're deploying. If you want to update the code and deploy a new image, see **Next Steps** section.
 
@@ -244,8 +244,6 @@ expected_stdout_lines:
 
 Deploy the Python app to your Kubernetes cluster:
 
-`dapr.io/enable-api-logging: "true"` annotation is added to python.yaml file by default to see the API logs.
-
 ```bash
 kubectl apply -f ./deploy/python.yaml
 ```
@@ -301,7 +299,7 @@ Successfully persisted state
 
 Now that the Node.js and Python applications are deployed, watch API call logs come through:
 
-Get the API call logs of the Node.js app:
+Get the API call logs of the node app:
 
 <!-- STEP
 expected_stdout_lines:
@@ -312,8 +310,30 @@ name: Read nodeapp logs
 -->
 
 ```bash
-POD=$(kubectl get pod -l app=node -o jsonpath="{.items[0].metadata.name}")
-kubectl logs $POD daprd
+kubectl logs --selector=app=node -c daprd --tail=-1
+```
+
+<!-- END_STEP -->
+
+If API logs are logged, you should see logs like this:
+
+```
+time="2022-04-25T22:46:09.82121774Z" level=info msg="HTTP API Called: POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
+time="2022-04-25T22:46:10.828764787Z" level=info msg="HTTP API Called: POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
+```
+
+Get the API call logs of the Python app:
+
+<!-- STEP
+expected_stdout_lines:
+  - 'level=info msg="HTTP API Called: POST /neworder"'
+expected_stderr_lines:
+output_match_mode: substring
+name: Read nodeapp logs
+-->
+
+```bash
+kubectl logs --selector=app=python -c daprd --tail=-1
 ```
 
 <!-- END_STEP -->
