@@ -80,27 +80,20 @@ jobs:
           config: kind.yaml
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
-      - name: Install kind - MacOS
+      - name: Install minikube - MacOS
         if: matrix.os == 'macos-10.15' 
         run: |
-          brew install kind
-          kind create cluster
+          brew install kubernetes-cli || brew link --overwrite kubernetes-cli
+          brew install minikube
+          minikube start --driver=virtualbox --memory 4096 --host-only-cidr "192.168.59.1/24"
       - name: Get KinD info
-        if: matrix.os == 'ubuntu-latest' 
+        if: matrix.os == 'ubuntu-latest'
         run: |
           kubectl cluster-info --context kind-kind
           NODE_IP=$(kubectl get nodes \
                     -lkubernetes.io/hostname!=kind-control-plane \
                     -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
           echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
-      # - name: Get KinD info - MacOS
-      #   if: matrix.os == 'macos-latest' 
-      #   run: |
-      #     kubectl cluster-info --context kind-kind
-      #     NODE_IP=$(kubectl get nodes \
-      #               -lkubernetes.io/hostname!=kind-control-plane \
-      #               -ojsonpath='map[string]interface {}{"apiVersion":"v1", "items":[]interface {}{}, "kind":"List", "metadata":map[string]interface {}{"resourceVersion":"", "selfLink":""}}')
-      #     echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
@@ -180,4 +173,4 @@ jobs:
           popd
       - name: Linkcheck README.md
         run: |
-          make validate        
+          make validate
