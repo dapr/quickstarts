@@ -15,7 +15,7 @@ Also, unless you have already done so, clone the repository with the quickstarts
 
 ```
 git clone [-b <dapr_version_tag>] https://github.com/dapr/quickstarts.git
-cd quickstarts/hello-kubernetes
+cd quickstarts/tutorials/hello-kubernetes
 ```
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
