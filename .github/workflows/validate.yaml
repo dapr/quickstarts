@@ -86,12 +86,21 @@ jobs:
           brew install kind
           kind create cluster
       - name: Get KinD info
+        if: matrix.os == 'ubuntu-latest' 
         run: |
           kubectl cluster-info --context kind-kind
           NODE_IP=$(kubectl get nodes \
                     -lkubernetes.io/hostname!=kind-control-plane \
                     -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
           echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
+      # - name: Get KinD info - MacOS
+      #   if: matrix.os == 'macos-latest' 
+      #   run: |
+      #     kubectl cluster-info --context kind-kind
+      #     NODE_IP=$(kubectl get nodes \
+      #               -lkubernetes.io/hostname!=kind-control-plane \
+      #               -ojsonpath='map[string]interface {}{"apiVersion":"v1", "items":[]interface {}{}, "kind":"List", "metadata":map[string]interface {}{"resourceVersion":"", "selfLink":""}}')
+      #     echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
