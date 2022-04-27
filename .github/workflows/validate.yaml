@@ -141,11 +141,11 @@ jobs:
           pushd tutorials/hello-world
           make validate
           popd
-      - name: Validate hello-kubernetes
-        run: |
-          pushd tutorials/hello-kubernetes
-          make validate
-          popd
+      # - name: Validate hello-kubernetes
+      #   run: |
+      #     pushd tutorials/hello-kubernetes
+      #     make validate
+      #     popd
       - name: Validate distributed-calculator
         run: |
           pushd tutorials/distributed-calculator
