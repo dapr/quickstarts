@@ -85,7 +85,7 @@ jobs:
         run: |
           brew install kubernetes-cli || brew link --overwrite kubernetes-cli
           brew install minikube
-          minikube start --driver=virtualbox --memory 4096 --host-only-cidr "192.168.59.1/24"
+          minikube start --driver=virtualbox --memory 8192 --host-only-cidr "192.168.59.1/24"
       - name: Get KinD info
         if: matrix.os == 'ubuntu-latest'
         run: |
