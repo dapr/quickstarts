@@ -142,31 +142,37 @@ jobs:
           make validate
           popd
       - name: Validate hello-kubernetes
+        if: matrix.os == 'ubuntu-latest'
         run: |
           pushd tutorials/hello-kubernetes
           make validate
           popd
       - name: Validate distributed-calculator
+        if: matrix.os == 'ubuntu-latest'
         run: |
           pushd tutorials/distributed-calculator
           make validate
           popd
       - name: Validate pub-sub
+        if: matrix.os == 'ubuntu-latest'
         run: |
           pushd tutorials/pub-sub
           make validate
           popd
       - name: Validate bindings
+        if: matrix.os == 'ubuntu-latest'
         run: |
           pushd tutorials/bindings
           make validate
           popd
       - name: Validate secretstore
+        if: matrix.os == 'ubuntu-latest'
         run: |
           pushd tutorials/secretstore
           make validate
           popd
       - name: Validate observability
+        if: matrix.os == 'ubuntu-latest'
         run: |
           pushd tutorials/observability
           make validate
