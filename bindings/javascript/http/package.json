@@ -1,0 +1,13 @@
+{
+    "name": "bindings",
+    "version": "1.0.0",
+    "description": "",
+    "main": "batch.js",
+    "type": "module",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.25.0"
+    }
+}
