@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: csharp-subscriber
-        image: dapriosamples/pubsub-csharp-subscriber:latest
+        image: ghcr.io/dapr/samples/pubsub-csharp-subscriber:latest
         ports:
         - containerPort: 5009
         imagePullPolicy: Always

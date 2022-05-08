@@ -25,7 +25,7 @@ Dapr allows you to deploy the same microservices from your local machines to the
 ### Prerequisites to run locally
 
 - [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr-cli/)
-- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/) and/or [Asp.Net Core 5](https://dotnet.microsoft.com/download/dotnet/5.0): You can run this quickstart with one or both or all microservices
+- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/) and/or [Asp.Net Core 6](https://dotnet.microsoft.com/download/dotnet/6.0): You can run this quickstart with one or both or all microservices
 
 ### Prerequisites to Run in Kubernetes
 
@@ -290,6 +290,7 @@ curl -s http://localhost:8080/publish -H Content-Type:application/json --data @m
 expected_stdout_lines: 
   - 'app stopped successfully: node-subscriber'
   - 'app stopped successfully: python-subscriber'
+  - 'app stopped successfully: csharp-subscriber'
   - 'app stopped successfully: react-form'
 expected_stderr_lines:
 output_match_mode: substring
@@ -302,6 +303,10 @@ dapr stop --app-id node-subscriber
 
 ```bash
 dapr stop --app-id python-subscriber
+```
+
+```bash
+dapr stop --app-id csharp-subscriber
 ```
 
 ```bash
@@ -333,7 +338,7 @@ Dapr uses pluggable message buses to enable pub-sub, in this case Redis Streams 
 Now that the Redis store is set up, you can deploy the assets.
 
 1. In your CLI window, navigate to the deploy directory
-2. To deploy the publisher and two subscriber microservices, as well as the redis configuration you set up in the last step, run:
+2. To deploy the publisher and three subscriber microservices, as well as the redis configuration you set up in the last step, run:
 
 <!-- STEP
 name: Deploy to k8s
@@ -341,10 +346,12 @@ working_dir: deploy
 expected_stdout_lines:
   - "deployment.apps/node-subscriber created"
   - "deployment.apps/python-subscriber created"
+  - "deployment.apps/csharp-subscriber created"
   - "service/react-form created"
   - "deployment.apps/react-form created"
   - 'deployment "node-subscriber" successfully rolled out'
   - 'deployment "python-subscriber" successfully rolled out'
+  - 'deployment "csharp-subscriber" successfully rolled out'
   - 'deployment "react-form" successfully rolled out'
 -->
 
@@ -491,6 +498,7 @@ working_dir: deploy
 expected_stdout_lines:
   - 'deployment.apps "node-subscriber" deleted'
   - 'deployment.apps "python-subscriber" deleted'
+  - 'deployment.apps "csharp-subscriber" deleted'
   - 'service "react-form" deleted'
   - 'deployment.apps "react-form" deleted'
   - 'component.dapr.io "pubsub" deleted'
@@ -575,80 +583,53 @@ Note: if `flush=True` is not set, logs will not appear when running `kubectl get
 
 ### C# message subscriber
 
-Navigate to the `csharp-subscriber` directory and open `Startup.cs` and/or `MessageController.cs` , the code for the C# subscriber. We're exposing three API endpoints, this time using `Asp.Net Core`. first let's look at Startup.cs:
+Navigate to the `csharp-subscriber` directory and open `Program.cs`, the code for the C# subscriber. We're exposing three API endpoints, this time using `Asp.Net Core 6 Minimal API`.
 
-```csharp
-// This method gets called by the runtime. Use this method to add services to the container.
-public void ConfigureServices(IServiceCollection services)
-{
-
-    services.AddControllers().AddDapr();
-    services.AddSwaggerGen(c =>
-    {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "csharp_subscriber", Version = "v1" });
-    });
-}
-
-// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-{
-    if (env.IsDevelopment())
-    {
-        app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "csharp_subscriber v1"));
-    }
-
-    app.UseRouting();
-
-    app.UseCloudEvents();
-
-    app.UseAuthorization();
-
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapSubscribeHandler();
-        endpoints.MapControllers();
-    });
-}
-```
 Again, this is how you tell Dapr what topics in which pubsub component to subscribe to. In this case, subscribing to topics "A" and "B" and "C" of pubsub component named 'pubsub'. Messages of those topics are handled with these three routes:
 
 ```csharp
-[ApiController]
-public class MessageController : ControllerBase
+using Dapr;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    private readonly ILogger<MessageController> _logger;
-    
-    public MessageController(ILogger<MessageController> logger)
-    {
-        _logger = logger;
-    }
-
-    [Topic("pubsub", "A")]
-    [HttpPost("A")]
-    public ActionResult TopicA(Dictionary<string, string> item)
-    {
-        _logger.LogInformation($"A: {item["message"]}");
-        return Ok();
-    }
-
-    [Topic("pubsub", "B")]
-    [HttpPost("B")]
-    public ActionResult TopicB(Dictionary<string, string> item)
-    {
-        _logger.LogInformation($"B: {item["message"]}");
-        return Ok();
-    }
-
-    [Topic("pubsub", "C")]
-    [HttpPost("C")]
-    public ActionResult TopicC(Dictionary<string, string> item)
-    {
-        _logger.LogInformation($"C: {item["message"]}");
-        return Ok();
-    }
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+// Dapr configurations
+app.UseCloudEvents();
+
+app.MapSubscribeHandler();
+
+app.MapPost("/A", [Topic("pubsub", "A")] (ILogger<Program> logger, MessageEvent item) => {
+    logger.LogInformation($"{item.MessageType}: {item.Message}");
+    return Results.Ok();
+});
+
+app.MapPost("/B", [Topic("pubsub", "B")] (ILogger<Program> logger, MessageEvent item) => {
+    logger.LogInformation($"{item.MessageType}: {item.Message}");
+    return Results.Ok();
+});
+
+app.MapPost("/C", [Topic("pubsub", "C")] (ILogger<Program> logger, Dictionary<string, string> item) => {
+    logger.LogInformation($"{item["messageType"]}: {item["message"]}");
+    return Results.Ok();
+});
+
+app.Run();
+
+internal record MessageEvent(string MessageType, string Message);
 ```
 
 ### React front end
