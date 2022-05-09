@@ -344,9 +344,9 @@ Now that the Redis store is set up, you can deploy the assets.
 name: Deploy to k8s
 working_dir: deploy
 expected_stdout_lines:
+  - "deployment.apps/csharp-subscriber created"
   - "deployment.apps/node-subscriber created"
   - "deployment.apps/python-subscriber created"
-  - "deployment.apps/csharp-subscriber created"
   - "service/react-form created"
   - "deployment.apps/react-form created"
   - 'deployment "node-subscriber" successfully rolled out'
@@ -496,9 +496,9 @@ Once you're done, you can spin down your Kubernetes resources by navigating to t
 name: Cleanup
 working_dir: deploy
 expected_stdout_lines:
+  - 'deployment.apps "csharp-subscriber" deleted'
   - 'deployment.apps "node-subscriber" deleted'
   - 'deployment.apps "python-subscriber" deleted'
-  - 'deployment.apps "csharp-subscriber" deleted'
   - 'service "react-form" deleted'
   - 'deployment.apps "react-form" deleted'
   - 'component.dapr.io "pubsub" deleted'
