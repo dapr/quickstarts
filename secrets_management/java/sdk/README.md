@@ -36,6 +36,7 @@ output_match_mode: substring
 -->
 
 ```bash
+cd ./order-processor
 dapr run --app-id order-processor --components-path ../../../components/ -- java -jar target/order-processor-0.0.1-SNAPSHOT.jar
 ```
 
