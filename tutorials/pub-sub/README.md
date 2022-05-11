@@ -217,7 +217,7 @@ npm install
 <!-- END_STEP -->
 
 <!-- STEP
-name: Run react frontent
+name: Run react front end
 working_dir: ./react-form
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
@@ -620,20 +620,7 @@ using Dapr;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 // Dapr configurations
 app.UseCloudEvents();
