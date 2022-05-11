@@ -163,9 +163,27 @@ dotnet build
 
 3. Run the C# subscriber app with Dapr: 
 
+<!-- STEP
+name: Run csharp subscriber
+expected_stdout_lines:
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP ==       A: Message on A'
+  - '== APP ==       B: Message on B'
+  - '== APP ==       C: Message on C'
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+working_dir: ./csharp-subscriber
+background: true
+sleep: 10
+-->
+    
 ```bash
 dapr run --app-id csharp-subscriber --app-port 5009 dotnet run csharp-subscriber.csproj
 ```
+
+<!-- END_STEP -->
 
 ### Run the React front end with Dapr
 
@@ -482,9 +500,19 @@ kubectl logs --selector app=python-subscriber -c python-subscriber
 
 <!-- END_STEP -->
 
+<!-- STEP
+name: Deploy Csharp App
+expected_stdout_lines:
+  - "A:  Message on A"
+  - "B:  Message on B"
+  - "C:  Message on C"
+-->
+
 ```bash
 kubectl logs --selector app=csharp-subscriber -c csharp-subscriber
 ```
+
+<!-- END_STEP -->
 
 4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C" and the C# subscriber receives messages of type "A" and "B" and "C".
 
