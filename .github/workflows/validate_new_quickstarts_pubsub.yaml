@@ -43,14 +43,22 @@ jobs:
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@1.0.8
-        with:
-          docker_buildx: false
-          docker_version: 20.10
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          brew install --cask docker
+          sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
+          open -a /Applications/Docker.app --args --unattended --accept-license
+          while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
+          docker --version
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GOVER }}
+      - name: Set up OpenJDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
       - name: Determine latest Dapr Runtime version including Pre-releases
         run: |
           helm repo add dapr https://dapr.github.io/helm-charts/ && helm repo update && export RUNTIME_VERSION=$(helm search repo dapr/dapr --devel --versions | awk '/dapr\/dapr/ {print $3; exit}' )
@@ -109,6 +117,16 @@ jobs:
       - name: Validate python sdk pubsub
         run: |
           pushd pub_sub/python/sdk
+          make validate
+          popd
+      - name: Validate java http pubsub
+        run: |
+          pushd pub_sub/java/http
+          make validate
+          popd
+      - name: Validate java sdk pubsub
+        run: |
+          pushd pub_sub/java/sdk
           make validate
           popd
       - name: Linkcheck README.md

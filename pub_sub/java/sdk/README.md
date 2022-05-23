@@ -49,6 +49,7 @@ background: true
 sleep: 10
 -->
 ```bash
+cd ./order-processor
  dapr run --app-port 8080 --app-id order-processor --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 <!-- END_STEP -->
@@ -82,7 +83,8 @@ sleep: 10
 -->
 
 ```bash
- dapr run --app-id checkout --components-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+cd ./checkout
+dapr run --app-id checkout --components-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 <!-- END_STEP -->
 
