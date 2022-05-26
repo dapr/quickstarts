@@ -1,5 +1,5 @@
 DOCKER_IMAGE_PREFIX ?=pubsub-
-APPS                ?=node-subscriber python-subscriber react-form
+APPS                ?=node-subscriber python-subscriber csharp-subscriber react-form
 
 include ../docker.mk
 include ../validate.mk

@@ -8,10 +8,11 @@ This quickstart includes one publisher:
 
 - React front-end message generator
 
-And two subscribers: 
+And three subscribers: 
  
 - Node.js subscriber
 - Python subscriber
+- C# subscriber
 
 Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case you'll use Redis Streams (enabled in Redis versions => 5). The following architecture diagram illustrates how components interconnect locally:
 
@@ -24,7 +25,7 @@ Dapr allows you to deploy the same microservices from your local machines to the
 ### Prerequisites to run locally
 
 - [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr-cli/)
-- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/): You can run this quickstart with one or both microservices
+- [Node.js version 8 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/) and/or [Asp.Net Core 6](https://dotnet.microsoft.com/download/dotnet/6.0): You can run this quickstart with one or both or all microservices
 
 ### Prerequisites to Run in Kubernetes
 
@@ -139,6 +140,51 @@ dapr run --app-id python-subscriber --app-port 5001 python3 app.py
 
 <!-- END_STEP -->
 
+### Run C# message subscriber with Dapr
+
+1. Open a new CLI window and navigate to C# subscriber directory in your CLI: 
+
+```bash
+cd csharp-subscriber
+```
+
+2. Build Asp.Net Core app: 
+
+<!-- STEP
+name: Build Asp.Net Core app
+working_dir: ./csharp-subscriber
+-->
+
+```bash
+dotnet build
+```
+
+<!-- END_STEP -->
+
+3. Run the C# subscriber app with Dapr: 
+
+<!-- STEP
+name: Run csharp subscriber
+expected_stdout_lines:
+  - "You're up and running! Both Dapr and your app logs will appear here."
+  - '== APP ==       A: Message on A'
+  - '== APP ==       B: Message on B'
+  - '== APP ==       C: Message on C'
+  - "Exited Dapr successfully"
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+working_dir: ./csharp-subscriber
+background: true
+sleep: 10
+-->
+    
+```bash
+dapr run --app-id csharp-subscriber --app-port 5009 dotnet run csharp-subscriber.csproj
+```
+
+<!-- END_STEP -->
+
 ### Run the React front end with Dapr
 
 Now, run the React front end with Dapr. The front end will publish different kinds of messages that subscribers will pick up.
@@ -171,7 +217,7 @@ npm install
 <!-- END_STEP -->
 
 <!-- STEP
-name: Run react frontent
+name: Run react front end
 working_dir: ./react-form
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
@@ -262,6 +308,7 @@ curl -s http://localhost:8080/publish -H Content-Type:application/json --data @m
 expected_stdout_lines: 
   - 'app stopped successfully: node-subscriber'
   - 'app stopped successfully: python-subscriber'
+  - 'app stopped successfully: csharp-subscriber'
   - 'app stopped successfully: react-form'
 expected_stderr_lines:
 output_match_mode: substring
@@ -274,6 +321,10 @@ dapr stop --app-id node-subscriber
 
 ```bash
 dapr stop --app-id python-subscriber
+```
+
+```bash
+dapr stop --app-id csharp-subscriber
 ```
 
 ```bash
@@ -305,18 +356,20 @@ Dapr uses pluggable message buses to enable pub-sub, in this case Redis Streams 
 Now that the Redis store is set up, you can deploy the assets.
 
 1. In your CLI window, navigate to the deploy directory
-2. To deploy the publisher and two subscriber microservices, as well as the redis configuration you set up in the last step, run:
+2. To deploy the publisher and three subscriber microservices, as well as the redis configuration you set up in the last step, run:
 
 <!-- STEP
 name: Deploy to k8s
 working_dir: deploy
 expected_stdout_lines:
+  - "deployment.apps/csharp-subscriber created"
   - "deployment.apps/node-subscriber created"
   - "deployment.apps/python-subscriber created"
   - "service/react-form created"
   - "deployment.apps/react-form created"
   - 'deployment "node-subscriber" successfully rolled out'
   - 'deployment "python-subscriber" successfully rolled out'
+  - 'deployment "csharp-subscriber" successfully rolled out'
   - 'deployment "react-form" successfully rolled out'
 -->
 
@@ -332,6 +385,10 @@ kubectl rollout status deploy/node-subscriber
 
 ```bash
 kubectl rollout status deploy/python-subscriber
+```
+
+```bash
+kubectl rollout status deploy/csharp-subscriber
 ```
 
 ```bash
@@ -443,7 +500,21 @@ kubectl logs --selector app=python-subscriber -c python-subscriber
 
 <!-- END_STEP -->
 
-4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C".
+<!-- STEP
+name: Deploy Csharp App
+expected_stdout_lines:
+  - "A:  Message on A"
+  - "B:  Message on B"
+  - "C:  Message on C"
+-->
+
+```bash
+kubectl logs --selector app=csharp-subscriber -c csharp-subscriber
+```
+
+<!-- END_STEP -->
+
+4. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C" and the C# subscriber receives messages of type "A" and "B" and "C".
 
 ### Cleanup
 
@@ -453,6 +524,7 @@ Once you're done, you can spin down your Kubernetes resources by navigating to t
 name: Cleanup
 working_dir: deploy
 expected_stdout_lines:
+  - 'deployment.apps "csharp-subscriber" deleted'
   - 'deployment.apps "node-subscriber" deleted'
   - 'deployment.apps "python-subscriber" deleted'
   - 'service "react-form" deleted'
@@ -536,6 +608,44 @@ def c_subscriber():
 ```
 
 Note: if `flush=True` is not set, logs will not appear when running `kubectl get logs...`. This is a product of Python's output buffering.
+
+### C# message subscriber
+
+Navigate to the `csharp-subscriber` directory and open `Program.cs`, the code for the C# subscriber. We're exposing three API endpoints, this time using `Asp.Net Core 6 Minimal API`.
+
+Again, this is how you tell Dapr what topics in which pubsub component to subscribe to. In this case, subscribing to topics "A" and "B" and "C" of pubsub component named 'pubsub'. Messages of those topics are handled with these three routes:
+
+```csharp
+using Dapr;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var app = builder.Build();
+
+// Dapr configurations
+app.UseCloudEvents();
+
+app.MapSubscribeHandler();
+
+app.MapPost("/A", [Topic("pubsub", "A")] (ILogger<Program> logger, MessageEvent item) => {
+    logger.LogInformation($"{item.MessageType}: {item.Message}");
+    return Results.Ok();
+});
+
+app.MapPost("/B", [Topic("pubsub", "B")] (ILogger<Program> logger, MessageEvent item) => {
+    logger.LogInformation($"{item.MessageType}: {item.Message}");
+    return Results.Ok();
+});
+
+app.MapPost("/C", [Topic("pubsub", "C")] (ILogger<Program> logger, Dictionary<string, string> item) => {
+    logger.LogInformation($"{item["messageType"]}: {item["message"]}");
+    return Results.Ok();
+});
+
+app.Run();
+
+internal record MessageEvent(string MessageType, string Message);
+```
 
 ### React front end
 
