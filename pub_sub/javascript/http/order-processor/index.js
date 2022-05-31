@@ -1,6 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
+const APP_PORT = process.env.APP_PORT
+if(!APP_PORT) {
+    console.log('[error]: --app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://docs.dapr.io/getting-started/quickstarts/pubsub-quickstart/\n');
+    process.exit(1);
+}
 const app = express();
 app.use(bodyParser.json({ type: 'application/*+json' }));
 
@@ -20,4 +25,4 @@ app.post('/orders', (req, res) => {
     res.sendStatus(200);
 });
 
-app.listen(5001);
+app.listen(APP_PORT);
