@@ -20,7 +20,11 @@ app.use(express.json());
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
-const port = 3000;
+const port = process.env.APP_PORT ;
+if(!port) {
+    console.error('[error]: --app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world\n');
+    process.exit(1);
+}
 
 app.get('/order', async (_req, res) => {
     try {

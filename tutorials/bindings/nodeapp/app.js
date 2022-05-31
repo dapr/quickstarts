@@ -13,12 +13,16 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const port = process.env.APP_PORT ;
+if(!port) {
+    console.error('[error]: --app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://github.com/dapr/quickstarts/tree/master/tutorials/bindings\n');
+    process.exit(1);
+}
+
 require('isomorphic-fetch');
 
 const app = express();
 app.use(bodyParser.json());
-
-const port = 3000;
 
 app.post('/sample-topic', (req, res) => {
     console.log("Hello from Kafka!");

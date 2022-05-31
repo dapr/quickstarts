@@ -24,7 +24,11 @@ const daprGRPCPort = process.env.DAPR_GRPC_PORT;
 
 const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
-const port = 3000;
+const port = process.env.APP_PORT ;
+if(!port) {
+    console.error('[error]: --app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://github.com/dapr/quickstarts/tree/master/tutorials/hello-kubernetes\n');
+    process.exit(1);
+}
 
 app.get('/order', async (_req, res) => {
     try {

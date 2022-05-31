@@ -39,3 +39,10 @@ packages
 
 # macOS
 .DS_Store
+pub_sub/go/http/checkout/app
+pub_sub/go/http/order-processor/app
+pub_sub/javascript/http/order-processor/package-lock.json
+pub_sub/javascript/http/checkout/package-lock.json
+tutorials/bindings/nodeapp/package-lock.json
+tutorials/distributed-calculator/react-calculator/package-lock.json
+tutorials/distributed-calculator/react-calculator/client/package-lock.json
