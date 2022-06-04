@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: node
-        image: docker.io/paulyuk/quickstarts-nodeapp:latest
+        image: ghcr.io/dapr/samples/hello-k8s-node:latest
         env:
         - name: APP_PORT
           value: "3000"
