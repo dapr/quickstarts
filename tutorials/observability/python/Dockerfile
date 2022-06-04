@@ -4,4 +4,4 @@ WORKDIR /app
 RUN pip install flask flask_cors
 ENTRYPOINT ["python"]
 EXPOSE 5001
-CMD ["python3 app.py"]
+CMD ["app.py"]
