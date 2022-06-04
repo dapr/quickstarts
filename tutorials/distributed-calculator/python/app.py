@@ -18,9 +18,7 @@ import math
 import sys
 import os
 
-appPort = os.getenv("APP_PORT")
-if appPort is None:
-    raise EnvironmentError('--app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator\n')
+appPort = os.getenv("APP_PORT","5001")
 
 app = flask.Flask(__name__)
 CORS(app)
