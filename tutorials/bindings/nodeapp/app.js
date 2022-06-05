@@ -13,7 +13,8 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const port = process.env.APP_PORT || 3000 ;
+const port = process.env.APP_PORT ?? '3000' ;
+
 
 require('isomorphic-fetch');
 
