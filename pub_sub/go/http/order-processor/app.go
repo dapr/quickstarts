@@ -61,9 +61,9 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	APP_PORT, okPort := os.LookupEnv("APP_PORT")
-	if !okPort {
-		log.Fatalf("--app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://docs.dapr.io/getting-started/quickstarts/pubsub-quickstart/\n")
+	appPort := "6002"
+	if value, ok := os.LookupEnv("APP_PORT"); ok {
+		appPort = value
 	}
 
 	r := mux.NewRouter()
@@ -73,7 +73,7 @@ func main() {
 	// Dapr subscription routes orders topic to this route
 	r.HandleFunc("/orders", postOrder).Methods("POST")
 
-	if err := http.ListenAndServe(":"+APP_PORT, r); err != nil {
+	if err := http.ListenAndServe(":"+appPort, r); err != nil {
 		log.Panic(err)
 	}
 }
