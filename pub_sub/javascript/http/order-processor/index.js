@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-const APP_PORT = process.env.APP_PORT || 5001;
+const APP_PORT = process.env.APP_PORT ?? '5001';
 
 const app = express();
 app.use(bodyParser.json({ type: 'application/*+json' }));
