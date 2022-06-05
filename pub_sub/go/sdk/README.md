@@ -33,7 +33,7 @@ go build app.go
 <!-- STEP
 name: Run Go subscriber
 expected_stdout_lines:
-  - '== APP == Subscriber received:  {"orderId":10}'
+  - '== APP == Subscriber received:  map[orderId:10]'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

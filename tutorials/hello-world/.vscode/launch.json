@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Nodeapp with Dapr",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/node/app.js",
+            "preLaunchTask": "daprd-debug-node",
+            "postDebugTask": "daprd-down-node"
+        },
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Pythonapp with Dapr",
+            "program": "${workspaceFolder}/python/app.py",   
+            "console": "integratedTerminal",
+            "preLaunchTask": "daprd-debug-python",
+            "postDebugTask": "daprd-down-python"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Node/Python Dapr",
+            "configurations": ["Nodeapp with Dapr","Pythonapp with Dapr"]
+                }
+    ]
+}

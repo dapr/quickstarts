@@ -16,7 +16,11 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 const cors = require('cors');
-const port = 4000;
+const port = process.env.APP_PORT ;
+if(!port) {
+    console.error('[error]: --app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator\n');
+    process.exit(1);
+}
 
 app.use(cors());
 

@@ -35,7 +35,7 @@ jobs:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.17
       KUBERNETES_VERSION: v1.21.1
-      KIND_VERSION: v0.11.0
+      KIND_VERSION: v0.12.0
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
@@ -43,10 +43,13 @@ jobs:
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-10.15'
-        uses: docker-practice/actions-setup-docker@1.0.8
-        with:
-          docker_buildx: false
-          docker_version: 20.10
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          brew install --cask docker
+          sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
+          open -a /Applications/Docker.app --args --unattended --accept-license
+          while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
+          docker --version
       - name: Configure KinD
         if: matrix.os == 'ubuntu-latest'
         # Generate a KinD configuration file that uses:
@@ -75,13 +78,13 @@ jobs:
 
       - name: Create KinD Cluster - Linux
         if: matrix.os == 'ubuntu-latest' 
-        uses: helm/kind-action@v1.0.0
+        uses: helm/kind-action@v1.2.0
         with:
           config: kind.yaml
           cluster_name: kind
           version: ${{ env.KIND_VERSION }}
       - name: Install minikube - MacOS
-        if: matrix.os == 'macos-10.15' 
+        if: matrix.os == 'macos-10.15'
         run: |
           brew install kubernetes-cli || brew link --overwrite kubernetes-cli
           brew install minikube
