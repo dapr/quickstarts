@@ -20,7 +20,7 @@ app.use(express.json());
 const daprPort = process.env.DAPR_HTTP_PORT || 3500;
 const stateStoreName = `statestore`;
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
-const port = process.env.APP_PORT || 3000;
+const port = process.env.APP_PORT ?? '3000';
 
 app.get('/order', async (_req, res) => {
     try {
