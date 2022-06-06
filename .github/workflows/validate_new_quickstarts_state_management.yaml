@@ -1,5 +1,5 @@
 #
-# Copyright 2021 The Dapr Authors
+# Copyright 2022 The Dapr Authors
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -89,26 +89,6 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate Go http State Management
-        run: |
-          pushd state_management/go/http
-          make validate
-          popd
-      - name: Validate Go sdk State Management
-        run: |
-          pushd state_management/go/sdk
-          make validate
-          popd
-     - name: Validate Java http State Management
-       run: |
-         pushd state_management/java/http
-         make validate
-         popd
-     - name: Validate Java sdk State Management
-       run: |
-         pushd state_management/java/sdk
-         make validate
-         popd
       - name: Validate Python http State Management
         run: |
           pushd state_management/python/http
@@ -119,14 +99,34 @@ jobs:
           pushd state_management/python/sdk
           make validate
           popd
-      - name: Validate Javascript http state Management
+      - name: Validate Javascript http State Management
         run: |
           pushd state_management/javascript/http
           make validate
           popd
-      - name: Validate Javascript sdk state Management
+      - name: Validate Javascript sdk State Management
         run: |
           pushd state_management/javascript/sdk
+          make validate
+          popd
+      - name: Validate Java http State Management
+        run: |
+          pushd state_management/java/http
+          make validate
+          popd
+      - name: Validate Java sdk State Management
+        run: |
+          pushd state_management/java/sdk
+          make validate
+          popd
+      - name: Validate Go http State Management
+        run: |
+          pushd state_management/go/http
+          make validate
+          popd
+      - name: Validate Go sdk State Management
+        run: |
+          pushd state_management/go/sdk
           make validate
           popd
       - name: Linkcheck README.md
