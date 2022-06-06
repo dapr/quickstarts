@@ -506,6 +506,8 @@ expected_stdout_lines:
   - "A: Message on A"
   - "B: Message on B"
   - "C: Message on C"
+expected_stderr_lines:
+output_match_mode: substring
 -->
 
 ```bash
