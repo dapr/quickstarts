@@ -1,45 +1,41 @@
-import { DaprClient } from 'dapr-client'; 
+import { DaprClient } from 'dapr-client'
 
-const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
+const DAPR_HOST = process.env.DAPR_HOST ?? "http://localhost"
+const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT ?? "3500"
+const DAPR_STATE_STORE_NAME = "statestore"
 
 async function main() {
-    for(var i = 1; i <= 10; i++) {
-        const orderId = i;
-        const order = {orderId: orderId};
-        const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
-        const STATE_STORE_NAME = "statestore";
+    const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT)
 
-        // Save state into the state store
-        client.state.save(STATE_STORE_NAME, [
+    // For each loop, Save order, Get order, and Delete order
+    for (var i = 1; i <= 10; i++) {
+        const orderId = i.toString()
+        const order = { orderId }
+        const state = [
             {
-                key: orderId.toString(),
+                key: order.orderId.toString(),
                 value: order
             }
-        ]);
-        console.log("Saving Order: ", order);
+        ]
 
-        // Get state from the state store
-        var result = client.state.get(STATE_STORE_NAME, orderId.toString());
-        result.then(function(val) {
-            console.log("Getting Order: ", val);
-        });
+        // Save state into a state store
+        await client.state.save(DAPR_STATE_STORE_NAME, state)
+        console.log("Saving Order: ", order)
+
+        // Get state from a state store
+        const savedOrder = await client.state.get(DAPR_STATE_STORE_NAME, orderId)
+        console.log("Getting Order: ", savedOrder)
 
         // Delete state from the state store
-        client.state.delete(STATE_STORE_NAME, orderId.toString());    
-        result.then(function(val) {
-            console.log("Deleting Order: ", val);
-        });
+        await client.state.delete(DAPR_STATE_STORE_NAME, orderId)
+        console.log("Deleting Order: ", order)
 
-        sleep(5000);
+        await sleep(1000)
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 main().catch(e => console.error(e))
-
-
-
