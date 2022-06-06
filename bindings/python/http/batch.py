@@ -15,11 +15,12 @@
 import json 
 from flask import Flask
 import requests
+import os
 
 app = Flask(__name__)
 
-app_port = 5001
-dapr_port = 4001
+app_port = os.getenv('APP_PORT', '5001')
+dapr_port = os.getenv('DAPR_HTTP_PORT', '4001')
 cron_binding_name = '/batch'
 sql_binding_name = 'SqlDB'
 dapr_url = "http://localhost:{}/v1.0/bindings/{}".format(dapr_port, sql_binding_name)
@@ -49,6 +50,5 @@ def sql_output(order_line):
     except Exception as e:
         print(e, flush=True)
 
-app.run(port=5001)
 
-
+app.run(port=app_port)
