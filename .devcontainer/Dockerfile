@@ -11,4 +11,4 @@
 # limitations under the License.
 #
 
-FROM http://mcr.microsoft.com/vscode/devcontainers/universal:focal
+FROM mcr.microsoft.com/vscode/devcontainers/universal:focal
