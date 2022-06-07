@@ -11,6 +11,7 @@ switch (DAPR_PROTOCOL) {
   }
   case "grpc": {
     PORT = process.env.DAPR_GRPC_PORT
+    break
   }
   default: {
     PORT = 3500
