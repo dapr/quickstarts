@@ -27,7 +27,7 @@ async function main() {
     const order = { orderId }
     const state = [
       {
-        key: order.orderId.toString(),
+        key: order.orderId,
         value: order
       }
     ]

@@ -5,16 +5,16 @@ const DAPR_HOST = process.env.DAPR_HOST ?? "localhost"
 
 let PORT
 switch (DAPR_PROTOCOL) {
-  case "http": {
-    PORT = process.env.DAPR_HTTP_PORT
-    break
-  }
-  case "grpc": {
-    PORT = process.env.DAPR_GRPC_PORT
-  }
-  default: {
-    PORT = 3500
-  }
+    case "http": {
+        PORT = process.env.DAPR_HTTP_PORT
+        break
+    }
+    case "grpc": {
+        PORT = process.env.DAPR_GRPC_PORT
+    }
+    default: {
+        PORT = 3500
+    }
 }
 
 const DAPR_STATE_STORE_NAME = "statestore"
@@ -29,7 +29,7 @@ async function main() {
         const order = { orderId }
         const state = [
             {
-                key: order.orderId.toString(),
+                key: order.orderId,
                 value: order
             }
         ]
