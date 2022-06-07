@@ -11,4 +11,4 @@
 # limitations under the License.
 #
 
-FROM paulyuk/daprquickstarts:latest
+FROM http://mcr.microsoft.com/vscode/devcontainers/universal:focal
