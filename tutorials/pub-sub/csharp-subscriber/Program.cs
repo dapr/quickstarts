@@ -10,17 +10,17 @@ app.UseCloudEvents();
 app.MapSubscribeHandler();
 
 app.MapPost("/A", [Topic("pubsub", "A")] (ILogger<Program> logger, MessageEvent item) => {
-    logger.LogInformation($"{item.MessageType}: {item.Message}");
+    Console.WriteLine($"{item.MessageType}: {item.Message}");
     return Results.Ok();
 });
 
 app.MapPost("/B", [Topic("pubsub", "B")] (ILogger<Program> logger, MessageEvent item) => {
-    logger.LogInformation($"{item.MessageType}: {item.Message}");
+    Console.WriteLine($"{item.MessageType}: {item.Message}");
     return Results.Ok();
 });
 
 app.MapPost("/C", [Topic("pubsub", "C")] (ILogger<Program> logger, Dictionary<string, string> item) => {
-    logger.LogInformation($"{item["messageType"]}: {item["message"]}");
+    Console.WriteLine($"{item["messageType"]}: {item["message"]}");
     return Results.Ok();
 });
 
