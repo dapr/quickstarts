@@ -1,14 +1,30 @@
-import { DaprClient } from 'dapr-client'
+import { DaprClient } from '@dapr/dapr'
 
-const DAPR_HOST = process.env.DAPR_HOST ?? "http://localhost"
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT ?? "3500"
+const DAPR_PROTOCOL = process.env.DAPR_PROTOCOL ?? "http"
+const DAPR_HOST = process.env.DAPR_HOST ?? "localhost"
+
+let PORT
+switch (DAPR_PROTOCOL) {
+  case "http": {
+    PORT = process.env.DAPR_HTTP_PORT
+    break
+  }
+  case "grpc": {
+    PORT = process.env.DAPR_GRPC_PORT
+  }
+  default: {
+    PORT = 3500
+  }
+}
+
 const DAPR_STATE_STORE_NAME = "statestore"
 
 async function main() {
-    const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT)
+    const host = `${DAPR_PROTOCOL}://${DAPR_HOST}`
+    const client = new DaprClient(host, PORT)
 
     // For each loop, Save order, Get order, and Delete order
-    for (var i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 10; i++) {
         const orderId = i.toString()
         const order = { orderId }
         const state = [
