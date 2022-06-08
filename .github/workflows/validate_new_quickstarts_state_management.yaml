@@ -109,16 +109,16 @@ jobs:
           pushd state_management/javascript/sdk
           make validate
           popd
-      # - name: Validate Java http State Management
-      #   run: |
-      #     pushd state_management/java/http
-      #     make validate
-      #     popd
-      # - name: Validate Java sdk State Management
-      #   run: |
-      #     pushd state_management/java/sdk
-      #     make validate
-      #     popd
+      - name: Validate Java http State Management
+        run: |
+          pushd state_management/java/http
+          make validate
+          popd
+      - name: Validate Java sdk State Management
+        run: |
+          pushd state_management/java/sdk
+          make validate
+          popd
       - name: Validate Go http State Management
         run: |
           pushd state_management/go/http
