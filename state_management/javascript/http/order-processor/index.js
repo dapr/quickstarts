@@ -1,31 +1,30 @@
 import axios from "axios"
 
-const DAPR_PROTOCOL = process.env.DAPR_PROTOCOL ?? "http"
+const protocol = process.env.DAPR_PROTOCOL ?? "http"
 const DAPR_HOST = process.env.DAPR_HOST ?? "localhost"
 
-let PORT
-switch (DAPR_PROTOCOL) {
+let port  
+switch (protocol) {
   case "http": {
-    PORT = process.env.DAPR_HTTP_PORT
+    port = process.env.DAPR_HTTP_PORT
     break
   }
   case "grpc": {
-    PORT = process.env.DAPR_GRPC_PORT
+    port = process.env.DAPR_GRPC_PORT
     break
   }
   default: {
-    PORT = 3500
+    port = 3500
   }
 }
 
 const DAPR_STATE_STORE_NAME = 'statestore'
-const stateStoreBaseUrl = `${DAPR_PROTOCOL}://${DAPR_HOST}:${PORT}/v1.0/state/${DAPR_STATE_STORE_NAME}`
+const stateStoreBaseUrl = `${protocol}://${DAPR_HOST}:${port}/v1.0/state/${DAPR_STATE_STORE_NAME}`
 
 async function main() {
   // For each loop, Save order, Get order, and Delete order
   for (let i = 1; i <= 10; i++) {
-    const orderId = i.toString()
-    const order = { orderId }
+    const order = { orderId: i.toString() }
     const state = [
       {
         key: order.orderId,
@@ -38,14 +37,14 @@ async function main() {
     console.log("Saving Order: ", order)
 
     // Get state from a state store
-    const orderResponse = await axios.get(`${stateStoreBaseUrl}/${orderId}`)
+    const orderResponse = await axios.get(`${stateStoreBaseUrl}/${order.orderId}`)
     console.log("Getting Order: ", orderResponse.data)
 
     // Delete state from the state store
-    await axios.delete(`${stateStoreBaseUrl}/${orderId}`, state)
+    await axios.delete(`${stateStoreBaseUrl}/${order.orderId}`, state)
     console.log("Deleting Order: ", order)
 
-    await sleep(1000)
+    await sleep(500)
   }
 }
 
