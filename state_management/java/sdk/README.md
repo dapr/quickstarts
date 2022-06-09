@@ -38,8 +38,9 @@ mvn clean install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Getting Order:  "{\"orderId\":1}"'
-  - '== APP == Getting Order:  "{\"orderId\":2}"'
+  - "== APP == Saving Order: 1"
+  - '== APP == Getting Order: 1'
+  - '== APP == Deleting Order: 1'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
