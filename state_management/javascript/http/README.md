@@ -29,8 +29,8 @@ npm install
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
-  - '== APP == Saving Order: [{"key":"1","value":{"orderId":1}}]'
-  - '== APP == Getting Order:  { orderId: 1 }'
+  - "== APP == Saving Order:  { orderId: '1' }"
+  - "== APP == Getting Order:  { orderId: '1' }"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./order-processor
