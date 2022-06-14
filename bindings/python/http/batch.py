@@ -25,27 +25,33 @@ cron_binding_name = '/batch'
 sql_binding_name = 'SqlDB'
 dapr_url = "http://localhost:{}/v1.0/bindings/{}".format(dapr_port, sql_binding_name)
 
+
 # Dapr input binding
 @app.route(cron_binding_name, methods=['POST'])
 def cron_binding():
 
-    json_file = open("../../orders.json","r")
+    json_file = open("../../orders.json", "r")
     json_array = json.load(json_file)
 
     for order_line in json_array['orders']:
-       sql_output(order_line)
+        sql_output(order_line)
 
     json_file.close()
-    print('Cron event processed',flush=True)
+    print('Cron event processed', flush=True)
     return 'Cron event processed'
 
+
 def sql_output(order_line):
-    
-    sqlCmd = 'insert into orders (orderid, customer, price) values ({}, \'{}\', {});'.format(order_line['orderid'], order_line['customer'], order_line['price'])
-    payload = '{  "operation": "exec",  "metadata" : { "sql" : "' + sqlCmd + '" } }'
-    print (payload, flush=True)
+
+    sqlCmd = ('insert into orders (orderid, customer, price) values ('
+              '{}, \'{}\', {});'.format(
+                  order_line['orderid'], order_line['customer'],
+                  order_line['price']))
+    payload = ('{  "operation": "exec",  "metadata" : { "sql" : "' +
+               sqlCmd + '" } }')
+    print(payload, flush=True)
     try:
-        requests.post(dapr_url,payload)
+        requests.post(dapr_url, payload)
 
     except Exception as e:
         print(e, flush=True)
