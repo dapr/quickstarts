@@ -17,8 +17,9 @@ from dapr.ext.grpc import App, BindingRequest
 from dapr.clients import DaprClient
 
 app = App()
-cron_bindingName = 'batch'
+cron_bindingName = 'cron'
 sql_binding = 'SqlDB'
+
 
 @app.binding(cron_bindingName)
 def cron_binding(request: BindingRequest):
@@ -28,20 +29,26 @@ def cron_binding(request: BindingRequest):
     json_array = json.load(json_file)
 
     for order_line in json_array['orders']:
-       sql_output(order_line)
+        sql_output(order_line)
 
     json_file.close()
     return 'Cron event processed'
 
+
 def sql_output(order_line):
 
     with DaprClient() as d:
-        sqlCmd = 'insert into orders (orderid, customer, price) values ({}, \'{}\', {});'.format(order_line['orderid'], order_line['customer'], order_line['price'])
-        payload = {  'sql' : sqlCmd }
+        sqlCmd = ('insert into orders (orderid, customer, price) values' +
+                  '(%s, \'%s\', %s)' % (order_line['orderid'],
+                                        order_line['customer'],
+                                        order_line['price']))
+        payload = {'sql': sqlCmd}
         print(json.dumps(payload), flush=True)
         try:
-            d.invoke_binding(binding_name=sql_binding, operation='exec', binding_metadata=payload, data='')        
+            d.invoke_binding(binding_name=sql_binding, operation='exec',
+                             binding_metadata=payload, data='')
         except Exception as e:
             print(e, flush=True)
+
 
 app.run(50051)
