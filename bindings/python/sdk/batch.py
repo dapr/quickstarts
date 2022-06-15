@@ -10,7 +10,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+# dapr run --app-id python-quickstart-binding-sdk --app-protocol grpc
+#   --app-port 50051 --components-path ../../components python3 batch.py
 
 import json
 from dapr.ext.grpc import App, BindingRequest

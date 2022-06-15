@@ -10,9 +10,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# dapr run --app-id python-binding-quickstart-http --app-port 5001 --dapr-http-port 4001 python3 batch.py --components-path ../../components
+# dapr run --app-id python-binding-quickstart-http --app-port 50051
+#   --components-path ../../components python3 batch.py
 
-import json 
+import json
 from flask import Flask
 import requests
 import os
