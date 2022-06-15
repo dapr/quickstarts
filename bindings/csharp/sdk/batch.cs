@@ -19,30 +19,36 @@ using Microsoft.AspNetCore.Mvc;
 using Dapr.Client;
 
 
-// dapr run --app-id csharp-quickstart-binding-sdk --app-port 7001 --components-path ../../components -- dotnet run --project batch.csproj
+// dapr run --app-id csharp-quickstart-binding-sdk --app-port 7001 --components-path ../../components -- dotnet run
 
-var cronBindingName = "batch";
-var sqlBindingName = "SqlDB";
+var cronBindingName = "cron";
+var sqlBindingName = "sqldb";
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 
-app.MapPost(cronBindingName, async () => {
+// Triggered by Dapr input binding
+app.MapPost("/" + cronBindingName, async () => {
 
-    string text = File.ReadAllText("../../orders.json");
-    var ordersArr = JsonSerializer.Deserialize<Orders>(text);
+    Console.WriteLine("Processing batch..");
+    string jsonFile = File.ReadAllText("../../orders.json");
+    var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
     using var client = new DaprClientBuilder().Build();
-    foreach( Order ord in ordersArr.orders){
+    foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
         var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
         var command = new Dictionary<string,string>(){
             {"sql",
             sqlText}
         };
-        await client.InvokeBindingAsync(sqlBindingName, "exec", command,command);
         Console.WriteLine(sqlText);
+
+        // Insert order using Dapr output binding via Dapr Client SDK
+        await client.InvokeBindingAsync(bindingName: sqlBindingName, operation: "exec", data: "", metadata: command);
     }
+
+    return Results.Ok();
 });
 
 await app.RunAsync();

@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: SqlDB
+  name: sqldb
   namespace: quickstarts
 spec:
   type: bindings.postgres

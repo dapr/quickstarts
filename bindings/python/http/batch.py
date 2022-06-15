@@ -24,13 +24,13 @@ app_port = os.getenv('APP_PORT', '5001')
 dapr_port = os.getenv('DAPR_HTTP_PORT', '4001')
 base_url = os.getenv('BASE_URL', 'http://localhost')
 cron_binding_name = 'cron'
-sql_binding_name = 'SqlDB'
+sql_binding_name = 'sqldb'
 dapr_url = '%s:%s/v1.0/bindings/%s' % (base_url,
                                        dapr_port,
                                        sql_binding_name)
 
 
-# Dapr input binding
+# Triggered by Dapr input binding
 @app.route('/' + cron_binding_name, methods=['POST'])
 def cron_binding():
 
@@ -40,8 +40,7 @@ def cron_binding():
     json_array = json.load(json_file)
 
     for order_line in json_array['orders']:
-        resp = sql_output(order_line)
-        print(resp, flush=True)
+        sql_output(order_line)
 
     json_file.close()
 
@@ -60,6 +59,7 @@ def sql_output(order_line):
     print(payload, flush=True)
 
     try:
+        # Insert order using Dapr output binding via HTTP Post
         resp = requests.post(dapr_url, payload)
         return resp
 

@@ -18,15 +18,14 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
 
-//dapr run --app-id csharp-quickstart-binding-http --app-port 7001 --dapr-http-port 8000 --components-path ../../components -- dotnet run --project batch.csproj 
+//dapr run --app-id csharp-quickstart-binding-http --app-port 7001 --components-path ../../components -- dotnet run
 
-var cronBindingName = "batch";
-var sqlBindingName = "SqlDB";
+var cronBindingName = "cron";
+var sqlBindingName = "sqldb";
 
-const string daprHost = "http://localhost";
-const string daprHttpPort = "8000";
-
-var baseURL = daprHost + ":" + daprHttpPort; 
+var baseURL = Environment.GetEnvironmentVariable("BASE_URL") ?? "http://localhost";
+var daprPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3500";
+var daprUrl = $"{baseURL}:{daprPort}/v1.0/bindings/{sqlBindingName}";
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -36,23 +35,38 @@ if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-app.MapPost(cronBindingName, () => {
-     string text = File.ReadAllText("../../orders.json");
-     var ordersArr = JsonSerializer.Deserialize<Orders>(text);
-     foreach( Order ord in ordersArr.orders){
+// Triggered by Dapr input binding
+app.MapPost("/" + cronBindingName, async () => {
+     Console.WriteLine("Processing batch..");
+
+     string jsonFile = File.ReadAllText("../../orders.json");
+     var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
+     foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
           var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
-          var sqlObj = new SQLCmd(sqlText);
-          var daprObj = new DaprBindingData(sqlObj,"exec");
-          var orderJson = JsonSerializer.Serialize<DaprBindingData>(daprObj);
+          var payload = new DaprPayload(sql: new DaprPostgresBindingMetadata(cmd: sqlText), operation: "exec");
+          var orderJson = JsonSerializer.Serialize<DaprPayload>(payload);
           var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
-          httpClient.PostAsync($"{baseURL}/v1.0/bindings/{sqlBindingName}", content);
+
           Console.WriteLine(sqlText);
+
+          // Insert order using Dapr output binding via HTTP Post
+          try {
+               var resp = await httpClient.PostAsync(daprUrl, content);
+               resp.EnsureSuccessStatusCode();
+          } 
+          catch (HttpRequestException e) {
+               Console.WriteLine(e.ToString());
+               throw e;
+          }
+
      }
+
+     return Results.Ok();
 });
 
 await app.RunAsync();
 
-public record SQLCmd([property: JsonPropertyName("sql")] string cmd);
-public record DaprBindingData([property: JsonPropertyName("metadata")] SQLCmd sql, [property: JsonPropertyName("operation")] string operation);
+public record DaprPostgresBindingMetadata([property: JsonPropertyName("sql")] string cmd);
+public record DaprPayload([property: JsonPropertyName("metadata")] DaprPostgresBindingMetadata sql, [property: JsonPropertyName("operation")] string operation);
 public record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
 public record Orders([property: JsonPropertyName("orders")] Order[] orders);
