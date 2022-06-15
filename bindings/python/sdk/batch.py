@@ -23,13 +23,14 @@ sql_binding = 'SqlDB'
 
 @app.binding(cron_bindingName)
 def cron_binding(request: BindingRequest):
-    print('Processing batch..')
+    print('Processing batch..', flush=True)
 
     json_file = open('../../orders.json', 'r')
     json_array = json.load(json_file)
 
     for order_line in json_array['orders']:
-        sql_output(order_line)
+        resp = sql_output(order_line)
+        print(resp.data, flush=True)
 
     json_file.close()
     return 'Cron event processed'
@@ -43,12 +44,16 @@ def sql_output(order_line):
                                         order_line['customer'],
                                         order_line['price']))
         payload = {'sql': sqlCmd}
+
         print(json.dumps(payload), flush=True)
+
         try:
-            d.invoke_binding(binding_name=sql_binding, operation='exec',
-                             binding_metadata=payload, data='')
+            resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
+                                    binding_metadata=payload, data='')
+            return resp
         except Exception as e:
             print(e, flush=True)
+            raise SystemExit(e)
 
 
 app.run(50051)

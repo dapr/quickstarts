@@ -21,40 +21,50 @@ app = Flask(__name__)
 
 app_port = os.getenv('APP_PORT', '5001')
 dapr_port = os.getenv('DAPR_HTTP_PORT', '4001')
-cron_binding_name = '/batch'
+base_url = os.getenv('BASE_URL', 'http://localhost')
+cron_binding_name = 'cron'
 sql_binding_name = 'SqlDB'
-dapr_url = "http://localhost:{}/v1.0/bindings/{}".format(dapr_port, sql_binding_name)
+dapr_url = '%s:%s/v1.0/bindings/%s' % (base_url,
+                                       dapr_port,
+                                       sql_binding_name)
 
 
 # Dapr input binding
-@app.route(cron_binding_name, methods=['POST'])
+@app.route('/' + cron_binding_name, methods=['POST'])
 def cron_binding():
+
+    print('Processing batch..', flush=True)
 
     json_file = open("../../orders.json", "r")
     json_array = json.load(json_file)
 
     for order_line in json_array['orders']:
-        sql_output(order_line)
+        resp = sql_output(order_line)
+        print(resp, flush=True)
 
     json_file.close()
-    print('Cron event processed', flush=True)
-    return 'Cron event processed'
+
+    return json.dumps({'success': True}), 200, {
+        'ContentType': 'application/json'}
 
 
 def sql_output(order_line):
 
-    sqlCmd = ('insert into orders (orderid, customer, price) values ('
-              '{}, \'{}\', {});'.format(
-                  order_line['orderid'], order_line['customer'],
-                  order_line['price']))
-    payload = ('{  "operation": "exec",  "metadata" : { "sql" : "' +
-               sqlCmd + '" } }')
-    print(payload, flush=True)
-    try:
-        requests.post(dapr_url, payload)
+    sqlCmd = ('insert into orders (orderid, customer, price) values' +
+              '(%s, \'%s\', %s)' % (order_line['orderid'],
+                                    order_line['customer'],
+                                    order_line['price']))
+    payload = ('{"operation": "exec", "metadata": {"sql" : "%s"} }' % sqlCmd)
 
-    except Exception as e:
+    print(payload, flush=True)
+
+    try:
+        resp = requests.post(dapr_url, payload)
+        return resp
+
+    except requests.exceptions.RequestException as e:
         print(e, flush=True)
+        raise SystemExit(e)
 
 
 app.run(port=app_port)
