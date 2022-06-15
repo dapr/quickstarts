@@ -10,21 +10,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# dapr run --app-id python-quickstart-binding-sdk --app-protocol grpc
-#   --app-port 50051 --components-path ../../components python3 batch.py
+# dapr run --app-id python-quickstart-binding-sdk --app-port 50051
+#   --components-path ../../components python3 batch.py
 
 import json
-from dapr.ext.grpc import App, BindingRequest
+from flask import Flask
 from dapr.clients import DaprClient
+import os
 
-app = App()
+app = Flask(__name__)
 cron_binding_name = 'cron'
 sql_binding = 'sqldb'
+app_port = os.getenv('APP_PORT', '5001')
 
 
 # Triggered by Dapr input binding
-@app.binding(cron_binding_name)
-def cron_binding(request: BindingRequest):
+@app.route('/' + cron_binding_name, methods=['POST'])
+def process_batch():
+
     print('Processing batch..', flush=True)
 
     json_file = open('../../orders.json', 'r')
@@ -58,4 +61,4 @@ def sql_output(order_line):
             raise SystemExit(e)
 
 
-app.run(50051)
+app.run(port=app_port)

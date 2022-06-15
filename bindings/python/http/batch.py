@@ -32,7 +32,7 @@ dapr_url = '%s:%s/v1.0/bindings/%s' % (base_url,
 
 # Triggered by Dapr input binding
 @app.route('/' + cron_binding_name, methods=['POST'])
-def cron_binding():
+def process_batch():
 
     print('Processing batch..', flush=True)
 
