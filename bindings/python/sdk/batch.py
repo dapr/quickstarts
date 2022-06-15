@@ -17,13 +17,14 @@ from dapr.ext.grpc import App, BindingRequest
 from dapr.clients import DaprClient
 
 app = App()
-cron_bindingName = "batch"
-sql_binding = "SqlDB"
+cron_bindingName = 'batch'
+sql_binding = 'SqlDB'
 
 @app.binding(cron_bindingName)
 def cron_binding(request: BindingRequest):
+    print('Processing batch..')
 
-    json_file = open("../../orders.json","r")
+    json_file = open('../../orders.json', 'r')
     json_array = json.load(json_file)
 
     for order_line in json_array['orders']:
