@@ -10,33 +10,43 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// dapr run --app-id javascript-quickstart-binding-http --app-port 3500 --dapr-http-port 3501 node batch.js --components-path ../../components
+// dapr run --app-id javascript-quickstart-binding-http --app-port 5001 --dapr-http-port 3500 node batch.js --components-path ../../components
 
 import express from "express";
-import "isomorphic-fetch";
+//import "isomorphic-fetch";
 import fs from 'fs';
 import axios from "axios";
 
-const appPort = 3500;
-const daprPort = 3501;
-const cronBinding = "/batch";
-const sqlBinding = "SqlDB";
+const cronBinding = 'cron';
+const sqlBinding = 'sqldb';
 
-const app = express();
+const DAPR_HOST = process.env.DAPR_HOST || 'http://localhost';
+const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || '3500';
+const SERVER_PORT = process.env.SERVER_PORT || 5001;
+const daprUrl = `${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/bindings/${sqlBinding}`;
 
-app.post('/batch', (req, res) => {
+
+const app = express();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+app.post('/' + cronBinding, (req, res) => {
     const loc = '../../orders.json';
-    fs.readFile(loc, 'utf8', (err, data) => {
+    fs.readFile(loc, 'utf8', async (err, data) => {
+        console.log(`Dapr URL is: ${daprUrl}`);
         const orders = JSON.parse(data).orders;
         orders.forEach(order => {
             let sqlCmd = `insert into orders (orderid, customer, price) values (${order.orderid}, '${order.customer}', ${order.price});`;
-            let payload = `{  "operation": "exec",  "metadata" : { "sql" : "${sqlCmd}" } }`;
-            console.log(payload);
-            axios.post(`http://localhost:${daprPort}/v1.0/bindings/${sqlBinding}`, payload);
+            let payload = `{"operation": "exec", "metadata": {"sql": "${sqlCmd}"}}`;
+            console.log(sqlCmd);
+            try {
+                let resp = axios.post(daprUrl, payload);                
+            } catch (error) {
+                console.error("SQL binding failed with: " + error.response.data);
+                throw error
+            }
+
         });
         console.log('Finished processing batch');
       });    
     res.status(200).send();
 });
 
-app.listen(appPort, () => console.log(`listening on port ${appPort}!`));
+app.listen(SERVER_PORT, () => console.log(`listening on port ${SERVER_PORT}!`));
