@@ -37,6 +37,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var (
+	cronBindingName, sqlBindingName string = "cron", "sqldb"
+)
+
 type Orders struct {
 	Orders []Order `json:orders`
 }
@@ -66,7 +70,7 @@ func processCron(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(byteResult, &orders)
 
 	for i := 0; i < len(orders.Orders); i++ {
-		err := sqlBindings(orders.Orders[i])
+		err := sqlOutput(orders.Orders[i])
 		if err != nil {
 			log.Fatal(err)
 			os.Exit(1)
@@ -76,9 +80,7 @@ func processCron(w http.ResponseWriter, r *http.Request) {
 	os.Exit(0)
 }
 
-func sqlBindings(order Order) (err error) {
-
-	bindingName := "SqlDB"
+func sqlOutput(order Order) (err error) {
 
 	client, err := dapr.NewClient()
 	if err != nil {
@@ -90,7 +92,7 @@ func sqlBindings(order Order) (err error) {
 	sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
 	fmt.Println(sqlCmd)
 	in := &dapr.InvokeBindingRequest{
-		Name:      bindingName,
+		Name:      sqlBindingName,
 		Operation: "exec",
 		Data:      []byte(""),
 		Metadata:  map[string]string{"sql": sqlCmd},
@@ -103,13 +105,17 @@ func sqlBindings(order Order) (err error) {
 }
 
 func main() {
-	daprPort := ":6002"
-	bindingName := "/batch"
+	var appPort string
+	var okHost bool
+	if appPort, okHost = os.LookupEnv("APP_PORT"); !okHost {
+		appPort = "6002"
+	}
+
 	r := mux.NewRouter()
 
-	r.HandleFunc(bindingName, processCron).Methods("POST")
+	r.HandleFunc("/"+cronBindingName, processCron).Methods("POST")
 
-	if err := http.ListenAndServe(daprPort, r); err != nil {
+	if err := http.ListenAndServe(":"+appPort, r); err != nil {
 		log.Panic(err)
 	}
 }
