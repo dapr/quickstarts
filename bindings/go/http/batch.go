@@ -14,13 +14,7 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id go-input-binding-http --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 go run batch.go --components-path ../../components
-
-docker run --name sql_db -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin -d postgres
-docker exec -i -t sql_db psql --username admin  -p 5432 -h localhost --no-password
-create database orders;
-\c orders;
-create table orders ( orderid int, customer text, price float ); select * from orders;
+dapr run --app-id go-input-binding-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --components-path ../../components go run batch.go
 */
 
 import (
@@ -36,6 +30,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var (
+	cronBindingName, sqlBindingName string = "cron", "sqldb"
+)
+
 type Orders struct {
 	Orders []Order `json:orders`
 }
@@ -46,7 +44,9 @@ type Order struct {
 	Price    float64 `json:price`
 }
 
-func processCron(w http.ResponseWriter, r *http.Request) {
+func processBatch(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("Processing batch..")
 
 	fileContent, err := os.Open("../../orders.json")
 	if err != nil {
@@ -54,47 +54,47 @@ func processCron(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("The File is opened successfully...")
-
 	defer fileContent.Close()
 
 	byteResult, _ := ioutil.ReadAll(fileContent)
-	//	fmt.Println(string(byteResult))
 
 	var orders Orders
 
 	json.Unmarshal(byteResult, &orders)
 
 	for i := 0; i < len(orders.Orders); i++ {
-		err := sqlBindings(orders.Orders[i])
+		err := sqlOutput(orders.Orders[i])
 		if err != nil {
 			log.Fatal(err)
 			os.Exit(1)
 		}
 	}
 	fmt.Println("Finished processing batch")
-	os.Exit(0)
+
 }
 
-func sqlBindings(order Order) (err error) {
+func sqlOutput(order Order) (err error) {
+	var daprHost, daprHttpPort string
+	var okHost, okPort bool
 
-	daprHost := "http://localhost"
-	if value, ok := os.LookupEnv("DAPR_HOST"); ok {
-		daprHost = value
+	if daprHost, okHost = os.LookupEnv("DAPR_HOST"); !okHost {
+		daprHost = "http://localhost"
 	}
-	daprHttpPort := "6003"
-	if value, ok := os.LookupEnv("DAPR_HTTP_PORT"); ok {
-		daprHttpPort = value
+
+	if daprHttpPort, okPort = os.LookupEnv("DAPR_HTTP_PORT"); !okPort {
+		daprHttpPort = "3503"
 	}
-	bindingName := "SqlDB"
+
+	var daprUrl string = daprHost + ":" + daprHttpPort + "/v1.0/bindings/" + sqlBindingName
 
 	sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
 
-	orderCommand := `{  "operation": "exec",  "metadata" : { "sql" : "` + sqlCmd + `" } }`
+	orderCommand := `{"operation": "exec", "metadata": {"sql": "` + sqlCmd + `" }}`
 	fmt.Println(orderCommand)
 
 	client := http.Client{}
-	req, err := http.NewRequest("POST", daprHost+":"+daprHttpPort+"/v1.0/bindings/"+bindingName, strings.NewReader(orderCommand))
+	// Insert order using Dapr output binding via HTTP Post
+	req, err := http.NewRequest("POST", daprUrl, strings.NewReader(orderCommand))
 	if err != nil {
 		return err
 	}
@@ -105,14 +105,18 @@ func sqlBindings(order Order) (err error) {
 }
 
 func main() {
-	daprPort := ":6002"
-	bindingName := "/batch"
+	var appPort string
+	var okHost bool
+	if appPort, okHost = os.LookupEnv("APP_PORT"); !okHost {
+		appPort = "6003"
+	}
+
 	r := mux.NewRouter()
 
-	r.HandleFunc(bindingName, processCron).Methods("POST")
-	// Dapr binding function
+	// Triggered by Dapr input binding
+	r.HandleFunc("/"+cronBindingName, processBatch).Methods("POST")
 
-	if err := http.ListenAndServe(daprPort, r); err != nil {
+	if err := http.ListenAndServe(":"+appPort, r); err != nil {
 		log.Panic(err)
 	}
 }

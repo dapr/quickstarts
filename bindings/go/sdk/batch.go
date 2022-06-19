@@ -45,7 +45,7 @@ type Order struct {
 	Price    float64 `json:price`
 }
 
-func processCron(w http.ResponseWriter, r *http.Request) {
+func processBatch(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Processing batch...")
 
@@ -86,7 +86,7 @@ func sqlOutput(order Order) (err error) {
 	sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
 	fmt.Println(sqlCmd)
 
-	// Insert order using Dapr output binding via HTTP Post
+	// Insert order using Dapr output binding via Dapr SDK
 	in := &dapr.InvokeBindingRequest{
 		Name:      sqlBindingName,
 		Operation: "exec",
@@ -111,7 +111,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Triggered by Dapr input binding
-	r.HandleFunc("/"+cronBindingName, processCron).Methods("POST")
+	r.HandleFunc("/"+cronBindingName, processBatch).Methods("POST")
 
 	if err := http.ListenAndServe(":"+appPort, r); err != nil {
 		log.Panic(err)
