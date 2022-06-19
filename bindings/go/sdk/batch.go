@@ -14,13 +14,7 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 go run batch.go --components-path ../../components
-
-docker run --name sql_db -p 5432:5432 -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin -d postgres
-docker exec -i -t sql_db psql --username admin  -p 5432 -h localhost --no-password
-create database orders;
-\c orders;
-create table orders ( orderid int, customer text, price float ); select * from orders;
+dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 --components-path ../../components go run batch.go
 */
 
 import (
@@ -53,13 +47,13 @@ type Order struct {
 
 func processCron(w http.ResponseWriter, r *http.Request) {
 
+	fmt.Println("Processing batch...")
+
 	fileContent, err := os.Open("../../orders.json")
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-
-	fmt.Println("The File is opened successfully...")
 
 	defer fileContent.Close()
 
@@ -77,7 +71,7 @@ func processCron(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	fmt.Println("Finished processing batch")
-	os.Exit(0)
+
 }
 
 func sqlOutput(order Order) (err error) {
@@ -91,6 +85,8 @@ func sqlOutput(order Order) (err error) {
 
 	sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
 	fmt.Println(sqlCmd)
+
+	// Insert order using Dapr output binding via HTTP Post
 	in := &dapr.InvokeBindingRequest{
 		Name:      sqlBindingName,
 		Operation: "exec",
@@ -101,6 +97,7 @@ func sqlOutput(order Order) (err error) {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -113,6 +110,7 @@ func main() {
 
 	r := mux.NewRouter()
 
+	// Triggered by Dapr input binding
 	r.HandleFunc("/"+cronBindingName, processCron).Methods("POST")
 
 	if err := http.ListenAndServe(":"+appPort, r); err != nil {
