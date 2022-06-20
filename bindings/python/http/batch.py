@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 # dapr run --app-id python-binding-quickstart-http --app-port 50051
-#   --components-path ../../components python3 batch.py
+#   --components-path ../../components -- python3 batch.py
 
 import json
 from flask import Flask
@@ -43,6 +43,8 @@ def process_batch():
         sql_output(order_line)
 
     json_file.close()
+
+    print('Finished processing batch', flush=True)
 
     return json.dumps({'success': True}), 200, {
         'ContentType': 'application/json'}

@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 # dapr run --app-id python-quickstart-binding-sdk --app-port 50051
-#   --components-path ../../components python3 batch.py
+#   --components-path ../../components -- python3 batch.py
 
 import json
 from flask import Flask
@@ -37,7 +37,10 @@ def process_batch():
         sql_output(order_line)
 
     json_file.close()
-    return 'Cron event processed'
+
+    print('Finished processing batch')
+
+    return 'Finished processing batch'
 
 
 def sql_output(order_line):
