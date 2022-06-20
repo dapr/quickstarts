@@ -11,15 +11,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/*
+dapr run --app-id javascript-quickstart-binding-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../components -- node batch.js
+*/
+
 import { DaprClient, DaprServer } from "dapr-client";
 import fs from 'fs';
 
-const daprHost = "127.0.0.1"; 
-const daprPort = "5051"; 
+const cronBindingName = "cron";
+const postgresBindingName = "sqldb";
+
+const daprHost = process.env.DAPR_HOST || 'http://localhost';
+const daprPort = process.env.DAPR_HTTP_PORT || '3500';
 const serverHost = "127.0.0.1";
-const serverPort = "3500";
-const cronBindingName = "batch";
-const postgresBindingName = "SqlDB";
+const serverPort = process.env.SERVER_PORT || 5002;
 
 const client = new DaprClient(daprHost, daprPort);
 
@@ -42,7 +47,7 @@ async function processBatch(){
         const orders = JSON.parse(data).orders;
         orders.forEach(order => {
             let sqlCmd = `insert into orders (orderid, customer, price) values (${order.orderid}, '${order.customer}', ${order.price});`;
-            let payload = `{  "sql": "${sqlCmd}" } `;
+            let payload = `{"sql": "${sqlCmd}"} `;
             console.log(payload);
             client.binding.send(postgresBindingName, "exec", "", JSON.parse(payload));
         });

@@ -89,12 +89,12 @@ func sqlOutput(order Order) (err error) {
 
 	sqlCmd := fmt.Sprintf("insert into orders (orderid, customer, price) values (%d, '%s', %s);", order.OrderId, order.Customer, strconv.FormatFloat(order.Price, 'f', 2, 64))
 
-	orderCommand := `{"operation": "exec", "metadata": {"sql": "` + sqlCmd + `" }}`
-	fmt.Println(orderCommand)
+	payload := `{"operation": "exec", "metadata": {"sql": "` + sqlCmd + `" }}`
+	fmt.Println(payload)
 
 	client := http.Client{}
 	// Insert order using Dapr output binding via HTTP Post
-	req, err := http.NewRequest("POST", daprUrl, strings.NewReader(orderCommand))
+	req, err := http.NewRequest("POST", daprUrl, strings.NewReader(payload))
 	if err != nil {
 		return err
 	}

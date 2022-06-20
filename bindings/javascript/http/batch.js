@@ -10,10 +10,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// dapr run --app-id javascript-quickstart-binding-http --app-port 5001 --dapr-http-port 3500 node batch.js --components-path ../../components
+
+/*
+dapr run --app-id javascript-quickstart-binding-http --app-port 5001 --dapr-http-port 3500 --components-path ../../components -- node batch.js
+*/
 
 import express from "express";
-//import "isomorphic-fetch";
 import fs from 'fs';
 import axios from "axios";
 

@@ -8,7 +8,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindin
 
 This quickstart includes one service:
  
-- Go service `batch`
+- Javascript/Node.js service `batch`
 
 ### Run and initialize PostgreSQL container
 
@@ -25,23 +25,23 @@ docker compose up
 
 <!-- END_STEP -->
 
-### Run Go service with Dapr
+### Run Javascript service with Dapr
 
 2. Open a new terminal window in the quickstart directory and run: 
 
 <!-- STEP
-name: Install Go dependencies
+name: Install Javascript dependencies
 -->
 
 ```bash
-go build batch.go
+npm install
 ```
 
 <!-- END_STEP -->
-3. Run the Go service app with Dapr: 
+3. Run the Javascript service app with Dapr: 
 
 <!-- STEP
-name: Run go-input-binding-sdk service
+name: Run javascript-quickstart-binding-sdk service
 expected_stdout_lines:
   - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(1, \'John Smith\', 100.32)"} }'
   - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(2, \'Jane Bond\', 15.4)"} }'
@@ -54,7 +54,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 6003 --dapr-grpc-port 60002 --components-path ../../components -- go run batch.go
+dapr run --app-id javascript-quickstart-binding-sdk --app-port 5001 --dapr-http-port 3500 --components-path ../../components -- node batch.js
 ```
 
 <!-- END_STEP -->
@@ -67,7 +67,7 @@ name: Clean up
 
 
 ```bash
-dapr stop --app-id go-input-binding-sdk
+dapr stop --app-id javascript-quickstart-binding-sdk
 ```
 
 ```bash
