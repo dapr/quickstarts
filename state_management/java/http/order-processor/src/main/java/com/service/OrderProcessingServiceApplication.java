@@ -3,8 +3,6 @@ package com.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,8 +14,6 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class OrderProcessingServiceApplication {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderProcessingServiceApplication.class);
-
     private static final String DAPR_STATE_STORE = "statestore";
     private static String DAPR_HOST = System.getenv().getOrDefault("DAPR_HOST", "http://localhost");
     private static String DAPR_HTTP_PORT = System.getenv().getOrDefault("DAPR_HTTP_PORT", "3500");
@@ -42,7 +38,7 @@ public class OrderProcessingServiceApplication {
                     .uri(stateStoreUrl)
                     .build();
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            LOGGER.info("Saving order: "+ order.getOrderId());
+            System.out.println("Saving order: "+ order.getOrderId());
 
             // Get state from a state store
             URI getStateURL = new URI(baseUrl + "/v1.0/state/"+DAPR_STATE_STORE+"/"+String.valueOf(orderId));
@@ -52,7 +48,7 @@ public class OrderProcessingServiceApplication {
                     .build();
 
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            LOGGER.info("Order saved: "+ response.body());
+            System.out.println("Order saved: "+ response.body());
 
             // Delete state from the state store
             URI deleteStateURI = new URI(baseUrl + "/v1.0/state/" + DAPR_STATE_STORE + "/" + String.valueOf(orderId));
@@ -61,8 +57,8 @@ public class OrderProcessingServiceApplication {
                     .uri(deleteStateURI)
                     .build();
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            LOGGER.info("Deleting order: "+ order.getOrderId());
-            LOGGER.info("Deletion Status code :"+ response.statusCode());
+            System.out.println("Deleting order: "+ order.getOrderId());
+            System.out.println("Deletion Status code :"+ response.statusCode());
             TimeUnit.MILLISECONDS.sleep(1000);
         }
     }

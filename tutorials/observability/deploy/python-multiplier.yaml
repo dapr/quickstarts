@@ -22,6 +22,9 @@ spec:
       containers:
       - name: multiply
         image: ghcr.io/dapr/samples/distributed-calculator-slow-python:latest
+        env:
+        - name: APP_PORT
+          value: "5001"
         ports:
         - containerPort: 5001
         imagePullPolicy: Always

@@ -38,9 +38,9 @@ func add(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	appPort, isSet := os.LookupEnv("APP_PORT")
-	if !isSet {
-		log.Fatalf("--app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://github.com/dapr/quickstarts/tree/master/tutorials/distributed-calculator\n")
+	appPort := "6000"
+	if value, ok := os.LookupEnv("APP_PORT"); ok {
+		appPort = value
 	}
 	router := mux.NewRouter()
 

@@ -19,9 +19,7 @@ import sys
 import time
 import os
 
-port = os.getenv("APP_PORT")
-if port is None:
-    raise EnvironmentError('--app-port is not set. Re-run dapr run with -p or --app-port.\nUsage: https://github.com/dapr/quickstarts/tree/master/tutorials/observability\n')
+port = os.getenv("APP_PORT","5001")
 
 app = flask.Flask(__name__)
 CORS(app)
@@ -37,4 +35,4 @@ def multiply():
     print(f"Calculating {operand_one} * {operand_two}", flush=True)
     return jsonify(math.ceil(operand_one * operand_two * 100000)/100000)
 
-app.run(port)
+app.run(host="0.0.0.0",port=port)

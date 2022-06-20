@@ -1,42 +1,55 @@
-import axios from "axios";
+import axios from "axios"
 
-const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
-const DAPR_STATE_STORE = 'statestore'
+const protocol = process.env.DAPR_PROTOCOL ?? "http"
+const DAPR_HOST = process.env.DAPR_HOST ?? "localhost"
+
+let port  
+switch (protocol) {
+  case "http": {
+    port = process.env.DAPR_HTTP_PORT
+    break
+  }
+  case "grpc": {
+    port = process.env.DAPR_GRPC_PORT
+    break
+  }
+  default: {
+    port = 3500
+  }
+}
+
+const DAPR_STATE_STORE_NAME = 'statestore'
+const stateStoreBaseUrl = `${protocol}://${DAPR_HOST}:${port}/v1.0/state/${DAPR_STATE_STORE_NAME}`
 
 async function main() {
-  for(var i = 1; i <= 10; i++) {
-    const orderId = i;
-    const order = {orderId: orderId}; 
-    const state = [{
-      key: orderId.toString(),
-      value: order
-    }];
+  // For each loop, Save order, Get order, and Delete order
+  for (let i = 1; i <= 10; i++) {
+    const order = { orderId: i.toString() }
+    const state = [
+      {
+        key: order.orderId,
+        value: order
+      }
+    ]
 
     // Save state into a state store
-    await axios.post(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/state/${DAPR_STATE_STORE}`, state)
-      .then(function (response) {
-        console.log("Saving Order: " + response.config.data);
-      });
-      
+    await axios.post(`${stateStoreBaseUrl}`, state)
+    console.log("Saving Order: ", order)
+
     // Get state from a state store
-    await axios.get(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/state/${DAPR_STATE_STORE}/${orderId.toString()}`)
-      .then(function (response) {
-        console.log("Getting Order: ", response.data);
-      });
+    const orderResponse = await axios.get(`${stateStoreBaseUrl}/${order.orderId}`)
+    console.log("Getting Order: ", orderResponse.data)
 
-    // Save state into a state store
-    await axios.delete(`${DAPR_HOST}:${DAPR_HTTP_PORT}/v1.0/state/${DAPR_STATE_STORE}/${orderId.toString()}`, state)
-      .then(function (response) {
-        console.log("Deleting Order: " + JSON.stringify(order));
-      });
+    // Delete state from the state store
+    await axios.delete(`${stateStoreBaseUrl}/${order.orderId}`, state)
+    console.log("Deleting Order: ", order)
 
-    await sleep(1000);
+    await sleep(500)
   }
 }
 
 async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 main().catch(e => console.error(e))
