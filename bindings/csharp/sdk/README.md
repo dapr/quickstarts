@@ -12,7 +12,7 @@ This quickstart includes one service:
 
 ### Run and initialize PostgreSQL container
 
-1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
+1. Open a new terminal, change directories to `../../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
 
 <!-- STEP
 name: Run and initialize PostgreSQL container
@@ -27,13 +27,14 @@ docker compose up
 
 ### Run C# service with Dapr
 
-2. Open a new terminal window in the quickstart directory and run: 
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run: 
 
 <!-- STEP
 name: Install C# dependencies
 -->
 
 ```bash
+cd ./batch
 dotnet restore
 ```
 
@@ -55,7 +56,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run --app-id csharp-quickstart-binding-sdk --app-port 7002 --components-path ../../components -- dotnet run
+dapr run --app-id csharp-quickstart-binding-sdk --app-port 7002 --components-path ../../../components -- dotnet run
 ```
 
 <!-- END_STEP -->

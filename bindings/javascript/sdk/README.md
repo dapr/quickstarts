@@ -27,13 +27,14 @@ docker compose up
 
 ### Run Javascript service with Dapr
 
-2. Open a new terminal window in the quickstart directory and run: 
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run: 
 
 <!-- STEP
 name: Install Javascript dependencies
 -->
 
 ```bash
+cd ./batch
 npm install
 ```
 
@@ -54,7 +55,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run --app-id javascript-quickstart-binding-sdk --app-port 5001 --dapr-http-port 3500 --components-path ../../components -- node index.js
+dapr run --app-id javascript-quickstart-binding-sdk --app-port 5001 --dapr-http-port 3500 --components-path ../../../components -- node index.js
 ```
 
 <!-- END_STEP -->

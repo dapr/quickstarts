@@ -27,13 +27,14 @@ docker compose up
 
 ### Run Go service with Dapr
 
-2. Open a new terminal window in the quickstart directory and run: 
+2. Open a new terminal, change directories to `./batch` in the quickstart directory and run: 
 
 <!-- STEP
 name: Install Go dependencies
 -->
 
 ```bash
+cd ./batch
 go build app.go
 ```
 
@@ -54,7 +55,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run --app-id go-input-binding-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --components-path ../../components -- go run app.go
+dapr run --app-id go-input-binding-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --components-path ../../../components -- go run app.go
 ```
 
 <!-- END_STEP -->

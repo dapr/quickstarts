@@ -8,7 +8,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindin
 
 This quickstart includes one service:
  
-- Python service `app`
+- Python service `batch`
 
 ### Run and initialize PostgreSQL container
 
@@ -27,13 +27,14 @@ docker compose up
 
 ### Run Python service with Dapr
 
-2. Open a new terminal window in the quickstart directory and run: 
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run: 
 
 <!-- STEP
 name: Install python dependencies
 -->
 
 ```bash
+cd ./batch
 pip3 install -r requirements.txt 
 ```
 
@@ -55,7 +56,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run --app-id python-binding-quickstart-sdk --app-port 50051 --components-path ../../components -- python3 app.py
+dapr run --app-id python-binding-quickstart-sdk --app-port 50051 --components-path ../../../components -- python3 app.py
 ```
 
 <!-- END_STEP -->
