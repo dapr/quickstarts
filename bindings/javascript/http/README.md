@@ -8,7 +8,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindin
 
 This quickstart includes one service:
  
-- Javascript/Node.js service `batch`
+- Javascript/Node.js service `bindings`
 
 ### Run and initialize PostgreSQL container
 
@@ -54,7 +54,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run --app-id javascript-quickstart-binding-http --app-port 5001 --dapr-http-port 3500 --components-path ../../components -- node batch.js
+dapr run --app-id javascript-quickstart-binding-http --app-port 5001 --dapr-http-port 3500 --components-path ../../components -- node index.js
 ```
 
 <!-- END_STEP -->
