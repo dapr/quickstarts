@@ -60,7 +60,9 @@ app.MapPost("/" + cronBindingName, async () => {
           }
 
      }
-
+               
+     Console.WriteLine("Finished processing batch");
+     
      return Results.Ok();
 });
 

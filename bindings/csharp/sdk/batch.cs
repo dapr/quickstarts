@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Dapr.Client;
 
 
-// dapr run --app-id csharp-quickstart-binding-sdk --app-port 7001 --components-path ../../components -- dotnet run
+// dapr run --app-id csharp-quickstart-binding-sdk --app-port 7002 --components-path ../../components -- dotnet run
 
 var cronBindingName = "cron";
 var sqlBindingName = "sqldb";
@@ -47,6 +47,8 @@ app.MapPost("/" + cronBindingName, async () => {
         // Insert order using Dapr output binding via Dapr Client SDK
         await client.InvokeBindingAsync(bindingName: sqlBindingName, operation: "exec", data: "", metadata: command);
     }
+
+    Console.WriteLine("Finished processing batch");
 
     return Results.Ok();
 });

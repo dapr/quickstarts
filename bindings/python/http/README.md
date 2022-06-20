@@ -27,7 +27,7 @@ docker compose up
 
 ### Run Python service with Dapr
 
-2. Open a new terminal window in the current directory and run: 
+2. Open a new terminal window in the quickstart directory and run: 
 
 <!-- STEP
 name: Install python dependencies

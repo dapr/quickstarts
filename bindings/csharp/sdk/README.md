@@ -8,7 +8,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindin
 
 This quickstart includes one service:
  
-- Python service `batch`
+- .NET/C# service `batch`
 
 ### Run and initialize PostgreSQL container
 
@@ -25,23 +25,23 @@ docker compose up
 
 <!-- END_STEP -->
 
-### Run Python service with Dapr
+### Run C# service with Dapr
 
 2. Open a new terminal window in the quickstart directory and run: 
 
 <!-- STEP
-name: Install python dependencies
+name: Install C# dependencies
 -->
 
 ```bash
-pip3 install -r requirements.txt 
+dotnet restore
 ```
 
 <!-- END_STEP -->
-3. Run the Python service app with Dapr: 
+3. Run the C# service app with Dapr: 
 
 <!-- STEP
-name: Run python-binding-quickstart-sdk service
+name: Run csharp-quickstart-binding-sdk service
 expected_stdout_lines:
   - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(1, \'John Smith\', 100.32)"} }'
   - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(2, \'Jane Bond\', 15.4)"} }'
@@ -55,7 +55,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run --app-id python-binding-quickstart-sdk --app-port 50051 --components-path ../../components -- python3 batch.py
+dapr run --app-id csharp-quickstart-binding-sdk --app-port 7002 --components-path ../../components -- dotnet run
 ```
 
 <!-- END_STEP -->
@@ -63,12 +63,12 @@ dapr run --app-id python-binding-quickstart-sdk --app-port 50051 --components-pa
 4. Clean up: 
 
 <!-- STEP
-name: Install python dependencies
+name: Clean up
 -->
 
 
 ```bash
-dapr stop --app-id python-binding-quickstart-http
+dapr stop --app-id csharp-quickstart-binding-sdk
 ```
 
 ```bash
