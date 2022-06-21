@@ -1,93 +1,66 @@
-# Dapr pub/sub
+# Dapr Bindings (HTTP)
 
-In this quickstart, there is a publisher microservice `checkout` and a subscriber microservice `order-processor` to demonstrate how Dapr enables a publish-subscribe pattern. `checkout` generates messages and publishes to a specific orders topic, and `order-processor` subscribers listen for messages of topic orders.
+In this quickstart, you'll create a microservice to demonstrate Dapr's bindings API to work with external systems as inputs and outputs. The service listens to input binding events from a system CRON and then outputs the contents of local data to a PostreSql output binding. 
 
-Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
+Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindings/) link for more information about Dapr and Bindings.
 
-> **Note:** This example leverages HTTPClient only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk).
+> **Note:** This example leverages only HTTP REST.  If you are looking for the example using the Dapr SDK [click here](../sdk).
 
-This quickstart includes one publisher:
+This quickstart includes one service:
+ 
+- Java service `batch`
 
-- Java client message generator `checkout`
+### Run and initialize PostgreSQL container
 
-And one subscriber:
+1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
 
-- Java subscriber `order-processor`
-
-## Pre-requisites
-
-* [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/).
-* Java JDK 11 (or greater):
-    * [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
-    * [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
-    * [OpenJDK 11](https://jdk.java.net/11/)
-* [Apache Maven](https://maven.apache.org/install.html) version 3.x.
-
-### Run Java message subscriber app with Dapr
-
-1. Navigate to directory and install dependencies:
 <!-- STEP
-name: Install Java dependencies
--->
-
-```bash
-cd ./order-processor
-mvn clean install
-```
-<!-- END_STEP -->
-
-2. Run the Java subscriber app with Dapr:
-<!-- STEP
-name: Run Java publisher
-expected_stdout_lines:
-  - 'Subscriber received: 2'
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./order-processor
-output_match_mode: substring
+name: Run and initialize PostgreSQL container
+expected_return_code:
 background: true
-sleep: 10
+sleep: 5
+timeout_seconds: 6
 -->
-```bash
-cd ./order-processor
- dapr run --app-port 8080 --app-id order-processor --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
-```
-<!-- END_STEP -->
-### Run Java message publisher app with Dapr
 
-1. Navigate to the directory and install dependencies:
+```bash
+cd ../../db
+docker compose up
+```
+
+<!-- END_STEP -->
+
+### Run Java service with Dapr
+
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run: 
 
 <!-- STEP
 name: Install Java dependencies
 -->
 
 ```bash
-cd ./checkout
-mvn clean install
+cd ./batch
+pip3 install -r requirements.txt 
 ```
-<!-- END_STEP -->
 
-2. Run the Java publisher app with Dapr:
+<!-- END_STEP -->
+3. Run the Java service app with Dapr: 
+
 <!-- STEP
-name: Run Java publisher
+name: Run java-binding-quickstart-http service
+working_dir: ./batch
 expected_stdout_lines:
-  - 'Published data: 1'
-  - 'Published data: 2'
-  - "Exited App successfully"
+  - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
+  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4)'
+  - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
+  - '== APP == Finished processing batch'
 expected_stderr_lines:
-working_dir: ./checkout
 output_match_mode: substring
-background: true
-sleep: 10
+sleep: 11
+timeout_seconds: 30
 -->
-
+    
 ```bash
-cd ./checkout
- dapr run --app-id checkout --components-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+dapr run --app-id java-binding-quickstart-http --app-port 50051 --components-path ../../../components -- java -jar target/batch.jar
 ```
+
 <!-- END_STEP -->
-
-```bash
-dapr stop --app-id checkout
-dapr stop --app-id order-processor
-```

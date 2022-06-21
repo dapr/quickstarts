@@ -52,13 +52,13 @@ def process_batch():
 
 def sql_output(order_line):
 
-    sqlCmd = ('insert into orders (orderid, customer, price) values' +
+    sqlCmd = ('insert into orders (orderid, customer, price) values ' +
               '(%s, \'%s\', %s)' % (order_line['orderid'],
                                     order_line['customer'],
                                     order_line['price']))
     payload = ('{"operation": "exec", "metadata": {"sql" : "%s"} }' % sqlCmd)
 
-    print(payload, flush=True)
+    print(sqlCmd, flush=True)
 
     try:
         # Insert order using Dapr output binding via HTTP Post

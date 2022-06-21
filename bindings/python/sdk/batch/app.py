@@ -46,7 +46,7 @@ def process_batch():
 def sql_output(order_line):
 
     with DaprClient() as d:
-        sqlCmd = ('insert into orders (orderid, customer, price) values' +
+        sqlCmd = ('insert into orders (orderid, customer, price) values ' +
                   '(%s, \'%s\', %s)' % (order_line['orderid'],
                                         order_line['customer'],
                                         order_line['price']))
