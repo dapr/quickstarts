@@ -16,6 +16,10 @@ This quickstart includes one service:
 
 <!-- STEP
 name: Run and initialize PostgreSQL container
+expected_return_code:
+background: true
+sleep: 5
+timeout_seconds: 6
 -->
 
 ```bash
@@ -43,37 +47,20 @@ dotnet restore
 
 <!-- STEP
 name: Run csharp-quickstart-binding-sdk service
+working_dir: ./batch
 expected_stdout_lines:
-  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(1, \'John Smith\', 100.32)"} }'
-  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(2, \'Jane Bond\', 15.4)"} }'
-  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(3, \'Tony James\', 35.56)"} }'
+  - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
+  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4)'
+  - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
   - '== APP == Finished processing batch'
-  - 'POST /cron HTTP/1.1" 200'
 expected_stderr_lines:
 output_match_mode: substring
-background: true
-sleep: 15
+sleep: 11
+timeout_seconds: 30
 -->
     
 ```bash
 dapr run --app-id csharp-quickstart-binding-sdk --app-port 7002 --components-path ../../../components -- dotnet run
-```
-
-<!-- END_STEP -->
-
-4. Clean up: 
-
-<!-- STEP
-name: Clean up
--->
-
-
-```bash
-dapr stop --app-id csharp-quickstart-binding-sdk
-```
-
-```bash
-docker compose down 
 ```
 
 <!-- END_STEP -->
