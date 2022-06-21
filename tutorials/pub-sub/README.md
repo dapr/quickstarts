@@ -168,8 +168,6 @@ name: Run csharp subscriber
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
   - '== APP == A: Message on A'
-  - '== APP == B: Message on B'
-  - '== APP == C: Message on C'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
