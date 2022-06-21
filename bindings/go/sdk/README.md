@@ -44,9 +44,9 @@ go build app.go
 <!-- STEP
 name: Run go-input-binding-sdk service
 expected_stdout_lines:
-  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(1, \'John Smith\', 100.32)"} }'
-  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(2, \'Jane Bond\', 15.4)"} }'
-  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(3, \'Tony James\', 35.56)"} }'
+  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(1, ''John Smith'', 100.32)"} }'
+  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(2, ''Jane Bond', 15.4)"} }'
+  - '== APP == {"operation": "exec", "metadata": {"sql" : "insert into orders (orderid, customer, price) values(3, ''Tony James'', 35.56)"} }'
   - '== APP == Finished processing batch'
 expected_stderr_lines:
 output_match_mode: substring
