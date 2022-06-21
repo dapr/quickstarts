@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 @RestController
-public class OrderProcessingServiceController {
+public class BatchProcessingServiceController {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderProcessingServiceController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BatchProcessingServiceController.class);
 
     @Topic(name = "orders", pubsubName = "orderpubsub")
     @PostMapping(path = "/orders", consumes = MediaType.ALL_VALUE)
