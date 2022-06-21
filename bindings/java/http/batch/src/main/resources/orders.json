@@ -1,0 +1,20 @@
+{
+    "orders": [
+        {
+            "orderid": 1,
+            "customer": "John Smith",
+            "price": 100.32
+        },
+        {
+            "orderid": 2,
+            "customer": "Jane Bond",
+            "price": 15.4
+        },
+        {
+            "orderid": 3,
+            "customer": "Tony James",
+            "price": 35.56
+        }
+    ]
+ }
+ 

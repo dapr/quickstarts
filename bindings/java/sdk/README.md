@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id java-binding-quickstart-sdk --app-port 50051 --components-path ../../../components -- java -jar target/batch.jar
+dapr run --app-id java-binding-quickstart-sdk --app-port 50051 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 <!-- END_STEP -->
