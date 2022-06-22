@@ -12,11 +12,16 @@
 	<artifactId>BatchProcessingService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BatchProcessingService</name>
-	<description>Demo for Dapr pubsub component</description>
+	<description>Quickstart for Dapr Bingings building block</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+<dependency>
+  <groupId>com.squareup.okhttp3</groupId>
+  <artifactId>okhttp</artifactId>
+  <version>4.9.0</version>
+</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
