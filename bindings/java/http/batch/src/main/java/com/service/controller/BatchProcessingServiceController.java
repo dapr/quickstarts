@@ -27,6 +27,7 @@ import java.net.http.HttpResponse;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.cert.PolicyQualifierInfo;
 
 import org.springframework.core.io.ClassPathResource;
@@ -41,7 +42,7 @@ public class BatchProcessingServiceController {
 
     private static String DAPR_HOST = System.getenv().getOrDefault("DAPR_HOST", "http://localhost");
 	private static String DAPR_HTTP_PORT = System.getenv().getOrDefault("DAPR_HTTP_PORT", "3500");
-    String daprUri = DAPR_HOST +":"+ DAPR_HTTP_PORT + "/v1.0/bindings/"+cronBindingPath;
+    String daprUri = DAPR_HOST +":"+ DAPR_HTTP_PORT + "/v1.0/bindings/"+sqlBindingName;
 
  	private static final HttpClient httpClient = HttpClient.newBuilder()
 			.version(HttpClient.Version.HTTP_2)
@@ -50,7 +51,7 @@ public class BatchProcessingServiceController {
    
             
     @PostMapping(path = cronBindingPath, consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<String> processBatch() throws IOException, InterruptedException {
+    public ResponseEntity<String> processBatch() throws Exception {
         
         logger.info("Processing batch..");
 
@@ -65,20 +66,12 @@ public class BatchProcessingServiceController {
                     order.orderid, order.customer, order.price);
                 logger.info(sqlText);
 
-                //Map<String, String> command = new HashMap<String, String>();
-                //command.put("sql", sqlText);
-                String commandString = String.format("{\"sql\": \"%s\"}", sqlText);
-                logger.info(commandString);
-
                 JSONObject command = new JSONObject();
                 command.put("sql", sqlText);
-                logger.info(command.toString());
 
                 JSONObject payload = new JSONObject();
-                //`{"operation": "exec", "metadata": {"sql": "${sqlCmd}"}}`
                 payload.put("metadata", command);
                 payload.put("operation", "exec");
-                logger.info(payload.toString());
 
                 // Invoke sql output binding using Dapr Bindings via HTTP Post
                 HttpRequest request = HttpRequest.newBuilder()
@@ -101,32 +94,33 @@ public class BatchProcessingServiceController {
 
     }
 
-    private Orders loadOrdersFromFile(String path) throws JsonProcessingException {
-        // this is a mock to get things running temporarily
+    private Orders loadOrdersFromFile(String path) throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
-        String json = String.join(System.getProperty("line.separator"), 
-        "{\"orders\": [",
-        "{\"orderid\": 1, \"customer\": \"John Smith\", \"price\": 100.32},",
-        "{\"orderid\": 2, \"customer\": \"Jane Bond\", \"price\": 15.4},",
-        "{\"orderid\": 3, \"customer\": \"Tony James\", \"price\": 35.56}",
-        "]",
-        "}");
 
-        Orders newOrdersBatch;
+        if (!(path == "")) {
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
+                Orders obj = mapper.readValue(is, Orders.class);
+                return obj;
+            } catch (Exception e) {
+                logger.error(e.toString());
+                throw e;
+            }
+        } else {
+            // if called with empty path "" return a mock
+            String json = String.join(System.getProperty("line.separator"), 
+            "{\"orders\": [",
+            "{\"orderid\": 1, \"customer\": \"John Smith\", \"price\": 100.32},",
+            "{\"orderid\": 2, \"customer\": \"Jane Bond\", \"price\": 15.4},",
+            "{\"orderid\": 3, \"customer\": \"Tony James\", \"price\": 35.56}",
+            "]",
+            "}");
 
-        try 
-        {
-            newOrdersBatch = mapper.readValue(json, Orders.class);
-
-        } catch (Exception e) {
-            logger.error(e.toString());
-            newOrdersBatch = new Orders();
+            return mapper.readValue(json, Orders.class);
         }
 
-        return newOrdersBatch;
     }
 }
             

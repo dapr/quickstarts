@@ -39,7 +39,7 @@ name: Install Java dependencies
 
 ```bash
 cd ./batch
-pip3 install -r requirements.txt 
+mvn clean install
 ```
 
 <!-- END_STEP -->
@@ -49,10 +49,10 @@ pip3 install -r requirements.txt
 name: Run java-binding-quickstart-sdk service
 working_dir: ./batch
 expected_stdout_lines:
-  - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
-  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4)'
-  - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
-  - '== APP == Finished processing batch'
+  - 'insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
+  - 'insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4)'
+  - 'insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
+  - 'Finished processing batch'
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11
@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id java-binding-quickstart-sdk --app-port 50051 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id java-binding-quickstart-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 <!-- END_STEP -->

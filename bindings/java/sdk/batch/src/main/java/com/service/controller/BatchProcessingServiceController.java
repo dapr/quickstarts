@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,16 +15,11 @@ import io.dapr.client.DaprClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import reactor.core.publisher.Mono;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.springframework.core.io.ClassPathResource;
 
 
 @RestController
@@ -70,7 +64,6 @@ public class BatchProcessingServiceController {
     }
 
     private Orders loadOrdersFromFile(String path) throws Exception {
-        // this is a mock to get things running temporarily
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
@@ -85,6 +78,7 @@ public class BatchProcessingServiceController {
                 throw e;
             }
         } else {
+            // if called with empty path "" return a mock
             String json = String.join(System.getProperty("line.separator"), 
             "{\"orders\": [",
             "{\"orderid\": 1, \"customer\": \"John Smith\", \"price\": 100.32},",
