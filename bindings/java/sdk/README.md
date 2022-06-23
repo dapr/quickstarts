@@ -46,7 +46,7 @@ mvn clean install
 3. Run the java service app with Dapr: 
 
 <!-- STEP
-name: Run java-binding-quickstart-sdk service
+name: Run batch-sdk service
 working_dir: ./batch
 expected_stdout_lines:
   - 'insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id java-binding-quickstart-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id batch-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 <!-- END_STEP -->

@@ -10,7 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# dapr run --app-id python-binding-quickstart-http --app-port 50051
+# dapr run --app-id batch-http --app-port 50051
 #   --components-path ../../../components -- python3 app.py
 
 import json

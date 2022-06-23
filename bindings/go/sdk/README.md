@@ -46,7 +46,7 @@ go build app.go
 3. Run the Go service app with Dapr: 
 
 <!-- STEP
-name: Run go-input-binding-sdk service
+name: Run batch-sdk service
 working_dir: ./batch
 expected_stdout_lines:
   - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id go-input-binding-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run app.go
+dapr run --app-id batch-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --components-path ../../../components -- go run app.go
 ```
 
 <!-- END_STEP -->

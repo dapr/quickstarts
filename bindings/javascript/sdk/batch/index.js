@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 /*
-dapr run --app-id javascript-quickstart-binding-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../../components -- node index.js
+dapr run --app-id batch-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../../components -- node index.js
 */
 
 import { DaprClient, DaprServer } from "dapr-client";

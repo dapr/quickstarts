@@ -14,7 +14,7 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id go-input-binding-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --components-path ../../../components -- go run app.go
+dapr run --app-id batch-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --components-path ../../../components -- go run app.go
 */
 
 import (

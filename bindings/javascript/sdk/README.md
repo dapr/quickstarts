@@ -46,7 +46,7 @@ npm install
 3. Run the Javascript service app with Dapr: 
 
 <!-- STEP
-name: Run javascript-quickstart-binding-sdk service
+name: Run batch-sdk service
 working_dir: ./batch
 expected_stdout_lines:
   - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id javascript-quickstart-binding-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../../components -- node index.js
+dapr run --app-id batch-sdk --app-port 5002 --dapr-http-port 3500 --components-path ../../../components -- node index.js
 ```
 
 <!-- END_STEP -->
