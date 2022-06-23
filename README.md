@@ -14,10 +14,10 @@ Pick a building block API (for example, pub-sub, state management) and rapidly t
 | [Publish and Subscribe](./pub_sub) | Asynchronous communication between two services using messaging |
 | [Service Invocation](./service_invocation) |  Asynchronous communication between two services using HTTP  |
 | [State Management](./state_management/) | Store a service's data as key/value pairs in supported state stores |
-| [Bindings](./bindings/) | Work with external systems using input bindings to respond to events and output bindings to call operations| 
+| [Bindings](./bindings/) | Work with external systems using input bindings to respond to events and output bindings to call operations|
+| [Secrets Management](./secrets_management/) | Securely fetch secrets |
 | Actors | Coming soon... |
 | Observability | Coming soon... |
-| Secrets Management | Coming soon... |
 | Configuration | Coming soon... |
 
 ### Tutorials
