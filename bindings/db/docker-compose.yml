@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  db:
+    image: samples/postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: orders
