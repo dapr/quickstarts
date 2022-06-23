@@ -46,7 +46,7 @@ pip3 install -r requirements.txt
 3. Run the Python service app with Dapr: 
 
 <!-- STEP
-name: Run bathc-sdk service
+name: Run batch-sdk service
 working_dir: ./batch
 expected_stdout_lines:
   - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
