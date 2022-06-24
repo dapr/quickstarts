@@ -12,7 +12,7 @@ limitations under the License.
 */
 
 /*
-dapr run --app-id javascript-quickstart-binding-http --app-port 5001 --dapr-http-port 3500 --components-path ../../../components -- node index.js
+dapr run --app-id batch-http --app-port 5001 --dapr-http-port 3500 --components-path ../../../components -- node index.js
 */
 
 import express from "express";

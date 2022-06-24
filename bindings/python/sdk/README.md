@@ -46,7 +46,7 @@ pip3 install -r requirements.txt
 3. Run the Python service app with Dapr: 
 
 <!-- STEP
-name: Run python-binding-quickstart-sdk service
+name: Run batch-sdk service
 working_dir: ./batch
 expected_stdout_lines:
   - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id python-binding-quickstart-sdk --app-port 50051 --components-path ../../../components -- python3 app.py
+dapr run --app-id batch-sdk --app-port 50051 --components-path ../../../components -- python3 app.py
 ```
 
 <!-- END_STEP -->

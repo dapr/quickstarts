@@ -47,7 +47,7 @@ dotnet restore
 3. Run the C# service app with Dapr: 
 
 <!-- STEP
-name: Run csharp-quickstart-binding-http service
+name: Run batch-http service
 working_dir: ./batch
 expected_stdout_lines:
   - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
@@ -61,7 +61,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id csharp-quickstart-binding-http --app-port 7001 --components-path ../../../components -- dotnet run
+dapr run --app-id batch-http --app-port 7001 --components-path ../../../components -- dotnet run
 ```
 
 <!-- END_STEP -->
