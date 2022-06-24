@@ -89,6 +89,11 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
+      - name: Set up Postgres
+        run: |
+          pushd bindings/db/
+          docker compose up -d
+          popd
       - name: Validate Python http Bindings
         run: |
           pushd bindings/python/http
@@ -104,11 +109,11 @@ jobs:
           pushd bindings/javascript/http
           make validate
           popd
-      - name: Validate Javascript sdk Bindings
-        run: |
-          pushd bindings/javascript/sdk
-          make validate
-          popd
+      # - name: Validate Javascript sdk Bindings
+      #   run: |
+      #     pushd bindings/javascript/sdk
+      #     make validate
+      #     popd
       - name: Validate Java http Bindings
         run: |
           pushd bindings/java/http

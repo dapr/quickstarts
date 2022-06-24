@@ -50,7 +50,7 @@ name: Run batch-http service
 working_dir: ./batch
 expected_stdout_lines:
   - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
-  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.40ps)'
+  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.40)'
   - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
   - '== APP == Finished processing batch'
 expected_stderr_lines:
