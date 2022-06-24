@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-name: Validate State Management
+name: Validate Bindings
 
 on:
   workflow_dispatch:
