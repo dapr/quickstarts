@@ -19,7 +19,7 @@ public class CheckoutServiceApplication {
 	private static final String DAPR_HTTP_PORT = System.getenv().getOrDefault("DAPR_HTTP_PORT", "3500");
 
 	public static void main(String[] args) throws InterruptedException, IOException {
-		String dapr_url = "http://localhost:"+DAPR_HTTP_PORT+"/orders";
+		String dapr_url = "http://localhost:" + DAPR_HTTP_PORT + "/orders";
 		for (int i=1; i<=10; i++) {
 			int orderId = i;
 			JSONObject obj = new JSONObject();

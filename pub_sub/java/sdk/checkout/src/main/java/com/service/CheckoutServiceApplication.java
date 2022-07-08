@@ -14,11 +14,11 @@ public class CheckoutServiceApplication {
 	public static void main(String[] args) throws InterruptedException{
 		String TOPIC_NAME = "orders";
 		String PUBSUB_NAME = "orderpubsub";
+		DaprClient client = new DaprClientBuilder().build();
 
 		for (int i = 0; i <= 10; i++) {
 			int orderId = i;
 			Order order = new Order(orderId);
-			DaprClient client = new DaprClientBuilder().build();
 
 			// Publish an event/message using Dapr PubSub
 			client.publishEvent(

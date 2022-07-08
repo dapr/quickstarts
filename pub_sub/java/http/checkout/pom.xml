@@ -5,6 +5,7 @@
 
 	<groupId>com.service</groupId>
 	<artifactId>CheckoutService</artifactId>
+	<name>CheckoutService</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<description>Demo for Dapr pubsub component</description>
 	<properties>

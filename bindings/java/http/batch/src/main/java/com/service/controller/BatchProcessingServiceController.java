@@ -23,14 +23,12 @@ import org.slf4j.LoggerFactory;
 
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -48,7 +46,7 @@ public class BatchProcessingServiceController {
 
     private static String DAPR_HOST = System.getenv().getOrDefault("DAPR_HOST", "http://localhost");
 	private static String DAPR_HTTP_PORT = System.getenv().getOrDefault("DAPR_HTTP_PORT", "3500");
-    String daprUri = DAPR_HOST +":"+ DAPR_HTTP_PORT + "/v1.0/bindings/"+sqlBindingName;
+    String daprUri = DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/bindings/" + sqlBindingName;
 
  	private static final HttpClient httpClient = HttpClient.newBuilder()
 			.version(HttpClient.Version.HTTP_2)
@@ -105,27 +103,14 @@ public class BatchProcessingServiceController {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
-
-        if (!(path == "")) {
-            try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
-                Orders obj = mapper.readValue(is, Orders.class);
-                return obj;
-            } catch (Exception e) {
-                logger.error(e.toString());
-                throw e;
-            }
-        } else {
-            // if called with empty path "" return a mock
-            String json = String.join(System.getProperty("line.separator"), 
-            "{\"orders\": [",
-            "{\"orderid\": 1, \"customer\": \"John Smith\", \"price\": 100.32},",
-            "{\"orderid\": 2, \"customer\": \"Jane Bond\", \"price\": 15.4},",
-            "{\"orderid\": 3, \"customer\": \"Tony James\", \"price\": 35.56}",
-            "]",
-            "}");
-
-            return mapper.readValue(json, Orders.class);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
+            Orders obj = mapper.readValue(is, Orders.class);
+            return obj;
+        } catch (Exception e) {
+            logger.error(e.toString());
+            throw e;
         }
+
 
     }
 }

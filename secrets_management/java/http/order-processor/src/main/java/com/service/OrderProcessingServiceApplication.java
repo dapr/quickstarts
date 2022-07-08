@@ -19,7 +19,7 @@ public class OrderProcessingServiceApplication {
             .build();
 
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
-        URI secretStoreURI = new URI(DAPR_HOST+":"+DAPR_HTTP_PORT+"/v1.0/secrets/"+SECRET_STORE_NAME + "/"+SECRET_NAME);
+        URI secretStoreURI = new URI(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/secrets/" + SECRET_STORE_NAME + "/" + SECRET_NAME);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(secretStoreURI)
                 .build();
