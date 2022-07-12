@@ -11,7 +11,7 @@
 	<artifactId>BatchProcessingService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BatchProcessingService</name>
-	<description>Quickstart for Dapr Bingings building block</description>
+	<description>Quickstart for Dapr Bindings building block</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
