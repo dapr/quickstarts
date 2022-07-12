@@ -10,8 +10,8 @@
 	<groupId>com.service</groupId>
 	<artifactId>BatchProcessingService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>OrderProcessingService</name>
-	<description>Demo for Dapr pubsub component</description>
+	<name>BatchProcessingService</name>
+	<description>Quickstart for Dapr Bindings building block</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

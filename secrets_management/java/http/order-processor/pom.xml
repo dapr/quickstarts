@@ -5,8 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.service</groupId>
-    <artifactId>order-processor</artifactId>
+    <artifactId>OrderProcessingService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <name>OrderProcessingService</name>
+    <description>Demo for Dapr secret mgmt component</description>
     <properties>
         <project.build.sourceEncoding>
             UTF-8

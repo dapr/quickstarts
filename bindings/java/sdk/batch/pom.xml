@@ -11,7 +11,7 @@
 	<artifactId>BatchProcessingService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BatchProcessingService</name>
-	<description>Quickstart for Dapr Bingings building block</description>
+	<description>Quickstart for Dapr Bindings building block</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>io.dapr</groupId>
 			<artifactId>dapr-sdk</artifactId>
-			<version>1.4.0</version>
+			<version>1.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

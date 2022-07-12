@@ -79,28 +79,13 @@ public class BatchProcessingServiceController {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
-
-        if (!(path == "")) {
-            try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
-                Orders obj = mapper.readValue(is, Orders.class);
-                return obj;
-            } catch (Exception e) {
-                logger.error(e.toString());
-                throw e;
-            }
-        } else {
-            // if called with empty path "" return a mock
-            String json = String.join(System.getProperty("line.separator"), 
-            "{\"orders\": [",
-            "{\"orderid\": 1, \"customer\": \"John Smith\", \"price\": 100.32},",
-            "{\"orderid\": 2, \"customer\": \"Jane Bond\", \"price\": 15.4},",
-            "{\"orderid\": 3, \"customer\": \"Tony James\", \"price\": 35.56}",
-            "]",
-            "}");
-
-            return mapper.readValue(json, Orders.class);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
+            Orders obj = mapper.readValue(is, Orders.class);
+            return obj;
+        } catch (Exception e) {
+            logger.error(e.toString());
+            throw e;
         }
-
     }
 }
             
