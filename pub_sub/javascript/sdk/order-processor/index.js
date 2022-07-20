@@ -1,4 +1,4 @@
-import { DaprServer } from 'dapr-client';
+import { DaprServer } from '@dapr/dapr';
 
 const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
 const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3501";
