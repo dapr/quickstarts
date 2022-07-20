@@ -24,7 +24,7 @@ const postgresBindingName = "sqldb";
 const daprHost = process.env.DAPR_HOST || 'http://localhost';
 const daprPort = process.env.DAPR_HTTP_PORT || '3500';
 const serverHost = "127.0.0.1";
-const serverPort = process.env.SERVER_PORT || '5002';
+const serverPort = process.env.APP_PORT || '5002';
 
 const client = new DaprClient(daprHost, daprPort);
 
