@@ -12,7 +12,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "dapr-client": "^2.0.1"
+        "@dapr/dapr": "^2.3.0"
     },
     "devDependencies": {
         "eslint": "^8.8.0",
