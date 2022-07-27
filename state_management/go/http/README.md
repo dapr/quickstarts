@@ -20,7 +20,7 @@ name: Build Go file
 
 ```bash
 cd ./order-processor
-go build app.go
+go build .
 ```
 
 <!-- END_STEP -->
@@ -40,7 +40,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components -- go run app.go
+dapr run --app-id order-processor --components-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->
