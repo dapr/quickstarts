@@ -35,13 +35,13 @@ var (
 )
 
 type Orders struct {
-	Orders []Order `json:orders`
+	Orders []Order `json:"orders"`
 }
 
 type Order struct {
-	OrderId  int     `json:orderid`
-	Customer string  `json:customer`
-	Price    float64 `json:price`
+	OrderId  int     `json:"orderid"`
+	Customer string  `json:"customer"`
+	Price    float64 `json:"price"`
 }
 
 func processBatch(w http.ResponseWriter, r *http.Request) {
