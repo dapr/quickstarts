@@ -39,7 +39,7 @@ name: Install Go dependencies
 
 ```bash
 cd ./batch
-go build app.go
+go build .
 ```
 
 <!-- END_STEP -->
@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id batch-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --components-path ../../../components -- go run app.go
+dapr run --app-id batch-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --components-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->

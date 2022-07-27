@@ -9,7 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-        <PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
+        <PackageReference Include="Dapr.AspNetCore" Version="1.8.0" />
     </ItemGroup>
 
 </Project>

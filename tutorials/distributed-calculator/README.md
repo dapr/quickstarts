@@ -51,7 +51,7 @@ working_dir: "./go"
    ```
 - Build the app. Run:
    ```bash
-   go build app.go
+   go build .
    ```
 
 <!-- END_STEP -->

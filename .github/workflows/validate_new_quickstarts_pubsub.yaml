@@ -109,16 +109,16 @@ jobs:
           pushd pub_sub/javascript/sdk
           make validate
           popd
-      # - name: Validate python http pubsub
-      #   run: |
-      #     pushd pub_sub/python/http
-      #     make validate
-      #     popd
-      # - name: Validate python sdk pubsub
-      #   run: |
-      #     pushd pub_sub/python/sdk
-      #     make validate
-      #     popd
+      - name: Validate python http pubsub
+        run: |
+          pushd pub_sub/python/http
+          make validate
+          popd
+      - name: Validate python sdk pubsub
+        run: |
+          pushd pub_sub/python/sdk
+          make validate
+          popd
       - name: Validate java http pubsub
         run: |
           pushd pub_sub/java/http

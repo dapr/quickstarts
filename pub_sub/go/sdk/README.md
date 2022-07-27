@@ -24,7 +24,7 @@ name: Build Go file
 
 ```bash
 cd ./order-processor
-go build app.go
+go build .
 ```
 <!-- END_STEP -->
 
@@ -43,7 +43,7 @@ sleep: 15
 
 ```bash
 cd ./order-processor
-dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run app.go
+dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->
@@ -58,7 +58,7 @@ name: Build Go file
 
 ```bash
 cd ./checkout
-go build app.go
+go build .
 ```
 <!-- END_STEP -->
 2. Run the Go publisher app with Dapr: 
@@ -77,7 +77,7 @@ sleep: 15
     
 ```bash
 cd ./checkout
-dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run app.go
+dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->
