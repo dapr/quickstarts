@@ -89,6 +89,16 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
+      - name: Validate python http pubsub
+        run: |
+          pushd pub_sub/python/http
+          make validate
+          popd
+      - name: Validate python sdk pubsub
+        run: |
+          pushd pub_sub/python/sdk
+          make validate
+          popd
       - name: Validate Go http pubsub
         run: |
           pushd pub_sub/go/http
@@ -107,16 +117,6 @@ jobs:
       - name: Validate JS sdk pubsub
         run: |
           pushd pub_sub/javascript/sdk
-          make validate
-          popd
-      - name: Validate python http pubsub
-        run: |
-          pushd pub_sub/python/http
-          make validate
-          popd
-      - name: Validate python sdk pubsub
-        run: |
-          pushd pub_sub/python/sdk
           make validate
           popd
       - name: Validate java http pubsub
