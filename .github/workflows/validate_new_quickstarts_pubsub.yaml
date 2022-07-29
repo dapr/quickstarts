@@ -28,10 +28,11 @@ on:
       - feature/new_quickstarts
       - release-*
 jobs:
-  deploy:
-    name: Validate quickstarts on ${{ matrix.os }}
+  validate:
+    name: Validate quickstart for `${{ matrix.quickstart_language }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
+      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.17
       KUBERNETES_VERSION: v1.21.1
@@ -40,6 +41,8 @@ jobs:
     strategy:
       matrix: 
         os: [ubuntu-latest, macos-latest]
+        quickstart_language: [go, javascript, python, java]
+        quickstart_variant: [http, sdk]
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-latest'
@@ -89,46 +92,17 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate Go http pubsub
+      - name: Validate ${{ matrix.quickstart_language }} ${{ matrix.quickstart_variant }} pubsub
         run: |
-          pushd pub_sub/go/http
+          pushd pub_sub/${{ matrix.quickstart_language }}/${{ matrix.quickstart_variant }}
           make validate
           popd
-      - name: Validate Go sdk pubsub
-        run: |
-          pushd pub_sub/go/sdk
-          make validate
-          popd
-      - name: Validate JS http pubsub
-        run: |
-          pushd pub_sub/javascript/http
-          make validate
-          popd
-      - name: Validate JS sdk pubsub
-        run: |
-          pushd pub_sub/javascript/sdk
-          make validate
-          popd
-      - name: Validate python http pubsub
-        run: |
-          pushd pub_sub/python/http
-          make validate
-          popd
-      - name: Validate python sdk pubsub
-        run: |
-          pushd pub_sub/python/sdk
-          make validate
-          popd
-      - name: Validate java http pubsub
-        run: |
-          pushd pub_sub/java/http
-          make validate
-          popd
-      - name: Validate java sdk pubsub
-        run: |
-          pushd pub_sub/java/sdk
-          make validate
-          popd
+  link-check:
+    name: Validating links
+    runs-on: ubuntu-latest
+    needs:
+      - validate
+    steps:
       - name: Linkcheck README.md
         run: |
-          make validate        
+          make validate
