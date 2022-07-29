@@ -42,7 +42,7 @@ sleep: 10
 -->
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- uvicorn app:app --port 5001
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 5002 -- uvicorn app:app --port 5002
 ```
 
 <!-- END_STEP -->
