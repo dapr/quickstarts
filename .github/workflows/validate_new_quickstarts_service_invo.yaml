@@ -42,14 +42,11 @@ jobs:
         os: [ubuntu-latest, macos-10.15]
     steps:
       - name: Install docker - MacOS
-        if: matrix.os == 'macos-10.15'
-        run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-          brew install --cask docker
-          sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
-          open -a /Applications/Docker.app --args --unattended --accept-license
-          while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
-          docker --version
+        if: matrix.os == 'macos-latest'
+        uses: docker-practice/actions-setup-docker@1.0.8
+        with:
+          docker_buildx: false
+          docker_version: 20.10
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
