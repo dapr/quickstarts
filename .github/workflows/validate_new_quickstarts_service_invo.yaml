@@ -42,7 +42,7 @@ jobs:
         os: [ubuntu-latest, macos-10.15]
     steps:
       - name: Install docker - MacOS
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-10.15'
         uses: docker-practice/actions-setup-docker@1.0.8
         with:
           docker_buildx: false
