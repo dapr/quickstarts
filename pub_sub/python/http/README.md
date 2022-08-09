@@ -43,7 +43,7 @@ sleep: 10
 
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 5001 -- python3 app.py
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 6001 -- python3 app.py
 ```
 
 <!-- END_STEP -->

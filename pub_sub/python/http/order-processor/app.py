@@ -24,4 +24,4 @@ def orders_subscriber():
         'ContentType': 'application/json'}
 
 
-app.run(port=5001)
+app.run(port=6001)
