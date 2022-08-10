@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 from cloudevents.http import from_http
 import json
+import os
 
 app = Flask(__name__)
 
+app_port = os.getenv('APP_PORT', '6001')
 
 # Register Dapr pub/sub subscriptions
 @app.route('/dapr/subscribe', methods=['GET'])
@@ -26,4 +28,4 @@ def orders_subscriber():
         'ContentType': 'application/json'}
 
 
-app.run(port=6001)
+app.run(port=app_port)
