@@ -106,11 +106,11 @@ jobs:
           pushd bindings/javascript/http
           make validate
           popd
-      - name: Validate Javascript sdk Bindings
-        run: |
-          pushd bindings/javascript/sdk
-          make validate
-          popd
+      # - name: Validate Javascript sdk Bindings
+      #   run: |
+      #     pushd bindings/javascript/sdk
+      #     make validate
+      #     popd
       - name: Validate Java http Bindings
         run: |
           pushd bindings/java/http
