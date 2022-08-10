@@ -106,11 +106,11 @@ jobs:
           pushd bindings/javascript/http
           make validate
           popd
-      # - name: Validate Javascript sdk Bindings
-      #   run: |
-      #     pushd bindings/javascript/sdk
-      #     make validate
-      #     popd
+      - name: Validate Javascript sdk Bindings
+        run: |
+          pushd bindings/javascript/sdk
+          make validate
+          popd
       - name: Validate Java http Bindings
         run: |
           pushd bindings/java/http
@@ -131,16 +131,16 @@ jobs:
           pushd bindings/go/sdk
           make validate
           popd
-      - name: Validate .NET http Bindings
-        run: |
-          pushd bindings/csharp/http
-          make validate
-          popd
-      - name: Validate .NET sdk Bindings
-        run: |
-          pushd bindings/csharp/sdk
-          make validate
-          popd
+      # - name: Validate .NET http Bindings
+      #   run: |
+      #     pushd bindings/csharp/http
+      #     make validate
+      #     popd
+      # - name: Validate .NET sdk Bindings
+      #   run: |
+      #     pushd bindings/csharp/sdk
+      #     make validate
+      #     popd
       - name: Linkcheck README.md
         run: |
           make validate        
