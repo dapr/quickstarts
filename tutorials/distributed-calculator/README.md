@@ -3,7 +3,7 @@
 This quickstart shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
 
 - **Addition**: Go [mux](https://github.com/gorilla/mux) application
-- **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/1.0.x/) application
+- **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/2.2.x/installation/) application
 - **Division**: Node [Express](https://expressjs.com/) application
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
@@ -239,7 +239,7 @@ sleep: 15
 
 - Start Dapr using command below:
    ```bash
-   dapr run --app-id frontendapp --app-port 8080 --dapr-http-port 3500 node server.js
+   dapr run --app-id frontendapp --app-port 8080 --dapr-http-port 3507 node server.js
    ```
 
 <!-- END_STEP -->
@@ -268,7 +268,7 @@ expected_stdout_lines:
   - "18"
   - "1.5294117647058822"
   - "1768"
-  - '"total":"54"'
+  - '{"total":"54","next":null,"operation":null}'
 output_match_mode: substring
 name: "Curl test"
 -->
@@ -531,7 +531,6 @@ expected_stdout_lines:
   - "18"
   - "1.5294"
   - "1768"
-  - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
 -->

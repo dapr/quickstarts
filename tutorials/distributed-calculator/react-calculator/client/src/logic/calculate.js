@@ -25,6 +25,7 @@ export default async function calculate(obj, buttonName) {
     if (buttonName === "0" && obj.next === "0") {
       return {};
     }
+    debugger
     // If there is an operation, update next
     if (obj.operation) {
       if (obj.next) {
