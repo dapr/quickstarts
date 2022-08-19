@@ -3,7 +3,7 @@
 This quickstart shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
 
 - **Addition**: Go [mux](https://github.com/gorilla/mux) application
-- **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/2.2.x/installation/) application
+- **Multiplication**: Python [flask] application
 - **Division**: Node [Express](https://expressjs.com/) application
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
@@ -579,15 +579,6 @@ You should get the following output:
 
 <!-- STEP
 name: Cleanup kubernetes
-expected_stdout_lines:
-  - 'configuration.dapr.io "appconfig" deleted'
-  - 'deployment.apps "subtractapp" deleted'
-  - 'deployment.apps "addapp" deleted'
-  - 'deployment.apps "divideapp" deleted'
-  - 'deployment.apps "multiplyapp" deleted'
-  - 'service "calculator-front-end" deleted'
-  - 'deployment.apps "calculator-front-end" deleted'
-  - 'component.dapr.io "statestore" deleted'
 working_dir: "./deploy"
 -->
 
