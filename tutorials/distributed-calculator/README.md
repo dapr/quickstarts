@@ -41,7 +41,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
 1. Add App - Open a terminal window and navigate to the go directory and follow the steps below:
 
 <!-- STEP
-name: "Build go app"
+name: "Install the gorilla/mux"
 working_dir: "./go"
 -->
 
@@ -49,6 +49,14 @@ working_dir: "./go"
    ```bash
    go get -u github.com/gorilla/mux
    ```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: "Build go app"
+working_dir: "./go"
+-->
+
 - Build the app. Run:
    ```bash
    go build .
@@ -549,14 +557,6 @@ curl -s http://localhost:8000/calculate/divide -H Content-Type:application/json 
 
 ```bash
 curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/json --data @operands.json
-```
-
-```bash
-curl -s http://localhost:8000/persist -H Content-Type:application/json --data @persist.json
-```
-
-```bash
-curl -s http://localhost:8000/state 
 ```
 
 <!-- END_STEP -->
