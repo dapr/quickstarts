@@ -301,7 +301,7 @@ name: "Curl test"
 
 <!-- STEP
 expected_stdout_lines:
-  - '"total":"54"'
+  - '{"next":null,"operation":null,"total":"54"}'
 output_match_mode: substring
 name: "Curl test"
 sleep: 2
@@ -573,7 +573,7 @@ curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/jso
 
 <!-- STEP
 expected_stdout_lines:
-  - '"total":"54"'
+  - '{"total":"54","next":null,"operation":null}'
 output_match_mode: substring
 name: "Curl test"
 sleep: 2
