@@ -147,12 +147,12 @@ jobs:
           pushd tutorials/hello-kubernetes
           make validate
           popd
-      # - name: Validate distributed-calculator
-      #   if: matrix.os == 'ubuntu-latest'
-      #   run: |
-      #     pushd tutorials/distributed-calculator
-      #     make validate
-      #     popd
+      - name: Validate distributed-calculator
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          pushd tutorials/distributed-calculator
+          make validate
+          popd
       - name: Validate pub-sub
         if: matrix.os == 'ubuntu-latest'
         run: |
