@@ -276,7 +276,6 @@ expected_stdout_lines:
   - "18"
   - "1.5294117647058822"
   - "1768"
-  - '{"total":"54","next":null,"operation":null}'
 output_match_mode: substring
 name: "Curl test"
 -->
@@ -298,13 +297,24 @@ name: "Curl test"
    curl -s http://localhost:8080/calculate/multiply -H Content-Type:application/json --data @operands.json
    ```
 
-   ```bash
-   curl -s http://localhost:8080/persist -H Content-Type:application/json --data @persist.json
-   ```
+<!-- END_STEP -->
 
-   ```bash
-   curl -s http://localhost:8080/state 
-   ```
+<!-- STEP
+expected_stdout_lines:
+  - '"total":"54"'
+output_match_mode: substring
+name: "Curl test"
+sleep: 2
+timeout_seconds: 10
+-->
+
+```bash
+curl -s http://localhost:8000/persist -H Content-Type:application/json --data @persist.json
+```
+
+```bash
+curl -s http://localhost:8000/state 
+```
 
 <!-- END_STEP -->
 
@@ -563,7 +573,7 @@ curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/jso
 
 <!-- STEP
 expected_stdout_lines:
-  - '{"total":"54","next":null,"operation":null}'
+  - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
 sleep: 2
