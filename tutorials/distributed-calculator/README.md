@@ -80,7 +80,7 @@ sleep: 2
 
 - Run dapr using the command:
    ```bash
-   dapr run --app-id addapp --app-port 6000 --dapr-http-port 3503 ./app
+   dapr run --app-id addapp --app-port 6000 --dapr-http-port 3503 go run app.go
    ```
 
 <!-- END_STEP -->
