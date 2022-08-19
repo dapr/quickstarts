@@ -506,7 +506,7 @@ expected_stdout_lines:
   - "C: Message on C"
 expected_stderr_lines:
 output_match_mode: substring
-sleep: 5
+sleep: 10
 -->
 
 ```bash

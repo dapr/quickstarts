@@ -561,6 +561,25 @@ curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/jso
 
 <!-- END_STEP -->
 
+<!-- STEP
+expected_stdout_lines:
+  - '{"total":"54","next":null,"operation":null}'
+output_match_mode: substring
+name: "Curl test"
+sleep: 2
+timeout_seconds: 10
+-->
+
+```bash
+curl -s http://localhost:8000/persist -H Content-Type:application/json --data @persist.json
+```
+
+```bash
+curl -s http://localhost:8000/state 
+```
+
+<!-- END_STEP -->
+
 You should get the following output:
 
    ```bash
@@ -580,6 +599,15 @@ You should get the following output:
 <!-- STEP
 name: Cleanup kubernetes
 working_dir: "./deploy"
+expected_stdout_lines:
+   - configuration.dapr.io "appconfig" deleted
+   - deployment.apps "subtractapp" deleted
+   - deployment.apps "addapp" deleted
+   - deployment.apps "divideapp" deleted
+   - deployment.apps "multiplyapp" deleted
+   - service "calculator-front-end" deleted
+   - deployment.apps "calculator-front-end" deleted
+   - component.dapr.io "statestore" deleted
 -->
 
   ```bash
