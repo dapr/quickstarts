@@ -29,7 +29,7 @@ app.post('/calculate/add', async (req, res) => {
       // Return expected string result to client
       return res.send(`${appResponse.data}`); 
   } catch (err) {
-    // next(err);
+      console.log(err);
   }
 });
 
@@ -42,7 +42,7 @@ app.post('/calculate/subtract', async (req, res) => {
       // Return expected string result to client
       return res.send(`${appResponse.data}`); 
   } catch (err) {
-    // next(err);
+      console.log(err);
   }
 });
 
@@ -54,7 +54,7 @@ app.post('/calculate/multiply', async (req, res) => {
       // Return expected string result to client
       return res.send(`${appResponse.data}`); 
   } catch (err) {
-    // next(err);
+      console.log(err);
   }
 });
 
@@ -66,7 +66,7 @@ app.post('/calculate/divide', async (req, res) => {
       // Return expected string result to client
       return res.send(`${appResponse.data}`); 
   } catch (err) {
-    // next(err);
+      console.log(err);
   }
 });
 
@@ -78,7 +78,7 @@ app.get('/state', async (req, res) => {
 
     return res.send(apiResponse.data);
   } catch (err) {
-    // next(err);
+    console.log(err);
   }
 });
 
@@ -89,7 +89,7 @@ app.post('/persist', async (req, res) => {
     const apiResponse = await axios.post(stateUrl, req.body);
     return res.send(apiResponse.data);  
   } catch (err) {
-    // next(err);
+    console.log(err);
   }
 });
 
@@ -101,7 +101,7 @@ app.get('/', async function (_req, res) {
   try {
     return await res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   } catch (err) {
-    // next(err);
+    console.log(err);
   }
 });
 
