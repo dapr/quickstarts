@@ -3,7 +3,7 @@
 This quickstart shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
 
 - **Addition**: Go [mux](https://github.com/gorilla/mux) application
-- **Multiplication**: Python [flask] application
+- **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/2.2.x/) application
 - **Division**: Node [Express](https://expressjs.com/) application
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
@@ -276,7 +276,7 @@ expected_stdout_lines:
   - "18"
   - "1.5294117647058822"
   - "1768"
-  - '{"total":"54","next":null,"operation":null}'
+  - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
 -->
@@ -563,7 +563,7 @@ curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/jso
 
 <!-- STEP
 expected_stdout_lines:
-  - '{"total":"54","next":null,"operation":null}'
+  - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
 sleep: 2
