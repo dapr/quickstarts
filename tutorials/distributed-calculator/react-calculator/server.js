@@ -22,51 +22,75 @@ The following routes forward requests (using pipe) from our React client to our 
 */
 
 app.post('/calculate/add', async (req, res) => {
-  // Invoke Dapr add app
-  const appResponse = await axios.post(`${daprUrl}/addapp/method/add`, req.body);
+  try {
+      // Invoke Dapr add app
+      const appResponse = await axios.post(`${daprUrl}/addapp/method/add`, req.body);
 
-  // Return expected string result to client
-  return res.send(`${appResponse.data}`); 
+      // Return expected string result to client
+      return res.send(`${appResponse.data}`); 
+  } catch (err) {
+      console.log(err);
+  }
 });
 
 app.post('/calculate/subtract', async (req, res) => {
-  // Invoke Dapr subtract app
-  const appResponse = await axios.post(`${daprUrl}/subtractapp/method/subtract`, req.body);
-
-  // Return expected string result to client
-  return res.send(`${appResponse.data}`); 
+  try {
+      // Invoke Dapr subtract app
+      console.log("subtract app** 1")
+      const appResponse = await axios.post(`${daprUrl}/subtractapp/method/subtract`, req.body);
+      console.log("subtract app** 2")
+      // Return expected string result to client
+      return res.send(`${appResponse.data}`); 
+  } catch (err) {
+      console.log(err);
+  }
 });
 
 app.post('/calculate/multiply', async (req, res) => {
-  // Dapr invoke multiply app
-  const appResponse = await axios.post(`${daprUrl}/multiplyapp/method/multiply`, req.body);
+  try {
+      // Dapr invoke multiply app
+      const appResponse = await axios.post(`${daprUrl}/multiplyapp/method/multiply`, req.body);
 
-  // Return expected string result to client
-  return res.send(`${appResponse.data}`); 
+      // Return expected string result to client
+      return res.send(`${appResponse.data}`); 
+  } catch (err) {
+      console.log(err);
+  }
 });
 
 app.post('/calculate/divide', async (req, res) => {
-  // Dapr invoke divide app
-  const appResponse = await axios.post(`${daprUrl}/divideapp/method/divide`, req.body);
+  try {
+      // Dapr invoke divide app
+      const appResponse = await axios.post(`${daprUrl}/divideapp/method/divide`, req.body);
 
-  // Return expected string result to client
-  return res.send(`${appResponse.data}`); 
+      // Return expected string result to client
+      return res.send(`${appResponse.data}`); 
+  } catch (err) {
+      console.log(err);
+  }
 });
 
 // Forward state retrieval to Dapr state endpoint
 app.get('/state', async (req, res) => {
-  // Getting Dapr state
-  const apiResponse = await axios.get(`${stateUrl}/calculatorState`);
+  try {
+    // Getting Dapr state
+    const apiResponse = await axios.get(`${stateUrl}/calculatorState`);
 
-  return res.send(apiResponse.data);
+    return res.send(apiResponse.data);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // Forward state persistence to Dapr state endpoint
 app.post('/persist', async (req, res) => {
-  // Saving Dapr state
-  const apiResponse = await axios.post(stateUrl, req.body);
-
-  return res.send(apiResponse.data);
+  try {
+     // Saving Dapr state
+    const apiResponse = await axios.post(stateUrl, req.body);
+    return res.send(apiResponse.data);  
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 // Serve static files
@@ -74,7 +98,11 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // For default home request route to React client
 app.get('/', async function (_req, res) {
-  return await res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  try {
+    return await res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.listen(process.env.PORT || port, () => console.log(`Listening on port ${port}!`));

@@ -3,7 +3,7 @@
 This quickstart shows method invocation and state persistent capabilities of Dapr through a distributed calculator where each operation is powered by a different service written in a different language/framework:
 
 - **Addition**: Go [mux](https://github.com/gorilla/mux) application
-- **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/1.0.x/) application
+- **Multiplication**: Python [flask](https://flask.palletsprojects.com/en/2.2.x/) application
 - **Division**: Node [Express](https://expressjs.com/) application
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
@@ -41,7 +41,7 @@ These instructions start the four calculator operator apps (add, subtract, multi
 1. Add App - Open a terminal window and navigate to the go directory and follow the steps below:
 
 <!-- STEP
-name: "Build go app"
+name: "Install the gorilla/mux"
 working_dir: "./go"
 -->
 
@@ -49,6 +49,14 @@ working_dir: "./go"
    ```bash
    go get -u github.com/gorilla/mux
    ```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: "Build go app"
+working_dir: "./go"
+-->
+
 - Build the app. Run:
    ```bash
    go build .
@@ -72,7 +80,7 @@ sleep: 2
 
 - Run dapr using the command:
    ```bash
-   dapr run --app-id addapp --app-port 6000 --dapr-http-port 3503 ./app
+   dapr run --app-id addapp --app-port 6000 --dapr-http-port 3503 go run app.go
    ```
 
 <!-- END_STEP -->
@@ -239,7 +247,7 @@ sleep: 15
 
 - Start Dapr using command below:
    ```bash
-   dapr run --app-id frontendapp --app-port 8080 --dapr-http-port 3500 node server.js
+   dapr run --app-id frontendapp --app-port 8080 --dapr-http-port 3507 node server.js
    ```
 
 <!-- END_STEP -->
@@ -531,7 +539,6 @@ expected_stdout_lines:
   - "18"
   - "1.5294"
   - "1768"
-  - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
 -->
@@ -551,6 +558,17 @@ curl -s http://localhost:8000/calculate/divide -H Content-Type:application/json 
 ```bash
 curl -s http://localhost:8000/calculate/multiply -H Content-Type:application/json --data @operands.json
 ```
+
+<!-- END_STEP -->
+
+<!-- STEP
+expected_stdout_lines:
+  - '"total":"54"'
+output_match_mode: substring
+name: "Curl test"
+sleep: 2
+timeout_seconds: 10
+-->
 
 ```bash
 curl -s http://localhost:8000/persist -H Content-Type:application/json --data @persist.json
@@ -580,16 +598,16 @@ You should get the following output:
 
 <!-- STEP
 name: Cleanup kubernetes
-expected_stdout_lines:
-  - 'configuration.dapr.io "appconfig" deleted'
-  - 'deployment.apps "subtractapp" deleted'
-  - 'deployment.apps "addapp" deleted'
-  - 'deployment.apps "divideapp" deleted'
-  - 'deployment.apps "multiplyapp" deleted'
-  - 'service "calculator-front-end" deleted'
-  - 'deployment.apps "calculator-front-end" deleted'
-  - 'component.dapr.io "statestore" deleted'
 working_dir: "./deploy"
+expected_stdout_lines:
+   - configuration.dapr.io "appconfig" deleted
+   - deployment.apps "subtractapp" deleted
+   - deployment.apps "addapp" deleted
+   - deployment.apps "divideapp" deleted
+   - deployment.apps "multiplyapp" deleted
+   - service "calculator-front-end" deleted
+   - deployment.apps "calculator-front-end" deleted
+   - component.dapr.io "statestore" deleted
 -->
 
   ```bash
