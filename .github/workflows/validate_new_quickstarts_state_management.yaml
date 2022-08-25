@@ -28,8 +28,8 @@ on:
       - feature/new_quickstarts
       - release-*
 jobs:
-  deploy:
-    name: Validate quickstarts on ${{ matrix.os }}
+  validate:
+    name: Validate quickstart for `${{ matrix.quickstart_language }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
@@ -40,6 +40,8 @@ jobs:
     strategy:
       matrix: 
         os: [ubuntu-latest, macos-10.15]
+        quickstart_language: [go, javascript, python, java]
+        quickstart_variant: [http, sdk]
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-10.15'
@@ -86,44 +88,9 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate Python http State Management
+      - name: Validate ${{ matrix.quickstart_language }} ${{ matrix.quickstart_variant }} pubsub
         run: |
-          pushd state_management/python/http
-          make validate
-          popd
-      - name: Validate Python sdk State Management
-        run: |
-          pushd state_management/python/sdk
-          make validate
-          popd
-      - name: Validate Javascript http State Management
-        run: |
-          pushd state_management/javascript/http
-          make validate
-          popd
-      - name: Validate Javascript sdk State Management
-        run: |
-          pushd state_management/javascript/sdk
-          make validate
-          popd
-      - name: Validate Java http State Management
-        run: |
-          pushd state_management/java/http
-          make validate
-          popd
-      - name: Validate Java sdk State Management
-        run: |
-          pushd state_management/java/sdk
-          make validate
-          popd
-      - name: Validate Go http State Management
-        run: |
-          pushd state_management/go/http
-          make validate
-          popd
-      - name: Validate Go sdk State Management
-        run: |
-          pushd state_management/go/sdk
+          pushd state_management/${{ matrix.quickstart_language }}/${{ matrix.quickstart_variant }}
           make validate
           popd
       - name: Linkcheck README.md

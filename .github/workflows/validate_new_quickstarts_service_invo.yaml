@@ -28,8 +28,8 @@ on:
       - feature/new_quickstarts
       - release-*
 jobs:
-  deploy:
-    name: Validate quickstarts on ${{ matrix.os }}
+  validate:
+    name: Validate quickstart for `${{ matrix.quickstart_language }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
@@ -40,6 +40,8 @@ jobs:
     strategy:
       matrix: 
         os: [ubuntu-latest, macos-10.15]
+        quickstart_language: [go, javascript, python, java]
+        quickstart_variant: [http]
     steps:
       - name: Install docker - MacOS
         if: matrix.os == 'macos-10.15'
@@ -85,25 +87,10 @@ jobs:
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
-          pip3 install mechanical-markdown  
-      - name: Validate Go http service invocation
+          pip3 install mechanical-markdown
+      - name: Validate ${{ matrix.quickstart_language }} ${{ matrix.quickstart_variant }} pubsub
         run: |
-          pushd service_invocation/go/http
-          make validate
-          popd
-      - name: Validate JS http service invocation
-        run: |
-          pushd service_invocation/javascript/http
-          make validate
-          popd
-      - name: Validate Python http service invocation
-        run: |
-          pushd service_invocation/python/http
-          make validate
-          popd
-      - name: Validate java http service invocation
-        run: |
-          pushd service_invocation/java/http
+          pushd service_invocation/${{ matrix.quickstart_language }}/${{ matrix.quickstart_variant }}
           make validate
           popd
       - name: Linkcheck README.md
