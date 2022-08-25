@@ -88,7 +88,7 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate ${{ matrix.quickstart_language }} ${{ matrix.quickstart_variant }} pubsub
+      - name: Validate ${{ matrix.quickstart_language }} ${{ matrix.quickstart_variant }} service invocation
         run: |
           pushd service_invocation/${{ matrix.quickstart_language }}/${{ matrix.quickstart_variant }}
           make validate
