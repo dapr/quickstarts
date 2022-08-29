@@ -42,7 +42,7 @@ sleep: 15
 
 ```bash
 cd ./order-processor
-dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 <!-- END_STEP -->
