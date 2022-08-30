@@ -18,7 +18,7 @@ var sub = &common.Subscription{
 }
 
 func main() {
-	appPort := "6001"
+	appPort := "6002"
 	if value, ok := os.LookupEnv("APP_PORT"); ok {
 		appPort = value
 	}

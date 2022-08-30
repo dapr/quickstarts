@@ -42,7 +42,7 @@ sleep: 10
 -->
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 6001 -- uvicorn app:app --port 6001
+dapr run --app-id order-processor-sdk --components-path ../../../components/ --app-port 6001 -- uvicorn app:app --port 6002
 ```
 
 <!-- END_STEP -->
@@ -77,12 +77,12 @@ sleep: 10
 -->
 
 ```bash
-dapr run --app-id checkout --components-path ../../../components/ -- python3 app.py
+dapr run --app-id checkout-sdk --components-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->
 
 ```bash
-dapr stop --app-id checkout
-dapr stop --app-id order-processor
+dapr stop --app-id checkout-sdk
+dapr stop --app-id order-processor-sdk
 ```
