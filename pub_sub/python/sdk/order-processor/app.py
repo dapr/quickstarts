@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 
-app_port = os.getenv('APP_PORT', '6001')
+app_port = os.getenv('APP_PORT', '6002')
 
 # Register Dapr pub/sub subscriptions
 @app.route('/dapr/subscribe', methods=['GET'])

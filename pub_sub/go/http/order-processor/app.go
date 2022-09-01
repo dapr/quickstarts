@@ -61,7 +61,7 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	appPort := "6002"
+	appPort := "6001"
 	if value, ok := os.LookupEnv("APP_PORT"); ok {
 		appPort = value
 	}
