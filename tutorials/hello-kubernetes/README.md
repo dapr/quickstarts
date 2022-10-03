@@ -303,7 +303,7 @@ Get the API call logs of the node app:
 
 <!-- STEP
 expected_stdout_lines:
-  - 'level=info msg="HTTP API Called: POST /v1.0/state/statestore"'
+  - 'level=info msg="HTTP API Called: POST /v1.0/state/statestore'
 expected_stderr_lines:
 output_match_mode: substring
 name: Read nodeapp logs
@@ -326,7 +326,7 @@ Get the API call logs of the Python app:
 
 <!-- STEP
 expected_stdout_lines:
-  - 'level=info msg="HTTP API Called: POST /neworder"'
+  - 'level=info msg="HTTP API Called: POST /neworder'
 expected_stderr_lines:
 output_match_mode: substring
 name: Read pythonapp logs
