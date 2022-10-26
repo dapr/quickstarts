@@ -18,7 +18,7 @@ Pick a building block API (for example, pub-sub, state management) and rapidly t
 | [Secrets Management](./secrets_management/) | Securely fetch secrets |
 | Actors | Coming soon... |
 | Observability | Coming soon... |
-| Configuration | Coming soon... |
+| [Configuration](./configuration) | Consume configuration items as key/value pairs and subscribe to changes whenever a configuration item changes |
 
 ### Tutorials
 Go deeper into a topic or scenario, oftentimes using building block APIs together to solve problems (for example, build a distributed calculator, build and deploy an app to Kubernetes).
