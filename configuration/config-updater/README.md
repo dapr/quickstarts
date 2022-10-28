@@ -2,7 +2,7 @@
 
 > **Note:** Run this app in the background before running any configuration quickstart.
 
-This golang app is used for `configuration` quickstarts to simulate updating value of configuration items in the configuration store.
+This is a supplementary app, written in Go, to simulate changes to configuration items. It is required to demonstrate the notification to subscribing app, when a configuration item changes.
 
 ## Prerequisite
 

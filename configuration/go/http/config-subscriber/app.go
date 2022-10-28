@@ -55,7 +55,7 @@ func subscribeToConfigUpdates() {
 
 	subscription, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0-alpha1/configuration/" + DAPR_CONFIGURATION_STORE + "/subscribe")
 	if err != nil {
-		fmt.Print(err.Error())
+		fmt.Println("Error subscribing to config updates, err:" + err.Error())
 		os.Exit(1)
 	}
 	sub, err := ioutil.ReadAll(subscription.Body)
@@ -85,7 +85,7 @@ func startServerToListen() {
 func configUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	var notification map[string]interface{}
 	json.Unmarshal(body, &notification)
