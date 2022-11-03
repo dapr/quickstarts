@@ -1,0 +1,21 @@
+{
+    "name": "order-processor",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node .",
+        "start:dapr": "dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm run start"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@dapr/dapr": "^2.3.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.8.0",
+        "eslint-plugin-react": "^7.28.0"
+    }
+}
