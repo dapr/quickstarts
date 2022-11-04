@@ -1,6 +1,6 @@
 # Dapr Resiliency
 
-In this Quickstart, you will observe Dapr resiliency capabilities by introducing toxic behavior to a microservice that continuously perists and retrieves state via Dapr's state management API.
+In this Quickstart, you will observe Dapr resiliency capabilities by simulating a system failure. You will execute a microservice application that continuously persists and retrieves state via Dapr's state management API. When operations to the state store begin to fail, Dapr resiliency policies are applied.
 
 Visit [this](https://docs.dapr.io/operations/resiliency/resiliency-overview//) link for more information about Dapr resiliency.
 
@@ -43,6 +43,19 @@ sleep: 10
 dapr run --app-id order-processor --config ../config.yaml --components-path ../components/ -- npm start
 ```
 
+<!-- STEP
+name: Run Node publisher
+expected_stdout_lines:
+  - "== APP == Saving Order:  { orderId: '1' }"
+  - "== APP == Getting Order:  { orderId: '1' }"
+  - "Exited App successfully"
+expected_stderr_lines:
+working_dir: ./order-processor
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+
 Expected output: 
 ```bash
 == APP == Saving Order:  { orderId: '1' }
@@ -54,8 +67,9 @@ Expected output:
 == APP == Saving Order:  { orderId: '4' }
 == APP == Getting Order:  { orderId: '4' }
 ```
-### Stop the Redis container 
 <!-- END_STEP -->
+
+### Stop Redis container instance 
 
 ```bash
 docker stop dapr_redis
@@ -70,7 +84,7 @@ INFO[0031] Circuit breaker "simpleCB-statestore" changed state from open to half
 INFO[0031] Circuit breaker "simpleCB-statestore" changed state from half-open to open
 ```
 
-### Restart the Redis and observe order ids have resume sequentially:
+### Restart the Redis container instance and observe orders have resumed sequentially:
 
 ```bash
 INFO[0036] Recovered processing operation component[statestore] output.
