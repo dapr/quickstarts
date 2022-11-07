@@ -1,6 +1,6 @@
 # Dapr Resiliency
 
-In this Quickstart, you will observe Dapr resiliency capabilities by simulating a system failure. You will execute a microservice application that continuously persists and retrieves state via Dapr's state management API. When operations to the state store begin to fail, Dapr resiliency policies are applied.
+In this Quickstart, you will observe Dapr resiliency capabilities by simulating a system failure. You will run a microservice application that continuously persists and retrieves state via Dapr's state management API. When operations to the state store begin to fail, Dapr resiliency policies are applied.
 
 Visit [this](https://docs.dapr.io/operations/resiliency/resiliency-overview//) link for more information about Dapr resiliency.
 
