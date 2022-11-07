@@ -77,6 +77,21 @@ docker stop dapr_redis
 
 ### Observe retry and circuit breaker policies are applied:
 
+Policies defined in teh resiliency.yaml spec:
+```yaml
+retryForever:
+  policy: constant
+  maxInterval: 5s
+  maxRetries: -1 
+
+circuitBreakers:
+  simpleCB:
+  maxRequests: 1
+  timeout: 5s 
+  trip: consecutiveFailures >= 5
+```
+
+Policies being applied:
 ```bash
 INFO[0006] Error processing operation component[statestore] output. Retrying... 
 INFO[0026] Circuit breaker "simpleCB-statestore" changed state from closed to open
