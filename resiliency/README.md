@@ -84,7 +84,13 @@ INFO[0031] Circuit breaker "simpleCB-statestore" changed state from open to half
 INFO[0031] Circuit breaker "simpleCB-statestore" changed state from half-open to open
 ```
 
-### Restart the Redis container instance and observe orders have resumed sequentially:
+### Restart the Redis container instance:
+
+```bash
+docker start dapr_redis
+```
+
+### Observe orders have resumed sequentially:
 
 ```bash
 INFO[0036] Recovered processing operation component[statestore] output.
