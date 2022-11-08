@@ -27,7 +27,7 @@ async function main() {
     const client = new DaprClient(host, port, protocol)
 
     // For each loop, Save order, Get order, and Delete order
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 100; i++) {
         const order = { orderId: i.toString() }
         const state = [
             {

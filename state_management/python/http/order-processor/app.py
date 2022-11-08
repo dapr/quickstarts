@@ -9,7 +9,7 @@ base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
 DAPR_STATE_STORE = 'statestore'
 
-for i in range(1, 10):
+for i in range(1, 100):
     orderId = str(i)
     order = {'orderId': orderId}
     state = [{

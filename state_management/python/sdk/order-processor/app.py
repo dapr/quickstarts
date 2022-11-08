@@ -5,7 +5,7 @@ from dapr.clients import DaprClient
 logging.basicConfig(level=logging.INFO)
 
 DAPR_STORE_NAME = "statestore"
-for i in range(1, 10):
+for i in range(1, 100):
     orderId = str(i)
     order = {'orderId': orderId}
     with DaprClient() as client:
