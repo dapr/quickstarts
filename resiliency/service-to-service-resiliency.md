@@ -103,7 +103,17 @@ Once both services are running, the `order-processor` service will recieve order
 
 ### Simulate ann application failure by stopping the `order-processor` service  
 
-Simulate a system failure by stopping the in your second terminal shell.
+Simulate a system failure by stopping the `order-processor` service running in your second terminal shell.
+
+##### Windows 
+```script
+CTRL + C
+```
+
+##### Mac
+```script
+CMD + C
+```
 
 ### Observe retry and circuit breaker policies are applied:
 
