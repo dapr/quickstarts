@@ -17,12 +17,20 @@ This quickstart includes one service:
 1. Navigate to [`order-updater`](./../../order-updater/) directory.
 2. Check the [`Readme`](./../../order-updater/README.md) to start the app and keep it running in the terminal.
 
+<!-- STEP
+name: Run order-updater service
+background: true
+timeout: 90
+-->
+
 ```bash
 cd ./../../order-updater
 go run .
 ```
 
-3. This will add configuration items to redis config store and keep updating their values.
+<!-- END_STEP -->
+
+1. This will add configuration items to redis config store and keep updating their values.
 
 ## Run order-processor
 
@@ -41,8 +49,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: true
-sleep: 20
+timeout: 30
 -->
 
 ```bash
