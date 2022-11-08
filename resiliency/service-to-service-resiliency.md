@@ -64,7 +64,7 @@ dapr run --app-id checkout --config ../config.yaml --components-path ../../../co
 ### JavaScript example:
 ##### Order Processor Service: 
 ```bash
-cd ../state_management/javascript/sdk/order-processor
+cd ../service-invocation/javascript/sdk/order-processor
 npm install
 dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
 ```
