@@ -71,7 +71,7 @@ dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-htt
 
 ##### Checkout Service: 
 ```bash
-cd ../state_management/javascript/sdk/checkout
+cd ../service-invocation/javascript/sdk/checkout
 npm install
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- npm start
 ```
