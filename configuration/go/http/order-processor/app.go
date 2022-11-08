@@ -17,7 +17,7 @@ var DAPR_HOST, DAPR_HTTP_PORT string
 var okHost, okPort bool
 var appPort = "6001"
 var DAPR_CONFIGURATION_STORE = "configstore"
-var CONFIGURATION_ITEMS = []string{"appID1", "appID2"}
+var CONFIGURATION_ITEMS = []string{"orderId1", "orderId2"}
 
 func main() {
 	if DAPR_HOST, okHost = os.LookupEnv("DAPR_HOST"); !okHost {

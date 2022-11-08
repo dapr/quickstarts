@@ -6,35 +6,35 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/config
 
 This quickstart includes one service:
 
-- Go service `config-subscriber`
+- Go service `order-processor`
 
-## Run config-updater app
+## Run order-updater app
 
-> **Note:** `config-updater` app adds configuration items to the configuration store and keeps updating their value to simulate dynamic changes to configuration data. You need to start and keep it running before running `config-subscriber` service.
+> **Note:** `order-updater` app adds configuration items to the configuration store and keeps updating their value to simulate dynamic changes to configuration data. You need to start and keep it running before running `order-processor` service.
 
-1. Navigate to [`config-updater`](./../../config-updater/) directory.
-2. Check the [`Readme`](./../../config-updater/README.md) to start the app and keep it running in the terminal.
+1. Navigate to [`order-updater`](./../../order-updater/) directory.
+2. Check the [`Readme`](./../../order-updater/README.md) to start the app and keep it running in the terminal.
 
 ```bash
-cd ./../../config-updater
+cd ./../../order-updater
 go run .
 ```
 
 3. This will add configuration items to redis config store and keep updating their values.
 
-## Run config-subscriber
+## Run order-processor
 
-1. Open a new terminal and navigate to `config-subscriber` directory.
+1. Open a new terminal and navigate to `order-processor` directory.
 2. Run the service app with Dapr.
 
 <!-- STEP
-name: Run config-subscriber service
+name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for appID1: {"Value":'
-  - '== APP == Configuration for appID2: {"Value":'
+  - '== APP == Configuration for orderId1: {"Value":'
+  - '== APP == Configuration for orderId2: {"Value":'
   - '== APP == App subscribed to config changes with subscription id:'
-  - '== APP == Configuration update {"appID1":{"Value":'
-  - '== APP == Configuration update {"appID2":{"Value":'
+  - '== APP == Configuration update {"orderId1":{"Value":'
+  - '== APP == Configuration update {"orderId2":{"Value":'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -44,8 +44,8 @@ sleep: 20
 -->
 
 ```bash
-cd ./config-subscriber
-dapr run --app-id config-subscriber --app-port 6001 --components-path ../../../components -- go run .
+cd ./order-processor
+dapr run --app-id order-processor --app-port 6001 --components-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->

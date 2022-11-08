@@ -12,7 +12,7 @@ import (
 )
 
 var DAPR_CONFIGURATION_STORE = "configstore"
-var CONFIGURATION_ITEMS = []string{"appID1", "appID2"}
+var CONFIGURATION_ITEMS = []string{"orderId1", "orderId2"}
 
 func main() {
 	client, err := dapr.NewClient()
