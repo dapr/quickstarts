@@ -17,7 +17,7 @@ This quickstart includes one service:
 ### CSharp example:
 ##### Order Processor Service: 
 ```bash
-cd ../service-invocation/csharp/http/order-processor
+cd ../service_invocation/csharp/http/order-processor
 dotnet restore
 dotnet build
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
