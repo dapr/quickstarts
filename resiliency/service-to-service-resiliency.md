@@ -49,7 +49,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ### Java example:
 ##### Order Processor Service: 
 ```bash
-cd ../service-invocation/java/http/order-processor
+cd ../service_invocation/java/http/order-processor
 mvn clean install
 dapr run --app-id order-processor --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
