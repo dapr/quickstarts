@@ -26,6 +26,7 @@ foreach (var item in CONFIGURATION_ITEMS)
   catch (Exception ex)
   {
     Console.WriteLine("Could not get config item, err:" + ex.Message);
+    Environment.Exit(1);
   }
 }
 
@@ -33,9 +34,21 @@ async Task subscribeToConfigUpdates()
 {
   // Add delay to allow app channel to be ready
   Thread.Sleep(3000);
-  var subscription = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}/subscribe");
-  // subscription.EnsureSuccessStatusCode();
-  Console.WriteLine("App subscribed to config changes with subscription id: " + subscription);
+  try
+  {
+    var subscription = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}/subscribe");
+    if (subscription.Contains("errorCode"))
+    {
+      Console.WriteLine("Error subscribing to config updates, err:" + subscription);
+      Environment.Exit(1);
+    }
+    Console.WriteLine("App subscribed to config changes with subscription id: " + subscription);
+  }
+  catch (Exception ex)
+  {
+    Console.WriteLine("Error subscribing to config updates, err:" + ex.Message);
+    Environment.Exit(1);
+  }
 }
 
 async Task readConfigurationChanges()
@@ -46,7 +59,7 @@ async Task readConfigurationChanges()
     using var sr = new StreamReader(request.Body);
     var config = await sr.ReadToEndAsync();
     dynamic update = JObject.Parse(config);
-    Console.WriteLine("Configuration update "+ update.items.ToString(Formatting.None));
+    Console.WriteLine("Configuration update " + update.items.ToString(Formatting.None));
   });
   await app.StartAsync();
 }

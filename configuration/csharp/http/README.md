@@ -20,6 +20,7 @@ This quickstart includes one service:
 <!-- STEP
 name: Run order-updater service
 background: true
+sleep: 10
 timeout: 90
 -->
 

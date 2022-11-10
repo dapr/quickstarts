@@ -6,7 +6,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/config
 
 This quickstart includes one service:
 
-- Dotnet service `order-processor`
+- Python service `order-processor`
 
 ## Run order-updater app
 
@@ -31,19 +31,30 @@ go run .
 
 3. This will add configuration items to redis config store and keep updating their values.
 
-## Run order-processor
+## Run Python service with Dapr
 
-1. Open a new terminal and navigate to `order-processor` directory.
-2. Run the service app with Dapr.
+1. Open a new terminal window and navigate to `order-processor` directory:
+
+<!-- STEP
+name: Install python dependencies
+-->
+
+```bash
+cd ./order-processor
+pip3 install -r requirements.txt
+```
+
+<!-- END_STEP -->
+
+2. Run the Python service app with Dapr:
 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for orderId1: {"Value":'
-  - '== APP == Configuration for orderId2: {"Value":'
-  - '== APP == App subscribed to config changes with subscription id:'
-  - '== APP == Configuration update {"orderId1":{"Value":'
-  - '== APP == Configuration update {"orderId2":{"Value":'
+  - "== APP == Configuration for orderId1 : value:"
+  - "== APP == Configuration for orderId2 : value:"
+  - "== APP == Configuration update {'orderId1' : {'value':"
+  - "== APP == Configuration update {'orderId2' : {'value':"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -53,7 +64,7 @@ timeout: 30
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor-http --components-path ../../../components/ --app-port 7001 -- dotnet run --project .
+dapr run --app-id order-processor --components-path ../../../components/ --app-port 6001 -- python3 app.py
 ```
 
 <!-- END_STEP -->

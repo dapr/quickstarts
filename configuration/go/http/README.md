@@ -1,4 +1,4 @@
-# Dapr Configuration API 
+# Dapr Configuration API
 
 In this quickstart, you'll create a microservice which makes use of Dapr's Configuration API. Configuration items are key/value pairs containing configuration data such as app ids, partition keys, database names etc. The service gets configuration items from the configuration store and subscribes for configuration updates.
 
@@ -20,6 +20,7 @@ This quickstart includes one service:
 <!-- STEP
 name: Run order-updater service
 background: true
+sleep: 10
 timeout: 90
 -->
 
@@ -30,7 +31,7 @@ go run .
 
 <!-- END_STEP -->
 
-1. This will add configuration items to redis config store and keep updating their values.
+3. This will add configuration items to redis config store and keep updating their values.
 
 ## Run order-processor
 
