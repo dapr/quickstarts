@@ -41,7 +41,7 @@ dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-htt
 
 ##### Checkout Service: 
 ```bash
-cd ../service-invocation/go/http/checkout
+cd ../service_invocation/go/http/checkout
 go build .
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/  --app-protocol http --dapr-http-port 3500 -- go run .
 ```
