@@ -34,7 +34,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ### Go example:
 ##### Order Processor Service: 
 ```bash
-cd ../service-invocation/go/http/order-processor
+cd ../service_invocation/go/http/order-processor
 go build .
 dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- go run .
 ```
