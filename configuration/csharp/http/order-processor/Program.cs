@@ -34,15 +34,14 @@ async Task subscribeToConfigUpdates()
 {
   // Add delay to allow app channel to be ready
   Thread.Sleep(3000);
-  try
-  {
+  try{
     var subscription = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}/subscribe");
     if (subscription.Contains("errorCode"))
     {
       Console.WriteLine("Error subscribing to config updates, err:" + subscription);
       Environment.Exit(1);
     }
-    Console.WriteLine("App subscribed to config changes with subscription id: " + subscription);
+  Console.WriteLine("App subscribed to config changes with subscription id: " + subscription);
   }
   catch (Exception ex)
   {
@@ -59,7 +58,7 @@ async Task readConfigurationChanges()
     using var sr = new StreamReader(request.Body);
     var config = await sr.ReadToEndAsync();
     dynamic update = JObject.Parse(config);
-    Console.WriteLine("Configuration update " + update.items.ToString(Formatting.None));
+    Console.WriteLine("Configuration update "+ update.items.ToString(Formatting.None));
   });
   await app.StartAsync();
 }
