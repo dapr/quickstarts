@@ -56,7 +56,7 @@ dapr run --app-id order-processor --app-port 9001 --app-protocol http --dapr-htt
 
 ##### Checkout Service: 
 ```bash
-cd ../service-invocation/java/http/checkout
+cd ../service_invocation/java/http/checkout
 mvn clean install
 dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
