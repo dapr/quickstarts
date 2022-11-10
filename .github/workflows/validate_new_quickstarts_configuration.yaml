@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-10.15]
-        quickstart_language: [go]
+        quickstart_language: [go, csharp, python]
         quickstart_variant: [http, sdk]
     steps:
       - name: Install docker - MacOS
@@ -53,6 +53,11 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GOVER }}
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v1.9.0
+        with:
+          dotnet-version: |
+            6.0.x
       - name: Determine latest Dapr Runtime version including Pre-releases
         run: |
           helm repo add dapr https://dapr.github.io/helm-charts/ && helm repo update && export RUNTIME_VERSION=$(helm search repo dapr/dapr --devel --versions | awk '/dapr\/dapr/ {print $3; exit}' )
