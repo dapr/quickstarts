@@ -79,7 +79,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ### Python example:
 ##### Order Processor Service: 
 ```bash
-cd ../service-invocation/python/sdk/order-processor
+cd ../service_invocation/python/http/order-processor
 pip3 install -r requirements.txt 
 dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
