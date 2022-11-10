@@ -25,7 +25,7 @@ dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-htt
 
 ##### Checkout Service: 
 ```bash
-cd ../service-invocation/csharp/http/checkout
+cd ../service_invocation/csharp/http/checkout
 dotnet restore
 dotnet build
 dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- dotnet run
