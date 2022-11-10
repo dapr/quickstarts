@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-10.15]
-        quickstart_language: [go, csharp, python]
+        quickstart_language: [go, csharp, javascript, python]
         quickstart_variant: [http, sdk]
     steps:
       - name: Install docker - MacOS
