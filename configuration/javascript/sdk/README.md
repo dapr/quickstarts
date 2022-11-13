@@ -8,28 +8,23 @@ This quickstart includes one service:
 
 - Node service `order-processor`
 
-## Run order-updater app
+## Add configuration items to the config store
 
-> **Note:** `order-updater` app adds configuration items to the configuration store and keeps updating their value to simulate dynamic changes to configuration data. You need to start and keep it running before running `order-processor` service.
+### Prerequisite
 
-1. Navigate to [`order-updater`](./../../order-updater/) directory.
-2. Check the [`Readme`](./../../order-updater/README.md) to start the app and keep it running in the terminal.
+- Locally running redis instance - a redis instance is automatically created as a docker container when you run `dapr init`
+- Install Redis CLI - [Getting started with Redis | Redis](https://redis.io/docs/getting-started/). `redis-cli` is installed as part of redis setup
+- Open a new terminal and set values for config items `orderId1` and `orderId2` using `redis-cli`
 
 <!-- STEP
-name: Run order-updater service
-background: true
-sleep: 10
-timeout: 90
+name: Add configuration items
 -->
 
 ```bash
-cd ./../../order-updater
-go run .
+redis-cli -n 0 MSET orderId1 "101" orderId2 "102"
 ```
 
 <!-- END_STEP -->
-
-3. This will add configuration items to redis config store and keep updating their values.
 
 ## Run order-processor
 
@@ -53,8 +48,6 @@ name: Run order-processor service
 expected_stdout_lines:
   - '== APP == Configuration for orderId1: {"key":"orderId1","value":'
   - '== APP == Configuration for orderId2: {"key":"orderId2","value":'
-  - '== APP == Configuration update {"orderId1":{"key":"orderId1","value":'
-  - '== APP == Configuration update {"orderId2":{"key":"orderId2","value":'
   - '== APP == App unsubscribed to config changes'
   - "Exited App successfully"
 expected_stderr_lines:
@@ -68,3 +61,19 @@ dapr run --app-id order-processor --components-path ../../../components/ --app-p
 ```
 
 <!-- END_STEP -->
+
+## (Optional) Update value of config items
+
+1. Keep the `order-processor` app running and open a separate terminal
+2. Change the values of `orderId1` and `orderId2` using `redis-cli`
+3. `order-processor` app gets the updated values of config items
+
+<!-- STEP
+name: Update config items
+-->
+
+```bash
+redis-cli -n 0 MSET orderId1 "103" orderId2 "104"
+```
+
+<!--END_STEP -->
