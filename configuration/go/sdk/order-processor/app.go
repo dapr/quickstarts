@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
 	// Get config items from config store
@@ -49,7 +49,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Exit app after 15 seconds
+	// Exit app after 20 seconds
 	select {
 	case <-ctx.Done():
 		os.Exit(0)
