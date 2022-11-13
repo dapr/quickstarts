@@ -55,11 +55,11 @@ expected_stdout_lines:
   - "== APP == Configuration for orderId2 : value:"
   - "== APP == Configuration update {'orderId1' : {'value':"
   - "== APP == Configuration update {'orderId2' : {'value':"
+  - '== APP == App unsubscribed from config changes'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-timeout: 30
 -->
 
 ```bash

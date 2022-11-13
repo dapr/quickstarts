@@ -33,11 +33,14 @@ func main() {
 		fmt.Println("Configuration for " + item + ": " + string(c))
 	}
 
+	var subscriptionId string
+
 	// Subscribe for config changes
 	err = client.SubscribeConfigurationItems(ctx, DAPR_CONFIGURATION_STORE, CONFIGURATION_ITEMS, func(id string, config map[string]*dapr.ConfigurationItem) {
 		// First invocation when app subscribes to config changes only returns subscription id
 		if len(config) == 0 {
 			fmt.Println("App subscribed to config changes with subscription id: " + id)
+			subscriptionId = id
 			return
 		}
 		// Print config changes
@@ -49,9 +52,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Exit app after 20 seconds
+	// Unsubscribe to config updates and exit app after 20 seconds
 	select {
 	case <-ctx.Done():
+		err = client.UnsubscribeConfigurationItems(context.Background(), DAPR_CONFIGURATION_STORE, subscriptionId)
+		if err != nil {
+			fmt.Println("Error unsubscribing to config updates, err:" + err.Error())
+		} else {
+			fmt.Println("App unsubscribed to config changes")
+		}
 		os.Exit(0)
 	default:
 	}

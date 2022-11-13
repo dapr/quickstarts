@@ -29,8 +29,10 @@ async function main() {
         console.log("Configuration update", JSON.stringify(config.items));
       }
     );
-    // Exit app after 20 seconds
+    // Unsubscribe to config updates and exit app after 20 seconds
     setTimeout(() => {
+      stream.stop();
+      console.log("App unsubscribed to config changes");
       process.exit(0);
     }, 20000);
   } catch (error) {

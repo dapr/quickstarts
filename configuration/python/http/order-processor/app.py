@@ -32,6 +32,7 @@ def subscribe_config_updates():
             )
     if subscription.status_code == 200 and 'errCode' not in str(subscription.json()) :
         logging.info('App subscribed to config changes with subscription id: ' + str(subscription.json()['id']))
+        return subscription.json()['id']
     else:
         logging.info('Error subscribing to config updates: ' + str(subscription.json()))
         exit(1)
@@ -45,7 +46,14 @@ def config_subscriber(configItem):
 # Start the flask app
 threading.Thread(target=lambda: app.run(port=APP_PORT, debug=False, use_reloader=False), daemon=True).start()
 # Subscribe to config updates
-subscribe_config_updates()
+subscription_id = subscribe_config_updates()
 
-#Exit app after 20 seconds
+# Unsubscribe to config updates and exit app after 20 seconds
 time.sleep(20)
+unsubscribe = requests.get(
+    url = '%s/v1.0-alpha1/configuration/%s/%s/unsubscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE, subscription_id)
+)
+if unsubscribe.status_code == 200 and 'True' in str(unsubscribe.json()):
+    logging.info('App unsubscribed from config changes')
+else:
+    logging.info('Error unsubscribing from config updates: ' + str(unsubscribe.json()))

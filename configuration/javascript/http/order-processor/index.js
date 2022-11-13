@@ -1,5 +1,5 @@
 import axios from "axios";
-import express from "express";
+import express, { json } from "express";
 
 const DAPR_HOST = process.env.DAPR_HOST ?? "localhost";
 
@@ -27,11 +27,14 @@ async function main() {
       });
   });
 
-  subscribeToConfigUpdates();
+  // Start server to receive config updates
   readConfigurationChanges();
+  // Subscribe to config updates
+  var subscriptionId = await subscribeToConfigUpdates();
 
-  // Exit app after 20 seconds
-  setTimeout(() => {
+  // Unsubscribe to config updates and exit app after 20 seconds
+  setTimeout(async () => {
+    await unsubscribeToConfigUpdates(subscriptionId);
     process.exit(0);
   }, 20000);
 }
@@ -40,15 +43,27 @@ async function subscribeToConfigUpdates() {
   // Add delay to allow app channel to be ready
   await sleep(3000);
   // Subscribe to config updates
-  axios
-    .get(`${BASE_URL}/subscribe`)
-    .then((response) => {
-      console.log("App subscribed to config changes with subscription id: ", response.data);
-    })
-    .catch((error) => {
-      console.log("Error subscribing to config updates, err:" + error);
-      process.exit(1);
-    });
+  try {
+    const { data: response } = await axios.get(`${BASE_URL}/subscribe`);
+    console.log("App subscribed to config changes with subscription id: ", response.id);
+    return response.id;
+  } catch (error) {
+    console.log("Could not subscribe to config updates, err:" + error);
+    process.exit(1);
+  }
+}
+
+async function unsubscribeToConfigUpdates(subscriptionId) {
+  try {
+    const { data: response } = await axios.get(`${BASE_URL}/${subscriptionId}/unsubscribe`);
+    if (JSON.stringify(response).includes("true")) {
+      console.log("App unsubscribed from config changes");
+    } else {
+      console.log("Error unsubscribing to config updates, err:" + response);
+    }
+  } catch (error) {
+    console.log("Error unsubscribing to config updates, err:" + error);
+  }
 }
 
 async function readConfigurationChanges() {

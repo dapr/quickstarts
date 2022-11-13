@@ -30,23 +30,28 @@ foreach (var item in CONFIGURATION_ITEMS)
   }
 }
 
-async Task subscribeToConfigUpdates()
+async Task<string> subscribeToConfigUpdates()
 {
   // Add delay to allow app channel to be ready
   Thread.Sleep(3000);
-  try{
+  try
+  {
     var subscription = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}/subscribe");
     if (subscription.Contains("errorCode"))
     {
       Console.WriteLine("Error subscribing to config updates, err:" + subscription);
       Environment.Exit(1);
+      return string.Empty;
     }
-  Console.WriteLine("App subscribed to config changes with subscription id: " + subscription);
+    dynamic data = JObject.Parse(subscription);
+    Console.WriteLine("App subscribed to config changes with subscription id: " + data.id);
+    return data.id;
   }
   catch (Exception ex)
   {
     Console.WriteLine("Error subscribing to config updates, err:" + ex.Message);
     Environment.Exit(1);
+    return string.Empty;
   }
 }
 
@@ -58,16 +63,32 @@ async Task readConfigurationChanges()
     using var sr = new StreamReader(request.Body);
     var config = await sr.ReadToEndAsync();
     dynamic update = JObject.Parse(config);
-    Console.WriteLine("Configuration update "+ update.items.ToString(Formatting.None));
+    Console.WriteLine("Configuration update " + update.items.ToString(Formatting.None));
   });
   await app.StartAsync();
 }
 
 await readConfigurationChanges();
-await subscribeToConfigUpdates();
+string subscriptionId = await subscribeToConfigUpdates();
 
-// Exit the app after 20 seconds
+// Unsubscribe to config updates and exit app after 20 seconds
 await Task.Delay(20000);
-
-
-
+try
+{
+  string unsubscribe = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}/{subscriptionId}/unsubscribe");
+  if (unsubscribe.Contains("true"))
+  {
+    Console.WriteLine("App unsubscribed from config updates");
+    Environment.Exit(0);
+  }
+  else
+  {
+    Console.WriteLine("Error unsubscribing from config updates, err:" + unsubscribe);
+    Environment.Exit(1);
+  }
+}
+catch (Exception ex)
+{
+  Console.WriteLine("Error unsubscribing from config updates, err:" + ex.Message);
+  Environment.Exit(1);
+}
