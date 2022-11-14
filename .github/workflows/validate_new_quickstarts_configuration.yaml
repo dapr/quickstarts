@@ -44,11 +44,10 @@ jobs:
         quickstart_variant: [http, sdk]
     steps:
       - name: Setup Redis
-      - uses: actions/checkout@v3
-      - uses: shogo82148/actions-setup-redis@v1
+        uses: shogo82148/actions-setup-redis@v1
         with:
           redis-version: '6'
-      - run: redis-cli ping
+        run: redis-cli ping
       - name: Install docker - MacOS
         if: matrix.os == 'macos-11'
         uses: docker-practice/actions-setup-docker@v1
