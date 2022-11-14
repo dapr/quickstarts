@@ -33,22 +33,28 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      GOVER: 1.17
-      KUBERNETES_VERSION: v1.21.1
-      KIND_VERSION: v0.11.0
-      KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
+      GOVER: 1.18
+      KUBERNETES_VERSION: v1.25.3
+      KIND_VERSION: v0.17.0
+      KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-10.15]
+        os: [ubuntu-latest, macos-11]
         quickstart_language: [go, csharp, javascript, python]
         quickstart_variant: [http, sdk]
     steps:
+      - name: Setup Redis
+      - uses: actions/checkout@v3
+      - uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '6'
+      - run: redis-cli ping
       - name: Install docker - MacOS
-        if: matrix.os == 'macos-10.15'
+        if: matrix.os == 'macos-11'
         uses: docker-practice/actions-setup-docker@v1
         with:
           docker_buildx: false
-          docker_version: 20.10
+          docker_version: 20.10.21
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
