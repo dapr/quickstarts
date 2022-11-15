@@ -1,3 +1,5 @@
+# Dapr Resiliency: State Managment
+
 In this QuickStart, you will run a microservice application that continuously persists and retrieves state via Dapr's state management API. When operations to the state store begin to fail, Dapr resiliency policies are applied.
 
 Visit [this](https://docs.dapr.io/operations/resiliency/resiliency-overview//) link for more information about Dapr resiliency.
@@ -62,6 +64,7 @@ dapr run --app-id order-processor ../config.yaml --components-path ../../../comp
 <!-- END_STEP -->
 
 ### Simulate a component failure by stopping the Redis container instance 
+In a new terminal window, stop the Redis container that's running on your machine:
 
 ```bash
 docker stop dapr_redis
