@@ -20,7 +20,7 @@ public class CheckoutServiceApplication {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String dapr_url = "http://localhost:" + DAPR_HTTP_PORT + "/orders";
-		for (int i=1; i<=10; i++) {
+		for (int i=1; i<=20; i++) {
 			int orderId = i;
 			JSONObject obj = new JSONObject();
 			obj.put("orderId", orderId);

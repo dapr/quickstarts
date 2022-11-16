@@ -12,7 +12,7 @@ public class OrderProcessingServiceApplication {
 
     public static void main(String[] args) throws Exception {
         try (DaprClient client = new DaprClientBuilder().build()) {
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= 100; i++) {
                 int orderId = i;
                 Order order = new Order();
                 order.setOrderId(orderId);

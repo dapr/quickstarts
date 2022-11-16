@@ -25,7 +25,7 @@ public class OrderProcessingServiceApplication {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         URI baseUrl = new URI(DAPR_HOST+":"+DAPR_HTTP_PORT);
         URI stateStoreUrl = new URI(baseUrl + "/v1.0/state/"+DAPR_STATE_STORE);
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 100; i++) {
             int orderId = i;
             Order order = new Order(orderId);
             State state = new State(String.valueOf(orderId), order);

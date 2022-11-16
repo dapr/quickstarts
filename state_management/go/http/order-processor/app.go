@@ -23,7 +23,7 @@ func main() {
 	}
 
 	DAPR_STATE_STORE := "statestore"
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= 100; i++ {
 		orderId := i
 		order := "{\"orderId\":" + strconv.Itoa(orderId) + "}"
 		state, _ := json.Marshal([]map[string]string{

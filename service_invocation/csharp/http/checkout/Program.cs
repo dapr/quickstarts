@@ -9,7 +9,7 @@ client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWit
 // Adding app id as part of the header
 client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
 
-for (int i = 1; i <= 10; i++) {
+for (int i = 1; i <= 20; i++) {
     var order = new Order(i);
     var orderJson = JsonSerializer.Serialize<Order>(order);
     var content = new StringContent(orderJson, Encoding.UTF8, "application/json");

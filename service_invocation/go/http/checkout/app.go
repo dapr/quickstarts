@@ -19,7 +19,7 @@ func main() {
 	if DAPR_HTTP_PORT, okPort = os.LookupEnv("DAPR_HTTP_PORT"); !okPort {
 		DAPR_HTTP_PORT = "3500"
 	}
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= 20; i++ {
 		order := "{\"orderId\":" + strconv.Itoa(i) + "}"
 		client := &http.Client{}
 		req, err := http.NewRequest("POST", DAPR_HOST+":"+DAPR_HTTP_PORT+"/orders", strings.NewReader(order))

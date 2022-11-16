@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	for i := 1; i <= 10; i++ {
+	for i := 1; i <= 100; i++ {
 		orderId := i
 		order := "{\"orderId\":" + strconv.Itoa(orderId) + "}"
 		client, err := dapr.NewClient()
