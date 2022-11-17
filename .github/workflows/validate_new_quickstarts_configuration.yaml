@@ -47,6 +47,7 @@ jobs:
         uses: shogo82148/actions-setup-redis@v1
         with:
           redis-version: '6'
+          auto-start: false
       - name: Install docker - MacOS
         if: matrix.os == 'macos-11'
         uses: docker-practice/actions-setup-docker@v1
