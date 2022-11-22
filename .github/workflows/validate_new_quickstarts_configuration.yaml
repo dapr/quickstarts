@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-11]
-        quickstart_language: [go, csharp, javascript, python]
+        quickstart_language: [go, csharp, javascript, python, java]
         quickstart_variant: [http, sdk]
     steps:
       - name: Setup Redis
@@ -58,6 +58,11 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{ env.GOVER }}
+      - name: Set up OpenJDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
       - name: Install .NET Core
         uses: actions/setup-dotnet@v1.9.0
         with:

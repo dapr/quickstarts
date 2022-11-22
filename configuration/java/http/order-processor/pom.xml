@@ -27,12 +27,6 @@
             <artifactId>json</artifactId>
             <version>20220924</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

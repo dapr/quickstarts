@@ -1,0 +1,88 @@
+# Dapr Configuration API
+
+In this quickstart, you'll create a microservice which makes use of Dapr's Configuration API. Configuration items are key/value pairs containing configuration data such as app ids, partition keys, database names etc. The service gets configuration items from the configuration store and subscribes for configuration updates.
+
+Visit [this](https://docs.dapr.io/developing-applications/building-blocks/configuration/) link for more information about Dapr and Configuration API.
+
+This quickstart includes one service:
+
+- Java service `order-processor`
+
+## Prerequisites
+
+- [Maven 3.x](https://maven.apache.org/install.html)
+- Java JDK 11 (or greater):
+  - [Microsoft JDK 11](https://docs.microsoft.com/en-us/java/openjdk/download#openjdk-11)
+  - [Oracle JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/index.html#JDK11)
+  - [OpenJDK 11](https://jdk.java.net/11/)
+- Locally running redis instance - a redis instance is automatically created as a docker container when you run `dapr init`
+- Install Redis CLI - [Getting started with Redis | Redis](https://redis.io/docs/getting-started/). `redis-cli` is installed as part of redis setup
+
+## Add configuration items to the config store
+
+- Open a new terminal and set values for config items `orderId1` and `orderId2` using `redis-cli`
+
+<!-- STEP
+name: Add configuration items
+-->
+
+```bash
+redis-cli -n 0 MSET orderId1 "101" orderId2 "102"
+```
+
+<!-- END_STEP -->
+
+## Build the Java file
+
+<!-- STEP
+name: Build Java file
+-->
+
+```bash
+cd ./order-processor
+mvn clean install
+```
+
+<!-- END_STEP -->
+
+## Run order-processor
+
+1. Navigate to `order-processor` directory.
+2. Run the service app with Dapr.
+
+<!-- STEP
+name: Run order-processor service
+expected_stdout_lines:
+  - "== APP == Configuration for orderId1: {'value':'101'}"
+  - "== APP == Configuration for orderId2: {'value':'102'}"
+  - '== APP == App subscribed to config changes with subscription id:'
+  - '== APP == App unsubscribed to config changes'
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+
+-->
+
+```bash
+cd ./order-processor
+dapr run --app-id order-processor --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+```
+
+<!-- END_STEP -->
+
+## (Optional) Update value of config items
+
+1. Keep the `order-processor` app running and open a separate terminal
+2. Change the values of `orderId1` and `orderId2` using `redis-cli`
+3. `order-processor` app gets the updated values of config items
+
+<!-- STEP
+name: Update config items
+-->
+
+```bash
+redis-cli -n 0 MSET orderId1 "103" orderId2 "104"
+```
+
+<!--END_STEP -->
