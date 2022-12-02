@@ -1,4 +1,5 @@
 # General
+.venv
 .env
 *.suo
 *.user
