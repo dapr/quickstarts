@@ -43,11 +43,6 @@ jobs:
         quickstart_language: [go, csharp, javascript, python, java]
         quickstart_variant: [http, sdk]
     steps:
-      - name: Setup Redis
-        uses: shogo82148/actions-setup-redis@v1
-        with:
-          redis-version: '6'
-          auto-start: false
       - name: Install docker - MacOS
         if: matrix.os == 'macos-10.15'
         uses: docker-practice/actions-setup-docker@v1

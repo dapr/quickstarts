@@ -12,16 +12,17 @@ This quickstart includes one service:
 
 ### Prerequisite
 
-- Locally running redis instance - a redis instance is automatically created as a docker container when you run `dapr init`
-- Install Redis CLI - [Getting started with Redis | Redis](https://redis.io/docs/getting-started/). `redis-cli` is installed as part of redis setup
-- Open a new terminal and set values for config items `orderId1` and `orderId2` using `redis-cli`
+- Locally running redis container - a redis container named `dapr_redis` is automatically created when you run `dapr init`
+- Open a new terminal and set values for config items `orderId1` and `orderId2` by using the command below
 
 <!-- STEP
 name: Add configuration items
+expected_stdout_lines:
+  - 'OK'
 -->
 
 ```bash
-redis-cli -n 0 MSET orderId1 "101" orderId2 "102"
+docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 ```
 
 <!-- END_STEP -->
@@ -65,7 +66,7 @@ dapr run --app-id order-processor --components-path ../../../components/ --app-p
 ## (Optional) Update value of config items
 
 1. Keep the `order-processor` app running and open a separate terminal
-2. Change the values of `orderId1` and `orderId2` using `redis-cli`
+2. Change the values of `orderId1` and `orderId2` using the command below
 3. `order-processor` app gets the updated values of config items
 
 <!-- STEP
@@ -73,7 +74,7 @@ name: Update config items
 -->
 
 ```bash
-redis-cli -n 0 MSET orderId1 "103" orderId2 "104"
+docker exec dapr_redis redis-cli MSET orderId1 "103" orderId2 "104"
 ```
 
 <!--END_STEP -->
