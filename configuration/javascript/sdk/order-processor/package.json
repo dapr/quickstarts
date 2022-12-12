@@ -1,0 +1,20 @@
+{
+    "name": "order-processor",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@dapr/dapr": "^2.5.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.8.0",
+        "eslint-plugin-react": "^7.28.0"
+    }
+}
