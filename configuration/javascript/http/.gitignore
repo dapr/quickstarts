@@ -1,0 +1,5 @@
+##lint files
+*.cjs
+
+##node modules
+node_modules
