@@ -264,14 +264,6 @@ Get the logs of the Node.js app:
 
 <!-- STEP
 expected_stdout_lines:
-  - "Node App listening on port 3000!"
-  - "Successfully persisted state."
-  - "Got a new order! Order ID: 8"
-  - "Successfully persisted state."
-  - "Got a new order! Order ID: 9"
-  - "Successfully persisted state."
-  - "Got a new order! Order ID: 10"
-  - "Successfully persisted state."
   - "Got a new order! Order ID: 11"
   - "Successfully persisted state."
 expected_stderr_lines:
