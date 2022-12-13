@@ -267,6 +267,7 @@ expected_stdout_lines:
   - "Got a new order! Order ID: 11"
   - "Successfully persisted state."
 expected_stderr_lines:
+output_match_mode: substring
 name: Read nodeapp logs
 -->
 
