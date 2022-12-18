@@ -29,6 +29,9 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: write
     name: Build ${{ matrix.target_os }}_${{ matrix.target_arch }} binaries
     runs-on: ${{ matrix.os }}
     env:
@@ -80,7 +83,7 @@ jobs:
           done
       - name: docker login
         run: |
-          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
+          docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
       - name: publish image to dockerhub
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
@@ -123,6 +126,9 @@ jobs:
           done
   publish:
     name: Publish docker manifest
+    permissions:
+      contents: read
+      packages: write
     needs: build
     runs-on: ubuntu-latest
     env:
@@ -147,7 +153,7 @@ jobs:
           done
       - name: docker login
         run: |
-          docker login -u ${{ secrets.DOCKER_REGISTRY_ID }} -p ${{ secrets.DOCKER_REGISTRY_PASS }}
+          docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
       - name: publish manifest to dockerhub
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
