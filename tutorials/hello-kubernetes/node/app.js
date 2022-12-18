@@ -62,7 +62,7 @@ app.post('/neworder', async (req, res) => {
         if (!response.ok) {
             throw "Failed to persist state.";
         }
-        console.log("Successfully persisted state.");
+        console.log("Successfully persisted state for Order ID: " + orderId);
         res.status(200).send();
     } catch (error) {
         console.log(error);
