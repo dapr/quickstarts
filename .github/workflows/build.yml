@@ -13,9 +13,6 @@
 
 name: samples
 
-env:
-- REGISTRY_ENDPOINT: ghcr.io/${{ github.repository_owner }}/samples
-
 on:
   push:
     branches:
@@ -52,11 +49,6 @@ jobs:
           - os: macOS-latest
             target_arch: arm64
     steps:
-      # In case someone is testing on a different fork before merging, he can't publish on dapr/samples
-      - name: downcase REPO
-        run: |
-          echo "REGISTRY_ENDPOINT_LC=${REGISTRY_ENDPOINT,,}" >>${GITHUB_ENV}
-
       - name: Check Docker version
         run: docker --version
       - name: Check out code
@@ -97,10 +89,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build docker image
         env:
-          SAMPLE_REGISTRY: ${{ env.REGISTRY_ENDPOINT_LC }}
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: | 
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -112,7 +103,7 @@ jobs:
       - name: publish image to ghcr
         if: github.event_name != 'pull_request'
         env:
-          SAMPLE_REGISTRY: ${{ env.REGISTRY_ENDPOINT_LC }}
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -128,10 +119,6 @@ jobs:
     env:
       DOCKER_CLI_EXPERIMENTAL: enabled
     steps:
-      # In case someone is testing on a different fork before merging, he can't publish on dapr/samples
-      - name: downcase REPO
-        run: |
-          echo "REGISTRY_ENDPOINT_LC=${REGISTRY_ENDPOINT,,}" >>${GITHUB_ENV}
       - name: Check out code
         uses: actions/checkout@v2
       - name: Parse release version and set REL_VERSION
@@ -167,7 +154,7 @@ jobs:
       - name: create ghcr manifest
         if: github.event_name != 'pull_request'
         env: 
-          SAMPLE_REGISTRY: ${{ env.REGISTRY_ENDPOINT_LC }}
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -179,7 +166,7 @@ jobs:
       - name: publish manifest to ghcr
         if: github.event_name != 'pull_request'
         env: 
-          SAMPLE_REGISTRY: ${{ env.REGISTRY_ENDPOINT_LC }}
+          SAMPLE_REGISTRY: ghcr.io/dapr/samples
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
