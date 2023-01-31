@@ -20,7 +20,7 @@ This quickstart includes one service:
 cd ../service_invocation/csharp/http/order-processor
 dotnet restore
 dotnet build
-dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 ##### Checkout Service: 
@@ -36,7 +36,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ```bash
 cd ../service_invocation/go/http/order-processor
 go build .
-dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 ##### Checkout Service: 
@@ -51,7 +51,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ```bash
 cd ../service_invocation/java/http/order-processor
 mvn clean install
-dapr run --app-id order-processor  --config ../config.yaml --components-path --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor  --config ../config.yaml --components-path ../../../components/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ##### Checkout Service: 
@@ -66,7 +66,7 @@ dapr run --app-id checkout --config ../config.yaml --components-path ../../../co
 ```bash
 cd ../service_invocation/javascript/http/order-processor
 npm install
-dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 ##### Checkout Service: 
@@ -81,7 +81,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ```bash
 cd ../service_invocation/python/http/order-processor
 pip3 install -r requirements.txt 
-dapr run --app-port 8001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 ##### Checkout Service: 
