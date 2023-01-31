@@ -115,7 +115,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --components-path ../components
+dapr run --app-id bindings-nodeapp --app-port 3000 node app.js --resources-path ../components
 ```
 
 <!-- END_STEP -->
@@ -162,7 +162,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-dapr run --app-id bindings-pythonapp python3 app.py --components-path ../components
+dapr run --app-id bindings-pythonapp python3 app.py --resources-path ../components
 ```
 
 <!-- END_STEP -->

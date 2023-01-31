@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id batch-http --app-port 5001 --dapr-http-port 3500 --components-path ../../../components -- node index.js
+dapr run --app-id batch-http --app-port 5001 --dapr-http-port 3500 --resources-path ../../../components -- node index.js
 ```
 
 <!-- END_STEP -->
