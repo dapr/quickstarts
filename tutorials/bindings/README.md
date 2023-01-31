@@ -154,9 +154,11 @@ output_match_mode: substring
 expected_stdout_lines: 
   - "You're up and running! Both Dapr and your app logs will appear here."
   - "== APP == {'data': {'orderId': 1}, 'operation': 'create'}"
+  - "== APP == Response for order 1: 204"
   - "== APP == {'data': {'orderId': 2}, 'operation': 'create'}"
+  - "== APP == Response for order 2: 204"
   - "== APP == {'data': {'orderId': 3}, 'operation': 'create'}"
-  - "== APP == <Response [204]>"
+  - "== APP == Response for order 3: 204"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 -->
@@ -173,11 +175,11 @@ dapr run --app-id bindings-pythonapp python3 app.py --components-path ../compone
 
 ```bash
 [0m?[94;1m== APP == {'data': {'orderId': 1}}
-[0m?[94;1m== APP == <Response [200]>
+[0m?[94;1m== APP == Response for order 1: 204
 [0m?[94;1m== APP == {'data': {'orderId': 2}}
-[0m?[94;1m== APP == <Response [200]>
+[0m?[94;1m== APP == Response for order 2: 204
 [0m?[94;1m== APP == {'data': {'orderId': 3}}
-[0m?[94;1m== APP == <Response [200]>
+[0m?[94;1m== APP == Response for order 3: 204
 ```
 
 2. Observe the Node logs, which show a successful input binding with Kafka: 

@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-name: samples
+name: Build Quickstarts
 
 on:
   push:
@@ -32,6 +32,7 @@ jobs:
       TARGET_OS: ${{ matrix.target_os }}
       TARGET_ARCH: ${{ matrix.target_arch }}
       DOCKER_CLI_EXPERIMENTAL: enabled
+      SAMPLE_REGISTRY: ${{ vars.SAMPLE_REGISTRY }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -39,28 +40,29 @@ jobs:
         include:
           - os: ubuntu-latest
             target_os: linux
-        exclude:
-          - os: windows-latest
-            target_arch: arm
-          - os: macOS-latest
-            target_arch: arm
-          - os: windows-latest
-            target_arch: arm64
-          - os: macOS-latest
-            target_arch: arm64
     steps:
       - name: Check Docker version
         run: docker --version
+      - name: Set REPO_OWNER
+        run: |
+          REPO_OWNER=${{ github.repository_owner }}
+          # Lowercase the value
+          echo "REPO_OWNER=${REPO_OWNER,,}" >>${GITHUB_ENV}
+        shell: bash
       - name: Check out code
         uses: actions/checkout@v2
       - name: Parse release version and set REL_VERSION
         run: python ./.github/scripts/get_release_version.py
-      - name: Set Docker's multiarch/qemu-user-static
-        run: |
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          docker buildx create --name mybuilder --driver docker-container --use
-      - name: Check platforms buildx supports
-        run: docker buildx inspect --bootstrap
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        if: ${{ matrix.target_arch == 'arm' || matrix.target_arch == 'arm64' }}
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: arm,arm64
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: v0.9.1 # Don't use latest since it broke our workflow once
       - name: Build docker image
         run: | 
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
@@ -91,7 +93,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         env:
-          SAMPLE_REGISTRY: ghcr.io/dapr/samples
+          SAMPLE_REGISTRY: ghcr.io/${{ env.REPO_OWNER }}/samples
         run: | 
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -103,7 +105,7 @@ jobs:
       - name: publish image to ghcr
         if: github.event_name != 'pull_request'
         env:
-          SAMPLE_REGISTRY: ghcr.io/dapr/samples
+          SAMPLE_REGISTRY: ghcr.io/${{ env.REPO_OWNER }}/samples
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -118,6 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_CLI_EXPERIMENTAL: enabled
+      SAMPLE_REGISTRY: ${{ vars.SAMPLE_REGISTRY }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -154,7 +157,7 @@ jobs:
       - name: create ghcr manifest
         if: github.event_name != 'pull_request'
         env: 
-          SAMPLE_REGISTRY: ghcr.io/dapr/samples
+          SAMPLE_REGISTRY: ghcr.io/${{ env.REPO_OWNER }}/samples
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
@@ -166,7 +169,7 @@ jobs:
       - name: publish manifest to ghcr
         if: github.event_name != 'pull_request'
         env: 
-          SAMPLE_REGISTRY: ghcr.io/dapr/samples
+          SAMPLE_REGISTRY: ghcr.io/${{ env.REPO_OWNER }}/samples
         run: |
           SAMPLE_LIST=(tutorials/hello-kubernetes tutorials/distributed-calculator tutorials/pub-sub tutorials/bindings tutorials/observability tutorials/secretstore)
           for sample in "${SAMPLE_LIST[@]}"; do
