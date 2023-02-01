@@ -4,6 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var startup = new smartdevice.Startup(builder.Configuration);
 
+builder.Services.AddOptions(); //try this
+
 startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();

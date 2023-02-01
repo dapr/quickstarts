@@ -27,7 +27,7 @@ timeout_seconds: 30
 
 ```bash
 cd ./smartdevice.Service
-dapr run --app-id myapp --app-port 5000 --dapr-http-port 3500 -- dotnet run
+dapr run --app-id myapp --app-port 5001 --dapr-http-port 3500 --components-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
 
 <!-- END_STEP -->
