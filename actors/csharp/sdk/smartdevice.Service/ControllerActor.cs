@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace smartdevice;
 
-internal class SmokeDetectorActor : Actor, ISmartDevice, IRemindable
+internal class ControllerActor : Actor, IController, IRemindable
 {
     // The constructor must accept ActorHost as a parameter, and can also accept additional
     // parameters that will be retrieved from the dependency injection container
@@ -15,7 +15,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice, IRemindable
     /// Initializes a new instance of SmokeDetectorActor
     /// </summary>
     /// <param name="host">The Dapr.Actors.Runtime.ActorHost that will host this actor instance.</param>
-    public SmokeDetectorActor(ActorHost host)
+    public ControllerActor(ActorHost host)
         : base(host)
     {
     }
@@ -45,26 +45,28 @@ internal class SmokeDetectorActor : Actor, ISmartDevice, IRemindable
     /// Set MyData into actor's private state store
     /// </summary>
     /// <param name="data">the user-defined MyData which will be stored into state store as "my_data" state</param>
-    public async Task<string> SetDataAsync(SmartDeviceData data)
+    public async Task<decimal> GetNetBatteryPercentage()
     {
         // Data is saved to configured state store implicitly after each method execution by Actor's runtime.
         // Data can also be saved explicitly by calling this.StateManager.SaveStateAsync();
         // State to be saved must be DataContract serializable.
-        await this.StateManager.SetStateAsync<SmartDeviceData>(
-            "my_data",  // state name
-            data);      // data saved for the named state "my_data"
 
-        return "Success";
+        // TODO: await & fetch all battery values and return aggregate
+        await Task.Delay(1000);
+
+        return 100.0M;
     }
 
     /// <summary>
     /// Get MyData from actor's private state store
     /// </summary>
     /// <return>the user-defined MyData which is stored into state store as "my_data" state</return>
-    public Task<SmartDeviceData> GetDataAsync()
+    public async Task<decimal> GetAverageTemperature()
     {
-        // Gets state from the state store.
-        return this.StateManager.GetStateAsync<SmartDeviceData>("my_data");
+        // TODO: await & fetch and average the temperatures
+        await Task.Delay(1000);
+
+        return 68.0M;
     }
 
     /// <summary>

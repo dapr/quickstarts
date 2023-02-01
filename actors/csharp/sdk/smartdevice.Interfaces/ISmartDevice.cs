@@ -5,15 +5,15 @@ using System.Text.Json.Serialization;
 namespace smartdevice.Interfaces;
 public interface ISmartDevice : IActor
 {
-    Task<string> SetDataAsync(SmokeDetector device);
-    Task<SmokeDetector> GetDataAsync();
+    Task<string> SetDataAsync(SmartDeviceData device);
+    Task<SmartDeviceData> GetDataAsync();
     Task RegisterReminder();
     Task UnregisterReminder();
     Task RegisterTimer();
     Task UnregisterTimer();
 }
 
-public class SmokeDetector
+public class SmartDeviceData
 {   
     public string Name { get; set; } = default!;
     public string Status { get; set; } = default!;

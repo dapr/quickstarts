@@ -23,11 +23,11 @@ class Program
             // Create the local proxy by using the same interface that the service implements.
             //
             // You need to provide the type and id so the actor can be located. 
-            var proxy = ActorProxy.Create<ISmartDevice>(actorId, actorType);
+            var proxySmartDevice = ActorProxy.Create<ISmartDevice>(actorId, actorType);
 
             // Now you can use the actor interface to call the actor's methods.
             Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
-            var data = new SmokeDetector(){
+            var data = new SmartDeviceData(){
                 Name = "First Floor",
                 Status = "Ready",
                 Battery = 100.0M,
@@ -37,11 +37,22 @@ class Program
                 MACAddress = "67-54-5D-48-8F-38",
                 LastUpdate = DateTime.Now
             };
-            var response = await proxy.SetDataAsync(data);
+            var response = await proxySmartDevice.SetDataAsync(data);
             Console.WriteLine($"Got response: {response}");
 
             Console.WriteLine($"Calling GetDataAsync on {actorType}:{actorId}...");
-            var savedData = await proxy.GetDataAsync();
+            var savedData = await proxySmartDevice.GetDataAsync();
             Console.WriteLine($"Got response: {response}");
+
+            // TODO: - show aggregates using controller together with smart devices
+            // You need to provide the type and id so the actor can be located. 
+            actorId = new ActorId("controller-singleton");
+            actorType = "ControllerActor";
+            // proxyController = ActorProxy.Create<IController>(actorId, actorType);
+
+            Console.WriteLine($"Calling GetAverageTemperature on {actorType}:{actorId}...");
+            //var avgTemp = await proxyController.GetAverageTemperature();
+            var avgTemp = 70.0M;
+            Console.WriteLine($"Got response: {avgTemp}");
         }
 }
