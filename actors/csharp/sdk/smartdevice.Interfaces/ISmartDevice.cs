@@ -13,17 +13,17 @@ public interface ISmartDevice : IActor
     Task UnregisterTimer();
 }
 
-public record SmokeDetector
-(   [property: JsonPropertyName("name")] string Name,
-    [property: JsonPropertyName("status")] string Status,
-    [property: JsonPropertyName("battery")] decimal Battery,
-    [property: JsonPropertyName("location")] string Location,
-    [property: JsonPropertyName("firmware_version")] decimal FirmwareVersion,
-    [property: JsonPropertyName("serial_no")] string SerialNo,
-    [property: JsonPropertyName("mac_address")] string MACAddress,
-    [property: JsonPropertyName("last_update")] DateTime LastUpdate
-)
-{
+public class SmokeDetector
+{   
+    public string Name { get; set; } = default!;
+    public string Status { get; set; } = default!;
+    public decimal Battery { get; set; } = default!;
+    public string Location { get; set; } = default!;
+    public decimal FirmwareVersion { get; set; } = default!;
+    public string SerialNo { get; set; } = default!;
+    public string MACAddress { get; set; } = default!;
+    public DateTime LastUpdate { get; set; } = default!;
+
     public override string ToString()
     {
         return $"Name: {this.Name}, Status: {this.Status}, Battery: {this.Battery}, Location: {this.Location}, " +

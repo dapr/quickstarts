@@ -27,16 +27,16 @@ class Program
 
             // Now you can use the actor interface to call the actor's methods.
             Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
-            var data = new SmokeDetector(
-                Name : "First Floor",
-                Status : "Ready",
-                Battery : 100.0M,
-                Location : "Main Hallway",
-                FirmwareVersion : 1.1M,
-                SerialNo : "ABCDEFG1",
-                MACAddress : "67-54-5D-48-8F-38",
-                LastUpdate : DateTime.Now
-            );
+            var data = new SmokeDetector(){
+                Name = "First Floor",
+                Status = "Ready",
+                Battery = 100.0M,
+                Location = "Main Hallway",
+                FirmwareVersion = 1.1M,
+                SerialNo = "ABCDEFG1",
+                MACAddress = "67-54-5D-48-8F-38",
+                LastUpdate = DateTime.Now
+            };
             var response = await proxy.SetDataAsync(data);
             Console.WriteLine($"Got response: {response}");
 
