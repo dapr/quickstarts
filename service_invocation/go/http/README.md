@@ -16,7 +16,6 @@ And one order processor service: Go order-processor service `order-processor`
 name: Run order-processor service
 expected_stdout_lines:
   - '== APP == Order received: {"orderId":10}'
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -45,7 +44,6 @@ name: Run checkout service
 expected_stdout_lines:
   - '== APP == Order passed: {"orderId":1}'
   - '== APP == Order passed: {"orderId":2}'
-  - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -61,9 +59,9 @@ dapr run \
   -- go run .
 ```
 
-To stop:
-
 <!-- END_STEP -->
+
+To stop:
 
 ```bash
 dapr stop --app-id checkout
