@@ -67,7 +67,7 @@ class Program
             Console.WriteLine($"Smart device state: {savedData.ToString()}");
 
             // Show aggregates using controller together with smart devices
-            actorId = new ActorId("controller-singleton");
+            actorId = new ActorId("singleton");
             actorType = "ControllerActor";
             var proxyController = ActorProxy.Create<IController>(actorId, actorType);
 

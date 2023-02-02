@@ -6,9 +6,13 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/actors
 
 > **Note:** This example leverages the Dapr SDK.  
 
-This quickstart includes one service:
+This quickstart includes three services and some common interfaces:
  
-- .NET/C# service `SmartDetectorActor`
+- .NET/C# service `SmokeDetectorActor:1`
+- .NET/C# service `SmokeDetectorActor:2`
+- .NET/C# service `ControllerActor:singleton`
+- .NET/C# interfaces `ISmartDevice`, `IController`
+- .NET/C# inferface data type `SmartDeviceData`
 
 ### Run C# SmartDetectorActor service with Dapr
 
@@ -76,7 +80,7 @@ Got response: Success
 Calling GetDataAsync on SmokeDetectorActor:2...
 Got response: Success
 Smart device state: Name: Bedroom, Status: Ready, Battery: 98.0, Temperature: 72.0,Location: Bedroom, FirmwareVersion: 1.1, SerialNo: ABCDEFG2, MACAddress: 50-3A-32-AB-75-DF, LastUpdate: 2/1/2023 10:38:27 PM
-Calling GetAverageTemperature on ControllerActor:controller-singleton...
+Calling GetAverageTemperature on ControllerActor:singleton...
 Got response: 70.0
 ```
 <!-- END_STEP -->
