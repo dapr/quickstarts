@@ -2,11 +2,11 @@
 
 In this quickstart, you'll create a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a publish-subcribe pattern. The publisher generates messages for a specific topic, while the subscriber listen for messages in specific topics.
 
-Check out the documentation about [pubsub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) for more details.
+Check out the documentation about [Dapr pubsub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) for more details.
 
-> **Note:** This example leverages the Dapr client SDK.  If you are looking for the example using only HTTP `requests` [click here](../http).
+> **Note:** This example leverages the Dapr Client SDK. You can find an example using plain HTTP in the [`http` folder](../http/).
 
-This quickstart includes one publisher: Go client message generator `checkout` 
+This quickstart includes one publisher: Go client message generator `checkout`
 
 And one subscriber: Go subscriber `order-processor`
 

@@ -10,33 +10,38 @@ import (
 	"time"
 )
 
-const PUBSUB_NAME = "orderpubsub"
-const PUBSUB_TOPIC = "orders"
+const pubsubComponentName = "orderpubsub"
+const pubsubTopic = "orders"
 
 func main() {
-	daprHost := "http://localhost"
-	if value, ok := os.LookupEnv("DAPR_HOST"); ok {
-		daprHost = value
+	daprHost := os.Getenv("DAPR_HOST")
+	if daprHost == "" {
+		daprHost = "http://localhost"
 	}
-	daprHttpPost := "3500"
-	if value, ok := os.LookupEnv("DAPR_HTTP_PORT"); ok {
-		daprHttpPost = value
+	daprHttpPort := os.Getenv("DAPR_HTTP_PORT")
+	if daprHttpPort == "" {
+		daprHttpPort = "3500"
 	}
+
+	client := http.Client{
+		Timeout: 15 * time.Second,
+	}
+
 	for i := 1; i <= 10; i++ {
 		order := `{"orderId":` + strconv.Itoa(i) + `}`
-		client := http.Client{}
-		req, err := http.NewRequest("POST", daprHost+":"+daprHttpPost+"/v1.0/publish/"+PUBSUB_NAME+"/"+PUBSUB_TOPIC, strings.NewReader(order))
+		req, err := http.NewRequest("POST", daprHost+":"+daprHttpPort+"/v1.0/publish/"+pubsubComponentName+"/"+pubsubTopic, strings.NewReader(order))
 		if err != nil {
 			log.Fatal(err.Error())
-			os.Exit(1)
 		}
 
 		// Publish an event using Dapr pub/sub
-		if _, err = client.Do(req); err != nil {
+		res, err := client.Do(req)
+		if err != nil {
 			log.Fatal(err)
 		}
+		defer res.Body.Close()
 
-		fmt.Println("Published data: ", order)
+		fmt.Println("Published data:", order)
 
 		time.Sleep(1000)
 	}
