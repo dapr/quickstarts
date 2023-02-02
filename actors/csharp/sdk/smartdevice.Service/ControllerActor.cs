@@ -66,7 +66,7 @@ internal class ControllerActor : Actor, IController, IRemindable
         // TODO: await & fetch and average the temperatures
         await Task.Delay(1000);
 
-        return 68.0M;
+        return 70.0M;
     }
 
     /// <summary>
