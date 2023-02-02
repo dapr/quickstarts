@@ -14,7 +14,7 @@ This quickstart includes three services and some common interfaces:
 - .NET/C# interfaces `ISmartDevice`, `IController`
 - .NET/C# inferface data type `SmartDeviceData`
 
-### Run C# SmartDetectorActor service with Dapr
+### Run C# SmokeDetectorActor service with Dapr
 
 1. Open a new terminal window, change directories to `./smartdevice.Service` in the quickstart directory and run: 
 
@@ -47,6 +47,7 @@ Healthy output looks like:
 == APP ==       Request finished HTTP/1.1 GET http://127.0.0.1:5002/healthz - - - 200 - text/plain 0.8972ms
 ```
 
+### Work with service and actors from an external client
 <!-- END_STEP -->
 2. Open a new terminal window, change directories to `./smartdevice.Client` in the quickstart directory and run: 
 
