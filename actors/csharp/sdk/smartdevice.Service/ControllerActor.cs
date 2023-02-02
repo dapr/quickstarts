@@ -1,8 +1,5 @@
-using Dapr.Actors;
 using Dapr.Actors.Runtime;
 using smartdevice.Interfaces;
-using System;
-using System.Threading.Tasks;
 
 namespace smartdevice;
 
@@ -18,27 +15,6 @@ internal class ControllerActor : Actor, IController, IRemindable
     public ControllerActor(ActorHost host)
         : base(host)
     {
-    }
-
-    /// <summary>
-    /// This method is called whenever an actor is activated.
-    /// An actor is activated the first time any of its methods are invoked.
-    /// </summary>
-    protected override Task OnActivateAsync()
-    {
-        // Provides opportunity to perform some optional setup.
-        Console.WriteLine($"Activating actor id: {this.Id}");
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// This method is called whenever an actor is deactivated after a period of inactivity.
-    /// </summary>
-    protected override Task OnDeactivateAsync()
-    {
-        // Provides Opporunity to perform optional cleanup.
-        Console.WriteLine($"Deactivating actor id: {this.Id}");
-        return Task.CompletedTask;
     }
 
     /// <summary>
@@ -67,6 +43,27 @@ internal class ControllerActor : Actor, IController, IRemindable
         await Task.Delay(1000);
 
         return 70.0M;
+    }
+
+    /// <summary>
+    /// This method is called whenever an actor is activated.
+    /// An actor is activated the first time any of its methods are invoked.
+    /// </summary>
+    protected override Task OnActivateAsync()
+    {
+        // Provides opportunity to perform some optional setup.
+        Console.WriteLine($"Activating actor id: {this.Id}");
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// This method is called whenever an actor is deactivated after a period of inactivity.
+    /// </summary>
+    protected override Task OnDeactivateAsync()
+    {
+        // Provides Opporunity to perform optional cleanup.
+        Console.WriteLine($"Deactivating actor id: {this.Id}");
+        return Task.CompletedTask;
     }
 
     /// <summary>

@@ -1,6 +1,4 @@
 ﻿using Dapr.Actors;
-using System.Threading.Tasks;
-using System.Text.Json.Serialization;
 
 namespace smartdevice.Interfaces;
 public interface ISmartDevice : IActor
@@ -27,7 +25,7 @@ public class SmartDeviceData
 
     public override string ToString()
     {
-        return $"Name: {this.Name}, Status: {this.Status}, Battery: {this.Battery}, Temperature: {this.Temperature},Location: {this.Location}, " +
+        return $"Name: {this.Name}, Status: {this.Status}, Battery: {this.Battery}, Temperature: {this.Temperature}, Location: {this.Location}, " +
                 $"FirmwareVersion: {this.FirmwareVersion}, SerialNo: {this.SerialNo}, MACAddress: {this.MACAddress}, LastUpdate: {this.LastUpdate}";
     }
 }

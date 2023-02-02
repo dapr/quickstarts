@@ -1,6 +1,4 @@
 using Dapr.Actors;
-using System.Threading.Tasks;
-using System.Text.Json.Serialization;
 
 namespace smartdevice.Interfaces;
 public interface IController : IActor

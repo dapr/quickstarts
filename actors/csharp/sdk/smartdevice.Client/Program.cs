@@ -1,9 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using Dapr.Actors;
+﻿using Dapr.Actors;
 using Dapr.Actors.Client;
 using smartdevice.Interfaces;
-using System.Text.Json.Serialization;
 
 namespace smartdevice;
 
