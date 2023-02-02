@@ -1,6 +1,5 @@
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddSingleton<smartdevice.ControllerActor>();
 builder.Services.AddActors(options =>
 {
     // Register actor types and configure actor settings
