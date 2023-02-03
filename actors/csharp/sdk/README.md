@@ -1,8 +1,104 @@
 # Dapr Actors (Dapr SDK) **In Development
 
-In this quickstart, you'll create an Actor service to demonstrate Dapr's Actors API to work stateful objects. The service represents the digital twin for a smart device, a "smart smoke detector", that has state including alarm status, battery, and firmware version.  Multiple Actors can have interactions like signaling an alarm to the others.  There is also a Controller actor that can query for all status, battery, and perform calculations like % of devices with low battery.  
+In this quickstart, you'll create an Actor service to demonstrate Dapr's Actors API to work stateful objects. The service represents the digital twin for a smart device, a "smart smoke detector", that has state including a location and a status. Multiple Actors can have interactions like signaling an alarm to the others. There is also a Controller actor that can reset the status for all devices.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/) link for more information about Dapr and Actors.
+
+---
+
+//TODO in general in this README:
+
+1. Refer to .NET source code for more details on the implementation.
+2. Change HTTP calls to use cURL
+
+---
+
+## Objective 1: Activate SmartDetectorActors via HTTP
+
+Dapr actors are so-called virtual actors. As soon as you call an actor method, the actor is activated and the method is executed. The actor is deactivated after a configurable period of time (idle timeout). Any state that belongs to the actor is persisted in a state store. So if you call the same actor after the idle timeout, the actor is reactivated and the state is restored.
+
+1. Run the `SmartDeviceService`, which will start the Dapr sidecar and the service itself:
+
+  ```bash
+  cd ./smartdevice.Service
+
+  dapr run --app-id myapp --app-port 5001 --dapr-http-port 3500 --components-path ../../../resources -- dotnet run --urls=http://localhost:5001/
+  ```
+
+2. Create a `SmartDetectorActor` with actorId `1` and set the location to `First Floor`, and status to `Ready`:
+
+  ```
+  POST http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/method/init
+  Content-Type: application/json
+
+  {
+    "location": "First Floor",
+    "status": "Ready",
+  }
+  ```
+
+3. Read the `status` field of the `SmartDetectorActor` with actorId `1`:
+
+  ```
+  GET http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/state/status
+  ```
+
+  The response should be:
+
+  ```
+  {
+    "status": "Ready"
+  }
+  ```
+
+4. Create another `SmartDetectorActor`, now with actorId `2`, location `Second Floor,` and status  `Ready`:
+
+  ```
+  POST http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/2/state
+  Content-Type: application/json
+
+  {
+    "location": "Second Floor",
+    "status": "Ready",
+  }
+  ```
+
+## Objective 2: Call a SmartDetectorActor method that triggers another Actor method
+
+When a `SmartDetectorActor` detects a fire, the other `SmartDetectorActor` should be signaled so they both sound the alarm. The `ControllerActor` is aware of all `SmartDetectorActor`s and can signal them all. When `SmartDetectorActor` 1 detects a fire, it calls the `SignalAlarm` method on the `ControllerActor` which in turn calls the `SignalAlarm` method `SmartDetectorActor` 2.
+
+1. Ensure that the `SmartDeviceService` and Dapr sidecar are still running.
+2. Make a request to `SmartDetectorActor` with actorId `1` and call the `SignalAlarm` method:
+
+  ```
+  POST http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/method/signalAlarm
+  ```
+
+  The log output of the `SmartDeviceService` should show that the `SignalAlarm` method was called on `SmartDetectorActor` 1 and 2:
+
+  //TODO
+
+3. You can also read the `status` field of the `SmartDetectorActor`s:
+
+  ```
+  GET http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/state/status
+  ```
+
+  The response should be:
+
+  ```
+  {
+    "status": "Alarm"
+  }
+  ```
+
+## Objective 3: Use the ControllerActor to reset the status of all SmartDetectorActors
+
+In case of a false alarm, the `ControllerActor` can reset the status of all `SmartDetectorActor`s to `Ready`.
+
+// TODO
+
+---
 
 > **Note:** This example leverages the Dapr SDK.  
 
