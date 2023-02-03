@@ -1,0 +1,11 @@
+version: 1
+common:
+  configFilePath: ./config.yaml
+apps:
+  - appDirPath: ./order-processor/
+    appID: order-processor
+    appPort: 9001
+    command: ["java", "-jar", "target/OrderProcessingService-0.0.1-SNAPSHOT.jar"]
+  - appID: checkout
+    appDirPath: ./checkout/
+    command: ["java", "-jar", "target/CheckoutService-0.0.1-SNAPSHOT.jar"]

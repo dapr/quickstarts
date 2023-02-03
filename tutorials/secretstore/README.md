@@ -144,7 +144,7 @@ env:
 -->
 
 ```bash
-dapr run --app-id nodeapp --components-path ./components --app-port 3000 --dapr-http-port 3500 node app.js
+dapr run --app-id nodeapp --resources-path ./components --app-port 3000 --dapr-http-port 3500 node app.js
 ```
 
 <!-- END_STEP -->

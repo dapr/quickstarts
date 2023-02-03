@@ -26,6 +26,15 @@ DOCKER:=docker
 DOCKERFILE:=Dockerfile
 DOCKERMUTI_ARCH=linux-amd64 linux-arm linux-arm64
 
+ifeq ($(TARGET_ARCH),arm)
+  DOCKER_IMAGE_PLATFORM:=$(TARGET_OS)/arm/v7
+else ifeq ($(TARGET_ARCH),arm64)
+  DOCKER_IMAGE_PLATFORM:=$(TARGET_OS)/arm64/v8
+else
+  DOCKER_IMAGE_PLATFORM:=$(TARGET_OS)/amd64
+endif
+
+
 .PHONY: build
 
 BUILD_APPS:=$(foreach ITEM,$(APPS),build-$(ITEM))
@@ -35,7 +44,13 @@ build: $(BUILD_APPS)
 define genDockerImageBuild
 .PHONY: build-$(1)
 build-$(1):
-	$(DOCKER) build -f $(1)/$(DOCKERFILE) $(1)/. -t $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH) --platform $(TARGET_OS)/$(TARGET_ARCH)
+ifeq ($(TARGET_ARCH),amd64)
+	$(DOCKER) build --build-arg PKG_FILES=* --platform $(DOCKER_IMAGE_PLATFORM) -f $(1)/$(DOCKERFILE) $(1)/. -t $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH)
+else
+	-$(DOCKER) buildx create --use --name daprsamplesbuild
+	-$(DOCKER) run --rm --privileged multiarch/qemu-user-static --reset -p yes
+	$(DOCKER) buildx build --build-arg PKG_FILES=* --platform $(DOCKER_IMAGE_PLATFORM) -f $(1)/$(DOCKERFILE) $(1)/. -t $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH)
+endif
 endef
 
 # Generate docker image build targets
@@ -50,7 +65,13 @@ push: $(PUSH_APPS)
 define genDockerImagePush
 .PHONY: push-$(1)
 push-$(1):
+ifeq ($(TARGET_ARCH),amd64)
 	$(DOCKER) push $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH)
+else
+	-$(DOCKER) buildx create --use --name daprsamplesbuild
+	-$(DOCKER) run --rm --privileged multiarch/qemu-user-static --reset -p yes
+	$(DOCKER) buildx build --build-arg PKG_FILES=* --platform $(DOCKER_IMAGE_PLATFORM) -f $(1)/$(DOCKERFILE) $(1)/. -t $(SAMPLE_REGISTRY)/$(DOCKER_IMAGE_PREFIX)$(1):$(REL_VERSION)-$(TARGET_OS)-$(TARGET_ARCH) --push
+endif
 endef
 
 # Generate docker image push targets

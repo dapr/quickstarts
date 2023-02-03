@@ -10,28 +10,38 @@ import (
 	dapr "github.com/dapr/go-sdk/client"
 )
 
+const stateStoreComponentName = "statestore"
+
 func main() {
+	client, err := dapr.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for i := 1; i <= 100; i++ {
 		orderId := i
-		order := "{\"orderId\":" + strconv.Itoa(orderId) + "}"
-		client, err := dapr.NewClient()
-		STATE_STORE_NAME := "statestore"
-		if err != nil {
-			panic(err)
-		}
-		ctx := context.Background()
+		order := `{"orderId":` + strconv.Itoa(orderId) + "}"
 
 		// Save state into the state store
-		_ = client.SaveState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId), []byte(order), nil)
-		log.Print("Saving Order: " + string(order))
+		err = client.SaveState(context.Background(), stateStoreComponentName, strconv.Itoa(orderId), []byte(order), nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Saved Order:", string(order))
 
 		// Get state from the state store
-		result, _ := client.GetState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId), nil)
-		fmt.Println("Getting Order: " + string(result.Value))
+		result, err := client.GetState(context.Background(), stateStoreComponentName, strconv.Itoa(orderId), nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Retrieved Order:", string(result.Value))
 
 		// Delete state from the state store
-		_ = client.DeleteState(ctx, STATE_STORE_NAME, strconv.Itoa(orderId), nil)
-		log.Print("Deleting Order: " + string(order))
+		err = client.DeleteState(context.Background(), stateStoreComponentName, strconv.Itoa(orderId), nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Deleted Order:", string(order))
 
 		time.Sleep(5000)
 	}

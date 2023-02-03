@@ -25,7 +25,7 @@ output_match_mode: substring
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ -- go run .
+dapr run --app-id order-processor --resources-path ../../../components/ -- go run .
 ```
 
 <!-- END_STEP -->
