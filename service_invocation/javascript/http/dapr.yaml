@@ -5,9 +5,7 @@ apps:
   - appDirPath: ./order-processor/
     appID: order-processor
     appPort: 5001
-    daprHTTPPort: 3501
     command: ["npm", "start"]
   - appID: checkout
     appDirPath: ./checkout/
-    daprHTTPPort: 3500
     command: ["npm", "start"]

@@ -3,9 +3,7 @@ apps:
   - appDirPath: ./order-processor/
     appID: order-processor
     appPort: 7001
-    daprHTTPPort: 3501
     command: ["dotnet", "run"]
   - appID: checkout
     appDirPath: ./checkout/
-    daprHTTPPort: 3500
     command: ["dotnet", "run"]

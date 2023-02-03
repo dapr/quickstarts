@@ -3,9 +3,7 @@ apps:
   - appDirPath: ./order-processor/
     appID: order-processor
     appPort: 6001
-    daprHTTPPort: 3501
     command: ["go", "run", "."]
   - appID: checkout
     appDirPath: ./checkout/
-    daprHTTPPort: 3500
     command: ["go", "run", "."]
