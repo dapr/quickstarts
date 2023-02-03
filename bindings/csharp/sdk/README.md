@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id batch-sdk --app-port 7002 --components-path ../../../components -- dotnet run
+dapr run --app-id batch-sdk --app-port 7002 --resources-path ../../../components -- dotnet run
 ```
 
 <!-- END_STEP -->

@@ -43,7 +43,7 @@ sleep: 10
 
 
 ```bash
-dapr run --app-id order-processor-http --components-path ../../../components/ --app-port 6001 -- python3 app.py
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 6001 -- python3 app.py
 ```
 
 <!-- END_STEP -->
@@ -77,7 +77,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkout-http --components-path ../../../components/ -- python3 app.py
+dapr run --app-id checkout-http --resources-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->

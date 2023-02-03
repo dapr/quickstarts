@@ -61,7 +61,7 @@ match_order: none
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ --app-port 6001 -- node index.js
+dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- node index.js
 ```
 
 <!-- END_STEP -->

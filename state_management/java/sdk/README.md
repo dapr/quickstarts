@@ -50,7 +50,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../resources/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 <!-- END_STEP -->
