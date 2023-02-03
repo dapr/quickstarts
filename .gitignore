@@ -6,6 +6,7 @@ _ReSharper.*
 bin
 obj
 github.com
+**/*.log
 
 ## Build generated
 target/
