@@ -9,27 +9,29 @@ import (
 	dapr "github.com/dapr/go-sdk/client"
 )
 
-var (
-	PUBSUB_NAME  = "orderpubsub"
-	PUBSUB_TOPIC = "orders"
+const (
+	pubsubComponentName = "orderpubsub"
+	pubsubTopic         = "orders"
 )
 
 func main() {
+	// Create a new client for Dapr using the SDK
 	client, err := dapr.NewClient()
 	if err != nil {
 		panic(err)
 	}
 	defer client.Close()
-	ctx := context.Background()
+
+	// Publish events using Dapr pubsub
 	for i := 1; i <= 10; i++ {
 		order := `{"orderId":` + strconv.Itoa(i) + `}`
 
-		// Publish an event using Dapr pub/sub
-		if err := client.PublishEvent(ctx, PUBSUB_NAME, PUBSUB_TOPIC, []byte(order)); err != nil {
+		err := client.PublishEvent(context.Background(), pubsubComponentName, pubsubTopic, []byte(order))
+		if err != nil {
 			panic(err)
 		}
 
-		fmt.Println("Published data: ", order)
+		fmt.Println("Published data:", order)
 
 		time.Sleep(1000)
 	}
