@@ -39,8 +39,8 @@ dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-htt
 <!-- STEP
 name: Run Go publisher
 expected_stdout_lines:
-  - '== APP == Published data:  {"orderId":1}'
-  - '== APP == Published data:  {"orderId":2}'
+  - '== APP == Published data: {"orderId":1}'
+  - '== APP == Published data: {"orderId":2}'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

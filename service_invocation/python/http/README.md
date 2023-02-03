@@ -14,15 +14,14 @@ And one order processor service:
 
 ### Run Python order-processor with Dapr
 
-1. Open a new terminal window and navigate to `order-processor` directory and install dependencies: 
+1. Install dependencies for `order-processor` app: 
 
 <!-- STEP
 name: Install Python dependencies
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt 
+pip3 install -r order-processor/requirements.txt 
 ```
 
 <!-- END_STEP -->
@@ -41,23 +40,21 @@ sleep: 15
 -->
 
 ```bash
-cd ./order-processor
-dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 order-processor/app.py
 ```
 
 <!-- END_STEP -->
 
 ### Run Python checkout with Dapr
 
-1. Open a new terminal window and navigate to `checkout` directory and install dependencies: 
+1. Open a new terminal window and install dependencies for `checkout` app: 
 
 <!-- STEP
 name: Install Python dependencies
 -->
 
 ```bash
-cd ./checkout
-pip3 install -r requirements.txt 
+pip3 install -r checkout/requirements.txt 
 ```
 
 <!-- END_STEP -->
@@ -77,8 +74,7 @@ sleep: 15
 -->
     
 ```bash
-cd ./checkout
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 checkout/app.py
 ```
 
 <!-- END_STEP -->
@@ -90,22 +86,7 @@ dapr stop --app-id order-processor
 
 ### Start all apps with multi app run template file:
 
-1. Open a new terminal window and install dependencies for `order-processor` and `checkout` apps:
-
-<!-- STEP
-name: Install Python dependencies for order-processor and checkout
--->
-
-```bash
-cd ./order-processor
-pip3 install -r requirements.txt
-cd ../checkout
-pip3 install -r requirements.txt
-```
-
-<!-- END_STEP -->
-
-2. Run the multi app run template:
+The dependencies are already installed from previous steps. Simply run the multi app run template. It uses `dapr.yaml` file to determine which applications to run.
 
 <!-- STEP
 name: Run multi app run template
@@ -124,11 +105,12 @@ sleep: 15
 -->
 
 ```bash
-sleep 10
 dapr run -f .
 ```
 
 <!-- END_STEP -->
+
+Finally, stop all:
 
 ```bash
 dapr stop -f .

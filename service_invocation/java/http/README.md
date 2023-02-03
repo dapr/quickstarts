@@ -130,7 +130,6 @@ sleep: 15
 -->
 
 ```bash
-sleep 10
 dapr run -f .
 ```
 
