@@ -27,13 +27,7 @@ sleep: 15
 
 ```bash
 cd ./order-processor
-dapr run \
-  --app-port 6001 \
-  --app-id order-processor \
-  --app-protocol http \
-  --dapr-http-port 3501 \
-  --components-path ../../../components \
-  -- go run .
+dapr run --app-port 6001 --app-id order-processor --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->
@@ -56,11 +50,7 @@ sleep: 15
 
 ```bash
 cd ./checkout
-dapr run \
-  --app-id checkout-http \
-  --dapr-http-port 3500 \
-  --components-path ../../../components \
-  -- go run .
+dapr run --app-id checkout-http --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->

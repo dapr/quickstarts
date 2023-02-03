@@ -20,7 +20,7 @@ This quickstart includes one service:
 cd ../state_management/csharp/sdk/order-processor
 dotnet restore
 dotnet build
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- dotnet run
+dapr run --app-id order-processor --config ../config.yaml --resources-path ../../../resources/ -- dotnet run
 ```
 
 ### Go example:
@@ -28,7 +28,7 @@ dapr run --app-id order-processor --config ../config.yaml --components-path ../.
 ```bash
 cd ../state_management/go/sdk/order-processor
 go build .
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components -- go run .
+dapr run --app-id order-processor --config ../config.yaml --resources-path ../../../resources -- go run .
 ```
 
 ### Java example:
@@ -36,7 +36,7 @@ dapr run --app-id order-processor --config ../config.yaml --components-path ../.
 ```bash
 cd ../state_management/java/sdk/order-processor
 mvn clean install
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --config ../config.yaml --resources-path ../../../resources/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ### JavaScript example:
@@ -44,7 +44,7 @@ dapr run --app-id order-processor --config ../config.yaml --components-path ../.
 ```bash
 cd ../state_management/javascript/sdk/order-processor
 npm install
-dapr run --app-id order-processor ../config.yaml --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor ../config.yaml --resources-path ../../../resources/ -- npm start
 ```
 
 ### Python example:
@@ -52,7 +52,7 @@ dapr run --app-id order-processor ../config.yaml --components-path ../../../comp
 ```bash
 cd ../state_management/python/sdk/order-processor
 pip3 install -r requirements.txt 
-dapr run --app-id order-processor ../config.yaml --components-path ../../../components/ -- python3 
+dapr run --app-id order-processor ../config.yaml --resources-path ../../../resources/ -- python3 
 ```
 
 ### Expected output: 

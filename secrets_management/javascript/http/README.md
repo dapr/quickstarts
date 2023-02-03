@@ -37,7 +37,7 @@ output_match_mode: substring
 -->
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor --resources-path ../../../components/ -- npm start
 ```
 
 <!-- END_STEP -->

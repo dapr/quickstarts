@@ -44,7 +44,7 @@ sleep: 10
 -->
 
 ```bash
-dapr run --app-id order-processor --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor --resources-path ../../../resources/ -- npm start
 ```
 
 <!-- END_STEP -->

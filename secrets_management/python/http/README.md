@@ -37,7 +37,7 @@ output_match_mode: substring
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->

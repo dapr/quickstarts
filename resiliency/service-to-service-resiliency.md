@@ -22,7 +22,7 @@ This quickstart includes one service:
 cd ../service_invocation/csharp/http/order-processor
 dotnet restore
 dotnet build
-dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 ##### Checkout Service:
@@ -31,7 +31,7 @@ dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --comp
 cd ../service_invocation/csharp/http/checkout
 dotnet restore
 dotnet build
-dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- dotnet run
+dapr run  --app-id checkout --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
 
 ### Go example
@@ -41,7 +41,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ```bash
 cd ../service_invocation/go/http/order-processor
 go build .
-dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 ##### Checkout Service:
@@ -49,7 +49,7 @@ dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --comp
 ```bash
 cd ../service_invocation/go/http/checkout
 go build .
-dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/  --app-protocol http --dapr-http-port 3500 -- go run .
+dapr run  --app-id checkout --config ../config.yaml --resources-path ../../../resources/  --app-protocol http --dapr-http-port 3500 -- go run .
 ```
 
 ### Java example
@@ -59,7 +59,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ```bash
 cd ../service_invocation/java/http/order-processor
 mvn clean install
-dapr run --app-id order-processor  --config ../config.yaml --components-path ../../../components/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor  --config ../config.yaml --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ##### Checkout Service
@@ -67,7 +67,7 @@ dapr run --app-id order-processor  --config ../config.yaml --components-path ../
 ```bash
 cd ../service_invocation/java/http/checkout
 mvn clean install
-dapr run --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
+dapr run --app-id checkout --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
 ### JavaScript example
@@ -77,7 +77,7 @@ dapr run --app-id checkout --config ../config.yaml --components-path ../../../co
 ```bash
 cd ../service_invocation/javascript/http/order-processor
 npm install
-dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 ##### Checkout Service
@@ -85,7 +85,7 @@ dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --comp
 ```bash
 cd ../service_invocation/javascript/http/checkout
 npm install
-dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- npm start
+dapr run  --app-id checkout --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
 ### Python example
@@ -95,7 +95,7 @@ dapr run  --app-id checkout --config ../config.yaml --components-path ../../../c
 ```bash
 cd ../service_invocation/python/http/order-processor
 pip3 install -r requirements.txt 
-dapr run --app-port 8001 --app-id order-processor --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 ##### Checkout Service
@@ -103,7 +103,7 @@ dapr run --app-port 8001 --app-id order-processor --config ../config.yaml --comp
 ```bash
 cd ../service_invocation/python/http/checkout
 pip3 install -r requirements.txt 
-dapr run  --app-id checkout --config ../config.yaml --components-path ../../../components/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run  --app-id checkout --config ../config.yaml --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
 ### Expected output
@@ -161,7 +161,7 @@ Simulate the `order-processor` service recovering by restarting the application 
 ##### Order Processor Service
 
 ```bash
-dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --resources-path --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 ### Go example
@@ -169,7 +169,7 @@ dapr run --app-port 7001 --app-id order-processor --config ../config.yaml --comp
 ##### Order Processor Service
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --resources-path --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 ### Java example
@@ -177,7 +177,7 @@ dapr run --app-port 6001 --app-id order-processor --config ../config.yaml --comp
 ##### Order Processor Service
 
 ```bash
-dapr run --app-id order-processor  --config ../config.yaml --components-path --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor  --config ../config.yaml --resources-path --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ### JavaScript example
@@ -185,7 +185,7 @@ dapr run --app-id order-processor  --config ../config.yaml --components-path --a
 ##### Order Processor Service
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --resources-path --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 ### Python example
@@ -193,7 +193,7 @@ dapr run --app-port 5001 --app-id order-processor --config ../config.yaml --comp
 ##### Order Processor Service:
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor --config ../config.yaml --components-path --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --config ../config.yaml --resources-path --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
 ### Observe orders have resumed sequentially:
