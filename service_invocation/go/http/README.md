@@ -67,3 +67,34 @@ To stop:
 dapr stop --app-id checkout
 dapr stop --app-id order-processor
 ```
+
+### Start all apps with multi app run template file:
+
+1. Run the multi app run template:
+
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - 'This is a preview feature and subject to change in future releases'
+  - 'Validating config and starting app "order-processor"'
+  - 'Started Dapr with app id "order-processor"'
+  - 'Writing log files to directory'
+  - 'Validating config and starting app "checkout"'
+  - 'Started Dapr with app id "checkout"'
+  - 'Writing log files to directory'
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
+
+```bash
+sleep 10
+dapr run -f .
+```
+
+<!-- END_STEP -->
+
+```bash
+dapr stop -f .
+```
