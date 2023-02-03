@@ -1,0 +1,13 @@
+version: 1
+common:
+  configFilePath: ./config.yaml
+apps:
+  - appDirPath: ./order-processor/
+    appID: order-processor
+    appPort: 8001
+    daprHTTPPort: 3501
+    command: ["python3", "app.py"]
+  - appID: checkout
+    appDirPath: ./checkout/
+    daprHTTPPort: 3500
+    command: ["python3", "app.py"]

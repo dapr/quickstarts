@@ -1,0 +1,13 @@
+version: 1
+common:
+  configFilePath: ./config.yaml
+apps:
+  - appDirPath: ./order-processor/
+    appID: order-processor
+    appPort: 9001
+    daprHTTPPort: 3501
+    command: ["java", "-jar", "target/OrderProcessingService-0.0.1-SNAPSHOT.jar"]
+  - appID: checkout
+    appDirPath: ./checkout/
+    daprHTTPPort: 3500
+    command: ["java", "-jar", "target/CheckoutService-0.0.1-SNAPSHOT.jar"]
