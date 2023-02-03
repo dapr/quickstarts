@@ -337,6 +337,7 @@ dapr stop --app-id react-form
 If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that are being published on [Redis stream](https://redis.io/docs/data-types/streams/), follow the below steps: 
 
 1. Redis is running inside of a docker container, so to access it via CLI, we pass the following command to a new terminal:
+
 <!-- STEP
 expected_stdout_lines:
  - 127.0.0.1:6379>
@@ -351,6 +352,7 @@ docker exec -it dapr_redis redis-cli
 <!-- END_STEP -->
 
 2. There can be multiple items/orders/messages inside a redis stream. It is possible to get the number of orders inside a Stream just using the `XLEN` command:
+
 <!-- STEP
 expected_stdout_lines:
  - (integer) 3 
@@ -365,6 +367,7 @@ XLEN orders
 <!-- END_STEP -->
 
 3. To show the details of each order in the redis stream events, we use the `XRANGE` command. We specify two IDs, start and end. The range returned will include the elements having start or end as ID. The two special IDs - and + respectively mean the smallest and the greatest ID possible. We add an optional `COUNT` option at the end to get the first N items only. Below command shows the first 2 events.
+
 <!-- STEP
 expected_stdout_lines:
  - (array) 
