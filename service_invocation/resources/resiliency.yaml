@@ -10,7 +10,7 @@ spec:
     retries:
       retryForever:
         policy: constant
-        maxInterval: 5s
+        duration: 5s
         maxRetries: -1 
 
     circuitBreakers:

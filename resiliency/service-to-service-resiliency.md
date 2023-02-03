@@ -133,7 +133,7 @@ Policies defined in the resiliency.yaml spec:
 ```yaml
 retryForever:
   policy: constant
-  maxInterval: 5s
+  duration: 5s
   maxRetries: -1 
 
 circuitBreakers:
