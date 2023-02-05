@@ -52,12 +52,10 @@ WorkflowEngineClient workflowClient = host.Services.GetRequiredService<WorkflowE
 // Populate the store with items
 RestockInventory();
 
-// Main Loop
 // Generate a unique ID for the workflow
 string orderId = Guid.NewGuid().ToString()[..8];
 string itemToPurchase = "Cars";
 int ammountToPurchase = 10;
-Console.WriteLine("In this quickstart, you will be purhasing {0} {1}.", ammountToPurchase, itemToPurchase);
 
 // Construct the order
 OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurchase);
@@ -82,8 +80,8 @@ while (state.RuntimeStatus.ToString() == "Running")
 {
     await Task.Delay(TimeSpan.FromSeconds(5));
     state = await workflowClient.GetWorkflowStateAsync(
-    instanceId: orderId,
-    getInputsAndOutputs: true);
+        instanceId: orderId,
+        getInputsAndOutputs: true);
 }
 
 Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
