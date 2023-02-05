@@ -1,12 +1,12 @@
 # Dapr workflows
 
-In this quickstart, you'll create a microservice to demonstrate Dapr's workflow API. The service starts and manages a workflow to store and retrieve data in a state store.
+In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a Dapr state store.
 
-This quickstart includes one service:
+This quickstart includes one project:
 
-- Dotnet client service `order-processor` 
+- .NET console app `order-processor` 
 
-### Run Dotnet service with Dapr
+### Run the order processor workflow
 
 1. Open a new terminal window and navigate to `order-processor` directory: 
 
@@ -21,7 +21,7 @@ dotnet build
 ```
 
 <!-- END_STEP -->
-2. Run the Dotnet service app with Dapr: 
+2. Run the console app with Dapr: 
 
 <!-- STEP
 name: Run order-processor service
