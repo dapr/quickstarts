@@ -43,51 +43,44 @@ if (string.IsNullOrEmpty(daprPortStr))
 using var daprClient = new DaprClientBuilder().Build();
 
 // Start the console app
-while (true)
+var health = await daprClient.CheckHealthAsync();
+Console.WriteLine("Welcome to the workflows example!");
+Console.WriteLine("In this example, you will be starting a workflow and obtaining the status.");
+
+// Populate the store with items
+RestockInventory();
+
+// Main Loop
+// Generate a unique ID for the workflow
+string orderId = Guid.NewGuid().ToString()[..8];
+string itemToPurchase = "Cars";
+int ammountToPurchase = 10;
+Console.WriteLine("In this quickstart, you will be purhasing {0} {1}.", ammountToPurchase, itemToPurchase);
+
+// Construct the order
+OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurchase);
+
+OrderPayload orderResponse;
+string key;
+// Ensure that the store has items
+(orderResponse, key) = await daprClient.GetStateAndETagAsync<OrderPayload>(storeName, itemToPurchase);
+
+// Start the workflow
+Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
+var response = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, orderInfo, null, CancellationToken.None);
+
+// Wait a second to allow workflow to start
+await Task.Delay(TimeSpan.FromSeconds(1));
+
+var state = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
+Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state);
+while (state.metadata["dapr.workflow.runtime_status"].ToString() == "RUNNING")
 {
-    var health = await daprClient.CheckHealthAsync();
-    Console.WriteLine("Welcome to the workflows example!");
-    Console.WriteLine("In this example, you will be starting a workflow and obtaining the status.");
-
-    // Populate the store with items
-    RestockInventory();
-
-    // Can we remove the logging info?
-    
-    // Main Loop
-    // Generate a unique ID for the workflow
-    string orderId = Guid.NewGuid().ToString()[..8];
-    string itemToPurchase = "Cars";
-    int ammountToPurchase = 10;
-    Console.WriteLine("In this quickstart, you will be purhasing {0} {1}.", ammountToPurchase, itemToPurchase);
-
-    // Construct the order
-    OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurchase);
-
-    OrderPayload orderResponse;
-    string key;
-    // Ensure that the store has items
-    (orderResponse, key) = await daprClient.GetStateAndETagAsync<OrderPayload>(storeName, itemToPurchase);
-
-    // Start the workflow
-    Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
-    var response = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, orderInfo, null, CancellationToken.None);
-
-    // Wait a second to allow workflow to start
-    await Task.Delay(TimeSpan.FromSeconds(1));
-
-    var state = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
-    Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state);
-    while (state.metadata["dapr.workflow.runtime_status"].ToString() == "RUNNING")
-    {
-        await Task.Delay(TimeSpan.FromSeconds(5));
-        state = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
-    }
-        Console.WriteLine("Your workflow has completed: {0}", JsonSerializer.Serialize(state));
-        Console.WriteLine("Workflow Status: {0}", state.metadata["dapr.workflow.runtime_status"]);
-    
-    break;
+    await Task.Delay(TimeSpan.FromSeconds(5));
+    state = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
 }
+    Console.WriteLine("Your workflow has completed: {0}", JsonSerializer.Serialize(state));
+    Console.WriteLine("Workflow Status: {0}", state.metadata["dapr.workflow.runtime_status"]);
 
 void RestockInventory()
 {

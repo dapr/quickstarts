@@ -38,7 +38,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run --dapr-grpc-port 4001 dotnet run
+dapr run dotnet run
 ```
 
 <!-- END_STEP -->
