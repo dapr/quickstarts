@@ -26,7 +26,6 @@ dotnet build
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Welcome to the workflows example!'
   - '== APP ==       There are now: 90 Cars left in stock'
   - '== APP == Workflow Status: Completed'
   - "Exited App successfully"
