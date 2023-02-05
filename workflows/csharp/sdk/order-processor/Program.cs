@@ -1,17 +1,16 @@
 ﻿using Dapr.Client;
 using Dapr.Workflow;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using WorkflowConsoleApp.Activities;
 using WorkflowConsoleApp.Models;
 using WorkflowConsoleApp.Workflows;
-using System.Text.Json;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
-const string workflowComponent = "dapr";
 const string storeName = "statestore";
-const string workflowName = nameof(OrderProcessingWorkflow);
 
 // The workflow host is a background service that connects to the sidecar over gRPC
 var builder = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
@@ -34,18 +33,21 @@ var builder = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
 using var host = builder.Build();
 host.Start();
 
-// Start the client
-string daprPortStr = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT");
-if (string.IsNullOrEmpty(daprPortStr))
-{
-    Environment.SetEnvironmentVariable("DAPR_GRPC_PORT", "4001");
-}
 using var daprClient = new DaprClientBuilder().Build();
 
-// Start the console app
-var health = await daprClient.CheckHealthAsync();
-Console.WriteLine("Welcome to the workflows example!");
-Console.WriteLine("In this example, you will be starting a workflow and obtaining the status.");
+// Wait for the sidecar to become available
+while (!await daprClient.CheckHealthAsync())
+{
+    Thread.Sleep(TimeSpan.FromSeconds(5));
+}
+
+// Wait one more second for the workflow engine to finish initializing.
+// This is just to make the log output look a little nicer.
+Thread.Sleep(TimeSpan.FromSeconds(1));
+
+// NOTE: WorkflowEngineClient will be replaced with a richer version of DaprClient
+//       in a subsequent SDK release. This is a temporary workaround.
+WorkflowEngineClient workflowClient = host.Services.GetRequiredService<WorkflowEngineClient>();
 
 // Populate the store with items
 RestockInventory();
@@ -60,27 +62,31 @@ Console.WriteLine("In this quickstart, you will be purhasing {0} {1}.", ammountT
 // Construct the order
 OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurchase);
 
-OrderPayload orderResponse;
-string key;
-// Ensure that the store has items
-(orderResponse, key) = await daprClient.GetStateAndETagAsync<OrderPayload>(storeName, itemToPurchase);
-
 // Start the workflow
 Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
-var response = await daprClient.StartWorkflowAsync(orderId, workflowComponent, workflowName, orderInfo, null, CancellationToken.None);
+
+await workflowClient.ScheduleNewWorkflowAsync(
+    name: nameof(OrderProcessingWorkflow),
+    instanceId: orderId,
+    input: orderInfo);
 
 // Wait a second to allow workflow to start
 await Task.Delay(TimeSpan.FromSeconds(1));
 
-var state = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
+WorkflowState state = await workflowClient.GetWorkflowStateAsync(
+    instanceId: orderId,
+    getInputsAndOutputs: true);
+
 Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state);
-while (state.metadata["dapr.workflow.runtime_status"].ToString() == "RUNNING")
+while (state.RuntimeStatus.ToString() == "Running")
 {
     await Task.Delay(TimeSpan.FromSeconds(5));
-    state = await daprClient.GetWorkflowAsync(orderId, workflowComponent, workflowName);
+    state = await workflowClient.GetWorkflowStateAsync(
+    instanceId: orderId,
+    getInputsAndOutputs: true);
 }
-    Console.WriteLine("Your workflow has completed: {0}", JsonSerializer.Serialize(state));
-    Console.WriteLine("Workflow Status: {0}", state.metadata["dapr.workflow.runtime_status"]);
+
+Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
 
 void RestockInventory()
 {
