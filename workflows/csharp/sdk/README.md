@@ -1,10 +1,17 @@
 # Dapr workflows
 
-In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a Dapr state store.
+In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a state store.
 
 This quickstart includes one project:
 
 - .NET console app `order-processor` 
+
+The quickstart contains 1 workflow to simulate purchasing items from a store, and 4 unique activities within the workflow. These 4 activities are as follows:
+
+- NotifyActivity: This activity utilizes a logger to print out messages throughout the workflow. 
+- ProcessPaymentActivity: This activity is responsible for processing and authorizing the payment.
+- ReserveInventoryActivity: This activity checks the state store to ensure that there is enough inventory present for purchase.
+- UpdateInventoryActivity: This activity removes the requested items from the state store and updates the store with the new remaining inventory value.
 
 ### Run the order processor workflow
 
@@ -37,7 +44,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run dotnet run
+dapr run --app-id order-processor dotnet run
 ```
 
 <!-- END_STEP -->
