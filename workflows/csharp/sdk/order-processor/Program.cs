@@ -35,16 +35,6 @@ host.Start();
 
 using var daprClient = new DaprClientBuilder().Build();
 
-// Wait for the sidecar to become available
-while (!await daprClient.CheckHealthAsync())
-{
-    Thread.Sleep(TimeSpan.FromSeconds(5));
-}
-
-// Wait one more second for the workflow engine to finish initializing.
-// This is just to make the log output look a little nicer.
-Thread.Sleep(TimeSpan.FromSeconds(1));
-
 // NOTE: WorkflowEngineClient will be replaced with a richer version of DaprClient
 //       in a subsequent SDK release. This is a temporary workaround.
 WorkflowEngineClient workflowClient = host.Services.GetRequiredService<WorkflowEngineClient>();
