@@ -1,69 +1,68 @@
-# Dapr Actors (Dapr SDK) **In Development
+# Quickstart: Actors (Dapr SDK) **In Development
 
-In this quickstart, you'll create an Actor service to demonstrate Dapr's Actors API to work stateful objects. The service represents the digital twin for a smart device, a "smart smoke detector", that has state including a location and a status. Multiple Actors can have interactions like signaling an alarm to the others. There is also a Controller actor that can reset the status for all devices.
+In this quickstart, you'll use an service app (ASP.NET project) and a client app (Console project) to demonstrate Dapr's Actors API to work with stateful objects. The service app represents the digital twin for a smart device, a "smart smoke detector", that has state including a location and a status. The client app will be used to interact with the actors.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/) link for more information about Dapr and Actors.
 
----
-
-//TODO in general in this README:
-
-1. Refer to .NET source code for more details on the implementation.
-2. Change HTTP calls to use cURL
-
----
-
-## Objective 1: Activate SmartDetectorActors via HTTP
+> **Note:** This example leverages the Dapr client SDK.  
 
 Dapr actors are so-called virtual actors. As soon as you call an actor method, the actor is activated and the method is executed. The actor is deactivated after a configurable period of time (idle timeout). Any state that belongs to the actor is persisted in a state store. So if you call the same actor after the idle timeout, the actor is reactivated and the state is restored.
 
-1. Run the `SmartDeviceService`, which will start the Dapr sidecar and the service itself:
+The quickstart consists of three projects:
+
+- `SmartDevice.Service` is an ASP.NET application that contains the `SmartDetectorActor` and the `ControllerActor`.
+- `SmartDevice.Client` is a console application that calls the `SmartDetectorActor` and the `ControllerActor`.
+- `SmartDevice.Interfaces` contains the interfaces and data types used by the Service and Client projects.
+
+### Run the SmartDevice.Service
+
+1. Navigate to the directory and install the dependencies:
+
+```bash
+cd ./smartdevice.Service
+dotnet build
+```
+
+2. Run the `SmartDevice.Service`, which will start the Dapr sidecar and the service itself:
 
   ```bash
-  cd ./smartdevice.Service
-
   dapr run --app-id myapp --app-port 5001 --dapr-http-port 3500 --components-path ../../../resources -- dotnet run --urls=http://localhost:5001/
   ```
 
-2. Create a `SmartDetectorActor` with actorId `1` and set the location to `First Floor`, and status to `Ready`:
+### Run the SmartDevice.Client to create SmartDetectorActors
 
-  ```
-  POST http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/method/init
-  Content-Type: application/json
+1. Navigate to the directory and install the dependencies:
 
-  {
-    "location": "First Floor",
-    "status": "Ready",
-  }
-  ```
+```bash
+cd ./smartdevice.Client
+dotnet build
+```
 
-3. Read the `status` field of the `SmartDetectorActor` with actorId `1`:
+2. Run the `SmartDevice.Client`, with the following arguments to create an `SmartDetectorActor` with actorId `1`, location `First Floor`, and status `Ready`:
 
-  ```
-  GET http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/state/status
-  ```
+```bash
+dotnet run -- --create 1 "First Floor" "Ready"
+```
 
-  The response should be:
+3. Run the `SmartDevice.Client` again, now  with the following arguments to read the state of the `SmartDetectorActor` with actorId `1`:
 
-  ```
-  {
-    "status": "Ready"
-  }
-  ```
+```bash
+dotnet run -- --read 1
+```
 
-4. Create another `SmartDetectorActor`, now with actorId `2`, location `Second Floor,` and status  `Ready`:
+The response should be:
 
-  ```
-  POST http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/2/state
-  Content-Type: application/json
+```bash
+actorId: 1, location: First Floor, status: Ready
+```
 
-  {
-    "location": "Second Floor",
-    "status": "Ready",
-  }
-  ```
+4. To create a second `SmartDetectorActor`, run the `SmartDevice.Client` again, with these arguments:
 
-## Objective 2: Call a SmartDetectorActor method that triggers another Actor method
+```bash
+dotnet run -- --create 2 "Second Floor" "Ready"
+```
+
+### Run the SmartDevice.Client to trigger an alarm
 
 When a `SmartDetectorActor` detects a fire, the other `SmartDetectorActor` should be signaled so they both sound the alarm. The `ControllerActor` is aware of all `SmartDetectorActor`s and can signal them all. When `SmartDetectorActor` 1 detects a fire, it calls the `SignalAlarm` method on the `ControllerActor` which in turn calls the `SignalAlarm` method `SmartDetectorActor` 2.
 
