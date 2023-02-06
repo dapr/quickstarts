@@ -1,6 +1,6 @@
 # Quickstart: Actors (Dapr SDK) **In Development
 
-In this quickstart, you'll use an service app (ASP.NET project) and a client app (Console project) to demonstrate Dapr's Actors API to work with stateful objects. The service app represents the digital twin for a smart device, a "smart smoke detector", that has state including a location and a status. The client app will be used to interact with the actors.
+In this quickstart, you'll use a service app (ASP.NET project) and a client app (Console project) to demonstrate Dapr's Actors API to work with stateful objects. The service app represents the digital twin for a smart device, a "smart smoke detector", that has state including a location and a status. The client app will be used to interact with the actors.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/) link for more information about Dapr and Actors.
 
@@ -31,26 +31,26 @@ dotnet build
 
 ### Run the SmartDevice.Client to create SmartDetectorActors
 
-1. Navigate to the directory and install the dependencies:
+1. In another terminal instance, navigate to the directory and install the dependencies:
 
 ```bash
 cd ./smartdevice.Client
 dotnet build
 ```
 
-2. Run the `SmartDevice.Client`, with the following arguments to create an `SmartDetectorActor` with actorId `1`, location `First Floor`, and status `Ready`:
+2. Run the `SmartDevice.Client`, with the following arguments to create a `SmartDetectorActor` with actorId `1`, location `First Floor`, and status `Ready`:
 
 ```bash
 dotnet run -- --create 1 "First Floor" "Ready"
 ```
 
-3. Run the `SmartDevice.Client` again, now  with the following arguments to read the state of the `SmartDetectorActor` with actorId `1`:
+3. Run the `SmartDevice.Client` again, now with the following arguments to read the state of the `SmartDetectorActor` with actorId `1`:
 
 ```bash
 dotnet run -- --read 1
 ```
 
-The response should be:
+  The response should be:
 
 ```bash
 actorId: 1, location: First Floor, status: Ready
@@ -64,38 +64,51 @@ dotnet run -- --create 2 "Second Floor" "Ready"
 
 ### Run the SmartDevice.Client to trigger an alarm
 
-When a `SmartDetectorActor` detects a fire, the other `SmartDetectorActor` should be signaled so they both sound the alarm. The `ControllerActor` is aware of all `SmartDetectorActor`s and can signal them all. When `SmartDetectorActor` 1 detects a fire, it calls the `SignalAlarm` method on the `ControllerActor` which in turn calls the `SignalAlarm` method `SmartDetectorActor` 2.
+When a `SmartDetectorActor` detects a fire, the other `SmartDetectorActor` should be signaled so they both sound the alarm. The `ControllerActor` is aware of all `SmartDetectorActor`s and can signal them. When `SmartDetectorActor` 1 detects a fire, it calls the `SignalAlarm` method on the `ControllerActor` which in turn calls the `SignalAlarm` method `SmartDetectorActor` 2.
 
 1. Ensure that the `SmartDeviceService` and Dapr sidecar are still running.
-2. Make a request to `SmartDetectorActor` with actorId `1` and call the `SignalAlarm` method:
+2. Run the `SmartDevice.Client`, with the following arguments to trigger the alarm state of the `SmartDetectorActor` with actorId `1`:
 
-  ```
-  POST http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/method/signalAlarm
-  ```
+```bash
+dotnet run -- --alarm 1
+```
 
   The log output of the `SmartDeviceService` should show that the `SignalAlarm` method was called on `SmartDetectorActor` 1 and 2:
 
-  //TODO
+```bash
+SignalAlarm was called for actor: 1
+SignalAlarm was called for actor: 2
+```
 
-3. You can also read the `status` field of the `SmartDetectorActor`s:
+3. You can also read the `status` field of the `SmartDetectorActor` 2 by running:
 
-  ```
-  GET http://localhost:<daprPort>/v1.0/actors/SmartDetectorActor/1/state/status
-  ```
+```bash
+dotnet run -- --read 2
+```
 
   The response should be:
 
-  ```
-  {
-    "status": "Alarm"
-  }
-  ```
+```bash
+actorId: 2, location: Second Floor, status: Alarm
+```
 
-## Objective 3: Use the ControllerActor to reset the status of all SmartDetectorActors
+### Run the SmartDevice.Client to reset all SmartDetectorActors
 
 In case of a false alarm, the `ControllerActor` can reset the status of all `SmartDetectorActor`s to `Ready`.
 
-// TODO
+1. Ensure that the `SmartDeviceService` and Dapr sidecar are still running.
+2. Run the `SmartDevice.Client`, with the following arguments to trigger the reset functionality on the ControllerActor:
+
+```bash
+dotnet run -- --reset
+```
+
+  The log output of the `SmartDeviceService` should show that the `Reset` method was called on `SmartDetectorActor` 1 and 2:
+
+```bash
+Reset was called for actor: 1
+Reset was called for actor: 2
+```
 
 ---
 
