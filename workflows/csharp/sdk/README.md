@@ -4,7 +4,7 @@ In this quickstart, you'll create a simple console application to demonstrate Da
 
 This quickstart includes one project:
 
-- Dotnet client service `order-processor` 
+- .NET console app `order-processor` 
 
 ### Run Dotnet service with Dapr
 
