@@ -6,7 +6,7 @@ This quickstart includes one project:
 
 - .NET console app `order-processor` 
 
-### Run Dotnet service with Dapr
+### Run the order processor workflow
 
 1. Open a new terminal window and navigate to `order-processor` directory: 
 
