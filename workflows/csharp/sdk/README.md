@@ -2,7 +2,7 @@
 
 In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a Dapr state store.
 
-This quickstart includes one service:
+This quickstart includes one project:
 
 - Dotnet client service `order-processor` 
 
