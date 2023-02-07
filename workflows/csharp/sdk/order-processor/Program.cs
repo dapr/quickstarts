@@ -3,9 +3,6 @@ using Dapr.Workflow;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using WorkflowConsoleApp.Activities;
 using WorkflowConsoleApp.Models;
 using WorkflowConsoleApp.Workflows;
@@ -65,7 +62,7 @@ WorkflowState state = await workflowClient.GetWorkflowStateAsync(
     instanceId: orderId,
     getInputsAndOutputs: true);
 
-Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state);
+Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state.RuntimeStatus);
 while (!state.IsWorkflowCompleted)
 {
     await Task.Delay(TimeSpan.FromSeconds(5));
