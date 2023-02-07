@@ -78,7 +78,7 @@ WorkflowState state = await workflowClient.GetWorkflowStateAsync(
     getInputsAndOutputs: true);
 
 Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state);
-while (state.RuntimeStatus.ToString() == "Running")
+while (!state.IsWorkflowCompleted)
 {
     await Task.Delay(TimeSpan.FromSeconds(5));
     state = await workflowClient.GetWorkflowStateAsync(
