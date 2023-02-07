@@ -21,7 +21,7 @@ dotnet build
 ```
 
 <!-- END_STEP -->
-2. Run the Dotnet service app with Dapr: 
+2. Run the console app with Dapr: 
 
 <!-- STEP
 name: Run order-processor service
