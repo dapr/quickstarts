@@ -31,10 +31,8 @@ jobs:
   deploy:
     name: Validate tutorials on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     env:
-      DAPR_CLI_VERSION: 1.10.0-rc.1
-      DAPR_RUNTIME_VERSION: 1.10.0-rc.2
-      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/v1.10.0-rc.1/install/
       GOVER: 1.17
       KUBERNETES_VERSION: v1.21.1
       KIND_VERSION: v0.12.0
@@ -42,7 +40,23 @@ jobs:
     strategy:
       matrix: 
         os: [ubuntu-latest, macos-latest]
+      fail-fast: false
     steps:
+      - name: Check out code 
+        uses: actions/checkout@v2
+      - name: Load environment variables
+        uses: artursouza/export-env-action@v2
+        with:
+          envFile: './.github/env/global.env'
+          expand: 'true'
+      - name: Pinning Python to ${{ env.MACOS_PYTHON_VERSION }} on MacOS
+        if: matrix.os == 'macos-latest'
+        run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
+      - name: Verify Python version
+        run: python3 --version
+      - name: Upgrade pip and setuptools
+        if: matrix.os == 'macos-latest'
+        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
       - name: Show .Net version
         run: dotnet --version
       - name: Install Docker - MacOS
@@ -124,8 +138,6 @@ jobs:
           dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
           kubectl get nodes -o wide
           for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
-      - name: Check out code 
-        uses: actions/checkout@v2
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
