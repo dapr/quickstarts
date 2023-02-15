@@ -44,11 +44,7 @@ dapr run --app-id order-processor --resources-path ../../../resources/ -- java -
 ```bash
 cd ../state_management/javascript/sdk/order-processor
 npm install
-<<<<<<< HEAD
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- npm start
-=======
 dapr run --app-id order-processor  --resources-path ../../../resources/ -- npm start
->>>>>>> upstream/master
 ```
 
 ### Python example:
