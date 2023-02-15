@@ -17,10 +17,10 @@ foreach (var item in config.Items)
   Console.WriteLine("Configuration for " + item.Key + ": " + cfg);
 }
 
-// Exit the app after 20 seconds
+// Exit the app after 30 seconds
 var shutdownTimer = new System.Timers.Timer();
-shutdownTimer.Interval = 20000;
-shutdownTimer.Elapsed += (o, e) => unsubscribe(subscriptionId);
+shutdownTimer.Interval = 30000;
+shutdownTimer.Elapsed += (o, e) => Task.Run(async () => await unsubscribe(subscriptionId)).GetAwaiter().GetResult();
 shutdownTimer.Start();
 
 // Subscribe for configuration changes
@@ -42,11 +42,11 @@ await foreach (var configItem in subscribe.Source)
 
 
 // Unsubscribe to config updates and exit the app
-void unsubscribe(string subscriptionId)
+async Task unsubscribe(string subscriptionId)
 {
   try
   {
-    client.UnsubscribeConfiguration(DAPR_CONFIGURATION_STORE, subscriptionId);
+    await client.UnsubscribeConfiguration(DAPR_CONFIGURATION_STORE, subscriptionId);
     Console.WriteLine("App unsubscribed from config changes");
     Environment.Exit(0);
   }

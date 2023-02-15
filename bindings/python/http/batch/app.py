@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 # dapr run --app-id batch-http --app-port 50051
-#   --components-path ../../../components -- python3 app.py
+#   --resources-path ../../../components -- python3 app.py
 
 import json
 from flask import Flask

@@ -1,0 +1,103 @@
+#
+# Copyright 2022 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Validate Workflows
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+jobs:
+  validate:
+    name: Validate quickstart for `${{ matrix.quickstart_language }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    env:
+      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
+      GOVER: 1.17
+      KUBERNETES_VERSION: v1.21.1
+      KIND_VERSION: v0.11.0
+      KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
+    strategy:
+      matrix: 
+        os: [ubuntu-latest, macos-10.15]
+        quickstart_language: [csharp]
+        quickstart_variant: [sdk]
+    steps:
+      - name: Install docker - MacOS
+        if: matrix.os == 'macos-10.15'
+        uses: docker-practice/actions-setup-docker@v1
+        with:
+          docker_buildx: false
+          docker_version: 20.10
+      - name: Set up Go ${{ env.GOVER }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GOVER }}
+      - name: Set up OpenJDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - name: Install .NET Core 
+        uses: actions/setup-dotnet@v1.9.0
+        with:
+          dotnet-version: |
+            6.0.x
+      - name: Determine latest Dapr Runtime version including Pre-releases
+        run: |
+          helm repo add dapr https://dapr.github.io/helm-charts/ && helm repo update && export RUNTIME_VERSION=$(helm search repo dapr/dapr --devel --versions | awk '/dapr\/dapr/ {print $3; exit}' )
+          echo "DAPR_RUNTIME_VERSION=$RUNTIME_VERSION" >> $GITHUB_ENV
+          echo "Found $RUNTIME_VERSION"
+        shell: bash
+      - name: Determine latest Dapr Cli version including Pre-releases
+        run: |
+          export CLI_VERSION=$(curl "https://api.github.com/repos/dapr/cli/releases?per_page=1&page=1" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | jq '.[0].tag_name'| tr -d '",v')
+          echo "DAPR_CLI_VERSION=$CLI_VERSION" >> $GITHUB_ENV
+          echo "Found $CLI_VERSION"
+        shell: bash
+      - name: Set up Dapr CLI - Mac/Linux
+        if: matrix.os != 'windows-latest'
+        run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
+      - name: Set up Dapr CLI - Windows
+        if: matrix.os == 'windows-latest'
+        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"     
+      - name: Install Dapr
+        run: |
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr --version
+      - name: Check out code 
+        uses: actions/checkout@v2
+      - name: Install utilities dependencies
+        run: |
+          echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
+          pip3 install setuptools wheel
+          pip3 install mechanical-markdown
+      - name: Validate ${{ matrix.quickstart_language }} ${{ matrix.quickstart_variant }} workflows
+        run: |
+          pushd workflows/${{ matrix.quickstart_language }}/${{ matrix.quickstart_variant }}
+          make validate
+          popd
+      - name: Linkcheck README.md
+        run: |
+          make validate        

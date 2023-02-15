@@ -58,7 +58,7 @@ match_order: none
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ --app-protocol grpc --dapr-grpc-port 3500 -- node index.js
+dapr run --app-id order-processor --resources-path ../../../components/ --app-protocol grpc --dapr-grpc-port 3500 -- node index.js
 ```
 
 <!-- END_STEP -->

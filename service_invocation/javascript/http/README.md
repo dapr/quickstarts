@@ -87,3 +87,48 @@ dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm sta
 dapr stop --app-id checkout
 dapr stop --app-id order-processor
 ```
+
+### Start all apps with multi app run template file:
+
+1. Open a new terminal window and install dependencies for `order-processor` and `checkout` apps:
+
+<!-- STEP
+name: Install Node dependencies for order-processor and checkout
+-->
+
+```bash
+cd ./order-processor
+npm install
+cd ../checkout
+npm install
+```
+
+<!-- END_STEP -->
+
+2. Run the multi app run template:
+
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - 'This is a preview feature and subject to change in future releases'
+  - 'Validating config and starting app "order-processor"'
+  - 'Started Dapr with app id "order-processor"'
+  - 'Writing log files to directory'
+  - 'Validating config and starting app "checkout"'
+  - 'Started Dapr with app id "checkout"'
+  - 'Writing log files to directory'
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
+
+```bash
+dapr run -f .
+```
+
+<!-- END_STEP -->
+
+```bash
+dapr stop -f .
+```

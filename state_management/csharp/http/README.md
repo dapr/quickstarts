@@ -41,7 +41,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ -- dotnet run
+dapr run --app-id order-processor --resources-path ../../../resources/ -- dotnet run
 ```
 
 <!-- END_STEP -->

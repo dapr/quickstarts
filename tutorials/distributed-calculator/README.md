@@ -22,7 +22,7 @@ Clone the quickstarts repository
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 ### - Run locally
-1. Install [.Net Core SDK 3.1](https://dotnet.microsoft.com/download)
+1. Install [.Net Core SDK 7.0](https://dotnet.microsoft.com/download)
 2. Install [Dapr CLI](https://github.com/dapr/cli)
 3. Install [Go](https://golang.org/doc/install)
 4. Install [Python3](https://www.python.org/downloads/)
@@ -119,14 +119,14 @@ expected_stdout_lines:
 expected_stderr_lines:
 name: "Run dotnet app"
 output_match_mode: substring
-working_dir: "./csharp/bin/Debug/netcoreapp3.1"
+working_dir: "./csharp/bin/Debug/netcoreapp7.0"
 background: true
 env: 
   ASPNETCORE_URLS: 'http://localhost:7001'
-sleep: 2
+sleep: 5
 -->
 
-- Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
+- Navigate to ./bin/Debug/netcoreapp7.0 and start Dapr using command:
    ```bash
    dapr run --app-id subtractapp --app-port 7001 --dapr-http-port 3504 dotnet Subtract.dll
    ```

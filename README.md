@@ -12,12 +12,14 @@ Pick a building block API (for example, pub-sub, state management) and rapidly t
 | Dapr Quickstart | Description |
 |:--------------------:|:--------------------:|
 | [Publish and Subscribe](./pub_sub) | Asynchronous communication between two services using messaging |
-| [Service Invocation](./service_invocation) |  Asynchronous communication between two services using HTTP  |
+| [Service Invocation](./service_invocation) |  Synchronous communication between two services using HTTP  |
 | [State Management](./state_management/) | Store a service's data as key/value pairs in supported state stores |
 | [Bindings](./bindings/) | Work with external systems using input bindings to respond to events and output bindings to call operations|
 | [Secrets Management](./secrets_management/) | Securely fetch secrets |
 | Actors | Coming soon... |
 | [Configuration](./configuration) | Get configuration items as key/value pairs or subscribe to changes whenever a configuration item changes |
+| [Resiliency](./resiliency) | Define and apply fault-tolerant policies (retries/back-offs, timeouts and circuit breakers) to your Dapr API requests |
+| [Workflow](./workflows) | Dapr Workflow enables you to create long running, fault-tolerant, stateful applications.  |
 
 ### Tutorials
 Go deeper into a topic or scenario, oftentimes using building block APIs together to solve problems (for example, build a distributed calculator, build and deploy an app to Kubernetes).

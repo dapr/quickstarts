@@ -47,7 +47,7 @@ match_order: none
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --app-port 6001 --components-path ../../../components -- go run .
+dapr run --app-id order-processor --app-port 6001 --resources-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->

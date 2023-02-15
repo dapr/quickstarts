@@ -1,0 +1,9 @@
+version: 1
+apps:
+  - appDirPath: ./order-processor/
+    appID: order-processor
+    appPort: 5001
+    command: ["npm", "start"]
+  - appID: checkout
+    appDirPath: ./checkout/
+    command: ["npm", "start"]
