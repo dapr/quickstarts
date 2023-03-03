@@ -147,10 +147,10 @@ The `ControllerActor` object is used to make aggregate calls to the other actors
 ```
 
 Additionally look at:
-- `service/SmartDetectorActor.cs` which contains the definition of the the smart device actor actions and its timers
-- `service/ControllerActor.cs` which contains the controller actor that can aggregate across smart devices
-- `smartdevice.interfaces/ISmartDevice` which contains the common actions and shared data types for each SmartDectorActor
-- `smartdevice.interfaces/IController` which contains the actions a controller can perform across all devices
+- `smartdevice.Service/SmartDetectorActor.cs` which contains the implementation of the the smart device actor actions and timers
+- `smartdevice.Service/ControllerActor.cs` which contains the implementation of the controller actor that can aggregate across smart devices
+- `smartdevice.Interfaces/ISmartDevice` which contains the required actions and shared data types for each SmartDectorActor
+- `smartdevice.Interfaces/IController` which contains the actions a controller can perform across all devices
 ---
 
 
