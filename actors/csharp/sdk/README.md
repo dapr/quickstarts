@@ -1,29 +1,19 @@
 # Quickstart: Actors (Dapr SDK) **In Development
 
-Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/). In this Quickstart, you'll use a service app (ASP.NET project) and a client app (Console project) to demonstrate Dapr's Actors API to work with stateful objects. The service app represents the digital twin for a smart device, a "smart smoke detector", that has state including a location and a status. The client app will be used to interact with the actors.
+Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/). In this Quickstart, you will run a SmartDevice.Service microservice and a simple console client to demonstrate the stateful object patterns in Dapr Actors.  
+1. Using a SmartDevice.Service microservice, developers can host two SmartDectectorActor smoke alarm objects, and a third ControllerActor object that command and controls the smart devices.  
+2. Using a SmartDevice.Client console app, developers have a client app to interact with each actor, or the controller to perform actions in aggregate. 
+3. The SmartDevice.Interfaces contains the shared interfaces and data types used by both service and client apps
 
 > **Note:** This example leverages the Dapr client SDK.  
 
-Dapr actors are so-called virtual actors. As soon as you call an actor method, the actor is activated and the method is executed. The actor is deactivated after a configurable period of time (idle timeout). Any state that belongs to the actor is persisted in a state store. So if you call the same actor after the idle timeout, the actor is reactivated and the state is restored.
-
-The Quickstart consists of three projects:
-
-- `SmartDevice.Service` is an ASP.NET application that contains the `SmartDetectorActor` and the `ControllerActor`.
-- `SmartDevice.Client` is a console application that calls the `SmartDetectorActor` and the `ControllerActor`.
-- `SmartDevice.Interfaces` contains the interfaces and data types used by the Service and Client projects.
-
-In this guide you'll:
-
-- Run the service app
-- Run the client app
-- Review the code of the apps to understand how they work
 
 ### Step 1: Pre-requisites
 
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET SDK or .NET 6 SDK installed](https://dotnet.microsoft.com/download).
+- [.NET 7 SDK](https://dotnet.microsoft.com/download).
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 ### Step 2: Set up the environment
@@ -34,35 +24,37 @@ Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quic
 git clone https://github.com/dapr/quickstarts.git
 ```
 
-In a new terminal window, navigate to the `actors/csharp/sdk/service` directory:
+### Step 3: Run the service app
+
+In a new terminal window, navigate to the `actors/csharp/sdk/service` directory and restore dependencies:
 
 ```bash
 cd actors/csharp/sdk/service
-```
-
-### Step 3: Run the service app
-
-Build the `SmartDevice.Service` project and install the dependencies:
-
-```bash
 dotnet build
 ```
 
-Run the `SmartDevice.Service`, which will start the Dapr sidecar and the service itself:
+Run the `SmartDevice.Service`, which will start service itself and the Dapr sidecar:
 
 ```bash
-dapr run --app-id myapp --app-port 5001 --dapr-http-port 3500 --components-path ../../../resources -- dotnet run --urls=http://localhost:5001/
+dapr run --app-id actorservice --app-port 5001 --dapr-http-port 3500 --components-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
-
-This starts the `SmartDevice.Service` app with unique workflow ID and runs the workflow activities. 
 
 Expected output:
 
-// TODO
+```bash
+== APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+== APP ==       Request starting HTTP/1.1 GET http://127.0.0.1:5001/healthz - -
+== APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+== APP ==       Executing endpoint 'Dapr Actors Health Check'
+== APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+== APP ==       Executed endpoint 'Dapr Actors Health Check'
+== APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+== APP ==       Request finished HTTP/1.1 GET http://127.0.0.1:5001/healthz - - - 200 - text/plain 5.2599ms
+```
 
 ### Step 4: Run the client app
 
-In another terminal instance, navigate to the `actors/csharp/sdk/client` directory and install the dependencies:
+In a new terminal instance, navigate to the `actors/csharp/sdk/client` directory and install the dependencies:
 
 ```bash
 cd ./actors/csharp/sdk/client
@@ -72,7 +64,25 @@ dotnet build
 Run the `SmartDevice.Client` app:
 
 ```bash
-dotnet run
+dapr run --app-id actorclient -- dotnet run
+```
+
+Expected output:
+
+```bash
+== APP == Startup up...
+== APP == Calling SetDataAsync on SmokeDetectorActor:1...
+== APP == Got response: Success
+== APP == Calling GetDataAsync on SmokeDetectorActor:1...
+== APP == Got response: Success
+== APP == Smart device state: Name: First Floor, Status: Ready, Battery: 100.0, Temperature: 68.0, Location: Main Hallway, FirmwareVersion: 1.1, SerialNo: ABCDEFG1, MACAddress: 67-54-5D-48-8F-38, LastUpdate: 3/3/2023 9:36:17 AM
+== APP == Calling SetDataAsync on SmokeDetectorActor:2...
+== APP == Got response: Success
+== APP == Calling GetDataAsync on SmokeDetectorActor:2...
+== APP == Got response: Success
+== APP == Smart device state: Name: Bedroom, Status: Ready, Battery: 98.0, Temperature: 72.0, Location: Bedroom, FirmwareVersion: 1.1, SerialNo: ABCDEFG2, MACAddress: 50-3A-32-AB-75-DF, LastUpdate: 3/3/2023 9:36:17 AM
+== APP == Calling GetAverageTemperature on ControllerActor:singleton...
+== APP == Got response: 70.0
 ```
 
 ### What happened
@@ -86,39 +96,63 @@ When you ran `dotnet run` for the client app:
 5. The `SignalAlarm` method of `ControllerActor` is called.
 6. The `SignalAlarm` method of `SmartDetectorActor` 1 is called.
 7. The `SignalAlarm` method of `SmartDetectorActor` 2 is called.
-8. The status of `SmartDetectorActor` 1 and 2 is read and printed to the console.
+8. The `ControllerActor` is called which aggregates average temperature status of `SmartDetectorActor:1` and `SmartDetectorActor:2`.
 
-#### `service/SmartDetectorActor.cs`
 
-// TODO
+Looking at the code, `SmartDetectorActor` objects are created in the client application and initialized with object state with `ActorProxy.Create<ISmartDevice>(actorId, actorType)` and then `proxySmartDevice.SetDataAsync(data)`.  These objects are re-entrant and will hold on to the state as shown by `proxySmartDevice.GetDataAsync()`.
 
-#### `service/ControllerActor.cs`
+```csharp
+        var actorId = new ActorId("1");
 
-// TODO
+        // Create the local proxy by using the same interface that the service implements.
+        // You need to provide the type and id so the actor can be located. 
+        var proxySmartDevice = ActorProxy.Create<ISmartDevice>(actorId, actorType);
 
-#### `service/Program.cs`
+        // Now you can use the actor interface to call the actor's methods.
+        var data = new SmartDeviceData(){
+            Name = "First Floor",
+            Status = "Ready",
+            Battery = 100.0M,
+            Temperature = 68.0M,
+            Location = "Main Hallway",
+            FirmwareVersion = 1.1M,
+            SerialNo = "ABCDEFG1",
+            MACAddress = "67-54-5D-48-8F-38",
+            LastUpdate = DateTime.Now
+        };
 
-// TODO
+        Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
+        var response = await proxySmartDevice.SetDataAsync(data);
+        Console.WriteLine($"Got response: {response}");
 
-#### `client/Program.cs`
+        Console.WriteLine($"Calling GetDataAsync on {actorType}:{actorId}...");
+        var savedData = await proxySmartDevice.GetDataAsync();
+        Console.WriteLine($"Got response: {response}");
 
-// TODO
+        Console.WriteLine($"Smart device state: {savedData.ToString()}");
+```
 
+The `ControllerActor` object is used to make aggregate calls to the other actors.
+
+```csharp
+        // Show aggregates using controller together with smart devices
+        actorId = new ActorId("singleton");
+        actorType = "ControllerActor";
+        var proxyController = ActorProxy.Create<IController>(actorId, actorType);
+
+        Console.WriteLine($"Calling GetAverageTemperature on {actorType}:{actorId}...");
+        var avgTemp = await proxyController.GetAverageTemperature();
+
+        Console.WriteLine($"Got response: {avgTemp}");
+```
+
+Additionally look at:
+- `service/SmartDetectorActor.cs` which contains the definition of the the smart device actor actions and its timers
+- `service/ControllerActor.cs` which contains the controller actor that can aggregate across smart devices
+- `smartdevice.interfaces/ISmartDevice` which contains the common actions and shared data types for each SmartDectorActor
+- `smartdevice.interfaces/IController` which contains the actions a controller can perform across all devices
 ---
 
-> **Note:** This example leverages the Dapr SDK.  
-
-This quickstart includes three services and some common interfaces:
- 
-- .NET/C# service `SmokeDetectorActor:1`
-- .NET/C# service `SmokeDetectorActor:2`
-- .NET/C# service `ControllerActor:singleton`
-- .NET/C# interfaces `ISmartDevice`, `IController`
-- .NET/C# inferface data type `SmartDeviceData`
-
-### Run C# SmokeDetectorActor service with Dapr
-
-1. Open a new terminal window, change directories to `./smartdevice.Service` in the quickstart directory and run: 
 
 <!-- STEP
 name: Run smart-detector-actor service
@@ -130,60 +164,3 @@ output_match_mode: substring
 sleep: 11
 timeout_seconds: 30
 -->
-
-```bash
-cd ./smartdevice.Service
-dapr run --app-id myapp --app-port 5001 --dapr-http-port 3500 --components-path ../../../resources -- dotnet run --urls=http://localhost:5001/
-```
-
-Healthy output looks like:
-
-```bash
-== APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
-== APP ==       Request starting HTTP/1.1 GET http://127.0.0.1:5002/healthz - -
-== APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-== APP ==       Executing endpoint 'Dapr Actors Health Check'
-== APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-== APP ==       Executed endpoint 'Dapr Actors Health Check'
-== APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-== APP ==       Request finished HTTP/1.1 GET http://127.0.0.1:5002/healthz - - - 200 - text/plain 0.8972ms
-```
-
-### Work with service and actors from an external client
-<!-- END_STEP -->
-2. Open a new terminal window, change directories to `./smartdevice.Client` in the quickstart directory and run: 
-
-<!-- STEP
-name: Run batch-sdk service
-working_dir: ./smartdevice.Client
-expected_stdout_lines:
-  - 'Calling SetDataAsync on SmokeDetectorActor:1'
-expected_stderr_lines:
-output_match_mode: substring
-sleep: 11
-timeout_seconds: 30
--->
-    
-```bash
-cd ./smartdevice.Client
-dotnet run
-```
-
-Healthy output looks like:
-
-```bash
-Startup up...
-Calling SetDataAsync on SmokeDetectorActor:1...
-Got response: Success
-Calling GetDataAsync on SmokeDetectorActor:1...
-Got response: Success
-Smart device state: Name: First Floor, Status: Ready, Battery: 100.0, Temperature: 68.0, Location: Main Hallway, FirmwareVersion: 1.1, SerialNo: ABCDEFG1, MACAddress: 67-54-5D-48-8F-38, LastUpdate: 2/1/2023 10:38:26 PM
-Calling SetDataAsync on SmokeDetectorActor:2...
-Got response: Success
-Calling GetDataAsync on SmokeDetectorActor:2...
-Got response: Success
-Smart device state: Name: Bedroom, Status: Ready, Battery: 98.0, Temperature: 72.0, Location: Bedroom, FirmwareVersion: 1.1, SerialNo: ABCDEFG2, MACAddress: 50-3A-32-AB-75-DF, LastUpdate: 2/1/2023 10:38:27 PM
-Calling GetAverageTemperature on ControllerActor:singleton...
-Got response: 70.0
-```
-<!-- END_STEP -->
