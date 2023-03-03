@@ -87,7 +87,7 @@ Expected output:
 
 ### What happened
 
-When you ran `dotnet run` for the client app:
+When you ran the client app:
 
 1. A `SmartDetectorActor` is created with these properties: Id = 1, Location = "First Floor", Status = "Ready".
 2. Another `SmartDetectorActor` is created with these properties: Id = 2, Location = "Second Floor", Status = "Ready".
