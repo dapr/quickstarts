@@ -42,7 +42,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-port 5002 --app-id order-processing-sdk --app-protocol http --dapr-http-port 3501 --components-path ../../../components -- npm run start
+dapr run --app-port 5002 --app-id order-processing-sdk --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
 ```
 
 <!-- END_STEP -->
@@ -76,7 +76,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkout-sdk --app-protocol http --dapr-http-port 3500 --components-path ../../../components -- npm run start
+dapr run --app-id checkout-sdk --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- npm run start
 ```
 
 <!-- END_STEP -->

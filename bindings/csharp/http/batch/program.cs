@@ -18,7 +18,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
 
-//dapr run --app-id batch-http --app-port 7001 --components-path ../../../components -- dotnet run
+//dapr run --app-id batch-http --app-port 7001 --resources-path ../../../components -- dotnet run
 
 var cronBindingName = "cron";
 var sqlBindingName = "sqldb";

@@ -70,7 +70,7 @@ match_order: none
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --app-port 6001 --components-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --app-port 6001 --resources-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 <!-- END_STEP -->

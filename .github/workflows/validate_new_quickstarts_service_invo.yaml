@@ -31,24 +31,35 @@ jobs:
   validate:
     name: Validate quickstart for `${{ matrix.quickstart_language }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     env:
-      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.17
       KUBERNETES_VERSION: v1.21.1
       KIND_VERSION: v0.11.0
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        os: [ubuntu-latest, macos-10.15]
+        os: [ubuntu-latest, macos-latest]
         quickstart_language: [go, csharp, javascript, python, java]
         quickstart_variant: [http]
+      fail-fast: false
     steps:
-      - name: Install docker - MacOS
-        if: matrix.os == 'macos-10.15'
-        uses: docker-practice/actions-setup-docker@v1
+      - name: Check out code 
+        uses: actions/checkout@v2
+      - name: Load environment variables
+        uses: artursouza/export-env-action@v2
         with:
-          docker_buildx: false
-          docker_version: 20.10
+          envFile: './.github/env/global.env'
+          expand: 'true'
+      - name: Pinning Python to ${{ env.MACOS_PYTHON_VERSION }} on MacOS
+        if: matrix.os == 'macos-latest' && matrix.quickstart_language == 'python'
+        run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
+      - name: Verify Python version
+        if: matrix.quickstart_language == 'python'
+        run: python3 --version
+      - name: Upgrade pip and setuptools
+        if: matrix.os == 'macos-latest' && matrix.quickstart_language == 'python'
+        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
@@ -59,22 +70,10 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - name: Install .NET Core 
-        uses: actions/setup-dotnet@v1.9.0
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            6.0.x
-      - name: Determine latest Dapr Runtime version including Pre-releases
-        run: |
-          helm repo add dapr https://dapr.github.io/helm-charts/ && helm repo update && export RUNTIME_VERSION=$(helm search repo dapr/dapr --devel --versions | awk '/dapr\/dapr/ {print $3; exit}' )
-          echo "DAPR_RUNTIME_VERSION=$RUNTIME_VERSION" >> $GITHUB_ENV
-          echo "Found $RUNTIME_VERSION"
-        shell: bash
-      - name: Determine latest Dapr Cli version including Pre-releases
-        run: |
-          export CLI_VERSION=$(curl "https://api.github.com/repos/dapr/cli/releases?per_page=1&page=1" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | jq '.[0].tag_name'| tr -d '",v')
-          echo "DAPR_CLI_VERSION=$CLI_VERSION" >> $GITHUB_ENV
-          echo "Found $CLI_VERSION"
-        shell: bash
+            7.0.x
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
@@ -84,10 +83,8 @@ jobs:
       - name: Install Dapr
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --slim
           dapr --version
-      - name: Check out code 
-        uses: actions/checkout@v2
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
