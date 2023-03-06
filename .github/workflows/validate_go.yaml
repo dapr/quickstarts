@@ -86,9 +86,15 @@ jobs:
           make validate
       - name: validate building blocks against sdk
         run: |
-          #for building_block in `ls -1`; do # get list of building blocks from folders or from env variable in global.env
+          for building_block in `ls -1`; do # get list of building blocks from folders or from env variable in global.env
             # TODO: add check if folder exists.
-            cd service_invocation/go/http
-            make validate 
-            #cd ../../../
-          #done   
+            echo "currently executing $building_block/$language/$variant"
+            if [ ! -d "$building_block/$language/$variant" ]; 
+            then
+              echo "$building_block/$language/$variant does not exist."
+            else
+              cd $building_block/$language/$variant
+              make validate 
+              cd ../../../
+            fi
+          done    
