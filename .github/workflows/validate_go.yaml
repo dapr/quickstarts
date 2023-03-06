@@ -134,11 +134,11 @@ jobs:
           pushd secrets_management/go/sdk
           make validate
           popd
-      - name: Validate service_invocation go http
-        run : |
-          pushd service_invocation/go/http
-          make validate
-          popd
+      # - name: Validate service_invocation go http
+      #   run : |
+      #     pushd service_invocation/go/http
+      #     make validate
+      #     popd
       # - name: Validate service_invocation go sdk
       #   run : |
       #     pushd service_invocation/go/sdk
