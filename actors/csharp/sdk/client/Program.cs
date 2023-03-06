@@ -54,13 +54,20 @@ class Program
         Console.WriteLine($"Smart device state: {savedData.ToString()}");
 
         // Show aggregates using controller together with smart devices
-        actorId = new ActorId("singleton");
+        actorId = new ActorId("controller");
         actorType = "ControllerActor";
         var proxyController = ActorProxy.Create<IController>(actorId, actorType);
 
-        Console.WriteLine($"Calling GetAverageTemperature on {actorType}:{actorId}...");
-        var avgTemp = await proxyController.GetAverageTemperature();
+        Console.WriteLine($"Registering the IDs of both SmartDetectors...");
+        var controllerData = new ControllerData(){
+            DeviceIds = new string[]{"1", "2"}
+        };
+        await proxyController.RegisterSmokeDetectorsAsync(controllerData);
 
-        Console.WriteLine($"Got response: {avgTemp}");
+        // Smoke detected on device 1
+        actorType = "SmokeDetectorActor";
+        actorId = new ActorId("1");
+        proxySmartDevice = ActorProxy.Create<ISmartDevice>(actorId, actorType);
+        await proxySmartDevice.DetectSmokeAsync();
     }
 }

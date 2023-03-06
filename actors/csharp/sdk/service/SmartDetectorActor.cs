@@ -1,3 +1,4 @@
+using Dapr.Actors;
 using Dapr.Actors.Runtime;
 using SmartDevice.Interfaces;
 
@@ -47,7 +48,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
         // Data is saved to configured state store implicitly after each method execution by Actor's runtime.
         // Data can also be saved explicitly by calling this.StateManager.SaveStateAsync();
         // State to be saved must be DataContract serializable.
-        await this.StateManager.SetStateAsync<SmartDeviceData>(
+        await StateManager.SetStateAsync<SmartDeviceData>(
             "my_data",  // state name
             data);      // data saved for the named state "my_data"
 
@@ -58,9 +59,24 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     /// Get MyData from actor's private state store
     /// </summary>
     /// <return>the user-defined MyData which is stored into state store as "my_data" state</return>
-    public Task<SmartDeviceData> GetDataAsync()
+    public async Task<SmartDeviceData> GetDataAsync()
     {
         // Gets state from the state store.
-        return this.StateManager.GetStateAsync<SmartDeviceData>("my_data");
+        return await StateManager.GetStateAsync<SmartDeviceData>("my_data");
+    }
+
+    public async Task DetectSmokeAsync()
+    {
+        // TODO: Set Status to "Alarm"
+        var controllerActorId = new ActorId("controller");
+        var controllerActorType = "ControllerActor";
+        var controllerProxy = ProxyFactory.CreateActorProxy<IController>(controllerActorId, controllerActorType);
+        await controllerProxy.TriggerAlarmForAllDetectors();
+    }
+
+    public Task SoundAlarm()
+    {
+        Console.WriteLine($"ActorId: {this.Id} is sounding the alarm");
+        return Task.CompletedTask;
     }
 }

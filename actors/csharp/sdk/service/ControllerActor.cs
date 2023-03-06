@@ -1,3 +1,4 @@
+using Dapr.Actors;
 using Dapr.Actors.Runtime;
 using SmartDevice.Interfaces;
 
@@ -61,8 +62,24 @@ internal class ControllerActor : Actor, IController
     /// </summary>
     protected override Task OnDeactivateAsync()
     {
-        // Provides Opporunity to perform optional cleanup.
+        // Provides opportunity to perform optional cleanup.
         Console.WriteLine($"Deactivating actor id: {this.Id}");
         return Task.CompletedTask;
+    }
+
+    public async Task RegisterSmokeDetectorsAsync(ControllerData data)
+    {
+        await this.StateManager.SetStateAsync<ControllerData>("controllerData", data);
+    }
+
+    public async Task TriggerAlarmForAllDetectors()
+    {
+        var data =  await StateManager.GetStateAsync<ControllerData>("controllerData");
+        foreach (var deviceId in data.DeviceIds)
+        {
+            var actorId = new ActorId(deviceId);
+            var proxySmartDevice = ProxyFactory.CreateActorProxy<ISmartDevice>(actorId, "SmartDetectorActor");
+            await proxySmartDevice.SoundAlarm();
+        }
     }
 }
