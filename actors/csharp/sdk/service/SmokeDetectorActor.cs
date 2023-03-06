@@ -67,8 +67,6 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
 
     public async Task DetectSmokeAsync()
     {
-        //Console.WriteLine($"Smoke detected in ActorId: {this.Id}.");
-
         var controllerActorId = new ActorId("controller");
         var controllerActorType = "ControllerActor";
         var controllerProxy = ProxyFactory.CreateActorProxy<IController>(controllerActorId, controllerActorType);
@@ -80,7 +78,5 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
         var smartDeviceData = await GetDataAsync();
         smartDeviceData.Status = "Alarm";
         await SetDataAsync(smartDeviceData);
-
-        //Console.WriteLine($"ActorId: {this.Id}, Status: {smartDeviceData.Status}.");
     }
 }

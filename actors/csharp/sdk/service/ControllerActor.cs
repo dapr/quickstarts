@@ -83,7 +83,7 @@ internal class ControllerActor : Actor, IController
         foreach (var deviceId in data.DeviceIds)
         {
             var actorId = new ActorId(deviceId);
-            var proxySmartDevice = ProxyFactory.CreateActorProxy<ISmartDevice>(actorId, "SmartDetectorActor");
+            var proxySmartDevice = ProxyFactory.CreateActorProxy<ISmartDevice>(actorId, "SmokeDetectorActor");
             await proxySmartDevice.SoundAlarm();
         }
     }

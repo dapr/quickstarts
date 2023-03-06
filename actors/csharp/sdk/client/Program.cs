@@ -68,5 +68,8 @@ class Program
         actorId = new ActorId("1");
         proxySmartDevice = ActorProxy.Create<ISmartDevice>(actorId, actorType);
         await proxySmartDevice.DetectSmokeAsync();
+
+        savedData = await proxySmartDevice.GetDataAsync();
+        Console.WriteLine($"Smart device state: {savedData}");
     }
 }
