@@ -86,18 +86,19 @@ jobs:
           make validate
       - name: validate building blocks against sdk
         run: |
+          variants=("http" "sdk")
           folders=$(find . -maxdepth 1 -mindepth 1 -type d)
+          echo $folders
           for building_block in $folders; do # get list of building blocks from folders or from env variable in global.env
-            # TODO: add check if folder exists.
-            echo "buildblock: $building_block"
-            echo "language: $language"
-            echo "variant: $variant"
-            if [ ! -d "$building_block/go/http" ]; 
-            then
-              echo "$building_block/go/http does not exist."
-            else
-              cd $building_block/go/http
-              make validate 
-              cd ../../../
-            fi
+            for variant in "${variants[@]}"
+            do
+              if [ ! -d "$building_block/go/$variant" ]; 
+              then
+                echo "$building_block/go/$variant does not exist."
+              else
+                cd $building_block/go/$variant
+                make validate 
+                cd ../../../
+              fi
+            done
           done    
