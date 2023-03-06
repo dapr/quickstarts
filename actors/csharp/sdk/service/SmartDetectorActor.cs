@@ -1,9 +1,9 @@
 using Dapr.Actors.Runtime;
-using smartdevice.Interfaces;
+using SmartDevice.Interfaces;
 
-namespace smartdevice;
+namespace SmartDevice;
 
-internal class SmokeDetectorActor : Actor, ISmartDevice, IRemindable
+internal class SmokeDetectorActor : Actor, ISmartDevice
 {
     // The constructor must accept ActorHost as a parameter, and can also accept additional
     // parameters that will be retrieved from the dependency injection container
@@ -62,66 +62,5 @@ internal class SmokeDetectorActor : Actor, ISmartDevice, IRemindable
     {
         // Gets state from the state store.
         return this.StateManager.GetStateAsync<SmartDeviceData>("my_data");
-    }
-
-    /// <summary>
-    /// Register MyReminder reminder with the actor
-    /// </summary>
-    public async Task RegisterReminder()
-    {
-        await this.RegisterReminderAsync(
-            "MyReminder",              // The name of the reminder
-            null,                      // User state passed to IRemindable.ReceiveReminderAsync()
-            TimeSpan.FromSeconds(5),   // Time to delay before invoking the reminder for the first time
-            TimeSpan.FromSeconds(5));  // Time interval between reminder invocations after the first invocation
-    }
-
-    /// <summary>
-    /// Unregister MyReminder reminder with the actor
-    /// </summary>
-    public Task UnregisterReminder()
-    {
-        Console.WriteLine("Unregistering MyReminder...");
-        return this.UnregisterReminderAsync("MyReminder");
-    }
-
-    // <summary>
-    // Implement IRemindeable.ReceiveReminderAsync() which is call back invoked when an actor reminder is triggered.
-    // </summary>
-    public Task ReceiveReminderAsync(string reminderName, byte[] state, TimeSpan dueTime, TimeSpan period)
-    {
-        Console.WriteLine("ReceiveReminderAsync is called!");
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Register MyTimer timer with the actor
-    /// </summary>
-    public Task RegisterTimer()
-    {
-        return this.RegisterTimerAsync(
-            "MyTimer",                  // The name of the timer
-            nameof(this.OnTimerCallBack),       // Timer callback
-            null,                       // User state passed to OnTimerCallback()
-            TimeSpan.FromSeconds(5),    // Time to delay before the async callback is first invoked
-            TimeSpan.FromSeconds(5));   // Time interval between invocations of the async callback
-    }
-
-    /// <summary>
-    /// Unregister MyTimer timer with the actor
-    /// </summary>
-    public Task UnregisterTimer()
-    {
-        Console.WriteLine("Unregistering MyTimer...");
-        return this.UnregisterTimerAsync("MyTimer");
-    }
-
-    /// <summary>
-    /// Timer callback once timer is expired
-    /// </summary>
-    private Task OnTimerCallBack(byte[] data)
-    {
-        Console.WriteLine("OnTimerCallBack is called!");
-        return Task.CompletedTask;
     }
 }

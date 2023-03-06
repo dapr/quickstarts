@@ -3,8 +3,8 @@
 builder.Services.AddActors(options =>
 {
     // Register actor types and configure actor settings
-    options.Actors.RegisterActor<smartdevice.ControllerActor>();
-    options.Actors.RegisterActor<smartdevice.SmokeDetectorActor>();
+    options.Actors.RegisterActor<SmartDevice.ControllerActor>();
+    options.Actors.RegisterActor<SmartDevice.SmokeDetectorActor>();
 });
 
 var app = builder.Build();

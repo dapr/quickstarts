@@ -1,14 +1,10 @@
 ﻿using Dapr.Actors;
 
-namespace smartdevice.Interfaces;
+namespace SmartDevice.Interfaces;
 public interface ISmartDevice : IActor
 {
     Task<string> SetDataAsync(SmartDeviceData device);
     Task<SmartDeviceData> GetDataAsync();
-    Task RegisterReminder();
-    Task UnregisterReminder();
-    Task RegisterTimer();
-    Task UnregisterTimer();
 }
 
 public class SmartDeviceData

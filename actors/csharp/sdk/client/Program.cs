@@ -1,8 +1,8 @@
 ﻿using Dapr.Actors;
 using Dapr.Actors.Client;
-using smartdevice.Interfaces;
+using SmartDevice.Interfaces;
 
-namespace smartdevice;
+namespace SmartDevice;
 
 class Program
 {
@@ -45,7 +45,7 @@ class Program
         // Create a second actor for second device
         actorId = new ActorId("2");
         data = new SmartDeviceData(){
-            Name = "Bedroom",
+            Name = "Second Floor",
             Status = "Ready",
             Battery = 98.0M,
             Temperature = 72.0M,
