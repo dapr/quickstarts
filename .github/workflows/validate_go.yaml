@@ -87,7 +87,7 @@ jobs:
       - name: validate building blocks against sdk
         run: |
           folders=$(find . -maxdepth 1 -mindepth 1 -type d)
-          for building_block in folders; do # get list of building blocks from folders or from env variable in global.env
+          for building_block in $folders; do # get list of building blocks from folders or from env variable in global.env
             # TODO: add check if folder exists.
             echo "currently executing $building_block/$language/$variant"
             if [ ! -d "$building_block/$language/$variant" ]; 
