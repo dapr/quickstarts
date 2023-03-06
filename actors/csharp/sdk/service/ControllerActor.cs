@@ -79,8 +79,8 @@ internal class ControllerActor : Actor, IController
 
     public async Task TriggerAlarmForAllDetectors()
     {
-        var data =  await StateManager.GetStateAsync<ControllerData>("controllerData");
-        foreach (var deviceId in data.DeviceIds)
+        var deviceIds =  await ListRegisteredDeviceIdsAsync();
+        foreach (var deviceId in deviceIds)
         {
             var actorId = new ActorId(deviceId);
             var proxySmartDevice = ProxyFactory.CreateActorProxy<ISmartDevice>(actorId, "SmokeDetectorActor");
