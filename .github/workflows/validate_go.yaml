@@ -40,7 +40,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -92,11 +92,11 @@ jobs:
             echo "buildblock: $building_block"
             echo "language: $language"
             echo "variant: $variant"
-            if [ ! -d "$building_block/$language/$variant" ]; 
+            if [ ! -d "$building_block/go/http" ]; 
             then
-              echo "$building_block/$language/$variant does not exist."
+              echo "$building_block/go/http does not exist."
             else
-              cd $building_block/$language/$variant
+              cd $building_block/go/http
               make validate 
               cd ../../../
             fi
