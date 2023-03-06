@@ -34,7 +34,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     /// </summary>
     protected override Task OnDeactivateAsync()
     {
-        // Provides Opporunity to perform optional cleanup.
+        // Provides Opportunity to perform optional cleanup.
         Console.WriteLine($"Deactivating actor id: {this.Id}");
         return Task.CompletedTask;
     }
@@ -67,7 +67,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
 
     public async Task DetectSmokeAsync()
     {
-        Console.WriteLine($"Smoke detected in ActorId: {this.Id}.");
+        //Console.WriteLine($"Smoke detected in ActorId: {this.Id}.");
 
         var controllerActorId = new ActorId("controller");
         var controllerActorType = "ControllerActor";
@@ -81,6 +81,6 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
         smartDeviceData.Status = "Alarm";
         await SetDataAsync(smartDeviceData);
 
-        Console.WriteLine($"ActorId: {this.Id}, Status: {smartDeviceData.Status}.");
+        //Console.WriteLine($"ActorId: {this.Id}, Status: {smartDeviceData.Status}.");
     }
 }

@@ -5,7 +5,8 @@ public interface IController : IActor
 {
     Task<decimal> GetNetBatteryPercentage();
     Task<decimal> GetAverageTemperature();
-    Task RegisterSmokeDetectorsAsync(ControllerData data);
+    Task RegisterDeviceIdsAsync(string[] deviceIds);
+    Task<string[]> ListRegisteredDeviceIdsAsync();
     Task TriggerAlarmForAllDetectors();
 }
 

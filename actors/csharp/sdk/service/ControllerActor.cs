@@ -67,9 +67,14 @@ internal class ControllerActor : Actor, IController
         return Task.CompletedTask;
     }
 
-    public async Task RegisterSmokeDetectorsAsync(ControllerData data)
+    public async Task RegisterDeviceIdsAsync(string[] deviceIds)
     {
-        await this.StateManager.SetStateAsync<ControllerData>("controllerData", data);
+        await this.StateManager.SetStateAsync<string[]>("deviceIds", deviceIds);
+    }
+
+    public async Task<string[]> ListRegisteredDeviceIdsAsync()
+    {
+        return await this.StateManager.GetStateAsync<string[]>("deviceIds");
     }
 
     public async Task TriggerAlarmForAllDetectors()

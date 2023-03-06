@@ -59,10 +59,9 @@ class Program
         var proxyController = ActorProxy.Create<IController>(actorId, actorType);
 
         Console.WriteLine($"Registering the IDs of both SmartDetectors...");
-        var controllerData = new ControllerData(){
-            DeviceIds = new string[]{"1", "2"}
-        };
-        await proxyController.RegisterSmokeDetectorsAsync(controllerData);
+        await proxyController.RegisterDeviceIdsAsync(new string[]{"1", "2"});
+        var deviceIds = await proxyController.ListRegisteredDeviceIdsAsync();
+        Console.WriteLine($"Registered devices: {string.Join(", " , deviceIds)}");
 
         // Smoke detected on device 1
         actorType = "SmokeDetectorActor";
