@@ -23,15 +23,10 @@ class Program
 
         // Now you can use the actor interface to call the actor's methods.
         var data = new SmartDeviceData(){
-            Name = "First Floor",
+            Location = "First Floor",
             Status = "Ready",
             Battery = 100.0M,
             Temperature = 68.0M,
-            Location = "Main Hallway",
-            FirmwareVersion = 1.1M,
-            SerialNo = "ABCDEFG1",
-            MACAddress = "67-54-5D-48-8F-38",
-            LastUpdate = DateTime.Now
         };
         Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
         var response = await proxySmartDevice.SetDataAsync(data);
@@ -45,15 +40,10 @@ class Program
         // Create a second actor for second device
         actorId = new ActorId("2");
         data = new SmartDeviceData(){
-            Name = "Second Floor",
+            Location = "Second Floor",
             Status = "Ready",
             Battery = 98.0M,
             Temperature = 72.0M,
-            Location = "Bedroom",
-            FirmwareVersion = 1.1M,
-            SerialNo = "ABCDEFG2",
-            MACAddress = "50-3A-32-AB-75-DF",
-            LastUpdate = DateTime.Now
         };
         Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
         response = await proxySmartDevice.SetDataAsync(data);
