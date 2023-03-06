@@ -84,64 +84,21 @@ jobs:
       - name: Linkcheck README.md
         run: |
           make validate
-      - name: Generate steps dynamically
-        id: generate-steps
+      - name: Validate building blocks with GO
         run: |
-          # Define a list of steps using a YAML sequence
-          steps:
-          - name: Validate bindings go http
-            component: bindings/go/http
-          - name: Validate bindings go sdk
-            component: bindings/go/sdk
-          - name: Validate configuration go http
-            component: configuration/go/http
-          - name: Validate configuration go sdk
-            component: configuration/go/sdk
-          - name: Validate pub_sub go http
-            component: pub_sub/go/http
-          # - name: Validate pub_sub go sdk
-          #   component: pub_sub/go/sdk
-          # - name: Validate resiliency go http
-          #   component: resiliency/go/http
-          # - name: Validate resiliency go sdk
-          #   component: resiliency/go/sdk
-          - name: Validate secrets_management go http
-            component: secrets_management/go/http
-          - name: Validate secrets_management go sdk
-            component: secrets_management/go/sdk
-          # - name: Validate service_invocation go http
-          #   component: service_invocation/go/http
-          # - name: Validate service_invocation go sdk
-          #   component: service_invocation/go/sdk
-          - name: Validate state_management go http
-            component: state_management/go/http
-          - name: Validate state_management go sdk
-            component: state_management/go/sdk
-
-          # Use a for loop to generate the steps
-          steps:
-          {% for step in generate-steps.outputs.steps %}
-          - name: {{ step.name }}
-            run: |
-              pushd {{ step.component }}
-              make validate
-              popd
-          {% endfor %} 
-      # - name: Validate building blocks with GO
-      #   run: |
-      #     variants=("http" "sdk")
-      #     folders=$(find . -maxdepth 1 -mindepth 1 -type d)
-      #     for building_block in $folders; do
-      #       for variant in "${variants[@]}"
-      #       do
-      #         if [ ! -d "$building_block/go/$variant" ]; 
-      #         then
-      #           echo "$building_block/go/$variant does not exist."
-      #         else
-      #           cd $building_block/go/$variant
-      #           echo "running $building_block/go/$variant."
-      #           make validate 
-      #           cd ../../../
-      #         fi
-      #       done
-      #     done
+          variants=("http" "sdk")
+          folders=$(find . -maxdepth 1 -mindepth 1 -type d)
+          for building_block in $folders; do
+            for variant in "${variants[@]}"
+            do
+              if [ ! -d "$building_block/go/$variant" ]; 
+              then
+                echo "$building_block/go/$variant does not exist."
+              else
+                pushd $building_block/go/$variant
+                echo "running $building_block/go/$variant."
+                make validate
+                popd
+              fi
+            done
+          done
