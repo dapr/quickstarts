@@ -16,7 +16,7 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate quickstart for `${{ matrix.folder }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
+    name: Validate quickstart for `${{ matrix.building_block }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     env:
@@ -25,17 +25,14 @@ jobs:
       KUBERNETES_VERSION: v1.25.3
       KIND_VERSION: v0.17.0
       KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
-      FOLDER: ${{ steps.set_folder.outputs.folder }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        folder: ${{ fromJson(env.FOLDER) }}
+        #building_block: [bindings, configuration, pub_sub, resiliency, secrets_management, service_invocation, state_management]
+        building_block: [bindings, configuration]
         quickstart_variant: [http, sdk]
       fail-fast: false
     steps:
-      - name: Set folder
-        id: set_folder
-        run: echo "::set-output name=folder::$(ls -d */ | tr -d '/')"
       - name: Check out code 
         uses: actions/checkout@v2
       - name: Load environment variables
@@ -74,10 +71,10 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate ${{ matrix.folder }} ${{ matrix.quickstart_variant }} quickstart
+      - name: Validate ${{ matrix.building_block }} ${{ matrix.quickstart_variant }} quickstart
         run: |
-          echo ${{ matrix.folder }}/python/${{ matrix.quickstart_variant }}
-          pushd ${{ matrix.folder }}/python/${{ matrix.quickstart_variant }}
+          echo
+          pushd ${{ matrix.building_block }}/python/${{ matrix.quickstart_variant }}
           make validate
           popd
       - name: Linkcheck README.md
