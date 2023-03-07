@@ -29,7 +29,7 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate quickstart for `${{ matrix.building_block }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
+    name: Validate quickstart for java on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     env:
@@ -41,8 +41,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        building_block: [bindings, configuration, pub_sub, resiliency, secrets_management, service_invocation, state_management]
-        quickstart_variant: [http, sdk]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -92,12 +90,24 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate ${{ matrix.building_block }} ${{ matrix.quickstart_variant }} quickstart
+      - name: Validate building blocks with Java
         run: |
-          echo
-          pushd ${{ matrix.building_block }}/java/${{ matrix.quickstart_variant }}
-          make validate
-          popd
+          variants=("http" "sdk")
+          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
+          for building_block in $building_blocks; do
+            for variant in "${variants[@]}"
+            do
+              if [ ! -d "$building_block/java/$variant" ]; 
+              then
+                echo "$building_block/java/$variant does not exist."
+              else
+                pushd $building_block/java/$variant
+                echo "Validating $building_block/java/$variant quickstart"
+                make validate 
+                popd
+              fi
+            done
+          done
       - name: Linkcheck README.md
         run: |
           make validate
