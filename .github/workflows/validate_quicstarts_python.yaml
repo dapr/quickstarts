@@ -1,0 +1,85 @@
+name: Validate python quickstart
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+jobs:
+  validate:
+    name: Validate quickstart for `${{ matrix.folder }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
+      GOVER: 1.18
+      KUBERNETES_VERSION: v1.25.3
+      KIND_VERSION: v0.17.0
+      KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
+      FOLDER: ${{ steps.set_folder.outputs.folder }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        folder: ${{ fromJson(env.FOLDER) }}
+        quickstart_variant: [http, sdk]
+      fail-fast: false
+    steps:
+      - name: Set folder
+        id: set_folder
+        run: echo "::set-output name=folder::$(ls -d */ | tr -d '/')"
+      - name: Check out code 
+        uses: actions/checkout@v2
+      - name: Load environment variables
+        uses: artursouza/export-env-action@v2
+        with:
+          envFile: './.github/env/global.env'
+          expand: 'true'
+      - name: Pinning Python to ${{ env.MACOS_PYTHON_VERSION }} on MacOS
+        if: matrix.os == 'macos-latest' && matrix.quickstart_language == 'python'
+        run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
+      - name: Verify Python version
+        if: matrix.quickstart_language == 'python'
+        run: python3 --version
+      - name: Upgrade pip and setuptools
+        if: matrix.os == 'macos-latest' && matrix.quickstart_language == 'python'
+        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
+      - name: Install docker - MacOS
+        if: matrix.os == 'macos-latest'
+        uses: docker-practice/actions-setup-docker@v1
+        with:
+          docker_buildx: false
+          docker_version: 20.10.21
+      - name: Set up Dapr CLI - Mac/Linux
+        if: matrix.os != 'windows-latest'
+        run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
+      - name: Set up Dapr CLI - Windows
+        if: matrix.os == 'windows-latest'
+        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"
+      - name: Install Dapr
+        run: |
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr --version
+      - name: Install utilities dependencies
+        run: |
+          echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
+          pip3 install setuptools wheel
+          pip3 install mechanical-markdown
+      - name: Validate ${{ matrix.folder }} ${{ matrix.quickstart_variant }} quickstart
+        run: |
+          echo ${{ matrix.folder }}/python/${{ matrix.quickstart_variant }}
+          pushd ${{ matrix.folder }}/python/${{ matrix.quickstart_variant }}
+          make validate
+          popd
+      - name: Linkcheck README.md
+        run: |
+          make validate

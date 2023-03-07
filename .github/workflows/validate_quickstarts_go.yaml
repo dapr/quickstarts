@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-name: Validate go sdk
+name: Validate go quickstart
 
 on:
   workflow_dispatch:
