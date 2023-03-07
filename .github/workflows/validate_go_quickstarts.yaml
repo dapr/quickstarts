@@ -40,7 +40,9 @@ jobs:
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
+        building_block: [bindings, configuration, pub_sub, resiliency, secrets_management, service_invocation, state_management]
+        quickstart_variant: [http, sdk]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -81,24 +83,12 @@ jobs:
           pushd bindings/db/
           docker compose up -d
           popd
+      - name: Validate ${{ matrix.building_block }} ${{ matrix.quickstart_variant }} quickstart
+        run: |
+          echo
+          pushd ${{ matrix.building_block }}/csharp/${{ matrix.quickstart_variant }}
+          make validate
+          popd
       - name: Linkcheck README.md
         run: |
           make validate
-      - name: Validate building blocks with GO
-        run: |
-          variants=("http" "sdk")
-          folders=$(find . -maxdepth 1 -mindepth 1 -type d)
-          for building_block in $folders; do
-            for variant in "${variants[@]}"
-            do
-              if [ ! -d "$building_block/go/$variant" ]; 
-              then
-                echo "$building_block/go/$variant does not exist."
-              else
-                pushd $building_block/go/$variant
-                echo "running $building_block/go/$variant."
-                make validate
-                popd
-              fi
-            done
-          done

@@ -1,4 +1,17 @@
-name: Validate python quickstart
+#
+# Copyright 2023 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Validate java quickstart
 
 on:
   workflow_dispatch:
@@ -28,8 +41,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        #building_block: [bindings, configuration, pub_sub, resiliency, secrets_management, service_invocation, state_management]
-        building_block: [bindings, configuration]
+        building_block: [bindings, configuration, pub_sub, resiliency, secrets_management, service_invocation, state_management]
         quickstart_variant: [http, sdk]
       fail-fast: false
     steps:
@@ -40,15 +52,11 @@ jobs:
         with:
           envFile: './.github/env/global.env'
           expand: 'true'
-      - name: Pinning Python to ${{ env.MACOS_PYTHON_VERSION }} on MacOS
-        if: matrix.os == 'macos-latest' && matrix.quickstart_language == 'python'
-        run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
-      - name: Verify Python version
-        if: matrix.quickstart_language == 'python'
-        run: python3 --version
-      - name: Upgrade pip and setuptools
-        if: matrix.os == 'macos-latest' && matrix.quickstart_language == 'python'
-        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
+      - name: Set up OpenJDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
       - name: Install docker - MacOS
         if: matrix.os == 'macos-latest'
         uses: docker-practice/actions-setup-docker@v1
@@ -74,7 +82,7 @@ jobs:
       - name: Validate ${{ matrix.building_block }} ${{ matrix.quickstart_variant }} quickstart
         run: |
           echo
-          pushd ${{ matrix.building_block }}/python/${{ matrix.quickstart_variant }}
+          pushd ${{ matrix.building_block }}/csharp/${{ matrix.quickstart_variant }}
           make validate
           popd
       - name: Linkcheck README.md
