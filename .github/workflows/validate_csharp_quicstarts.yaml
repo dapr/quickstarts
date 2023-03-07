@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        building_block: [bindings, configuration, pub_sub, resiliency, secrets_management, service_invocation, state_management]
+        building_block: [bindings, configuration, pub_sub, resiliency, secrets_management, service_invocation, state_management, workflows]
         quickstart_variant: [http, sdk]
       fail-fast: false
     steps:
@@ -94,10 +94,14 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate ${{ matrix.building_block }} ${{ matrix.quickstart_variant }} quickstart
         run: |
-          echo
-          pushd ${{ matrix.building_block }}/csharp/${{ matrix.quickstart_variant }}
-          make validate
-          popd
+          if [ ! -d "${{ matrix.building_block }}/csharp/${{ matrix.quickstart_variant }}" ]; 
+          then
+            echo "${{ matrix.building_block }}/csharp/${{ matrix.quickstart_variant }} does not exist."
+          else
+            pushd ${{ matrix.building_block }}/csharp/${{ matrix.quickstart_variant }}
+            make validate
+            popd
+          fi
       - name: Linkcheck README.md
         run: |
           make validate

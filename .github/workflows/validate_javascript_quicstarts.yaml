@@ -90,7 +90,7 @@ jobs:
       - name: Validate ${{ matrix.building_block }} ${{ matrix.quickstart_variant }} quickstart
         run: |
           echo
-          pushd ${{ matrix.building_block }}/csharp/${{ matrix.quickstart_variant }}
+          pushd ${{ matrix.building_block }}/javascript/${{ matrix.quickstart_variant }}
           make validate
           popd
       - name: Linkcheck README.md
