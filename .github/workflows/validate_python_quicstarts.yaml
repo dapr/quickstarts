@@ -60,6 +60,19 @@ jobs:
       - name: Upgrade pip and setuptools
         if: matrix.os == 'macos-latest'
         run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
+      - name: Install podman - MacOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo rm -rf `brew --cache`
+          brew upgrade
+          brew install podman
+          which podman-mac-helper
+          podman_helper=$(which podman-mac-helper)
+          sudo ${podman_helper} install
+          podman machine init
+          podman machine start || echo "VM might not have started"
+          sleep 10
+          podman machine inspect
       - name: Install docker - MacOS
         if: matrix.os == 'macos-latest'
         uses: docker-practice/actions-setup-docker@v1

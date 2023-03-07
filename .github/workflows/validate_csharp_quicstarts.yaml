@@ -52,6 +52,19 @@ jobs:
         with:
           envFile: './.github/env/global.env'
           expand: 'true'
+      - name: Install podman - MacOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo rm -rf `brew --cache`
+          brew upgrade
+          brew install podman
+          which podman-mac-helper
+          podman_helper=$(which podman-mac-helper)
+          sudo ${podman_helper} install
+          podman machine init
+          podman machine start || echo "VM might not have started"
+          sleep 10
+          podman machine inspect
       - name: Install .NET Core
         uses: actions/setup-dotnet@v1.9.0
         with:
