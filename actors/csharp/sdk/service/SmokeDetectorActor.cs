@@ -6,6 +6,8 @@ namespace SmartDevice;
 
 internal class SmokeDetectorActor : Actor, ISmartDevice
 {
+    private readonly string deviceDataKey = "device-data";
+
     // The constructor must accept ActorHost as a parameter, and can also accept additional
     // parameters that will be retrieved from the dependency injection container
     //
@@ -35,22 +37,22 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     protected override Task OnDeactivateAsync()
     {
         // Provides Opportunity to perform optional cleanup.
-        Console.WriteLine($"Deactivating actor id: {this.Id}");
+        Console.WriteLine($"Deactivating actor id: {Id}");
         return Task.CompletedTask;
     }
 
     /// <summary>
     /// Set MyData into actor's private state store
     /// </summary>
-    /// <param name="data">the user-defined MyData which will be stored into state store as "my_data" state</param>
+    /// <param name="data">the user-defined MyData which will be stored into state store as "device_data" state</param>
     public async Task<string> SetDataAsync(SmartDeviceData data)
     {
         // Data is saved to configured state store implicitly after each method execution by Actor's runtime.
         // Data can also be saved explicitly by calling this.StateManager.SaveStateAsync();
         // State to be saved must be DataContract serializable.
         await StateManager.SetStateAsync<SmartDeviceData>(
-            "my_data",  // state name
-            data);      // data saved for the named state "my_data"
+            deviceDataKey,
+            data);
 
         return "Success";
     }
@@ -62,7 +64,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     public async Task<SmartDeviceData> GetDataAsync()
     {
         // Gets state from the state store.
-        return await StateManager.GetStateAsync<SmartDeviceData>("my_data");
+        return await StateManager.GetStateAsync<SmartDeviceData>(deviceDataKey);
     }
 
     public async Task DetectSmokeAsync()

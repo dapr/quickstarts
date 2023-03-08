@@ -8,68 +8,63 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        Console.WriteLine("Startup up...");
+        // Actor Ids and types
+        var deviceId1 = "1";
+        var deviceId2 = "2";
+        var smokeDetectorActorType = "SmokeDetectorActor";
+        var controllerActorType = "ControllerActor";
 
-        // Registered Actor Type in Actor Service
-        var actorType = "SmokeDetectorActor";
+        Console.WriteLine("Startup up...");
 
         // An ActorId uniquely identifies an actor instance
         // If the actor matching this id does not exist, it will be created
-        var actorId = new ActorId("1");
+        var deviceActorId1 = new ActorId(deviceId1);
 
         // Create the local proxy by using the same interface that the service implements.
         // You need to provide the type and id so the actor can be located. 
-        var proxySmartDevice = ActorProxy.Create<ISmartDevice>(actorId, actorType);
+        var proxySmartDevice = ActorProxy.Create<ISmartDevice>(deviceActorId1, smokeDetectorActorType);
 
         // Now you can use the actor interface to call the actor's methods.
-        var data = new SmartDeviceData(){
+        var data1 = new SmartDeviceData(){
             Location = "First Floor",
             Status = "Ready",
-            Battery = 100.0M,
-            Temperature = 68.0M,
         };
-        Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
-        var response = await proxySmartDevice.SetDataAsync(data);
-        Console.WriteLine($"Got response: {response}");
+        Console.WriteLine($"Calling SetDataAsync on {smokeDetectorActorType}:{deviceActorId1}...");
+        var setDataResponse1 = await proxySmartDevice.SetDataAsync(data1);
+        Console.WriteLine($"Got response: {setDataResponse1}");
 
-        Console.WriteLine($"Calling GetDataAsync on {actorType}:{actorId}...");
-        var savedData = await proxySmartDevice.GetDataAsync();
-        Console.WriteLine($"Got response: {response}");
-        Console.WriteLine($"Smart device state: {savedData.ToString()}");
+        Console.WriteLine($"Calling GetDataAsync on {smokeDetectorActorType}:{deviceActorId1}...");
+        var savedData1 = await proxySmartDevice.GetDataAsync();
+        Console.WriteLine($"Smart device state: {savedData1.ToString()}");
 
         // Create a second actor for second device
-        actorId = new ActorId("2");
-        data = new SmartDeviceData(){
+        var deviceActorId2 = new ActorId(deviceId2);
+        var data2 = new SmartDeviceData(){
             Location = "Second Floor",
             Status = "Ready",
-            Battery = 98.0M,
-            Temperature = 72.0M,
         };
-        Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
-        response = await proxySmartDevice.SetDataAsync(data);
-        Console.WriteLine($"Got response: {response}");
-        Console.WriteLine($"Calling GetDataAsync on {actorType}:{actorId}...");
-        savedData = await proxySmartDevice.GetDataAsync();
-        Console.WriteLine($"Got response: {response}");
-        Console.WriteLine($"Smart device state: {savedData.ToString()}");
+        Console.WriteLine($"Calling SetDataAsync on {smokeDetectorActorType}:{deviceActorId2}...");
+        var setDataResponse2 = await proxySmartDevice.SetDataAsync(data2);
+        Console.WriteLine($"Got response: {setDataResponse2}");
+        Console.WriteLine($"Calling GetDataAsync on {smokeDetectorActorType}:{deviceActorId2}...");
+        var savedData2 = await proxySmartDevice.GetDataAsync();
+        Console.WriteLine($"Smart device state: {savedData2.ToString()}");
 
         // Show aggregates using controller together with smart devices
-        actorId = new ActorId("controller");
-        actorType = "ControllerActor";
-        var proxyController = ActorProxy.Create<IController>(actorId, actorType);
+        var controllerActorId = new ActorId("controller");
+        var proxyController = ActorProxy.Create<IController>(controllerActorId, controllerActorType);
 
-        Console.WriteLine($"Registering the IDs of both SmartDetectors...");
-        await proxyController.RegisterDeviceIdsAsync(new string[]{"1", "2"});
+        Console.WriteLine($"Registering the IDs of both Devices...");
+        await proxyController.RegisterDeviceIdsAsync(new string[]{deviceId1, deviceId2});
         var deviceIds = await proxyController.ListRegisteredDeviceIdsAsync();
         Console.WriteLine($"Registered devices: {string.Join(", " , deviceIds)}");
 
         // Smoke detected on device 1
-        actorType = "SmokeDetectorActor";
-        actorId = new ActorId("1");
-        proxySmartDevice = ActorProxy.Create<ISmartDevice>(actorId, actorType);
+        Console.WriteLine($"Detecting smoke on Device 1...");
+        proxySmartDevice = ActorProxy.Create<ISmartDevice>(deviceActorId1, smokeDetectorActorType);
         await proxySmartDevice.DetectSmokeAsync();
 
-        savedData = await proxySmartDevice.GetDataAsync();
-        Console.WriteLine($"Smart device state: {savedData}");
+        savedData1 = await proxySmartDevice.GetDataAsync();
+        Console.WriteLine($"Device 1 state: {savedData1}");
     }
 }
