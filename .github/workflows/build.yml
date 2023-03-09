@@ -15,14 +15,14 @@ name: Build Quickstarts
 
 on:
   push:
-    branches:
-      - master
-      - feature/new_quickstarts
-      - release-*
-    tags:
-      - v*
-    paths-ignore: 
-      - '**.md'
+    # branches:
+    #   - master
+    #   - feature/new_quickstarts
+    #   - release-*
+    # tags:
+    #   - v*
+    # paths-ignore: 
+    #   - '**.md'
   workflow_dispatch:
 jobs:
   build:

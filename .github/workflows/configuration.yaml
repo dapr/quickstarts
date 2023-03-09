@@ -16,17 +16,17 @@ name: Validate Configuration API
 on:
   workflow_dispatch:
   push:
-    branches:
-      - master
-      - feature/new_quickstarts
-      - release-*
-    tags:
-      - v*
-  pull_request:
-    branches:
-      - master
-      - feature/new_quickstarts
-      - release-*
+  #   branches:
+  #     - master
+  #     - feature/new_quickstarts
+  #     - release-*
+  #   tags:
+  #     - v*
+  # pull_request:
+  #   branches:
+  #     - master
+  #     - feature/new_quickstarts
+  #     - release-*
 jobs:
   validate:
     name: Validate quickstart for `${{ matrix.quickstart_language }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
