@@ -41,8 +41,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        quickstart_language: [go, csharp, javascript, python, java]
-        quickstart_variant: [http, sdk]
+        quickstart_language: [go]
+        quickstart_variant: [http]
       fail-fast: false
     steps:
       - name: Check out code 

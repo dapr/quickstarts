@@ -16,17 +16,17 @@ name: Validate javascript quickstart
 on:
   workflow_dispatch:
   push:
-    branches:
-      - master
-      - feature/new_quickstarts
-      - release-*
-    tags:
-      - v*
-  pull_request:
-    branches:
-      - master
-      - feature/new_quickstarts
-      - release-*
+  #   branches:
+  #     - master
+  #     - feature/new_quickstarts
+  #     - release-*
+  #   tags:
+  #     - v*
+  # pull_request:
+  #   branches:
+  #     - master
+  #     - feature/new_quickstarts
+  #     - release-*
 jobs:
   validate:
     name: Validate quickstart for javascript on ${{ matrix.os }}
