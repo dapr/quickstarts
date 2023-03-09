@@ -97,7 +97,7 @@ jobs:
       - name: Validate building blocks with GO
         run: |
           variants=("http" "sdk")
-          skip_buildingblock=("./configuration/go/sdk" "./bindings/go/http" "./bindings/go/sdk" "./pub_sub/go/http")
+          skip_buildingblock=()
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
