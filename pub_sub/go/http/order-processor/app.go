@@ -63,7 +63,7 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 func main() {
 	appPort := os.Getenv("APP_PORT")
 	if appPort == "" {
-		appPort = "6001"
+		appPort = "6002"
 	}
 
 	r := mux.NewRouter()
