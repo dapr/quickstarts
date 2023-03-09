@@ -48,7 +48,7 @@ async function processBatch(){
         orders.forEach(order => {
             let sqlCmd = `insert into orders (orderid, customer, price) values (${order.orderid}, '${order.customer}', ${order.price});`;
             let payload = `{"sql": "${sqlCmd}"} `;
-            console.log(payload);
+            console.log(sqlCmd);
             client.binding.send(postgresBindingName, "exec", "", JSON.parse(payload));
         });
         console.log('Finished processing batch');
