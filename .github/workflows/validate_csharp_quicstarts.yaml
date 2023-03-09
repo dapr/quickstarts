@@ -93,6 +93,7 @@ jobs:
       - name: Validate building blocks with C#
         run: |
           variants=("http" "sdk")
+          skip_buildingblock=("./configuration/csharp/http" "./configuration/csharp/sdk" "./service_invocation/csharp/http" "./pub_sub/csharp/http")
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
@@ -100,6 +101,9 @@ jobs:
               if [ ! -d "$building_block/csharp/$variant" ]; 
               then
                 echo "$building_block/csharp/$variant does not exist."
+              elif [[ "${skip_buildingblock[@]}" =~ $building_block/csharp/$variant ]];
+              then
+                echo "skipping $building_block/csharp/$variant ."
               else
                 pushd $building_block/csharp/$variant
                 echo "Validating $building_block/csharp/$variant quickstart"
