@@ -31,7 +31,7 @@ jobs:
   validate:
     name: Validate quickstart for csharp on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+    timeout-minutes: 60
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.18
@@ -93,7 +93,7 @@ jobs:
       - name: Validate building blocks with C#
         run: |
           variants=("http" "sdk")
-          skip_buildingblock=("./configuration/csharp/http" "./configuration/csharp/sdk" "./service_invocation/csharp/http" "./pub_sub/csharp/http")
+          skip_buildingblock=()
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
