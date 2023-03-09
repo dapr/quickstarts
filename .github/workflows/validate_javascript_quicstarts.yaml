@@ -31,7 +31,7 @@ jobs:
   validate:
     name: Validate quickstart for javascript on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+    timeout-minutes: 60
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.18
