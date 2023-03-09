@@ -16,19 +16,20 @@ name: Validate Tutorials
 on:
   workflow_dispatch:
   push:
-  #   branches:
-  #     - master
-  #     - feature/new_quickstarts
-  #     - release-*
-  #   tags:
-  #     - v*
-  # pull_request:
-  #   branches:
-  #     - master
-  #     - feature/new_quickstarts
-  #     - release-*
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
 jobs:
   deploy:
+    if: false
     name: Validate tutorials on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30

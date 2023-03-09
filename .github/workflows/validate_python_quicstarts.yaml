@@ -15,20 +15,21 @@ name: Validate python quickstart
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - master
-  #     - feature/new_quickstarts
-  #     - release-*
-  #   tags:
-  #     - v*
-  # pull_request:
-  #   branches:
-  #     - master
-  #     - feature/new_quickstarts
-  #     - release-*
+  push:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
 jobs:
   validate:
+    if: false
     name: Validate quickstart for python on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15

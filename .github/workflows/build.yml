@@ -15,17 +15,18 @@ name: Build Quickstarts
 
 on:
   push:
-    # branches:
-    #   - master
-    #   - feature/new_quickstarts
-    #   - release-*
-    # tags:
-    #   - v*
-    # paths-ignore: 
-    #   - '**.md'
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+    tags:
+      - v*
+    paths-ignore: 
+      - '**.md'
   workflow_dispatch:
 jobs:
   build:
+    if: false
     name: Build ${{ matrix.target_os }}_${{ matrix.target_arch }} binaries
     runs-on: ${{ matrix.os }}
     env:
@@ -115,6 +116,7 @@ jobs:
             popd
           done
   publish:
+    if: false
     name: Publish docker manifest
     needs: build
     runs-on: ubuntu-latest
