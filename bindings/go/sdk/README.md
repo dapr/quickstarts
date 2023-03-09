@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id batch-sdk --app-port 6002 --dapr-http-port 3502 --dapr-grpc-port 60002 --resources-path ../../../components -- go run .
+dapr run --app-id batch-sdk --app-port 6004 --dapr-http-port 3502 --dapr-grpc-port 60002 --resources-path ../../../components -- go run .
 ```
 
 <!-- END_STEP -->

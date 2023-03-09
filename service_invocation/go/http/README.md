@@ -26,7 +26,7 @@ sleep: 15
 ```bash
 cd ./order-processor
 dapr run \
-  --app-port 6001 \
+  --app-port 6006 \
   --app-id order-processor \
   --app-protocol http \
   --dapr-http-port 3501 \

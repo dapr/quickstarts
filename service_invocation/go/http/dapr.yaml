@@ -2,7 +2,7 @@ version: 1
 apps:
   - appDirPath: ./order-processor/
     appID: order-processor
-    appPort: 6001
+    appPort: 6006
     command: ["go", "run", "."]
   - appID: checkout
     appDirPath: ./checkout/

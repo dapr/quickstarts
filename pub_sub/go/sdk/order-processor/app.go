@@ -20,7 +20,7 @@ var sub = &common.Subscription{
 func main() {
 	appPort := os.Getenv("APP_PORT")
 	if appPort == "" {
-		appPort = "6002"
+		appPort = "6005"
 	}
 
 	// Create the new server on appPort and add a topic listener

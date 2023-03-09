@@ -105,7 +105,7 @@ func main() {
 	var appPort string
 	var okHost bool
 	if appPort, okHost = os.LookupEnv("APP_PORT"); !okHost {
-		appPort = "6002"
+		appPort = "6004"
 	}
 
 	r := mux.NewRouter()
