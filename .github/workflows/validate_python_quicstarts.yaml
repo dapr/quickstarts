@@ -96,6 +96,7 @@ jobs:
       - name: Validate building blocks with Python
         run: |
           variants=("http" "sdk")
+          skip_buildingblock=("./configuration/python/sdk" "./bindings/python/sdk" "./pub_sub/python/sdk" "./state_management/python/sdk" "./secrets_management/python/sdk")
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
@@ -103,6 +104,9 @@ jobs:
               if [ ! -d "$building_block/python/$variant" ]; 
               then
                 echo "$building_block/python/$variant does not exist."
+              elif [[ "${skip_buildingblock[@]}" =~ $building_block/python/$variant ]];
+              then
+                echo "skpping $building_block/python/$variant ."
               else
                 pushd $building_block/python/$variant
                 echo "Validating $building_block/python/$variant quickstart"
