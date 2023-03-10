@@ -21,7 +21,9 @@ name: Install Python dependencies
 -->
 
 ```bash
-pip3 install -r order-processor/requirements.txt 
+cd ./order-processor
+pip3 install -r requirements.txt 
+pip3 install typing-extensions
 ```
 
 <!-- END_STEP -->
@@ -54,7 +56,9 @@ name: Install Python dependencies
 -->
 
 ```bash
-pip3 install -r checkout/requirements.txt 
+cd ./checkout
+pip3 install -r requirements.txt 
+pip3 install typing-extensions
 ```
 
 <!-- END_STEP -->

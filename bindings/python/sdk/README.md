@@ -39,7 +39,8 @@ name: Install python dependencies
 
 ```bash
 cd ./batch
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt
+pip3 install typing-extensions
 ```
 
 <!-- END_STEP -->

@@ -38,6 +38,7 @@ name: Install python dependencies
 ```bash
 cd ./order-processor
 pip3 install -r requirements.txt
+pip3 install typing-extensions
 ```
 
 <!-- END_STEP -->
