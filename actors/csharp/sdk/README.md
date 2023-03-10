@@ -74,15 +74,16 @@ Expected output:
 == APP == Calling SetDataAsync on SmokeDetectorActor:1...
 == APP == Got response: Success
 == APP == Calling GetDataAsync on SmokeDetectorActor:1...
-== APP == Got response: Success
-== APP == Smart device state: Name: First Floor, Status: Ready, Battery: 100.0, Temperature: 68.0, Location: Main Hallway, FirmwareVersion: 1.1, SerialNo: ABCDEFG1, MACAddress: 67-54-5D-48-8F-38, LastUpdate: 3/3/2023 9:36:17 AM
+== APP == Device 1 state: Location: First Floor, Status: Ready
 == APP == Calling SetDataAsync on SmokeDetectorActor:2...
 == APP == Got response: Success
 == APP == Calling GetDataAsync on SmokeDetectorActor:2...
-== APP == Got response: Success
-== APP == Smart device state: Name: Bedroom, Status: Ready, Battery: 98.0, Temperature: 72.0, Location: Bedroom, FirmwareVersion: 1.1, SerialNo: ABCDEFG2, MACAddress: 50-3A-32-AB-75-DF, LastUpdate: 3/3/2023 9:36:17 AM
-== APP == Calling GetAverageTemperature on ControllerActor:singleton...
-== APP == Got response: 70.0
+== APP == Device 2 state: Location: Second Floor, Status: Ready
+== APP == Registering the IDs of both Devices...
+== APP == Registered devices: 1, 2
+== APP == Detecting smoke on Device 1...
+== APP == Device 1 state: Location: First Floor, Status: Alarm
+== APP == Device 2 state: Location: Second Floor, Status: Alarm
 ```
 
 ### What happened
@@ -92,75 +93,60 @@ When you ran the client app:
 1. A `SmartDetectorActor` is created with these properties: Id = 1, Location = "First Floor", Status = "Ready".
 2. Another `SmartDetectorActor` is created with these properties: Id = 2, Location = "Second Floor", Status = "Ready".
 3. The status of `SmartDetectorActor` 1 is read and printed to the console.
-4. The `DetectSmoke` method of `SmartDetectorActor` 1 is called.
-5. The `SignalAlarm` method of `ControllerActor` is called.
-6. The `SignalAlarm` method of `SmartDetectorActor` 1 is called.
-7. The `SignalAlarm` method of `SmartDetectorActor` 2 is called.
-8. The `ControllerActor` is called which aggregates average temperature status of `SmartDetectorActor:1` and `SmartDetectorActor:2`.
-
+4. The status of `SmartDetectorActor` 2 is read and printed to the console.
+5. The `DetectSmokeAsync` method of `SmartDetectorActor` 1 is called.
+6. The `TriggerAlarmForAllDetectors` method of `ControllerActor` is called.
+7. The `SoundAlarm` method of `SmartDetectorActor` 1 is called.
+8. The `SoundAlarm` method of `SmartDetectorActor` 2 is called.
+9. The status of `SmartDetectorActor` 1 is read and printed to the console.
+10. The status of `SmartDetectorActor` 2 is read and printed to the console.
 
 Looking at the code, `SmartDetectorActor` objects are created in the client application and initialized with object state with `ActorProxy.Create<ISmartDevice>(actorId, actorType)` and then `proxySmartDevice.SetDataAsync(data)`.  These objects are re-entrant and will hold on to the state as shown by `proxySmartDevice.GetDataAsync()`.
 
 ```csharp
-        var actorId = new ActorId("1");
+        // Actor Ids and types
+        var deviceId1 = "1";
+        var deviceId2 = "2";
+        var smokeDetectorActorType = "SmokeDetectorActor";
+        var controllerActorType = "ControllerActor";
+
+        Console.WriteLine("Startup up...");
+
+        // An ActorId uniquely identifies an actor instance
+        var deviceActorId1 = new ActorId(deviceId1);
 
         // Create the local proxy by using the same interface that the service implements.
         // You need to provide the type and id so the actor can be located. 
-        var proxySmartDevice = ActorProxy.Create<ISmartDevice>(actorId, actorType);
+        // If the actor matching this id does not exist, it will be created
+        var proxySmartDevice1 = ActorProxy.Create<ISmartDevice>(deviceActorId1, smokeDetectorActorType);
 
-        // Now you can use the actor interface to call the actor's methods.
-        var data = new SmartDeviceData(){
-            Name = "First Floor",
+        // Create a new instance of the data class that will be stored in the actor
+        var deviceData1 = new SmartDeviceData(){
+            Location = "First Floor",
             Status = "Ready",
-            Battery = 100.0M,
-            Temperature = 68.0M,
-            Location = "Main Hallway",
-            FirmwareVersion = 1.1M,
-            SerialNo = "ABCDEFG1",
-            MACAddress = "67-54-5D-48-8F-38",
-            LastUpdate = DateTime.Now
         };
 
-        Console.WriteLine($"Calling SetDataAsync on {actorType}:{actorId}...");
-        var response = await proxySmartDevice.SetDataAsync(data);
-        Console.WriteLine($"Got response: {response}");
-
-        Console.WriteLine($"Calling GetDataAsync on {actorType}:{actorId}...");
-        var savedData = await proxySmartDevice.GetDataAsync();
-        Console.WriteLine($"Got response: {response}");
-
-        Console.WriteLine($"Smart device state: {savedData.ToString()}");
+        // Now you can use the actor interface to call the actor's methods.
+        Console.WriteLine($"Calling SetDataAsync on {smokeDetectorActorType}:{deviceActorId1}...");
+        var setDataResponse1 = await proxySmartDevice1.SetDataAsync(deviceData1);
+        Console.WriteLine($"Got response: {setDataResponse1}");
 ```
 
-The `ControllerActor` object is used to make aggregate calls to the other actors.
+The `ControllerActor` object is used to keep track of the devices and trigger the alarm for all of them.
 
 ```csharp
-        // Show aggregates using controller together with smart devices
-        actorId = new ActorId("singleton");
-        actorType = "ControllerActor";
-        var proxyController = ActorProxy.Create<IController>(actorId, actorType);
+        var controllerActorId = new ActorId("controller");
+        var proxyController = ActorProxy.Create<IController>(controllerActorId, controllerActorType);
 
-        Console.WriteLine($"Calling GetAverageTemperature on {actorType}:{actorId}...");
-        var avgTemp = await proxyController.GetAverageTemperature();
-
-        Console.WriteLine($"Got response: {avgTemp}");
+        Console.WriteLine($"Registering the IDs of both Devices...");
+        await proxyController.RegisterDeviceIdsAsync(new string[]{deviceId1, deviceId2});
+        var deviceIds = await proxyController.ListRegisteredDeviceIdsAsync();
+        Console.WriteLine($"Registered devices: {string.Join(", " , deviceIds)}");
 ```
 
 Additionally look at:
-- `smartdevice.Service/SmartDetectorActor.cs` which contains the implementation of the the smart device actor actions and timers
-- `smartdevice.Service/ControllerActor.cs` which contains the implementation of the controller actor that can aggregate across smart devices
-- `smartdevice.Interfaces/ISmartDevice` which contains the required actions and shared data types for each SmartDectorActor
-- `smartdevice.Interfaces/IController` which contains the actions a controller can perform across all devices
----
 
-
-<!-- STEP
-name: Run smart-detector-actor service
-working_dir: ./smartdevice.Service
-expected_stdout_lines:
-  - '== APP ==       Now listening on: http://localhost:5000'
-expected_stderr_lines:
-output_match_mode: substring
-sleep: 11
-timeout_seconds: 30
--->
+- `SmartDevice.Service/SmartDetectorActor.cs` which contains the implementation of the the smart device actor actions
+- `SmartDevice.Service/ControllerActor.cs` which contains the implementation of the controller actor that manages all devices
+- `SmartDevice.Interfaces/ISmartDevice` which contains the required actions and shared data types for each SmartDetectorActor
+- `SmartDevice.Interfaces/IController` which contains the actions a controller can perform across all devices
