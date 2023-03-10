@@ -56,19 +56,19 @@ jobs:
         with:
           docker_buildx: false
           docker_version: 20.10
-      # - name: Install podman - MacOS
-      #   if: matrix.os == 'macos-latest'
-      #   run: |
-      #     sudo rm -rf `brew --cache`
-      #     brew upgrade
-      #     brew install podman
-      #     which podman-mac-helper
-      #     podman_helper=$(which podman-mac-helper)
-      #     sudo ${podman_helper} install
-      #     podman machine init
-      #     podman machine start || echo "VM might not have started"
-      #     sleep 10
-      #     podman machine inspect
+      - name: Install podman - MacOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo rm -rf `brew --cache`
+          brew upgrade
+          brew install podman
+          which podman-mac-helper
+          podman_helper=$(which podman-mac-helper)
+          sudo ${podman_helper} install
+          podman machine init
+          podman machine start || echo "VM might not have started"
+          sleep 10
+          podman machine inspect
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
