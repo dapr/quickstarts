@@ -40,7 +40,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
       matrix: 
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -97,7 +97,6 @@ jobs:
       - name: Validate building blocks with GO
         run: |
           variants=("http" "sdk")
-          skip_buildingblock=()
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
@@ -105,9 +104,6 @@ jobs:
               if [ ! -d "$building_block/go/$variant" ]; 
               then
                 echo "$building_block/go/$variant does not exist."
-              elif [[ "${skip_buildingblock[@]}" =~ $building_block/go/$variant ]];
-              then
-                echo "skpping $building_block/go/$variant ."
               else
                 pushd $building_block/go/$variant
                 echo "Validating $building_block/go/$variant quickstart"
