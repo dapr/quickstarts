@@ -29,7 +29,6 @@ on:
       - release-*
 jobs:
   validate:
-    if: false
     name: Validate quickstart for `${{ matrix.quickstart_language }}` with `${{ matrix.quickstart_variant }}` on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15

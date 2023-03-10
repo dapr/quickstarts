@@ -29,7 +29,6 @@ on:
       - release-*
 jobs:
   deploy:
-    if: false
     name: Validate tutorials on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
