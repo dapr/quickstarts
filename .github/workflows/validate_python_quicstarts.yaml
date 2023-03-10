@@ -96,7 +96,7 @@ jobs:
       - name: Validate building blocks with Python
         run: |
           variants=("http" "sdk")
-          skip_buildingblock=("./configuration/python/sdk" "./bindings/python/sdk" "./pub_sub/python/sdk" "./state_management/python/sdk" "./secrets_management/python/sdk")
+          skip_buildingblock=("./configuration/python/sdk" "./pub_sub/python/sdk" "./state_management/python/sdk" "./secrets_management/python/sdk" "./configuration/python/http" "./bindings/python/http" "./pub_sub/python/http" "./state_management/python/http" "./secrets_management/python/http")
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
