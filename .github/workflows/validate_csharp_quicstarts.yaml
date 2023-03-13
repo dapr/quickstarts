@@ -63,11 +63,11 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
-      - name: Set Podman as Docker alias
+      - name: Create symbolic link between Podman and Docker
         if: matrix.os == 'macos-latest'
         run: |
           DOCKER_PATH=$(which docker)
-          PODMAN_PATH=$(which docker)
+          PODMAN_PATH=$(which podman)
           echo "$DOCKER_PATH"
           echo "$PODMAN_PATH"
           sudo ln -s "$PODMAN_PATH" "$DOCKER_PATH"
