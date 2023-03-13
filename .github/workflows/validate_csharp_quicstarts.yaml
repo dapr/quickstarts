@@ -66,13 +66,11 @@ jobs:
       - name: Set Podman as Docker alias
         if: matrix.os == 'macos-latest'
         run: |
-          sudo ln -s $(which podman) $(which docker)
-      # - name: Install docker - MacOS
-      #   if: matrix.os == 'macos-latest'
-      #   uses: docker-practice/actions-setup-docker@v1
-      #   with:
-      #     docker_buildx: false
-      #     docker_version: 20.10.21
+          DOCKER_PATH=$(which docker)
+          PODMAN_PATH=$(which docker)
+          echo $DOCKER_PATH
+          echo $PODMAN_PATH
+          sudo ln -s $PODMAN_PATH $DOCKER_PATH
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
