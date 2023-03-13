@@ -66,7 +66,7 @@ jobs:
       - name: Set Podman as Docker alias
         if: matrix.os == 'macos-latest'
         run: |
-          sudo ln -s $(which podman) /usr/local/bin/docker
+          sudo ln -s $(which podman) $(which docker)
       # - name: Install docker - MacOS
       #   if: matrix.os == 'macos-latest'
       #   uses: docker-practice/actions-setup-docker@v1
