@@ -24,7 +24,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-podman exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
+docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 ```
 
 <!-- END_STEP -->
@@ -65,7 +65,7 @@ name: Update config items
 -->
 
 ```bash
-podman exec dapr_redis redis-cli MSET orderId1 "103" orderId2 "104"
+docker exec dapr_redis redis-cli MSET orderId1 "103" orderId2 "104"
 ```
 
 <!--END_STEP -->

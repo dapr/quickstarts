@@ -53,7 +53,6 @@ jobs:
       - name: Install podman - MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          alias docker=podman
           sudo rm -rf `brew --cache`
           brew upgrade
           brew install podman
@@ -64,6 +63,10 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
+      - name: Set Podman as Docker alias
+        if: matrix.os == 'macos-latest'
+        run: |
+          echo "alias docker=podman" >> $HOME/.bashrc
       # - name: Install docker - MacOS
       #   if: matrix.os == 'macos-latest'
       #   uses: docker-practice/actions-setup-docker@v1
