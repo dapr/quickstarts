@@ -69,6 +69,6 @@ That's it! With the required environment variables and secrets set up in your pe
 
 This project has adopted the [Contributor Covenant Code of Conduct](https://github.com/dapr/community/blob/master/CODE-OF-CONDUCT.md)
 
-###Conclusion
+### Conclusion
 
 Thank you for your interest in contributing to the Quickstarts GitHub workflows! Your contributions can help make the workflows more useful and effective for everyone. If you have any questions or need help getting started, please don't hesitate to reach out to the maintainers of this repository.
