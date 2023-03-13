@@ -40,7 +40,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -51,6 +51,7 @@ jobs:
           envFile: './.github/env/global.env'
           expand: 'true'
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`
@@ -69,7 +70,6 @@ jobs:
           dotnet-version: |
             7.0.x
       - name: Install docker - MacOS
-        #if: false
         if: matrix.os == 'macos-latest'
         uses: docker-practice/actions-setup-docker@v1
         with:

@@ -29,7 +29,6 @@ on:
       - release-*
 jobs:
   validate:
-    if: false
     name: Validate Java quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -52,6 +51,7 @@ jobs:
           envFile: './.github/env/global.env'
           expand: 'true'
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`

@@ -29,7 +29,6 @@ on:
       - release-*
 jobs:
   deploy:
-    if: false
     name: Validate Go quickstarts on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -58,6 +57,7 @@ jobs:
           docker_buildx: false
           docker_version: 20.10
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`

@@ -29,7 +29,6 @@ on:
       - release-*
 jobs:
   validate:
-    if: false
     name: Validate Python quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -60,6 +59,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`
