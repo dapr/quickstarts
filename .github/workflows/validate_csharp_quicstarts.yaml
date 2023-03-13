@@ -53,7 +53,7 @@ jobs:
       - name: Install podman - MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          alias docker=podman
+          alias podman=docker
           sudo rm -rf `brew --cache`
           brew upgrade
           brew install podman
