@@ -64,12 +64,12 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
-      - name: Install docker - MacOS
-        if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_buildx: false
-          docker_version: 20.10.21
+      # - name: Install docker - MacOS
+      #   if: matrix.os == 'macos-latest'
+      #   uses: docker-practice/actions-setup-docker@v1
+      #   with:
+      #     docker_buildx: false
+      #     docker_version: 20.10.21
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
@@ -81,12 +81,14 @@ jobs:
       - name: Set up Dapr CLI - Windows
         if: matrix.os == 'windows-latest'
         run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"
-      - name: Install Dapr in podmand container
+      - name: Install Dapr in macos-latest
+        if: matrix.os == 'macos-latest'
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --container-runtime podman
           dapr --version     
-      - name: Install Dapr in normal container
+      - name: Install Dapr in ubuntu-latest
+        if: matrix.os == 'ubuntu-latest'
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
