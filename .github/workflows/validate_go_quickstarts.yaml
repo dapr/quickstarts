@@ -68,6 +68,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           sudo ln -s $(which podman) /usr/local/bin/docker
+          sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
@@ -88,11 +89,6 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Set up Postgres
-        run: |
-          pushd bindings/db/
-          docker compose up -d
-          popd
       - name: Validate building blocks with GO
         run: |
           variants=("http" "sdk")
