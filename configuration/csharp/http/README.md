@@ -65,7 +65,7 @@ name: Update config items
 -->
 
 ```bash
-docker exec dapr_redis redis-cli MSET orderId1 "103" orderId2 "104"
+podman exec dapr_redis redis-cli MSET orderId1 "103" orderId2 "104"
 ```
 
 <!--END_STEP -->
