@@ -63,6 +63,13 @@ To set up the required environment variables and secrets in your personal fork o
 9. Enable GitHub Actions for your fork by clicking on the "I understand my workflows, go ahead and enable them" button.
 10. Update the env section of the GitHub workflows to include your own values for the required environment variables and secrets.
 
+### Workflow permissions
+1. Navigate to your personal fork of this repository on GitHub.
+2. Click on the "Settings" tab.
+3. Click on the "Actions" menu item and select General.
+4. Scroll down to Workflow permissions section and select `Read and write permissions`
+
+
 That's it! With the required environment variables and secrets set up in your personal fork, you should be able to run the GitHub workflows successfully.
 
 ## Code of Conduct
