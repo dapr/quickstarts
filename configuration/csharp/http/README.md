@@ -24,7 +24,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
+podman exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 ```
 
 <!-- END_STEP -->

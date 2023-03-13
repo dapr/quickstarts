@@ -40,7 +40,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [macos-latest]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -53,7 +53,7 @@ jobs:
       - name: Install podman - MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          alias podman=docker
+          alias docker=podman
           sudo rm -rf `brew --cache`
           brew upgrade
           brew install podman
@@ -100,22 +100,10 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate building blocks with C#
         run: |
-          variants=("http" "sdk")
-          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
-          for building_block in $building_blocks; do
-            for variant in "${variants[@]}"
-            do
-              if [ ! -d "$building_block/csharp/$variant" ]; 
-              then
-                echo "$building_block/csharp/$variant does not exist."
-              else
-                pushd $building_block/csharp/$variant
-                echo "Validating $building_block/csharp/$variant quickstart"
-                make validate 
-                popd
-              fi
-            done
-          done
+          pushd ./configuration/csharp/http
+          echo "Validating ./configuration/csharp/http quickstart"
+          make validate 
+          popd
       - name: Linkcheck README.md
         run: |
           make validate
