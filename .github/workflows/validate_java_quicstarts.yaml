@@ -29,7 +29,7 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate quickstart for java on ${{ matrix.os }}
+    name: Validate Java quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     env:
