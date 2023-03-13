@@ -66,8 +66,8 @@ jobs:
       - name: Create symbolic link between Podman and Docker
         if: matrix.os == 'macos-latest'
         run: |
-          DOCKER_PATH=$(which docker)
-          PODMAN_PATH=$(which podman)
+          DOCKER_PATH=$(command -v docker)
+          PODMAN_PATH=$(command -v podman)
           echo "$DOCKER_PATH"
           echo "$PODMAN_PATH"
           sudo ln -s "$PODMAN_PATH" "$DOCKER_PATH"
