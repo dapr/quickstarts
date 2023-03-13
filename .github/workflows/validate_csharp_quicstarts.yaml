@@ -68,9 +68,9 @@ jobs:
         run: |
           DOCKER_PATH=$(which docker)
           PODMAN_PATH=$(which docker)
-          echo $DOCKER_PATH
-          echo $PODMAN_PATH
-          sudo ln -s $PODMAN_PATH $DOCKER_PATH
+          echo "$DOCKER_PATH"
+          echo "$PODMAN_PATH"
+          sudo ln -s "$PODMAN_PATH" "$DOCKER_PATH"
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
