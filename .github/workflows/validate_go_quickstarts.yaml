@@ -29,7 +29,6 @@ on:
       - release-*
 jobs:
   deploy:
-    if: false
     name: Validate Go quickstarts on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
@@ -51,12 +50,6 @@ jobs:
         with:
           envFile: './.github/env/global.env'
           expand: 'true'
-      - name: Install docker - MacOS
-        if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_buildx: false
-          docker_version: 20.10
       - name: Install podman - MacOS
         timeout-minutes: 15
         if: matrix.os == 'macos-latest'
@@ -71,6 +64,10 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
+      - name: Create symbolic link between Podman and Docker
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo ln -s $(which podman) /usr/local/bin/docker
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:

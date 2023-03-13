@@ -66,11 +66,7 @@ jobs:
       - name: Create symbolic link between Podman and Docker
         if: matrix.os == 'macos-latest'
         run: |
-          DOCKER_PATH=$(command -v docker)
-          PODMAN_PATH=$(command -v podman)
-          echo "$DOCKER_PATH"
-          echo "$PODMAN_PATH"
-          sudo ln -s "$PODMAN_PATH" "$DOCKER_PATH"
+          sudo ln -s $(which podman) /usr/local/bin/docker
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
@@ -101,10 +97,22 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate building blocks with C#
         run: |
-          pushd ./configuration/csharp/http
-          echo "Validating ./configuration/csharp/http quickstart"
-          make validate 
-          popd
+          variants=("http" "sdk")
+          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
+          for building_block in $building_blocks; do
+            for variant in "${variants[@]}"
+            do
+              if [ ! -d "$building_block/csharp/$variant" ]; 
+              then
+                echo "$building_block/csharp/$variant does not exist."
+              else
+                pushd $building_block/csharp/$variant
+                echo "Validating $building_block/csharp/$variant quickstart"
+                make validate 
+                popd
+              fi
+            done
+          done
       - name: Linkcheck README.md
         run: |
           make validate
