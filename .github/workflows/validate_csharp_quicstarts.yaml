@@ -73,11 +73,6 @@ jobs:
       - name: Set up Dapr CLI - Windows
         if: matrix.os == 'windows-latest'
         run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"
-      - name: Install Dapr
-        run: |
-          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
-          dapr --version
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
