@@ -69,8 +69,8 @@ jobs:
           dotnet-version: |
             7.0.x
       - name: Install docker - MacOS
-        if: false
-        #if: matrix.os == 'macos-latest'
+        #if: false
+        if: matrix.os == 'macos-latest'
         uses: docker-practice/actions-setup-docker@v1
         with:
           docker_buildx: false
