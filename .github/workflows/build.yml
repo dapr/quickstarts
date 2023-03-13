@@ -26,6 +26,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    if: false
     name: Build ${{ matrix.target_os }}_${{ matrix.target_arch }} binaries
     runs-on: ${{ matrix.os }}
     env:
