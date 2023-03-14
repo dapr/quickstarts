@@ -87,10 +87,22 @@ jobs:
           popd
       - name: Validate building blocks with C#
         run: |
-          pushd ./bindings/csharp/http
-          echo "Validating ./bindings/csharp/http quickstart"
-          make validate 
-          popd
+          variants=("http" "sdk")
+          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
+          for building_block in $building_blocks; do
+            for variant in "${variants[@]}"
+            do
+              if [ ! -d "$building_block/csharp/$variant" ]; 
+              then
+                echo "$building_block/csharp/$variant does not exist."
+              else
+                pushd $building_block/csharp/$variant
+                echo "Validating $building_block/csharp/$variant quickstart"
+                make validate 
+                popd
+              fi
+            done
+          done
       - name: Linkcheck README.md
         run: |
           make validate
