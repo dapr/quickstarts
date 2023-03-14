@@ -80,11 +80,6 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Set up Postgres
-        run: |
-          pushd bindings/db/
-          docker compose up -d
-          popd
       - name: Validate building blocks with C#
         run: |
           variants=("http" "sdk")
