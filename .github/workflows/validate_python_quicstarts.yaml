@@ -32,7 +32,7 @@ jobs:
     if: false
     name: Validate Python quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 130
     env:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.18
@@ -73,6 +73,10 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
+      - name: Install podman-compose
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo pip3 install podman-compose
       - name: Create symbolic link between Podman and Docker
         if: matrix.os == 'macos-latest'
         run: |

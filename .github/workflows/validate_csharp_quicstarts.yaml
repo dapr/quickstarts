@@ -68,9 +68,6 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           sudo pip3 install podman-compose
-          # pushd bindings/db
-          # podman-compose up
-          # popd
       - name: Create symbolic link between Podman and Docker
         if: matrix.os == 'macos-latest'
         run: |
