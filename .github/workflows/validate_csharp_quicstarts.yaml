@@ -69,8 +69,9 @@ jobs:
           sudo pip3 install podman-compose
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
-          cd ../../db
-          podman-compose up
+          pushd bindings/db/
+          podman-compose up -d
+          popd
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
