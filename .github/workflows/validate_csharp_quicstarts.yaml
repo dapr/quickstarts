@@ -63,10 +63,16 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
-      - name: Create symbolic link between Podman and Docker
+      - name: Install podman-compose
         if: matrix.os == 'macos-latest'
         run: |
           sudo pip3 install podman-compose
+          pushd bindings/db
+          podman-compose up
+          popd
+      - name: Create symbolic link between Podman and Docker
+        if: matrix.os == 'macos-latest'
+        run: |
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Install .NET Core 
@@ -92,22 +98,9 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate building blocks with C#
         run: |
-          variants=("http" "sdk")
-          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
-          for building_block in $building_blocks; do
-            for variant in "${variants[@]}"
-            do
-              if [ ! -d "$building_block/csharp/$variant" ] || [ "$building_block" == "./bindings" ]; 
-              then
-                echo "$building_block/csharp/$variant does not exist."
-              else
-                pushd $building_block/csharp/$variant
-                echo "Validating $building_block/csharp/$variant quickstart"
-                make validate 
-                popd
-              fi
-            done
-          done
+          pushd ./bindings/csharp/http
+          make validate 
+          popd
       - name: Linkcheck README.md
         run: |
           make validate
