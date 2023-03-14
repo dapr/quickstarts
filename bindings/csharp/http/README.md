@@ -14,13 +14,7 @@ This quickstart includes one service:
 
 1. Open a new terminal, change directories to `../../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
 
-<!-- STEP
-name: Run and initialize PostgreSQL container
-expected_return_code:
-background: true
-sleep: 5
-timeout_seconds: 6
--->
+
 
 ```bash
 cd ../../db
