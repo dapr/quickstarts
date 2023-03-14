@@ -66,6 +66,7 @@ jobs:
       - name: Create symbolic link between Podman and Docker
         if: matrix.os == 'macos-latest'
         run: |
+          sudo pip3 install podman-compose
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Install .NET Core 

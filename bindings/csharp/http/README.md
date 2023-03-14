@@ -23,10 +23,8 @@ timeout_seconds: 6
 -->
 
 ```bash
-sudo pip3 install podman-compose
-podman-compose version
 cd ../../db
-podman-compose up
+docker compose up
 ```
 
 <!-- END_STEP -->
