@@ -69,9 +69,6 @@ jobs:
           sudo pip3 install podman-compose
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
-          pushd bindings/db/
-          podman-compose up -d
-          popd
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
@@ -100,6 +97,11 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
+      - name: Set up Postgres
+        run: |
+          pushd bindings/db/
+          docker-compose up -d
+          popd
       - name: Validate building blocks with C#
         run: |
           pushd ./bindings/csharp/http
