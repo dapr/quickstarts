@@ -24,7 +24,7 @@ timeout_seconds: 6
 
 ```bash
 cd ../../db
-docker compose up
+podman-compose up
 ```
 
 <!-- END_STEP -->
