@@ -15,12 +15,6 @@ This quickstart includes one service:
 1. Open a new terminal, change directories to `../../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
 
 
-
-```bash
-cd ../../db
-docker-compose up
-```
-
 <!-- END_STEP -->
 
 ### Run C# service with Dapr
