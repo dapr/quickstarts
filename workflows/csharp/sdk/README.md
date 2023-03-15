@@ -48,3 +48,26 @@ dapr run --app-id order-processor dotnet run
 ```
 
 <!-- END_STEP -->
+
+### View expected output in Zipkin
+1. Launch Zipkin container:
+The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched on running `dapr init`. If it's not running already, launch Zipkin using Docker container with the following command.
+
+```bash
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+2. View Traces in Zipkin UI:
+
+In your browser go to http://localhost:9411 to view the workflow trace spans in the Zipkin web UI. The order-processor workflow should have the following output in the Zipkin web UI.  
+
+<img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
+
+<img src="/images/actors_client.png" width=800 style="padding-bottom:15px;">
+
+
+
+
+
+
+
