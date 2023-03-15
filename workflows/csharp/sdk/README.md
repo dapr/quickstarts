@@ -59,15 +59,8 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 2. View Traces in Zipkin UI:
 
-In your browser go to http://localhost:9411 to view the workflow trace spans in the Zipkin web UI. The order-processor workflow should have the following output in the Zipkin web UI.  
+In your browser go to http://localhost:9411 to view the workflow trace spans in the Zipkin web UI. The order-processor workflow should have the following output in the Zipkin web UI. 
 
-<img src="/images/workflow-trace-spans-zipkin.png" width=800 style="padding-bottom:15px;">
-
-<img src="/images/actors_client.png" width=800 style="padding-bottom:15px;">
-
-
-
-
-
+<img src="img/workflow-trace-spans-zipkin.png">
 
 
