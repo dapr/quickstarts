@@ -33,8 +33,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 130
     env:
+      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      GOVER: 1.17
+      GOVER: 1.18
       KUBERNETES_VERSION: v1.21.1
       KIND_VERSION: v0.11.0
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6

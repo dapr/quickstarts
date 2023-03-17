@@ -55,9 +55,6 @@ app.MapPost("/" + cronBindingName, async () => {
                resp.EnsureSuccessStatusCode();
           } 
           catch (HttpRequestException e) {
-               Console.WriteLine(e.Message);
-               Console.WriteLine(e.StackTrace);
-               Console.WriteLine(e.InnerException?.InnerException?.Message);
                Console.WriteLine(e.ToString());
                throw e;
           }
