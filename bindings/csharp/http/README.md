@@ -18,13 +18,13 @@ This quickstart includes one service:
 name: Run and initialize PostgreSQL container
 expected_return_code:
 background: true
-sleep: 60
-timeout_seconds: 300
+sleep: 5
+timeout_seconds: 6
 -->
 
 ```bash
 cd ../../db
-docker-compose up
+docker compose up
 ```
 
 <!-- END_STEP -->
