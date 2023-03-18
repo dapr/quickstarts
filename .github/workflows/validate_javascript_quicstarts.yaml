@@ -29,7 +29,6 @@ on:
       - release-*
 jobs:
   validate:
-    if: false
     name: Validate Javascript quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 130

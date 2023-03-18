@@ -65,14 +65,10 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
-      # - name: Install podman-compose
-      #   if: matrix.os == 'macos-latest'
-      #   run: |
-      #     sudo pip3 install podman-compose
-      - name: Install docker-compose in macos
+      - name: Install podman-compose
         if: matrix.os == 'macos-latest'
         run: |
-          sudo pip3 install docker-compose
+          sudo pip3 install podman-compose
       - name: Create symbolic link between Podman and Docker
         if: matrix.os == 'macos-latest'
         run: |

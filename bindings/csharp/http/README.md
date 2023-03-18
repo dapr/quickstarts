@@ -18,8 +18,8 @@ This quickstart includes one service:
 name: Run and initialize PostgreSQL container
 expected_return_code:
 background: true
-sleep: 50
-timeout_seconds: 60
+sleep: 60
+timeout_seconds: 120
 -->
 
 ```bash
