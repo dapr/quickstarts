@@ -42,7 +42,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id order-processor-http --resources-path ../../../components/  --app-port 5001 -- node .
+dapr run --app-id order-processor-http --resources-path ../../../components/  --app-port 5003 -- node .
 ```
 
 <!-- END_STEP -->
@@ -76,7 +76,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id checkout-http --resources-path ../../../components/  --app-port 5001 -- node .
+dapr run --app-id checkout-http --resources-path ../../../components/  --app-port 5003 -- node .
 ```
 
 <!-- END_STEP -->

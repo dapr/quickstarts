@@ -49,7 +49,7 @@ match_order: none
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7001 -- dotnet run --project .
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7003 -- dotnet run --project .
 ```
 
 <!-- END_STEP -->

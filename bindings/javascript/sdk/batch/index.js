@@ -24,7 +24,7 @@ const postgresBindingName = "sqldb";
 const daprHost = process.env.DAPR_HOST || 'http://localhost';
 const daprPort = process.env.DAPR_HTTP_PORT || '3500';
 const serverHost = "127.0.0.1";
-const serverPort = process.env.APP_PORT || '5002';
+const serverPort = process.env.APP_PORT || '5005';
 
 const client = new DaprClient(daprHost, daprPort);
 
@@ -48,7 +48,7 @@ async function processBatch(){
         orders.forEach(order => {
             let sqlCmd = `insert into orders (orderid, customer, price) values (${order.orderid}, '${order.customer}', ${order.price});`;
             let payload = `{"sql": "${sqlCmd}"} `;
-            console.log(payload);
+            console.log(sqlCmd);
             client.binding.send(postgresBindingName, "exec", "", JSON.parse(payload));
         });
         console.log('Finished processing batch');

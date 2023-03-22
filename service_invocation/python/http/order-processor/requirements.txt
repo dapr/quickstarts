@@ -1,2 +1,3 @@
 Flask
 dapr
+typing-extensions
