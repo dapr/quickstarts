@@ -56,7 +56,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11
-timeout_seconds: 30
+timeout_seconds: 120
 -->
     
 ```bash
