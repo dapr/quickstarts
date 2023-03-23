@@ -19,7 +19,7 @@ name: Run and initialize PostgreSQL container
 expected_return_code:
 background: true
 sleep: 60
-timeout_seconds: 120
+timeout_seconds: 180
 -->
 
 ```bash
