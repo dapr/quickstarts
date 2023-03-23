@@ -92,8 +92,8 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate building blocks with Javascript
         run: |
-          pushd bindings/javascript/http
-          echo "Validating bindings/javascript/http quickstart"
+          pushd bindings/javascript/sdk
+          echo "Validating bindings/javascript/sdk quickstart"
           make validate 
           popd
       - name: Linkcheck README.md

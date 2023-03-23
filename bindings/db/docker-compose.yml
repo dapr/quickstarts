@@ -6,10 +6,6 @@ services:
     container_name: postgres
     ports:
       - "5432:5432"
-    deploy:
-      mode: replicated
-      replicas: 2
-      endpoint_mode: vip
     build:
       context: .
       dockerfile: ./Dockerfile
