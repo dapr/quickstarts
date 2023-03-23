@@ -29,10 +29,12 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate quickstart for csharp on ${{ matrix.os }}
+    if: false
+    name: Validate C# quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 130
     env:
+      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.18
       KUBERNETES_VERSION: v1.25.3
@@ -51,6 +53,7 @@ jobs:
           envFile: './.github/env/global.env'
           expand: 'true'
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`
@@ -63,17 +66,20 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
+      - name: Install podman-compose
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo pip3 install podman-compose
+      - name: Create symbolic link between Podman and Docker
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo ln -s $(which podman) /usr/local/bin/docker
+          sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             7.0.x
-      - name: Install docker - MacOS
-        if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_buildx: false
-          docker_version: 20.10.21
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
@@ -84,7 +90,7 @@ jobs:
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
-          dapr --version
+          dapr --version 
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV

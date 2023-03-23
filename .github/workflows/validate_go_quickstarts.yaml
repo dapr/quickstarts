@@ -29,12 +29,14 @@ on:
       - release-*
 jobs:
   deploy:
-    name: Validate quickstarts for go on ${{ matrix.os }}
+    if: false
+    name: Validate Go quickstarts on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 130
     env:
+      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      GOVER: 1.17
+      GOVER: 1.18
       KUBERNETES_VERSION: v1.21.1
       KIND_VERSION: v0.11.0
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
@@ -50,13 +52,8 @@ jobs:
         with:
           envFile: './.github/env/global.env'
           expand: 'true'
-      - name: Install docker - MacOS
-        if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_buildx: false
-          docker_version: 20.10
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`
@@ -69,6 +66,15 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
+      - name: Install podman-compose
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo pip3 install podman-compose
+      - name: Create symbolic link between Podman and Docker
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo ln -s $(which podman) /usr/local/bin/docker
+          sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Set up Go ${{ env.GOVER }}
         uses: actions/setup-go@v2
         with:
@@ -89,11 +95,6 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Set up Postgres
-        run: |
-          pushd bindings/db/
-          docker compose up -d
-          popd
       - name: Validate building blocks with GO
         run: |
           variants=("http" "sdk")

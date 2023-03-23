@@ -2,3 +2,4 @@ Flask
 dapr
 cloudevents
 uvicorn
+typing-extensions

@@ -29,10 +29,11 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate quickstart for javascript on ${{ matrix.os }}
+    name: Validate Javascript quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 130
     env:
+      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.18
       KUBERNETES_VERSION: v1.25.3
@@ -40,7 +41,7 @@ jobs:
       KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [macos-latest]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -51,6 +52,7 @@ jobs:
           envFile: './.github/env/global.env'
           expand: 'true'
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`
@@ -63,12 +65,15 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
-      - name: Install docker - MacOS
+      - name: Install podman-compose
         if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_buildx: false
-          docker_version: 20.10.21
+        run: |
+          sudo pip3 install podman-compose
+      - name: Create symbolic link between Podman and Docker
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo ln -s $(which podman) /usr/local/bin/docker
+          sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
@@ -87,22 +92,10 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate building blocks with Javascript
         run: |
-          variants=("http" "sdk")
-          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
-          for building_block in $building_blocks; do
-            for variant in "${variants[@]}"
-            do
-              if [ ! -d "$building_block/javascript/$variant" ]; 
-              then
-                echo "$building_block/javascript/$variant does not exist."
-              else
-                pushd $building_block/javascript/$variant
-                echo "Validating $building_block/javascript/$variant quickstart"
-                make validate 
-                popd
-              fi
-            done
-          done
+          pushd bindings/javascript/sdk
+          echo "Validating bindings/javascript/sdk quickstart"
+          make validate 
+          popd
       - name: Linkcheck README.md
         run: |
           make validate

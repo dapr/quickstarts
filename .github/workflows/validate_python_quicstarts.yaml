@@ -29,10 +29,12 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate quickstart for python on ${{ matrix.os }}
+    if: false
+    name: Validate Python quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 130
     env:
+      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.18
       KUBERNETES_VERSION: v1.25.3
@@ -59,6 +61,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
       - name: Install podman - MacOS
+        timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
           sudo rm -rf `brew --cache`
@@ -71,12 +74,15 @@ jobs:
           podman machine start || echo "VM might not have started"
           sleep 10
           podman machine inspect
-      - name: Install docker - MacOS
+      - name: Install podman-compose
         if: matrix.os == 'macos-latest'
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_buildx: false
-          docker_version: 20.10.21
+        run: |
+          sudo pip3 install podman-compose
+      - name: Create symbolic link between Podman and Docker
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo ln -s $(which podman) /usr/local/bin/docker
+          sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}

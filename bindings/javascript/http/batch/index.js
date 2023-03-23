@@ -37,9 +37,9 @@ app.post('/' + cronBinding, (req, res) => {
         orders.forEach(order => {
             let sqlCmd = `insert into orders (orderid, customer, price) values (${order.orderid}, '${order.customer}', ${order.price});`;
             let payload = `{"operation": "exec", "metadata": {"sql": "${sqlCmd}"}}`;
-            console.log(sqlCmd);
             try {
-                let resp = axios.post(daprUrl, payload);                
+                let resp = axios.post(daprUrl, payload);  
+                console.log(sqlCmd);
             } catch (error) {
                 console.error("SQL binding failed with: " + error.response.data);
                 throw error

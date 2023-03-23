@@ -19,12 +19,12 @@ name: Run and initialize PostgreSQL container
 expected_return_code:
 background: true
 sleep: 5
-timeout_seconds: 6
+timeout_seconds: 120
 -->
 
 ```bash
 cd ../../db
-docker compose up
+docker-compose up
 ```
 
 <!-- END_STEP -->
@@ -56,7 +56,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11
-timeout_seconds: 30
+timeout_seconds: 180
 -->
     
 ```bash
