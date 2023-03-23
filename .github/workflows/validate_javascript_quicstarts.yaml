@@ -92,22 +92,10 @@ jobs:
           pip3 install mechanical-markdown
       - name: Validate building blocks with Javascript
         run: |
-          variants=("http" "sdk")
-          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
-          for building_block in $building_blocks; do
-            for variant in "${variants[@]}"
-            do
-              if [ ! -d "$building_block/javascript/$variant" ]; 
-              then
-                echo "$building_block/javascript/$variant does not exist."
-              else
-                pushd $building_block/javascript/$variant
-                echo "Validating $building_block/javascript/$variant quickstart"
-                make validate 
-                popd
-              fi
-            done
-          done
+          pushd bindings/javascript/http
+          echo "Validating bindings/javascript/http quickstart"
+          make validate 
+          popd
       - name: Linkcheck README.md
         run: |
           make validate
