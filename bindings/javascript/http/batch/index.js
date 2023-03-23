@@ -40,7 +40,6 @@ app.post('/' + cronBinding, (req, res) => {
             try {
                 let resp = axios.post(daprUrl, payload);  
                 console.log(sqlCmd);
-                console.log(resp.data);
             } catch (error) {
                 console.error("SQL binding failed with: " + error.response.data);
                 throw error
