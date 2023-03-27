@@ -18,13 +18,13 @@ This quickstart includes one service:
 name: Run and initialize PostgreSQL container
 expected_return_code:
 background: true
-sleep: 5
-timeout_seconds: 6
+sleep: 60
+timeout_seconds: 120
 -->
 
 ```bash
 cd ../../db
-docker compose up
+docker-compose up
 ```
 
 <!-- END_STEP -->
@@ -60,7 +60,7 @@ timeout_seconds: 30
 -->
     
 ```bash
-dapr run --app-id batch-sdk --app-port 8080 --components-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id batch-sdk --app-port 8080 --resources-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 <!-- END_STEP -->

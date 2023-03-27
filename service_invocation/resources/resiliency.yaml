@@ -1,0 +1,26 @@
+apiVersion: dapr.io/v1alpha1
+kind: Resiliency
+metadata:
+  name: myresiliency
+scopes:
+  - checkout
+
+spec:
+  policies:
+    retries:
+      retryForever:
+        policy: constant
+        duration: 5s
+        maxRetries: -1 
+
+    circuitBreakers:
+      simpleCB:
+        maxRequests: 1
+        timeout: 5s 
+        trip: consecutiveFailures >= 5
+
+  targets:
+    apps:
+      order-processor:
+        retry: retryForever
+        circuitBreaker: simpleCB

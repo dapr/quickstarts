@@ -1,0 +1,9 @@
+version: 1
+apps:
+  - appDirPath: ./order-processor/
+    appID: order-processor
+    appPort: 7006
+    command: ["dotnet", "run"]
+  - appID: checkout
+    appDirPath: ./checkout/
+    command: ["dotnet", "run"]

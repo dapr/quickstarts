@@ -18,21 +18,26 @@ var sub = &common.Subscription{
 }
 
 func main() {
-	appPort := "6002"
-	if value, ok := os.LookupEnv("APP_PORT"); ok {
-		appPort = value
+	appPort := os.Getenv("APP_PORT")
+	if appPort == "" {
+		appPort = "6005"
 	}
 
+	// Create the new server on appPort and add a topic listener
 	s := daprd.NewService(":" + appPort)
-	if err := s.AddTopicEventHandler(sub, eventHandler); err != nil {
+	err := s.AddTopicEventHandler(sub, eventHandler)
+	if err != nil {
 		log.Fatalf("error adding topic subscription: %v", err)
 	}
-	if err := s.Start(); err != nil && err != http.ErrServerClosed {
+
+	// Start the server
+	err = s.Start()
+	if err != nil && err != http.ErrServerClosed {
 		log.Fatalf("error listenning: %v", err)
 	}
 }
 
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
-	fmt.Println("Subscriber received: ", e.Data)
+	fmt.Println("Subscriber received:", e.Data)
 	return false, nil
 }

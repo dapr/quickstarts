@@ -22,7 +22,7 @@ Clone the quickstarts repository
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
 ### - Run locally
-1. Install [.Net Core SDK 3.1](https://dotnet.microsoft.com/download)
+1. Install [.Net Core SDK 7.0](https://dotnet.microsoft.com/download)
 2. Install [Dapr CLI](https://github.com/dapr/cli)
 3. Install [Go](https://golang.org/doc/install)
 4. Install [Python3](https://www.python.org/downloads/)
@@ -119,14 +119,14 @@ expected_stdout_lines:
 expected_stderr_lines:
 name: "Run dotnet app"
 output_match_mode: substring
-working_dir: "./csharp/bin/Debug/netcoreapp3.1"
+working_dir: "./csharp/bin/Debug/netcoreapp7.0"
 background: true
 env: 
   ASPNETCORE_URLS: 'http://localhost:7001'
-sleep: 2
+sleep: 5
 -->
 
-- Navigate to ./bin/Debug/netcoreapp3.1 and start Dapr using command:
+- Navigate to ./bin/Debug/netcoreapp7.0 and start Dapr using command:
    ```bash
    dapr run --app-id subtractapp --app-port 7001 --dapr-http-port 3504 dotnet Subtract.dll
    ```
@@ -683,7 +683,7 @@ Our client persists state by simply POSTing JSON key-value pairs (see `react-cal
 If you are using Visual Studio Code, you can debug this application using the preconfigured launch.json and task.json files in the .vscode folder.
 The .vscode folder has already been modified in the project to allow users to launch a compound configuration called "Full Dapr App" which will run all applications and allow you to debug in VS Code.
 
-For more information on how to configure the files visit [How-To: Debug multiple Dapr applications](https://docs.dapr.io/developing-applications/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/)
+For more information on how to configure the files visit [How-To: Debug multiple Dapr applications](https://docs.dapr.io/developing-applications/local-development/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/)
 
 > **Note**: You still need to edit your environment variables for Flask and ASPNETCORE_URLS
 **Note**: Dapr offers a preview [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) for local development which enables users a variety of features related to better managing their Dapr applications and debugging of your Dapr applications for all supported Dapr languages which are .NET, Go, PHP, Python and Java.

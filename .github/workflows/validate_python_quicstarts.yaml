@@ -1,0 +1,121 @@
+#
+# Copyright 2023 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Validate python quickstart
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - feature/new_quickstarts
+      - release-*
+jobs:
+  validate:
+    name: Validate Python quickstart on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 130
+    env:
+      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
+      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
+      GOVER: 1.18
+      KUBERNETES_VERSION: v1.25.3
+      KIND_VERSION: v0.17.0
+      KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - name: Check out code 
+        uses: actions/checkout@v2
+      - name: Load environment variables
+        uses: artursouza/export-env-action@v2
+        with:
+          envFile: './.github/env/global.env'
+          expand: 'true'
+      - name: Pinning Python to ${{ env.MACOS_PYTHON_VERSION }} on MacOS
+        if: matrix.os == 'macos-latest'
+        run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
+      - name: Verify Python version
+        run: python3 --version
+      - name: Upgrade pip and setuptools
+        if: matrix.os == 'macos-latest'
+        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
+      - name: Install podman - MacOS
+        timeout-minutes: 15
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo rm -rf `brew --cache`
+          brew upgrade
+          brew install podman
+          which podman-mac-helper
+          podman_helper=$(which podman-mac-helper)
+          sudo ${podman_helper} install
+          podman machine init
+          podman machine start || echo "VM might not have started"
+          sleep 10
+          podman machine inspect
+      - name: Install podman-compose
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo pip3 install podman-compose
+      - name: Create symbolic link between Podman and Docker
+        if: matrix.os == 'macos-latest'
+        run: |
+          sudo ln -s $(which podman) /usr/local/bin/docker
+          sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
+      - name: Set up Dapr CLI - Mac/Linux
+        if: matrix.os != 'windows-latest'
+        run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
+      - name: Set up Dapr CLI - Windows
+        if: matrix.os == 'windows-latest'
+        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"
+      - name: Install Dapr
+        run: |
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr --version
+      - name: Install utilities dependencies
+        run: |
+          echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
+          pip3 install setuptools wheel
+          pip3 install mechanical-markdown
+      - name: Validate building blocks with Python
+        run: |
+          variants=("http" "sdk")
+          building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
+          for building_block in $building_blocks; do
+            for variant in "${variants[@]}"
+            do
+              if [ ! -d "$building_block/python/$variant" ]; 
+              then
+                echo "$building_block/python/$variant does not exist."
+              else
+                pushd $building_block/python/$variant
+                echo "Validating $building_block/python/$variant quickstart"
+                make validate 
+                popd
+              fi
+            done
+          done
+      - name: Linkcheck README.md
+        run: |
+          make validate

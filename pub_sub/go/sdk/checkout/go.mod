@@ -1,11 +1,10 @@
-module dapr_example
+module checkout_sdk_example
 
-go 1.18
+go 1.19
 
-require github.com/dapr/go-sdk v1.5.0
+require github.com/dapr/go-sdk v1.6.0
 
 require (
-	github.com/dapr/dapr v1.8.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/net v0.0.0-20220621193019-9d032be2e588 // indirect

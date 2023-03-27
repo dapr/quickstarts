@@ -20,7 +20,7 @@ name: Install python dependencies
 
 ```bash
 cd ./order-processor
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt
 ```
 
 <!-- END_STEP -->
@@ -40,7 +40,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../resources/ -- python3 app.py
 ```
 
 <!-- END_STEP -->

@@ -262,6 +262,8 @@ Now that the Node.js and Python applications are deployed, watch messages come t
 
 Get the logs of the Node.js app:
 
+<!-- TODO(artursouza): Add "Successfully persisted state for Order ID: X" once the new image is published -->
+
 <!-- STEP
 expected_stdout_lines:
   - "Got a new order! Order ID: 11"
@@ -297,7 +299,7 @@ Get the API call logs of the node app:
 
 <!-- STEP
 expected_stdout_lines:
-  - 'level=info msg="HTTP API Called: POST /v1.0/state/statestore'
+  - 'method="POST /v1.0/state/statestore"'
 expected_stderr_lines:
 output_match_mode: substring
 name: Read nodeapp logs
@@ -312,15 +314,15 @@ kubectl logs --selector=app=node -c daprd --tail=-1
 When save state API calls are made, you should see logs similar to this:
 
 ```
-time="2022-04-25T22:46:09.82121774Z" level=info msg="HTTP API Called: POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
-time="2022-04-25T22:46:10.828764787Z" level=info msg="HTTP API Called: POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
+time="2022-04-25T22:46:09.82121774Z" level=info method="POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
+time="2022-04-25T22:46:10.828764787Z" level=info method="POST /v1.0/state/statestore" app_id=nodeapp instance=nodeapp-7dd6648dd4-7hpmh scope=dapr.runtime.http-info type=log ver=1.7.2
 ```
 
 Get the API call logs of the Python app:
 
 <!-- STEP
 expected_stdout_lines:
-  - 'level=info msg="HTTP API Called: POST /neworder'
+  - 'method="POST /neworder"'
 expected_stderr_lines:
 output_match_mode: substring
 name: Read pythonapp logs
@@ -332,8 +334,8 @@ kubectl logs --selector=app=python -c daprd --tail=-1
 <!-- END_STEP -->
 
 ```
-time="2022-04-27T02:47:49.972688145Z" level=info msg="HTTP API Called: POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
-time="2022-04-27T02:47:50.984994545Z" level=info msg="HTTP API Called: POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
+time="2022-04-27T02:47:49.972688145Z" level=info method="POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
+time="2022-04-27T02:47:50.984994545Z" level=info method="POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
 ```
 
 ## Step 8 - Confirm successful persistence
@@ -352,7 +354,7 @@ You should see the latest JSON in response!
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
 <!-- STEP
-name: "Deploy Kubernetes"
+name: "Delete resources from Kubernetes"
 working_dir: "./deploy"
 sleep: 10
 expected_stdout_lines:

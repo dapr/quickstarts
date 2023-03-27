@@ -2,55 +2,61 @@
 
 In this QuickStart, you will run a microservice application that continuously persists and retrieves state via Dapr's state management API. When operations to the state store begin to fail, Dapr resiliency policies are applied.
 
-Visit [this](https://docs.dapr.io/operations/resiliency/resiliency-overview//) link for more information about Dapr resiliency.
+Visit the documentation about [Dapr resiliency](https://docs.dapr.io/operations/resiliency/resiliency-overview/) link for more information
 
 This quickstart includes one service:
 
-- Client service `order-processor` 
+- Client service `order-processor`
 - Redis component spec `statestore.yaml`
 - Resiliency spec `resiliency.yaml`
 
 ### Run the client service with Dapr and resiliency enabled
 
-1. Navigate to the app directory, install dependencies, and run the service with resiliency enabled via the config.yaml: 
+1. Navigate to the app directory, install dependencies, and run the service with resiliency: 
 
-### CSharp example:
+### C# example:
+
 ```bash
 cd ../state_management/csharp/sdk/order-processor
 dotnet restore
 dotnet build
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- dotnet run
+dapr run --app-id order-processor --resources-path ../../../resources/ -- dotnet run
 ```
 
 ### Go example:
+
 ```bash
 cd ../state_management/go/sdk/order-processor
 go build .
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components -- go run .
+dapr run --app-id order-processor --resources-path ../../../resources -- go run .
 ```
 
 ### Java example:
+
 ```bash
 cd ../state_management/java/sdk/order-processor
 mvn clean install
-dapr run --app-id order-processor --config ../config.yaml --components-path ../../../components/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../resources/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ### JavaScript example:
+
 ```bash
 cd ../state_management/javascript/sdk/order-processor
 npm install
-dapr run --app-id order-processor ../config.yaml --components-path ../../../components/ -- npm start
+dapr run --app-id order-processor  --resources-path ../../../resources/ -- npm start
 ```
 
 ### Python example:
+
 ```bash
 cd ../state_management/python/sdk/order-processor
 pip3 install -r requirements.txt 
-dapr run --app-id order-processor ../config.yaml --components-path ../../../components/ -- python3 
+dapr run --app-id order-processor  --resources-path ../../../resources/ -- python3 
 ```
 
 ### Expected output: 
+
 ```bash
 == APP == Saving Order:  { orderId: '1' }
 == APP == Getting Order:  { orderId: '1' }
@@ -64,6 +70,7 @@ dapr run --app-id order-processor ../config.yaml --components-path ../../../comp
 <!-- END_STEP -->
 
 ### Simulate a component failure by stopping the Redis container instance 
+
 In a new terminal window, stop the Redis container that's running on your machine:
 
 ```bash
@@ -73,10 +80,11 @@ docker stop dapr_redis
 ### Observe retry and circuit breaker policies are applied:
 
 Policies defined in the resiliency.yaml spec:
+
 ```yaml
 retryForever:
   policy: constant
-  maxInterval: 5s
+  duration: 5s
   maxRetries: -1 
 
 circuitBreakers:
@@ -87,6 +95,7 @@ circuitBreakers:
 ```
 
 Applied policies:
+
 ```bash
 INFO[0006] Error processing operation component[statestore] output. Retrying... 
 INFO[0026] Circuit breaker "simpleCB-statestore" changed state from closed to open
@@ -100,7 +109,7 @@ INFO[0031] Circuit breaker "simpleCB-statestore" changed state from half-open to
 docker start dapr_redis
 ```
 
-### Observe orders have resumed sequentially:
+### Observe orders have resumed sequentially
 
 ```bash
 INFO[0036] Recovered processing operation component[statestore] output.
@@ -117,6 +126,7 @@ INFO[0036] Recovered processing operation component[statestore] output.
 ```
 
 ### Stop the app with Dapr
+
 ```bash
 dapr stop --app-id order-processor
 ```
