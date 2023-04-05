@@ -1,0 +1,43 @@
+# ------------------------------------------------------------
+# Copyright 2023 The Dapr Authors
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ------------------------------------------------------------
+
+name: dapr-bot
+
+on:
+  issue_comment: {types: created}
+
+jobs:
+  daprbot:
+    name: bot-processor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment analyzer
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.DAPR_BOT_TOKEN}}
+          script: |
+            const payload = context.payload;
+            const issue = context.issue;
+            const isFromPulls = !!payload.issue.pull_request;
+            const commentBody = payload.comment.body;
+            if (!isFromPulls && commentBody && commentBody.indexOf("/assign") == 0) {
+              if (!issue.assignees || issue.assignees.length === 0) {
+                await github.issues.addAssignees({
+                  owner: issue.owner,
+                  repo: issue.repo,
+                  issue_number: issue.number,
+                  assignees: [context.actor],
+                })
+              }
+              return;
+            }
