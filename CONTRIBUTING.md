@@ -118,7 +118,7 @@ To contribute to the GitHub workflows in this repository, please follow these st
 5. Make your changes to the GitHub workflows.
 6. Test your changes to ensure that they work as expected.
 7. Document any new workflows that you add or changes that you make to existing ones.
-8. Commit your changes: `git commit -am 'Add some feature'`
+8. Commit your changes: `git commit -ams 'Add some feature'`
 9. Push your changes to your fork: `git push origin <branch-name>`
 10. Submit a pull request to the main repository.
 
