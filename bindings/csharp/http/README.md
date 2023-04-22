@@ -39,8 +39,8 @@ name: Install C# dependencies
 
 ```bash
 cd ./batch
-ls
 dotnet restore
+dotnet build
 ```
 
 <!-- END_STEP -->
