@@ -7,7 +7,8 @@ using WorkflowConsoleApp.Activities;
 using WorkflowConsoleApp.Models;
 using WorkflowConsoleApp.Workflows;
 
-const string storeName = "statestore";
+const string StoreName = "statestore";
+const string DaprWorkflowComponent = "dapr";
 
 // The workflow host is a background service that connects to the sidecar over gRPC
 var builder = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
@@ -68,6 +69,6 @@ Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
 
 void RestockInventory()
 {
-    daprClient.SaveStateAsync<OrderPayload>(storeName, "Cars",  new OrderPayload(Name: "Cars", TotalCost: 15000, Quantity: 100));
+    daprClient.SaveStateAsync<OrderPayload>(StoreName, "Cars",  new OrderPayload(Name: "Cars", TotalCost: 15000, Quantity: 100));
     return;
 }
