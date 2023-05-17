@@ -13,6 +13,7 @@
         "axios": "^0.26.0"
     },
     "devDependencies": {
-        "concurrently": "^4.0.1"
+        "concurrently": "^4.0.1",
+        "nodemon": "^2.0.20"
     }
 }
