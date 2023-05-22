@@ -7,6 +7,7 @@ public interface ISmartDevice : IActor
     Task<SmartDeviceData> GetDataAsync();
     Task DetectSmokeAsync();
     Task SoundAlarm();
+    Task ClearAlarm();
 }
 
 public class SmartDeviceData

@@ -90,16 +90,12 @@ Expected output:
 
 When you ran the client app:
 
-1. A `SmartDetectorActor` is created with these properties: Id = 1, Location = "First Floor", Status = "Ready".
-2. Another `SmartDetectorActor` is created with these properties: Id = 2, Location = "Second Floor", Status = "Ready".
-3. The status of `SmartDetectorActor` 1 is read and printed to the console.
-4. The status of `SmartDetectorActor` 2 is read and printed to the console.
-5. The `DetectSmokeAsync` method of `SmartDetectorActor` 1 is called.
-6. The `TriggerAlarmForAllDetectors` method of `ControllerActor` is called.
-7. The `SoundAlarm` method of `SmartDetectorActor` 1 is called.
-8. The `SoundAlarm` method of `SmartDetectorActor` 2 is called.
-9. The status of `SmartDetectorActor` 1 is read and printed to the console.
-10. The status of `SmartDetectorActor` 2 is read and printed to the console.
+1. Two `SmartDetectorActor` actors are created and initialized with Id, Location, and Status="Ready"
+2. The `DetectSmokeAsync` method of `SmartDetectorActor` 1 is called.
+3. The `TriggerAlarmForAllDetectors` method of `ControllerActor` is called.
+4. The `SoundAlarm` methods of `SmartDetectorActor` 1 and 2 are called.
+5. The `ControllerActor` also creates a reminder to `ClearAlarm` after 15 seconds using `RegisterReminderAsync`
+
 
 Looking at the code, `SmartDetectorActor` objects are created in the client application and initialized with object state with `ActorProxy.Create<ISmartDevice>(actorId, actorType)` and then `proxySmartDevice.SetDataAsync(data)`.  These objects are re-entrant and will hold on to the state as shown by `proxySmartDevice.GetDataAsync()`.
 
@@ -142,6 +138,25 @@ The `ControllerActor` object is used to keep track of the devices and trigger th
         await proxyController.RegisterDeviceIdsAsync(new string[]{deviceId1, deviceId2});
         var deviceIds = await proxyController.ListRegisteredDeviceIdsAsync();
         Console.WriteLine($"Registered devices: {string.Join(", " , deviceIds)}");
+```
+
+The `ControllerActor` internally triggers all alarms when smoke is detected, and then sets a reminder to clear all alarm states after 15 seconds.
+
+```csharp
+    public async Task TriggerAlarmForAllDetectors()
+    {
+        var deviceIds =  await ListRegisteredDeviceIdsAsync();
+        foreach (var deviceId in deviceIds)
+        {
+            // Sound the alarm on all devices
+            var actorId = new ActorId(deviceId);
+            var proxySmartDevice = ProxyFactory.CreateActorProxy<ISmartDevice>(actorId, "SmokeDetectorActor");
+            await proxySmartDevice.SoundAlarm();
+        }
+
+        // Register a reminder to refresh and clear alarm state every 15 seconds
+        await this.RegisterReminderAsync("AlarmRefreshReminder", null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
+    }
 ```
 
 Additionally look at:

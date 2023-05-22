@@ -4,7 +4,7 @@ using SmartDevice.Interfaces;
 
 namespace SmartDevice;
 
-internal class ControllerActor : Actor, IController
+internal class ControllerActor : Actor, IController, IRemindable
 {
     private readonly string deviceIdsKey = "device-ids";
 
@@ -60,12 +60,21 @@ internal class ControllerActor : Actor, IController
             var proxySmartDevice = ProxyFactory.CreateActorProxy<ISmartDevice>(actorId, "SmokeDetectorActor");
             await proxySmartDevice.SoundAlarm();
         }
+
+        // Register a reminder to refresh and clear alarm state every 15 seconds
+        await this.RegisterReminderAsync("AlarmRefreshReminder", null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
     }
 
-    public async Task RegisterReminder()
+    public async Task ReceiveReminderAsync(string reminderName, byte[] state, TimeSpan dueTime, TimeSpan period)
     {
-        // Register a reminder to refresh alarm state every 30 seconds
-        await this.RegisterReminderAsync("AlarmRefreshReminder", null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
+        if (reminderName == "AlarmRefreshReminder") {
+        var deviceIds =  await ListRegisteredDeviceIdsAsync();
+            foreach (var deviceId in deviceIds)
+            {
+                var actorId = new ActorId(deviceId);
+                var proxySmartDevice = ProxyFactory.CreateActorProxy<ISmartDevice>(actorId, "SmokeDetectorActor");
+                await proxySmartDevice.ClearAlarm();            
+            }
+        }
     }
-
 }

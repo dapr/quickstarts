@@ -57,9 +57,6 @@ class Program
         var controllerActorId = new ActorId("controller");
         var proxyController = ActorProxy.Create<IController>(controllerActorId, controllerActorType);
 
-        //Register reminders every 30 to clear out invalid state or alarms
-        await proxyController.RegisterReminder();
-
         Console.WriteLine($"Registering the IDs of both Devices...");
         await proxyController.RegisterDeviceIdsAsync(new string[]{deviceId1, deviceId2});
         var deviceIds = await proxyController.ListRegisteredDeviceIdsAsync();
@@ -77,8 +74,8 @@ class Program
         Console.WriteLine($"Device 2 state: {storedDeviceData2}");
 
         // Sleep for 35 seconds and observe reminders have cleared alarm state
-        Console.WriteLine("Sleeping for 35 seconds before observing alarm state after reminders fire");
-        await Task.Delay(35000);
+        Console.WriteLine("Sleeping for 16 seconds before checking status again to see reminders fire and clear alarms");
+        await Task.Delay(16000);
 
         storedDeviceData1 = await proxySmartDevice1.GetDataAsync();
         Console.WriteLine($"Device 1 state: {storedDeviceData1}");

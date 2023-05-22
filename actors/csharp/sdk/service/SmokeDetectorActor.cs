@@ -81,4 +81,11 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
         smartDeviceData.Status = "Alarm";
         await SetDataAsync(smartDeviceData);
     }
+
+    public async Task ClearAlarm()
+    {
+        var smartDeviceData = await GetDataAsync();
+        smartDeviceData.Status = "Ready";
+        await SetDataAsync(smartDeviceData);
+    }
 }
