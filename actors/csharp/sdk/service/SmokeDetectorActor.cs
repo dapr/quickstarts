@@ -48,7 +48,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     public async Task<string> SetDataAsync(SmartDeviceData data)
     {
         // Data is saved to configured state store *implicitly* after each method execution by Actor's runtime.
-        // Data can also be saved explicitly by calling this.StateManager.SaveStateAsync();
+        // Data can also be saved *explicitly* by calling this.StateManager.SaveStateAsync();
         // State to be saved must be DataContract serializable.
         await StateManager.SetStateAsync<SmartDeviceData>(
             deviceDataKey,
