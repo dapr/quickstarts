@@ -19,16 +19,16 @@ class Program
         // An ActorId uniquely identifies an actor instance
         var deviceActorId1 = new ActorId(deviceId1);
 
-        // Create the local proxy by using the same interface that the service implements.
-        // You need to provide the type and id so the actor can be located. 
-        // If the actor matching this id does not exist, it will be created
-        var proxySmartDevice1 = ActorProxy.Create<ISmartDevice>(deviceActorId1, smokeDetectorActorType);
-
         // Create a new instance of the data class that will be stored in the actor
         var deviceData1 = new SmartDeviceData(){
             Location = "First Floor",
             Status = "Ready",
         };
+
+        // Create the local proxy by using the same interface that the service implements.
+        // You need to provide the type and id so the actor can be located. 
+        // If the actor matching this id does not exist, it will be created
+        var proxySmartDevice1 = ActorProxy.Create<ISmartDevice>(deviceActorId1, smokeDetectorActorType);
 
         // Now you can use the actor interface to call the actor's methods.
         Console.WriteLine($"Calling SetDataAsync on {smokeDetectorActorType}:{deviceActorId1}...");
@@ -57,6 +57,9 @@ class Program
         var controllerActorId = new ActorId("controller");
         var proxyController = ActorProxy.Create<IController>(controllerActorId, controllerActorType);
 
+        //Register reminders every 30 to clear out invalid state or alarms
+        await proxyController.RegisterReminder();
+
         Console.WriteLine($"Registering the IDs of both Devices...");
         await proxyController.RegisterDeviceIdsAsync(new string[]{deviceId1, deviceId2});
         var deviceIds = await proxyController.ListRegisteredDeviceIdsAsync();
@@ -68,6 +71,15 @@ class Program
         await proxySmartDevice1.DetectSmokeAsync();
 
         // Get the state of both devices.
+        storedDeviceData1 = await proxySmartDevice1.GetDataAsync();
+        Console.WriteLine($"Device 1 state: {storedDeviceData1}");
+        storedDeviceData2 = await proxySmartDevice2.GetDataAsync();
+        Console.WriteLine($"Device 2 state: {storedDeviceData2}");
+
+        // Sleep for 35 seconds and observe reminders have cleared alarm state
+        Console.WriteLine("Sleeping for 35 seconds before observing alarm state after reminders fire");
+        await Task.Delay(35000);
+
         storedDeviceData1 = await proxySmartDevice1.GetDataAsync();
         Console.WriteLine($"Device 1 state: {storedDeviceData1}");
         storedDeviceData2 = await proxySmartDevice2.GetDataAsync();

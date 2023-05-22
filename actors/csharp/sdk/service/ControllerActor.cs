@@ -61,4 +61,11 @@ internal class ControllerActor : Actor, IController
             await proxySmartDevice.SoundAlarm();
         }
     }
+
+    public async Task RegisterReminder()
+    {
+        // Register a reminder to refresh alarm state every 30 seconds
+        await this.RegisterReminderAsync("AlarmRefreshReminder", null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
+    }
+
 }
