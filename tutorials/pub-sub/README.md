@@ -336,7 +336,7 @@ dapr stop --app-id react-form
 ## Insights into the cloud events being published on Redis streams
 If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that are being published on [Redis stream](https://redis.io/docs/data-types/streams/), follow the below steps: 
 
-1. Redis is running inside of a docker container, so to access it via CLI, we pass the following command to a new terminal:
+1. Redis is running inside of a docker container, so to access it via CLI, pass the following command to a new terminal:
 
 <!-- STEP
 expected_stdout_lines:
