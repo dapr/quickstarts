@@ -84,6 +84,9 @@ Expected output:
 == APP == Detecting smoke on Device 1...
 == APP == Device 1 state: Location: First Floor, Status: Alarm
 == APP == Device 2 state: Location: Second Floor, Status: Alarm
+== APP == Sleeping for 16 seconds before checking status again to see reminders fire and clear alarms
+== APP == Device 1 state: Location: First Floor, Status: Ready
+== APP == Device 2 state: Location: Second Floor, Status: Ready
 ```
 
 ### What happened
