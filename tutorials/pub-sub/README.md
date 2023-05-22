@@ -333,7 +333,7 @@ dapr stop --app-id react-form
 
 4. If you want more insights into the Cloud Events being published on Redis streams, keep going.  If you want to deploy this same application to Kubernetes,  jump to the [Run in Kubernetes](#Run-in-Kubernetes). Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
 
-## Insights into the cloud events being published on Redis streams
+## Insights into the Cloud Events being published on Redis streams
 If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that are being published on [Redis stream](https://redis.io/docs/data-types/streams/), follow the below steps: 
 
 1. Redis is running inside of a docker container, so to access it via CLI, pass the following command to a new terminal:
