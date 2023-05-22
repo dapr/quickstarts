@@ -14,7 +14,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [.NET 7 SDK](https://dotnet.microsoft.com/download).
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- Docker Desktop
 
 ### Step 2: Set up the environment
 
@@ -28,16 +28,39 @@ git clone https://github.com/dapr/quickstarts.git
 
 In a new terminal window, navigate to the `actors/csharp/sdk/service` directory and restore dependencies:
 
+<!-- STEP
+name: Install dependencies and build actor service
+expected_stdout_lines:
+  - "Build succeeded."
+expected_stderr_lines:
+working_dir: ./service
+output_match_mode: substring
+background: true
+sleep: 10
+-->
 ```bash
 cd actors/csharp/sdk/service
 dotnet build
 ```
+<!-- END_STEP -->
 
 Run the `SmartDevice.Service`, which will start service itself and the Dapr sidecar:
 
+<!-- STEP
+name: Run actor service
+expected_stdout_lines:
+  - "Request finished HTTP/1.1 GET http://127.0.0.1:5001/healthz - - - 200"
+expected_stderr_lines:
+working_dir: ./service
+output_match_mode: substring
+background: true
+sleep: 10
+timeout_seconds: 10
+-->
 ```bash
-dapr run --app-id actorservice --app-port 5001 --dapr-http-port 3500 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
+dapr run --app-id actorservice --app-port 5001 --dapr-http-port 56001 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
+<!-- END_STEP -->
 
 Expected output:
 
@@ -55,17 +78,38 @@ Expected output:
 ### Step 4: Run the client app
 
 In a new terminal instance, navigate to the `actors/csharp/sdk/client` directory and install the dependencies:
-
+<!-- STEP
+name: Install dependencies and build actor client
+expected_stdout_lines:
+  - "Build succeeded."
+expected_stderr_lines:
+working_dir: ./client
+output_match_mode: substring
+background: true
+sleep: 10
+-->
 ```bash
 cd ./actors/csharp/sdk/client
 dotnet build
 ```
+<!-- END_STEP -->
 
-Run the `SmartDevice.Client` app:
-
+Then run the client app:
+<!-- STEP
+name: Run actor service
+expected_stdout_lines:
+  - "Device 2 state: Location: Second Floor, Status: Ready"
+expected_stderr_lines:
+working_dir: ./client
+output_match_mode: substring
+background: true
+sleep: 10
+timeout_seconds: 30
+-->
 ```bash
 dapr run --app-id actorclient -- dotnet run
 ```
+<!-- END_STEP -->
 
 Expected output:
 
@@ -88,6 +132,7 @@ Expected output:
 == APP == Device 1 state: Location: First Floor, Status: Ready
 == APP == Device 2 state: Location: Second Floor, Status: Ready
 ```
+
 
 ### What happened
 
