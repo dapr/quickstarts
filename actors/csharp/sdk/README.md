@@ -97,7 +97,7 @@ When you ran the client app:
 2. The `DetectSmokeAsync` method of `SmartDetectorActor` 1 is called.
 3. The `TriggerAlarmForAllDetectors` method of `ControllerActor` is called.
 4. The `SoundAlarm` methods of `SmartDetectorActor` 1 and 2 are called.
-5. The `ControllerActor` also creates a reminder to `ClearAlarm` after 15 seconds using `RegisterReminderAsync`
+5. The `ControllerActor` also creates a durable reminder to call `ClearAlarm` after 15 seconds using `RegisterReminderAsync`
 
 
 Looking at the code, `SmartDetectorActor` objects are created in the client application and initialized with object state with `ActorProxy.Create<ISmartDevice>(actorId, actorType)` and then `proxySmartDevice.SetDataAsync(data)`.  These objects are re-entrant and hold the state as shown by `proxySmartDevice.GetDataAsync()`.
