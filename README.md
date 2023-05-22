@@ -16,7 +16,7 @@ Pick a building block API (for example, pub-sub, state management) and rapidly t
 | [State Management](./state_management/) | Store a service's data as key/value pairs in supported state stores |
 | [Bindings](./bindings/) | Work with external systems using input bindings to respond to events and output bindings to call operations|
 | [Secrets Management](./secrets_management/) | Securely fetch secrets |
-| Actors | Coming soon... |
+| [Actors](./actors) | Create stateful, long running objects with identity |
 | [Configuration](./configuration) | Get configuration items as key/value pairs or subscribe to changes whenever a configuration item changes |
 | [Resiliency](./resiliency) | Define and apply fault-tolerant policies (retries/back-offs, timeouts and circuit breakers) to your Dapr API requests |
 | [Workflow](./workflows) | Dapr Workflow enables you to create long running, fault-tolerant, stateful applications.  |
