@@ -122,6 +122,11 @@ jobs:
       DOCKER_CLI_EXPERIMENTAL: enabled
       SAMPLE_REGISTRY: ${{ vars.SAMPLE_REGISTRY }}
     steps:
+      - name: Set REPO_OWNER
+        run: |
+          REPO_OWNER=${{ github.repository_owner }}
+          # Lowercase the value
+          echo "REPO_OWNER=${REPO_OWNER,,}" >>${GITHUB_ENV}
       - name: Check out code
         uses: actions/checkout@v2
       - name: Parse release version and set REL_VERSION

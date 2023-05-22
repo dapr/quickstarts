@@ -6,13 +6,13 @@ Visit the documentation about [Dapr resiliency](https://docs.dapr.io/operations/
 
 This quickstart includes one service:
 
-- Caller service `checkout` 
-- Callee service `order-processor` 
+- Caller service `checkout`
+- Callee service `order-processor`
 - Resiliency spec `resiliency.yaml`
 
 ### Run both services with Dapr and resiliency enabled
 
-1. Open two terminal windows. In one terminal window, navigate to the `checkout` service. In the other terminal window, navigate to the `order-processor` service. Install dependencies for each service and run both services with resiliency enabled: 
+1. Open two terminal windows. In one terminal window, navigate to the `checkout` service. In the other terminal window, navigate to the `order-processor` service. Install dependencies for each service and run both services with resiliency enabled:
 
 ### C# example
 
@@ -26,7 +26,6 @@ dapr run --app-port 7001 --app-id order-processor --resources-path ../../../reso
 ```
 
 ##### Checkout Service:
-
 ```bash
 cd ../service_invocation/csharp/http/checkout
 dotnet restore
@@ -45,7 +44,6 @@ dapr run --app-port 6001 --app-id order-processor --resources-path ../../../reso
 ```
 
 ##### Checkout Service:
-
 ```bash
 cd ../service_invocation/go/http/checkout
 go build .
@@ -94,7 +92,7 @@ dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol 
 
 ```bash
 cd ../service_invocation/python/http/order-processor
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt
 dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
 ```
 
@@ -102,7 +100,7 @@ dapr run --app-port 8001 --app-id order-processor --resources-path ../../../reso
 
 ```bash
 cd ../service_invocation/python/http/checkout
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt
 dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
 ```
 
@@ -134,22 +132,22 @@ Policies defined in the resiliency.yaml spec:
 retryForever:
   policy: constant
   duration: 5s
-  maxRetries: -1 
+  maxRetries: -1
 
 circuitBreakers:
   simpleCB:
   maxRequests: 1
-  timeout: 5s 
+  timeout: 5s
   trip: consecutiveFailures >= 5
 ```
 
 ##### Applied policies
 
 ```bash
-INFO[0005] Error processing operation endpoint[order-processor, order-processor:orders]. Retrying...  
-INFO[0025] Circuit breaker "order-processor:orders" changed state from closed to open  
-INFO[0030] Circuit breaker "order-processor:orders" changed state from open to half-open  
-INFO[0030] Circuit breaker "order-processor:orders" changed state from half-open to open  
+INFO[0005] Error processing operation endpoint[order-processor, order-processor:orders]. Retrying...
+INFO[0025] Circuit breaker "order-processor:orders" changed state from closed to open
+INFO[0030] Circuit breaker "order-processor:orders" changed state from open to half-open
+INFO[0030] Circuit breaker "order-processor:orders" changed state from half-open to open
 ```
 
 ### Simulate the application recovering by restarting the order-processor service:

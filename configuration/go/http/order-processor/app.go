@@ -92,9 +92,10 @@ func startServerToListen(subscriptionId *string) {
 		Handler: r,
 	}
 	r.HandleFunc("/configuration/configstore/{configItem}", configUpdateHandler).Methods("POST")
-
+	fmt.Println("Current time before shutdown: " + time.Now().String())
 	// Unsubscribe to config updates and shutdown http server after 20 seconds
 	time.AfterFunc(20*time.Second, func() {
+		fmt.Println("Current time while shutdown: " + time.Now().String())
 		unsubscribeFromConfigUpdates(*subscriptionId)
 		fmt.Println("Shutting down HTTP server")
 		err := httpServer.Shutdown(context.Background())

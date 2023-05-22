@@ -16,7 +16,8 @@
         "mini-css-extract-plugin": "2.4.5"
     },
     "resolutions": {
-        "mini-css-extract-plugin": "2.4.5"
+        "mini-css-extract-plugin": "2.4.5",
+        "nth-check": "^2.0.1"
     },
     "eslintConfig": {
         "extends": "react-app"

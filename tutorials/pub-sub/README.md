@@ -724,4 +724,4 @@ Pub-sub allows us to completely decouple the components. Publishers need not be 
 
 ## Next steps:
 
-- Explore additional [quickstarts](../README.md#quickstarts).
+- Explore additional [quickstarts](../README.md#quickstarts)
