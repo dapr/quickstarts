@@ -351,7 +351,7 @@ docker exec -it dapr_redis redis-cli
 
 <!-- END_STEP -->
 
-2. There can be multiple items/orders/messages inside a redis stream. It is possible to get the number of orders inside a Stream just using the `XLEN` command:
+2. There can be multiple items/orders/messages inside a Redis stream. It is possible to get the number of orders inside a stream by using the `XLEN` command:
 
 <!-- STEP
 expected_stdout_lines:
