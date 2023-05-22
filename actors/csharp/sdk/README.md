@@ -36,7 +36,7 @@ dotnet build
 Run the `SmartDevice.Service`, which will start service itself and the Dapr sidecar:
 
 ```bash
-dapr run --app-id actorservice --app-port 5001 --dapr-http-port 3500 --components-path ../../../resources -- dotnet run --urls=http://localhost:5001/
+dapr run --app-id actorservice --app-port 5001 --dapr-http-port 3500 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
 
 Expected output:
