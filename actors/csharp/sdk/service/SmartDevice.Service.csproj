@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapr.Actors" Version="1.10.0" />
+    <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\interfaces\SmartDevice.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
