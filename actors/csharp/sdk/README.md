@@ -5,7 +5,7 @@ Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/devel
 2. Using a SmartDevice.Client console app, developers have a client app to interact with each actor, or the controller to perform actions in aggregate. 
 3. The SmartDevice.Interfaces contains the shared interfaces and data types used by both service and client apps
 
-> **Note:** This example leverages the Dapr client SDK.  
+**Note:** This example leverages the Dapr client SDK.  
 
 
 ### Step 1: Pre-requisites
