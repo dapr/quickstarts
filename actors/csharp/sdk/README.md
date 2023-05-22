@@ -102,7 +102,7 @@ When you ran the client app:
 
 Looking at the code, `SmartDetectorActor` objects are created in the client application and initialized with object state with `ActorProxy.Create<ISmartDevice>(actorId, actorType)` and then `proxySmartDevice.SetDataAsync(data)`.  These objects are re-entrant and will hold on to the state as shown by `proxySmartDevice.GetDataAsync()`.
 
-```csharp
+```cs
         // Actor Ids and types
         var deviceId1 = "1";
         var deviceId2 = "2";
@@ -145,7 +145,7 @@ The `ControllerActor` object is used to keep track of the devices and trigger th
 
 The `ControllerActor` internally triggers all alarms when smoke is detected, and then sets a reminder to clear all alarm states after 15 seconds.
 
-```csharp
+```cs
     public async Task TriggerAlarmForAllDetectors()
     {
         var deviceIds =  await ListRegisteredDeviceIdsAsync();
