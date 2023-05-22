@@ -63,7 +63,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     /// <return>the user-defined MyData which is stored into state store as "my_data" state</return>
     public async Task<SmartDeviceData> GetDataAsync()
     {
-        // Gets state from the state store.
+        // Gets current state from the state store.
         return await StateManager.GetStateAsync<SmartDeviceData>(deviceDataKey);
     }
 
