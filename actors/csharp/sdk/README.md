@@ -54,11 +54,10 @@ expected_stderr_lines:
 working_dir: ./service
 output_match_mode: substring
 background: true
-sleep: 10
-timeout_seconds: 10
+sleep: 30
 -->
 ```bash
-dapr run --app-id actorservice --app-port 5001 --dapr-http-port 56001 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
+dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-port 56001 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
 <!-- END_STEP -->
 
@@ -96,15 +95,14 @@ dotnet build
 
 Then run the client app:
 <!-- STEP
-name: Run actor service
+name: Run actor client
 expected_stdout_lines:
   - "Device 2 state: Location: Second Floor, Status: Ready"
 expected_stderr_lines:
 working_dir: ./client
 output_match_mode: substring
 background: true
-sleep: 10
-timeout_seconds: 30
+sleep: 40
 -->
 ```bash
 dapr run --app-id actorclient -- dotnet run
@@ -133,6 +131,21 @@ Expected output:
 == APP == Device 2 state: Location: Second Floor, Status: Ready
 ```
 
+### Cleanup
+
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: actorservice'
+expected_stderr_lines:
+name: Shutdown dapr
+-->
+
+```bash
+dapr stop --app-id  actorservice
+(lsof -i:5001 | grep main) | awk '{print $2}' | xargs  kill
+```
+
+<!-- END_STEP -->
 
 ### What happened
 
