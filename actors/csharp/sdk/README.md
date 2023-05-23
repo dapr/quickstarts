@@ -28,21 +28,6 @@ git clone https://github.com/dapr/quickstarts.git
 
 In a new terminal window, navigate to the `actors/csharp/sdk/service` directory and restore dependencies:
 
-<!-- STEP
-name: Install dependencies and build actor service
-expected_stdout_lines:
-  - "Build succeeded."
-expected_stderr_lines:
-working_dir: ./service
-output_match_mode: substring
-background: true
-sleep: 10
--->
-```bash
-cd actors/csharp/sdk/service
-dotnet build
-```
-<!-- END_STEP -->
 
 Run the `SmartDevice.Service`, which will start service itself and the Dapr sidecar:
 
@@ -57,6 +42,7 @@ background: true
 sleep: 30
 -->
 ```bash
+cd actors/csharp/sdk/service
 dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-port 56001 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
 <!-- END_STEP -->
@@ -77,21 +63,6 @@ Expected output:
 ### Step 4: Run the client app
 
 In a new terminal instance, navigate to the `actors/csharp/sdk/client` directory and install the dependencies:
-<!-- STEP
-name: Install dependencies and build actor client
-expected_stdout_lines:
-  - "Build succeeded."
-expected_stderr_lines:
-working_dir: ./client
-output_match_mode: substring
-background: true
-sleep: 10
--->
-```bash
-cd ./actors/csharp/sdk/client
-dotnet build
-```
-<!-- END_STEP -->
 
 Then run the client app:
 <!-- STEP
@@ -102,9 +73,10 @@ expected_stderr_lines:
 working_dir: ./client
 output_match_mode: substring
 background: true
-sleep: 40
+sleep: 60
 -->
 ```bash
+cd ./actors/csharp/sdk/client
 dapr run --app-id actorclient -- dotnet run
 ```
 <!-- END_STEP -->
@@ -142,7 +114,7 @@ name: Shutdown dapr
 
 ```bash
 dapr stop --app-id  actorservice
-(lsof -i:5001 | grep main) | awk '{print $2}' | xargs  kill
+(lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs  kill
 ```
 
 <!-- END_STEP -->

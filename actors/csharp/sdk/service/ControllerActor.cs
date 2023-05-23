@@ -65,10 +65,7 @@ internal class ControllerActor : Actor, IController, IRemindable
         await this.RegisterReminderAsync("AlarmRefreshReminder", null, TimeSpan.FromSeconds(15), TimeSpan.FromSeconds(15));
     }
 
-<<<<<<< HEAD
-=======
     // Callback method for all Reminders. Check the Reminder name for which timer fired.
->>>>>>> f798f88a1be287a171f7743ef47768ac8e2c4fc9
     public async Task ReceiveReminderAsync(string reminderName, byte[] state, TimeSpan dueTime, TimeSpan period)
     {
         if (reminderName == "AlarmRefreshReminder") {
