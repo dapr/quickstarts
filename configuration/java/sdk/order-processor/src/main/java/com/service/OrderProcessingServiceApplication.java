@@ -2,6 +2,7 @@ package com.service;
 
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprPreviewClient;
+import io.dapr.client.DaprClient;
 import io.dapr.client.domain.ConfigurationItem;
 import io.dapr.client.domain.SubscribeConfigurationResponse;
 import io.dapr.client.domain.UnsubscribeConfigurationResponse;
@@ -16,7 +17,7 @@ public class OrderProcessingServiceApplication {
 
     public static void main(String[] args) throws Exception {
         // Get config items from the config store
-        try (DaprPreviewClient client = (new DaprClientBuilder()).buildPreviewClient()) {
+        try (DaprClient client = (new DaprClientBuilder()).build()) {
             for (String configurationItem : CONFIGURATION_ITEMS) {
                 ConfigurationItem item = client.getConfiguration(DAPR_CONFIGURATON_STORE, configurationItem).block();
                 System.out.println("Configuration for " + configurationItem + ": {'value':'" + item.getValue() + "'}");
@@ -26,7 +27,7 @@ public class OrderProcessingServiceApplication {
             System.exit(1);
         }
 
-        try (DaprPreviewClient client = (new DaprClientBuilder()).buildPreviewClient()) {
+        try (DaprClient client = (new DaprClientBuilder()).build()) {
             // Subscribe for config changes
             Flux<SubscribeConfigurationResponse> subscription = client.subscribeConfiguration(DAPR_CONFIGURATON_STORE,
                     CONFIGURATION_ITEMS.toArray(String[]::new));
