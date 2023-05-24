@@ -7,7 +7,7 @@ let DAPR_PORT = process.env.DAPR_HTTP_PORT ?? 3500;
 let APP_PORT = process.env.APP_PORT ?? 6001;
 
 const DAPR_CONFIGURATION_STORE = "configstore";
-const BASE_URL = `http://${DAPR_HOST}:${DAPR_PORT}/v1.0-alpha1/configuration/${DAPR_CONFIGURATION_STORE}`;
+const BASE_URL = `http://${DAPR_HOST}:${DAPR_PORT}/v1.0/configuration/${DAPR_CONFIGURATION_STORE}`;
 const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
 
 const app = express();
