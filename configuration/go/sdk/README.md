@@ -19,7 +19,6 @@ This quickstart includes one service:
 name: Add configuration items
 expected_stdout_lines:
   - 'OK'
-output_match_mode: substring
 -->
 
 ```bash
