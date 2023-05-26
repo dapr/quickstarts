@@ -33,7 +33,7 @@ pip3 install -r requirements.txt
 name: Running this example
 expected_stdout_lines:
   - "There are now 89 cars left in stock"
-  - "Workflow completed! Result: COMPLETED"
+  - "Purchase of item is  COMPLETED"
 output_match_mode: substring
 background: true
 timeout_seconds: 30

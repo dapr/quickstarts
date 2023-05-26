@@ -51,55 +51,55 @@ class WorkflowConsoleApp:
             print("==========Begin the purchase of item:==========")
             items = ', '.join(str(inventory_item) for inventory_item in baseInventory.keys())
             
-            # try:
-            #     print("To restock items, type 'restock'.")
-            #     print("To exit workflow console app, type 'exit'.")
-            #     signal.alarm(3)
-            #     item_name = input(f'Enter the name of one of the following items to order: {items}: ')
-            #     signal.alarm(0) # cancel the alarm
-            # except TimeoutError:
-            #     global input_param_counter
-            #     input_param_counter += 1
-            #     if input_param_counter >= len(sys.argv):
-            #         item_name = default_item_name
-            #     else:
-            #         item_name = sys.argv[input_param_counter]
+            try:
+                print("To restock items, type 'restock'.")
+                print("To exit workflow console app, type 'exit'.")
+                signal.alarm(3)
+                item_name = input(f'Enter the name of one of the following items to order: {items}: ')
+                signal.alarm(0) # cancel the alarm
+            except TimeoutError:
+                global input_param_counter
+                input_param_counter += 1
+                if input_param_counter >= len(sys.argv):
+                    item_name = default_item_name
+                else:
+                    item_name = sys.argv[input_param_counter]
             
-            # if item_name is None:
-            #     continue
-            # elif item_name == "restock":
-            #     self.restock_inventory(daprClient, baseInventory)
-            #     continue
-            # elif item_name == "exit":
-            #     print("Exiting workflow console app.")
-            #     workflowRuntime.shutdown()
-            #     break
-            # else:
-            #     item_name = item_name.lower()
-            #     if item_name not in baseInventory.keys():
-            #         print(f'We don\'t have {item_name}!')
-            #         continue
-            # try:
-            #     signal.alarm(3)
-            #     order_quantity = input(f'How many {item_name} would you like to purchase? ')
-            #     signal.alarm(0) # cancel the alarm
-            # except TimeoutError:
-            #     input_param_counter += 1
-            #     if input_param_counter >= len(sys.argv):
-            #         order_quantity = 1
-            #     else:
-            #         order_quantity = sys.argv[input_param_counter]
-            # try:
-            #     int(order_quantity)
-            # except ValueError:
-            #     print("Invalid input. Assuming you meant to type 1.")
-            #     order_quantity = 1
-            # if  int(order_quantity) <= 0:
-            #     print("Invalid input. Assuming you meant to type 1.")
-            #     order_quantity = 1
+            if item_name is None:
+                continue
+            elif item_name == "restock":
+                self.restock_inventory(daprClient, baseInventory)
+                continue
+            elif item_name == "exit":
+                print("Exiting workflow console app.")
+                workflowRuntime.shutdown()
+                break
+            else:
+                item_name = item_name.lower()
+                if item_name not in baseInventory.keys():
+                    print(f'We don\'t have {item_name}!')
+                    continue
+            try:
+                signal.alarm(3)
+                order_quantity = input(f'How many {item_name} would you like to purchase? ')
+                signal.alarm(0) # cancel the alarm
+            except TimeoutError:
+                input_param_counter += 1
+                if input_param_counter >= len(sys.argv):
+                    order_quantity = 1
+                else:
+                    order_quantity = sys.argv[input_param_counter]
+            try:
+                int(order_quantity)
+            except ValueError:
+                print("Invalid input. Assuming you meant to type 1.")
+                order_quantity = 1
+            if  int(order_quantity) <= 0:
+                print("Invalid input. Assuming you meant to type 1.")
+                order_quantity = 1
 
-            item_name = default_item_name
-            order_quantity = 11
+            # item_name = default_item_name
+            # order_quantity = 11
 
             total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
             order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
@@ -107,23 +107,23 @@ class WorkflowConsoleApp:
             _id = client.schedule_new_workflow(order_processing_workflow, input=order)
 
             def prompt_for_approval(client: DaprWorkflowClient):
-                # try:
-                #     signal.alarm(3)
-                #     approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N] ')
-                #     signal.alarm(0) # cancel the alarm
-                # except TimeoutError:
-                #     global input_param_counter
-                #     input_param_counter += 1
-                #     if input_param_counter >= len(sys.argv):
-                #         approved = "y"
-                #     else:
-                #         approved = sys.argv[input_param_counter]
-                # if state.runtime_status.name == "COMPLETED":
-                #     return
-                # if approved.lower() == "y":
-                client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
-                # else:
-                #     client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
+                try:
+                    signal.alarm(3)
+                    approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N] ')
+                    signal.alarm(0) # cancel the alarm
+                except TimeoutError:
+                    global input_param_counter
+                    input_param_counter += 1
+                    if input_param_counter >= len(sys.argv):
+                        approved = "y"
+                    else:
+                        approved = sys.argv[input_param_counter]
+                if state.runtime_status.name == "COMPLETED":
+                    return
+                if approved.lower() == "y":
+                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
+                else:
+                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
 
             approval_seeked = False
             while True:
