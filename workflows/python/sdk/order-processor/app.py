@@ -28,7 +28,7 @@ class WorkflowConsoleApp:
         signal.signal(signal.SIGALRM, timeout_error)
 
         address = get_address()
-        workflowRuntime = WorkflowRuntime(address["host"], address["port"])
+        workflowRuntime = WorkflowRuntime()
         workflowRuntime.register_workflow(order_processing_workflow)
         workflowRuntime.register_activity(notify_activity)
         workflowRuntime.register_activity(requst_approval_activity)

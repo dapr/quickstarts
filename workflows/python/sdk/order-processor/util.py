@@ -6,5 +6,5 @@ def get_address():
             host = "localhost"
         port = settings.DAPR_GRPC_PORT
         if port is None:
-            port = "50001"
+            port = "4001"
         return {'host': host, 'port': port}
