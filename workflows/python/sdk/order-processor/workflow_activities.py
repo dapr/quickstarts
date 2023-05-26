@@ -2,7 +2,6 @@
 from datetime import timedelta
 import logging
 import json
-from time import sleep
 from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext
 # , when_any
 from model import InventoryItem, Notification, InventoryRequest, OrderPayload, OrderResult, PaymentRequest, InventoryResult
@@ -58,7 +57,6 @@ def notify_activity(ctx: WorkflowActivityContext, input: Notification):
 def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest):
     logger = logging.getLogger('ProcessPaymentActivity')
     logger.info(f'Processing payment: {input.request_id} for {input.quantity} {input.item_being_purchased} at {input.amount} USD')
-    # sleep(7)
     logger.info(f'Payment for request ID {input.request_id} processed successfully')
 
 
@@ -85,7 +83,6 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
     logger = logging.getLogger('UpdateInventoryActivity')
 
     logger.info(f'Checking inventory for order {input.request_id} for {input.quantity} {input.item_being_purchased}')
-    # sleep(5)
     with DaprClient(f'{address["host"]}:{address["port"]}') as client:
         result = client.get_state(store_name, input.item_being_purchased)
         res_json=json.loads(str(result.data.decode('utf-8')))

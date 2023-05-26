@@ -6,11 +6,9 @@ from workflow_activities import order_processing_workflow, notify_activity, proc
 from dapr.clients import DaprClient
 from model import InventoryItem, OrderPayload
 from util import get_address
-import signal
 
 store_name = "statestore-actors"
 
-input_param_counter = 0
 default_item_name = "cars"
 
 class WorkflowConsoleApp:    
@@ -18,14 +16,9 @@ class WorkflowConsoleApp:
         print("*** Welcome to the Dapr Workflow console app sample!")
         print("*** Using this app, you can place orders that start workflows.")
         print("*** Ensure that Dapr is running in a separate terminal window using the following command:")
-        print("dapr run --dapr-grpc-port 50001 --app-id order-processor")
+        print("dapr run --dapr-grpc-port 4001 --app-id order-processor")
         # Wait for the sidecar to become available
         sleep(5)
-
-        def timeout_error(*_):
-            raise TimeoutError
-
-        signal.signal(signal.SIGALRM, timeout_error)
 
         address = get_address()
         workflowRuntime = WorkflowRuntime()
