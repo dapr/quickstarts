@@ -16,7 +16,7 @@ def order_processing_workflow(ctx: DaprWorkflowContext, orderPayload: OrderPaylo
     logging.basicConfig(level=logging.INFO)
     order_id = ctx.instance_id
     yield ctx.call_activity(notify_activity, input=Notification(message=f'Received order {order_id} for {orderPayload.quantity} {orderPayload.item_name} at ${orderPayload.total_cost} !'))
-    result = yield ctx.call_activity(reserve_inventory_activity, input=InventoryRequest(request_id=order_id, item_name=orderPayload.item_name, quantity=orderPayload.quantity))
+    result = yield ctx.call_activity(verify_inventory_activity, input=InventoryRequest(request_id=order_id, item_name=orderPayload.item_name, quantity=orderPayload.quantity))
     if not result.success:
         yield ctx.call_activity(notify_activity, input=Notification(message=f'Insufficient inventory for {orderPayload.item_name}!'))
         return OrderResult(processed=False)
@@ -60,11 +60,11 @@ def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest
     logger.info(f'Payment for request ID {input.request_id} processed successfully')
 
 
-def reserve_inventory_activity(ctx: WorkflowActivityContext,
+def verify_inventory_activity(ctx: WorkflowActivityContext,
                                 input: InventoryRequest) -> InventoryResult:
-    logger = logging.getLogger('ReserveInventoryActivity')
+    logger = logging.getLogger('VerifyInventoryActivity')
 
-    logger.info(f'Reserving inventory for order {input.request_id} of {input.quantity} {input.item_name}')
+    logger.info(f'Verifying inventory for order {input.request_id} of {input.quantity} {input.item_name}')
     inventoryItem: InventoryItem
     with DaprClient(f'{address["host"]}:{address["port"]}') as client:
         result = client.get_state(store_name, input.item_name)

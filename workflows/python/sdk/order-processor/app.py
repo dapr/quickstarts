@@ -1,7 +1,7 @@
 import threading
 from time import sleep
 from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowClient
-from workflow_activities import order_processing_workflow, notify_activity, process_payment_activity, reserve_inventory_activity, update_inventory_activity, requst_approval_activity
+from workflow_activities import order_processing_workflow, notify_activity, process_payment_activity, verify_inventory_activity, update_inventory_activity, requst_approval_activity
 from dapr.clients import DaprClient
 from model import InventoryItem, OrderPayload
 from util import get_address
@@ -31,7 +31,7 @@ class WorkflowConsoleApp:
             workflowRuntime.register_workflow(order_processing_workflow)
             workflowRuntime.register_activity(notify_activity)
             workflowRuntime.register_activity(requst_approval_activity)
-            workflowRuntime.register_activity(reserve_inventory_activity)
+            workflowRuntime.register_activity(verify_inventory_activity)
             workflowRuntime.register_activity(process_payment_activity)
             workflowRuntime.register_activity(update_inventory_activity)
             workflowRuntime.start()
