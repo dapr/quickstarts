@@ -1,6 +1,6 @@
 import threading
 from time import sleep
-from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowClient, DaprWorkflowContext
+from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowClient
 from workflow_activities import order_processing_workflow, notify_activity, process_payment_activity, reserve_inventory_activity, update_inventory_activity, requst_approval_activity
 from dapr.clients import DaprClient
 from model import InventoryItem, OrderPayload

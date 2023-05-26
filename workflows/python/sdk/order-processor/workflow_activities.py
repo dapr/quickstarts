@@ -3,8 +3,7 @@ from datetime import timedelta
 import logging
 import json
 from time import sleep
-from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext
-from dapr.ext.workflow.dapr_workflow_context import when_any
+from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext, when_any
 from model import InventoryItem, Notification, InventoryRequest, OrderPayload, OrderResult, PaymentRequest, InventoryResult
 from dapr.clients import DaprClient
 from util import get_address
