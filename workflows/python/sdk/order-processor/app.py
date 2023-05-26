@@ -3,31 +3,22 @@ from time import sleep
 from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowClient, DaprWorkflowContext
 from workflow_activities import order_processing_workflow, notify_activity, process_payment_activity, reserve_inventory_activity, update_inventory_activity, requst_approval_activity
 from dapr.clients import DaprClient
-from dapr.conf import Settings
 from model import InventoryItem, OrderPayload
-
-settings = Settings()
+from util import get_address
 
 store_name = "statestore-actors"
 
 class WorkflowConsoleApp:
 
     def main(self):
-        host = settings.DAPR_RUNTIME_HOST
-        if host is None:
-            host = "localhost"
-        port = settings.DAPR_GRPC_PORT
-        if port is None:
-            port = "4001"
-
         print("*** Welcome to the Dapr Workflow console app sample!")
         print("*** Using this app, you can place orders that start workflows.")
         print("*** Ensure that Dapr is running in a separate terminal window using the following command:")
 
         # Wait for the sidecar to become available
         # sleep(5)
-
-        daprClient = DaprClient(f'{host}:{port}')
+        address = get_address()
+        daprClient = DaprClient(address=f'{address["host"]}:{address["port"]}')
         baseInventory = {}
         baseInventory["paperclip"] = InventoryItem("Paperclip", 5, 100)
         baseInventory["cars"] = InventoryItem("Cars", 15000, 100)
@@ -36,7 +27,7 @@ class WorkflowConsoleApp:
         self.restock_inventory(daprClient, baseInventory)
 
         while True:
-            workflowRuntime = WorkflowRuntime()
+            workflowRuntime = WorkflowRuntime(address["host"], address["port"])
             workflowRuntime.register_workflow(order_processing_workflow)
             workflowRuntime.register_activity(notify_activity)
             workflowRuntime.register_activity(requst_approval_activity)
@@ -45,7 +36,7 @@ class WorkflowConsoleApp:
             workflowRuntime.register_activity(update_inventory_activity)
             workflowRuntime.start()
 
-            client = DaprWorkflowClient(host,port)
+            client = DaprWorkflowClient(address["host"], address["port"])
             sleep(1)
             print("==========Begin the purchase of item:==========")
             items = ', '.join(str(inventory_item) for inventory_item in baseInventory.keys())
@@ -74,39 +65,36 @@ class WorkflowConsoleApp:
                 order_quantity = 1
 
             total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
-            order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost, host=host, port=port)
+            order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
             print(f'Starting order workflow, purchasing {order_quantity} of {item_name}')
             _id = client.schedule_new_workflow(order_processing_workflow, input=order)
 
             def prompt_for_approval(client: DaprWorkflowClient):
-                sleep(7)
-                approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N]')
+                approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N] ')
+                if state.runtime_status.name == "COMPLETED":
+                    return
                 if approved.lower() == "y":
-                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data="approved")
+                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True}) # {'approval': True}
                 else:
-                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data="rejected")
+                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
 
-            # Prompt the user for approval on a background thread
-            if total_cost > 50000:
-                threading.Thread(target=prompt_for_approval(client), daemon=True).start()
-
+            approval_seeked = False
             while True:
                 try:
-                    sleep(1)
                     state = client.wait_for_workflow_completion(_id, timeout_in_seconds=10)
                     if not state:
                         print("Workflow not found!")  # not expected
                     elif state.runtime_status.name == "COMPLETED" or state.runtime_status.name == "FAILED":
-                        print(f'Workflow completed! Result: {state.serialized_output}')
+                        print(f'Workflow completed! Result: {state.runtime_status.name}')
                         break
-                    elif total_cost > 50000:
-                        print(f'Workflow status: {state.runtime_status.name}')
-                        prompt_for_approval(client)  # raises an exception
                 except TimeoutError:
-                    pass
+                    state = client.get_workflow_state(_id)
+                    if total_cost > 50000 and (state.runtime_status.name != "COMPLETED" or state.runtime_status.name != "FAILED") and not approval_seeked:
+                        approval_seeked = True
+                        # TODO - can it be main thread?
+                        threading.Thread(target=prompt_for_approval(client), daemon=True).start()
 
-            status = client.wait_for_workflow_completion(_id, timeout_in_seconds=25)
-            print("  Purchase of item is ", status.runtime_status.name)
+            print("  Purchase of item is ", state.runtime_status.name)
             workflowRuntime.shutdown()
 
     def restock_inventory(self, daprClient: DaprClient, baseInventory):
