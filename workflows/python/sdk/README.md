@@ -51,6 +51,7 @@ dapr run --app-id order-processor --app-protocol grpc --dapr-grpc-port 50001 --c
 ```
 ==========Begin the purchase of item:==========
 To restock items, type 'restock'.
+To exit workflow console app, type 'exit'.
 Enter the name of one of the following items to order: paperclip, cars, computers: cars
 How many cars would you like to purchase? 11
 Starting order workflow, purchasing 11 of cars
