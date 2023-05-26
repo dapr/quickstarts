@@ -3,7 +3,8 @@ from datetime import timedelta
 import logging
 import json
 from time import sleep
-from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext, when_any
+from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext
+# , when_any
 from model import InventoryItem, Notification, InventoryRequest, OrderPayload, OrderResult, PaymentRequest, InventoryResult
 from dapr.clients import DaprClient
 from util import get_address
@@ -24,11 +25,12 @@ def order_processing_workflow(ctx: DaprWorkflowContext, orderPayload: OrderPaylo
     if orderPayload.total_cost > 50000:
         yield ctx.call_activity(requst_approval_activity, input=orderPayload)
         approval_flag = ctx.wait_for_external_event("manager_approval")
-        timeout_event = ctx.create_timer(timedelta(seconds=200))
-        winner = yield when_any([approval_flag, timeout_event])
-        if winner == timeout_event:
-            yield ctx.call_activity(notify_activity, input=Notification(message=f'Payment for order {order_id} has been cancelled due to timeout!'))
-            return OrderResult(processed=False)
+        # Temporarily disabling timeout, as when_any PR is not merged in python-sdk
+        # timeout_event = ctx.create_timer(timedelta(seconds=200))
+        # winner = yield when_any([approval_flag, timeout_event])
+        # if winner == timeout_event:
+        #     yield ctx.call_activity(notify_activity, input=Notification(message=f'Payment for order {order_id} has been cancelled due to timeout!'))
+        #     return OrderResult(processed=False)
         approval_result = yield approval_flag
         if approval_result["approval"]:
             yield ctx.call_activity(notify_activity, input=Notification(message=f'Payment for order {order_id} has been approved!'))
