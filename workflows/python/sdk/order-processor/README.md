@@ -31,10 +31,8 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Running this example
 expected_stdout_lines:
-  - "== APP == New counter value is: 1!"
-  - "== APP == New counter value is: 11!"
-  - "== APP == New counter value is: 111!"
-  - "== APP == New counter value is: 1111!"
+  - "There are now 89 cars left in stock"
+  - "Workflow completed! Result: COMPLETED"
 output_match_mode: substring
 background: true
 timeout_seconds: 30
