@@ -24,7 +24,7 @@ def order_processing_workflow(ctx: DaprWorkflowContext, orderPayload: OrderPaylo
     if orderPayload.total_cost > 50000:
         yield ctx.call_activity(requst_approval_activity, input=orderPayload)
         approval_flag = ctx.wait_for_external_event("manager_approval")
-        timeout_event = ctx.create_timer(timedelta(seconds=15))
+        timeout_event = ctx.create_timer(timedelta(seconds=200))
         winner = yield when_any([approval_flag, timeout_event])
         if winner == timeout_event:
             yield ctx.call_activity(notify_activity, input=Notification(message=f'Payment for order {order_id} has been cancelled due to timeout!'))
