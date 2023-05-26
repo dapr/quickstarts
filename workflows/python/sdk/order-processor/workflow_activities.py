@@ -29,8 +29,8 @@ def order_processing_workflow(ctx: DaprWorkflowContext, orderPayload: OrderPaylo
         if winner == timeout_event:
             yield ctx.call_activity(notify_activity, input=Notification(message=f'Payment for order {order_id} has been cancelled due to timeout!'))
             return OrderResult(processed=False)
-
-        if approval_flag.get_result()["approval"]:
+        approval_result = yield approval_flag
+        if approval_result["approval"]:
             yield ctx.call_activity(notify_activity, input=Notification(message=f'Payment for order {order_id} has been approved!'))
         else:
             yield ctx.call_activity(notify_activity, input=Notification(message=f'Payment for order {order_id} has been rejected!'))

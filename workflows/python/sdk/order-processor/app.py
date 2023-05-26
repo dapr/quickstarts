@@ -1,3 +1,4 @@
+import sys
 import threading
 from time import sleep
 from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowClient
@@ -5,11 +6,14 @@ from workflow_activities import order_processing_workflow, notify_activity, proc
 from dapr.clients import DaprClient
 from model import InventoryItem, OrderPayload
 from util import get_address
+import signal
 
 store_name = "statestore-actors"
 
-class WorkflowConsoleApp:
+input_param_counter = 0
+default_item_name = "cars"
 
+class WorkflowConsoleApp:    
     def main(self):
         print("*** Welcome to the Dapr Workflow console app sample!")
         print("*** Using this app, you can place orders that start workflows.")
@@ -17,6 +21,11 @@ class WorkflowConsoleApp:
         print("dapr run --dapr-grpc-port 50001 --app-id order-processor")
         # Wait for the sidecar to become available
         sleep(5)
+
+        def timeout_error(*_):
+            raise TimeoutError
+
+        signal.signal(signal.SIGALRM, timeout_error)
 
         address = get_address()
         workflowRuntime = WorkflowRuntime(address["host"], address["port"])
@@ -42,9 +51,19 @@ class WorkflowConsoleApp:
             print("==========Begin the purchase of item:==========")
             items = ', '.join(str(inventory_item) for inventory_item in baseInventory.keys())
             
-            print("To restock items, type 'restock'.")
-            print("To exit workflow console app, type 'exit'.")
-            item_name = input(f'Enter the name of one of the following items to order: {items}: ')
+            try:
+                print("To restock items, type 'restock'.")
+                print("To exit workflow console app, type 'exit'.")
+                signal.alarm(3)
+                item_name = input(f'Enter the name of one of the following items to order: {items}: ')
+                signal.alarm(0) # cancel the alarm
+            except TimeoutError:
+                global input_param_counter
+                input_param_counter += 1
+                if input_param_counter >= len(sys.argv):
+                    item_name = default_item_name
+                else:
+                    item_name = sys.argv[input_param_counter]
             
             if item_name is None:
                 continue
@@ -60,7 +79,16 @@ class WorkflowConsoleApp:
                 if item_name not in baseInventory.keys():
                     print(f'We don\'t have {item_name}!')
                     continue
-            order_quantity = input(f'How many {item_name} would you like to purchase? ')
+            try:
+                signal.alarm(3)
+                order_quantity = input(f'How many {item_name} would you like to purchase? ')
+                signal.alarm(0) # cancel the alarm
+            except TimeoutError:
+                input_param_counter += 1
+                if input_param_counter >= len(sys.argv):
+                    order_quantity = 1
+                else:
+                    order_quantity = sys.argv[input_param_counter]
             try:
                 int(order_quantity)
             except ValueError:
@@ -76,11 +104,21 @@ class WorkflowConsoleApp:
             _id = client.schedule_new_workflow(order_processing_workflow, input=order)
 
             def prompt_for_approval(client: DaprWorkflowClient):
-                approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N] ')
+                try:
+                    signal.alarm(3)
+                    approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N] ')
+                    signal.alarm(0) # cancel the alarm
+                except TimeoutError:
+                    global input_param_counter
+                    input_param_counter += 1
+                    if input_param_counter >= len(sys.argv):
+                        approved = "y"
+                    else:
+                        approved = sys.argv[input_param_counter]
                 if state.runtime_status.name == "COMPLETED":
                     return
                 if approved.lower() == "y":
-                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True}) # {'approval': True}
+                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
                 else:
                     client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
 
