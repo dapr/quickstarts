@@ -23,6 +23,7 @@ name: Install requirements
 -->
 
 ```sh
+cd ./order-processor
 pip3 install -r requirements.txt
 ```
 
