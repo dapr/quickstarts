@@ -105,12 +105,12 @@ jobs:
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
             do
-              if [ ! -d "$building_block/python/$variant" ]; 
+              if [ ! -d "workflows/python/$variant" ]; 
               then
-                echo "$building_block/python/$variant does not exist."
+                echo "workflows/python/$variant does not exist."
               else
-                pushd $building_block/python/$variant
-                echo "Validating $building_block/python/$variant quickstart"
+                pushd workflows/python/$variant
+                echo "Validating workflows/python/$variant quickstart"
                 make validate 
                 popd
               fi
