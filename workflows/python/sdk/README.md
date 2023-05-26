@@ -41,7 +41,7 @@ sleep: 15
 -->
 
 ```sh
-dapr run --app-id order-processor --app-protocol grpc --dapr-grpc-port 50001 --components-path ../../../components/ --placement-host-address localhost:50005 -- python3 app.py cars 11 y exit
+dapr run --app-id order-processor --app-protocol grpc --dapr-grpc-port 50001 --components-path ../../components/ --placement-host-address localhost:50005 -- python3 app.py cars 11 y exit
 ```
 
 <!-- END_STEP -->
