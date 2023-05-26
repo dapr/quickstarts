@@ -34,7 +34,7 @@ func main() {
 
 	// Get config items from the config store
 	for _, item := range CONFIGURATION_ITEMS {
-		getResponse, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0-alpha1/configuration/" + DAPR_CONFIGURATION_STORE + "?key=" + item)
+		getResponse, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/configuration/" + DAPR_CONFIGURATION_STORE + "?key=" + item)
 		if err != nil {
 			fmt.Print("Could not get config item, err:" + err.Error())
 			os.Exit(1)
@@ -64,7 +64,7 @@ func subscribeToConfigUpdates(subscriptionId *string) {
 	// Add delay to allow app channel to be ready
 	time.Sleep(3 * time.Second)
 
-	subscription, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0-alpha1/configuration/" + DAPR_CONFIGURATION_STORE + "/subscribe")
+	subscription, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/configuration/" + DAPR_CONFIGURATION_STORE + "/subscribe")
 	if err != nil {
 		fmt.Println("Error subscribing to config updates, err:" + err.Error())
 		os.Exit(1)
@@ -111,7 +111,7 @@ func startServerToListen(subscriptionId *string) {
 }
 
 func unsubscribeFromConfigUpdates(subscriptionId string) {
-	unsubscribe, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0-alpha1/configuration/" + DAPR_CONFIGURATION_STORE + "/" + subscriptionId + "/unsubscribe")
+	unsubscribe, err := http.Get(DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/configuration/" + DAPR_CONFIGURATION_STORE + "/" + subscriptionId + "/unsubscribe")
 	if err != nil {
 		fmt.Println("Error unsubscribing from config updates, err:" + err.Error())
 	}

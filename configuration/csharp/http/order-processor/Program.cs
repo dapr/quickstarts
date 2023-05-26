@@ -20,7 +20,7 @@ foreach (var item in CONFIGURATION_ITEMS)
   // Get config items from the config store
   try
   {
-    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}?key={item.ToString()}");
+    var response = await httpClient.GetStringAsync($"{baseURL}/v1.0/configuration/{DAPR_CONFIGURATION_STORE}?key={item.ToString()}");
     Console.WriteLine("Configuration for " + item + ": " + response);
   }
   catch (Exception ex)
@@ -36,7 +36,7 @@ async Task<string> subscribeToConfigUpdates()
   Thread.Sleep(3000);
   try
   {
-    var subscription = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}/subscribe");
+    var subscription = await httpClient.GetStringAsync($"{baseURL}/v1.0/configuration/{DAPR_CONFIGURATION_STORE}/subscribe");
     if (subscription.Contains("errorCode"))
     {
       Console.WriteLine("Error subscribing to config updates, err:" + subscription);
@@ -75,7 +75,7 @@ string subscriptionId = await subscribeToConfigUpdates();
 await Task.Delay(20000);
 try
 {
-  string unsubscribe = await httpClient.GetStringAsync($"{baseURL}/v1.0-alpha1/configuration/{DAPR_CONFIGURATION_STORE}/{subscriptionId}/unsubscribe");
+  string unsubscribe = await httpClient.GetStringAsync($"{baseURL}/v1.0/configuration/{DAPR_CONFIGURATION_STORE}/{subscriptionId}/unsubscribe");
   if (unsubscribe.Contains("true"))
   {
     Console.WriteLine("App unsubscribed from config updates");
