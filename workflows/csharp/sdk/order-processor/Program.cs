@@ -36,13 +36,13 @@ using var daprClient = new DaprClientBuilder().Build();
 //       in a subsequent SDK release. This is a temporary workaround.
 WorkflowEngineClient workflowClient = host.Services.GetRequiredService<WorkflowEngineClient>();
 
-// Populate the store with items
-RestockInventory();
-
 // Generate a unique ID for the workflow
 string orderId = Guid.NewGuid().ToString()[..8];
 string itemToPurchase = "Cars";
 int ammountToPurchase = 10;
+
+// Populate the store with items
+RestockInventory(itemToPurchase);
 
 // Construct the order
 OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurchase);
@@ -73,8 +73,8 @@ while (!state.IsWorkflowCompleted)
 
 Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
 
-void RestockInventory()
+void RestockInventory(string itemToPurchase)
 {
-    daprClient.SaveStateAsync<OrderPayload>(storeName, "Cars",  new OrderPayload(Name: "Cars", TotalCost: 15000, Quantity: 100));
+    daprClient.SaveStateAsync<OrderPayload>(storeName, itemToPurchase,  new OrderPayload(Name: itemToPurchase, TotalCost: 15000, Quantity: 100));
     return;
 }
