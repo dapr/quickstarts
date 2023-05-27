@@ -5,7 +5,7 @@ Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/devel
 2. Using a SmartDevice.Client console app, developers have a client app to interact with each actor, or the controller to perform actions in aggregate. 
 3. The SmartDevice.Interfaces contains the shared interfaces and data types used by both service and client apps
 
-> **Note:** This example leverages the Dapr client SDK.  
+**Note:** This example leverages the Dapr client SDK.  
 
 
 ### Step 1: Pre-requisites
@@ -14,7 +14,7 @@ For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
 - [.NET 7 SDK](https://dotnet.microsoft.com/download).
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- Docker Desktop
 
 ### Step 2: Set up the environment
 
@@ -28,16 +28,24 @@ git clone https://github.com/dapr/quickstarts.git
 
 In a new terminal window, navigate to the `actors/csharp/sdk/service` directory and restore dependencies:
 
-```bash
-cd actors/csharp/sdk/service
-dotnet build
-```
 
 Run the `SmartDevice.Service`, which will start service itself and the Dapr sidecar:
 
+<!-- STEP
+name: Run actor service
+expected_stdout_lines:
+  - "Request finished HTTP/1.1 GET http://127.0.0.1:5001/healthz - - - 200"
+expected_stderr_lines:
+working_dir: ./service
+output_match_mode: substring
+background: true
+sleep: 30
+-->
 ```bash
-dapr run --app-id actorservice --app-port 5001 --dapr-http-port 3500 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
+cd actors/csharp/sdk/service
+dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-port 56001 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
+<!-- END_STEP -->
 
 Expected output:
 
@@ -56,16 +64,22 @@ Expected output:
 
 In a new terminal instance, navigate to the `actors/csharp/sdk/client` directory and install the dependencies:
 
+Then run the client app:
+<!-- STEP
+name: Run actor client
+expected_stdout_lines:
+  - "Device 2 state: Location: Second Floor, Status: Ready"
+expected_stderr_lines:
+working_dir: ./client
+output_match_mode: substring
+background: true
+sleep: 60
+-->
 ```bash
 cd ./actors/csharp/sdk/client
-dotnet build
-```
-
-Run the `SmartDevice.Client` app:
-
-```bash
 dapr run --app-id actorclient -- dotnet run
 ```
+<!-- END_STEP -->
 
 Expected output:
 
@@ -89,6 +103,22 @@ Expected output:
 == APP == Device 2 state: Location: Second Floor, Status: Ready
 ```
 
+### Cleanup
+
+<!-- STEP
+expected_stdout_lines: 
+  - '✅  app stopped successfully: actorservice'
+expected_stderr_lines:
+name: Shutdown dapr
+-->
+
+```bash
+dapr stop --app-id  actorservice
+(lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs  kill
+```
+
+<!-- END_STEP -->
+
 ### What happened
 
 When you ran the client app:
@@ -97,10 +127,10 @@ When you ran the client app:
 2. The `DetectSmokeAsync` method of `SmartDetectorActor` 1 is called.
 3. The `TriggerAlarmForAllDetectors` method of `ControllerActor` is called.
 4. The `SoundAlarm` methods of `SmartDetectorActor` 1 and 2 are called.
-5. The `ControllerActor` also creates a durable reminder to call `ClearAlarm` after 15 seconds using `RegisterReminderAsync`
+5. The `ControllerActor` also creates a reminder to `ClearAlarm` after 15 seconds using `RegisterReminderAsync`
 
 
-Looking at the code, `SmartDetectorActor` objects are created in the client application and initialized with object state with `ActorProxy.Create<ISmartDevice>(actorId, actorType)` and then `proxySmartDevice.SetDataAsync(data)`.  These objects are re-entrant and hold the state as shown by `proxySmartDevice.GetDataAsync()`.
+Looking at the code, `SmartDetectorActor` objects are created in the client application and initialized with object state with `ActorProxy.Create<ISmartDevice>(actorId, actorType)` and then `proxySmartDevice.SetDataAsync(data)`.  These objects are re-entrant and will hold on to the state as shown by `proxySmartDevice.GetDataAsync()`.
 
 ```cs
         // Actor Ids and types
