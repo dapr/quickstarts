@@ -7,7 +7,8 @@ using WorkflowConsoleApp.Activities;
 using WorkflowConsoleApp.Models;
 using WorkflowConsoleApp.Workflows;
 
-const string storeName = "statestore";
+const string StoreName = "statestore";
+const string DaprWorkflowComponent = "dapr";
 
 // The workflow host is a background service that connects to the sidecar over gRPC
 var builder = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
@@ -32,10 +33,6 @@ host.Start();
 
 using var daprClient = new DaprClientBuilder().Build();
 
-// NOTE: WorkflowEngineClient will be replaced with a richer version of DaprClient
-//       in a subsequent SDK release. This is a temporary workaround.
-WorkflowEngineClient workflowClient = host.Services.GetRequiredService<WorkflowEngineClient>();
-
 // Populate the store with items
 RestockInventory();
 
@@ -50,31 +47,28 @@ OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurcha
 // Start the workflow
 Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
 
-await workflowClient.ScheduleNewWorkflowAsync(
-    name: nameof(OrderProcessingWorkflow),
-    instanceId: orderId,
-    input: orderInfo);
+await daprClient.StartWorkflowAsync(
+    workflowComponent: DaprWorkflowComponent,
+    workflowName: nameof(OrderProcessingWorkflow),
+    input: orderInfo,
+    instanceId: orderId);
 
-// Wait a second to allow workflow to start
-await Task.Delay(TimeSpan.FromSeconds(1));
-
-WorkflowState state = await workflowClient.GetWorkflowStateAsync(
+// Wait for the workflow to start and confirm the input
+GetWorkflowResponse state = await daprClient.WaitForWorkflowStartAsync(
     instanceId: orderId,
-    getInputsAndOutputs: true);
+    workflowComponent: DaprWorkflowComponent);
 
 Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state.RuntimeStatus);
-while (!state.IsWorkflowCompleted)
-{
-    await Task.Delay(TimeSpan.FromSeconds(5));
-    state = await workflowClient.GetWorkflowStateAsync(
-        instanceId: orderId,
-        getInputsAndOutputs: true);
-}
+
+// Wait for the workflow to complete
+state = await daprClient.WaitForWorkflowCompletionAsync(
+    instanceId: orderId,
+    workflowComponent: DaprWorkflowComponent);
 
 Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
 
 void RestockInventory()
 {
-    daprClient.SaveStateAsync<OrderPayload>(storeName, "Cars",  new OrderPayload(Name: "Cars", TotalCost: 15000, Quantity: 100));
+    daprClient.SaveStateAsync<OrderPayload>(StoreName, itemToPurchase,  new OrderPayload(Name: itemToPurchase, TotalCost: 15000, Quantity: 100));
     return;
 }
