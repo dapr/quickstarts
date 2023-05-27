@@ -69,6 +69,6 @@ Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
 
 void RestockInventory()
 {
-    daprClient.SaveStateAsync<OrderPayload>(StoreName, "Cars",  new OrderPayload(Name: "Cars", TotalCost: 15000, Quantity: 100));
+    daprClient.SaveStateAsync<OrderPayload>(StoreName, itemToPurchase,  new OrderPayload(Name: itemToPurchase, TotalCost: 15000, Quantity: 100));
     return;
 }
