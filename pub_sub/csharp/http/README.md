@@ -46,7 +46,7 @@ sleep: 10
 
 
 ```bash
-dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7004 -- dotnet run --project .
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7005 -- dotnet run --project .
 ```
 
 <!-- END_STEP -->
