@@ -325,7 +325,7 @@ output_match_mode: substring
 expected_stdout_lines:
   - "{'data': {'orderId': " 
   - "{'data': {'orderId': "
-  - "<Response [204]>"
+  - "Response for order 3: 204"
 -->
 
 ```bash
@@ -337,9 +337,9 @@ kubectl logs --selector app=bindingspythonapp -c python --tail=-1
 ```bash
 ...
 {'data': {'orderId': 10}, 'operation': 'create'}
-<Response [204]>
+Response for order 10: 204
 {'data': {'orderId': 11}, 'operation': 'create'}
-<Response [204]>
+Response for order 11: 204
 ...
 ```
 
