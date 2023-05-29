@@ -325,7 +325,7 @@ output_match_mode: substring
 expected_stdout_lines:
   - "{'data': {'orderId': " 
   - "{'data': {'orderId': "
-  - "Response for order \d+: 204"
+  - "Response for order \\d+: 204"
 -->
 
 ```bash
