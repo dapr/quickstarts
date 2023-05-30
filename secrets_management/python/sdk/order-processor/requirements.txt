@@ -1,2 +1,2 @@
-dapr
+dapr-dev
 typing-extensions
