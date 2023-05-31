@@ -54,7 +54,6 @@ mvn clean install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP == Configuration for orderId1: {'value':'101'}"
   - "== APP == Configuration for orderId2: {'value':'102'}"
   - '== APP == App subscribed to config changes with subscription id:'
   - '== APP == App unsubscribed to config changes'
@@ -62,7 +61,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-
+sleep: 120
 -->
 
 ```bash

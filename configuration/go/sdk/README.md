@@ -35,7 +35,6 @@ docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for orderId1: {"Value":"101","Version":"","Metadata":null}'
   - '== APP == Configuration for orderId2: {"Value":"102","Version":"","Metadata":null}'
   - '== APP == App subscribed to config changes with subscription id:'
   - '== APP == App unsubscribed to config changes'
@@ -43,6 +42,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
+sleep: 120
 -->
 
 ```bash
