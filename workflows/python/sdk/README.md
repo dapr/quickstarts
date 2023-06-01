@@ -70,3 +70,37 @@ INFO:NotifyActivity:Order b903d749cd814e099f06ebf4a56a2f90 has completed!
 Workflow completed! Result: COMPLETED
   Purchase of item is  COMPLETED
 ```
+
+### View workflow output with Zipkin
+
+For a more detailed view of the workflow activities (duration, progress etc.), try using Zipkin.
+
+1. Launch Zipkin container - The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched on running `dapr init`. Check to make sure the container is running. If it's not, launch the Zipkin docker container with the following command.
+
+```bash
+docker run -d -p 9411:9411 openzipkin/zipkin
+```
+
+2. View Traces in Zipkin UI - In your browser go to http://localhost:9411 to view the workflow trace spans in the Zipkin web UI. The order-processor workflow should be viewable with the following output in the Zipkin web UI. 
+
+<img src="zipkin trace for python console app">
+
+### What happened? 
+
+When you ran `dapr run --app-id order-processor --app-protocol grpc --dapr-grpc-port 4001 --components-path ../../../components/ --placement-host-address localhost:50005 -- python3 app.py`
+
+1. First the user inputs an order for 11 cars into the concole app.
+2. A unique order ID for the workflow is generated (in the above example, `b903d749cd814e099f06ebf4a56a2f90`) and the workflow is scheduled.
+3. The `NotifyActivity` workflow activity sends a notification saying an order for 11 cars has been received.
+4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
+5. Your workflow starts and notifies you of its status.
+6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `6d2abcc9` and confirms if successful.
+7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+8. The `NotifyActivity` workflow activity sends a notification saying that order `b903d749cd814e099f06ebf4a56a2f90` has completed.
+9. The workflow terminates as completed.
+
+
+
+
+
+
