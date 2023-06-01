@@ -30,7 +30,7 @@ func main() {
 			log.Fatal(err.Error())
 		}
 
-		// Adding app id as part of th header
+		// Adding app id as part of the header
 		req.Header.Add("dapr-app-id", "order-processor")
 
 		// Invoking a service
