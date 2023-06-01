@@ -93,11 +93,12 @@ When you ran `dapr run --app-id order-processor --app-protocol grpc --dapr-grpc-
 2. A unique order ID for the workflow is generated (in the above example, `b903d749cd814e099f06ebf4a56a2f90`) and the workflow is scheduled.
 3. The `NotifyActivity` workflow activity sends a notification saying an order for 11 cars has been received.
 4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
-5. Your workflow starts and notifies you of its status.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `6d2abcc9` and confirms if successful.
-7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `b903d749cd814e099f06ebf4a56a2f90` has completed.
-9. The workflow terminates as completed.
+5. The `RequestApprovalActivity` workflow activity is triggered due to buisness logic for orders exceeding $50k and user is prompted to manually approve the purchase before continuing order. 
+6. The workflow starts and notifies you of its status.
+7. The `ProcessPaymentActivity` workflow activity begins processing payment for order `b903d749cd814e099f06ebf4a56a2f90` and confirms if successful.
+8. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+9. The `NotifyActivity` workflow activity sends a notification saying that order `b903d749cd814e099f06ebf4a56a2f90` has completed.
+10. The workflow terminates as completed.
 
 
 
