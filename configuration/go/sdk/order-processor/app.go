@@ -34,10 +34,11 @@ func main() {
 	}
 
 	// Subscribe for config changes
-	subscriptionID, err := client.SubscribeConfigurationItems(ctx, DAPR_CONFIGURATION_STORE, CONFIGURATION_KEYS, func(id string, config map[string]*dapr.ConfigurationItem) {
+	subscriptionID, err := client.SubscribeConfigurationItems(ctx, DAPR_CONFIGURATION_STORE, CONFIGURATION_KEYS, func(id string, items map[string]*dapr.ConfigurationItem) {
 		// Print config changes
-		c, _ := json.Marshal(config)
-		fmt.Println("Configuration update " + string(c))
+		for k, v := range items {
+			fmt.Printf("get updated config key = %s, value = %s \n", k, v.Value)
+		}
 	})
 	if err != nil {
 		fmt.Println("Error subscribing to config updates, err:" + err.Error())
