@@ -1,18 +1,18 @@
-import { DaprClient } from '@dapr/dapr';
+import { DaprClient } from "@dapr/dapr";
 
-const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3500";
-const PUBSUB_NAME = "orderpubsub";
-const PUBSUB_TOPIC = "orders";
+const daprHost = process.env.DAPR_HOST || "http://localhost";
+const daprPort = process.env.DAPR_HTTP_PORT || "3500";
+const pubSubName = "orderpubsub";
+const pubSubTopic = "orders";
 
 async function main() {
-  const client = new DaprClient(DAPR_HOST, DAPR_HTTP_PORT);
+  const client = new DaprClient({ daprHost, daprPort });
 
-  for(var i = 1; i <= 10; i++) {
-    const order = {orderId:  i};
+  for (var i = 1; i <= 10; i++) {
+    const order = { orderId: i };
 
     // Publish an event using Dapr pub/sub
-    await client.pubsub.publish(PUBSUB_NAME, PUBSUB_TOPIC, order);
+    await client.pubsub.publish(pubSubName, pubSubTopic, order);
     console.log("Published data: " + JSON.stringify(order));
 
     await sleep(1000);
@@ -22,4 +22,4 @@ async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-main().catch(e => console.error(e))
+main().catch(e => console.error(e));

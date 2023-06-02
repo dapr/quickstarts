@@ -1,15 +1,15 @@
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
 
 // JS SDK does not support Configuration API over HTTP protocol yet
-const protocol = CommunicationProtocolEnum.GRPC;
-const host = process.env.DAPR_HOST ?? "localhost";
-const port = process.env.DAPR_GRPC_PORT ?? 3500;
+const communicationProtocol = CommunicationProtocolEnum.GRPC;
+const daprHost = process.env.DAPR_HOST ?? "localhost";
+const daprPort = process.env.DAPR_GRPC_PORT ?? 3500;
 
 const DAPR_CONFIGURATION_STORE = "configstore";
 const CONFIGURATION_ITEMS = ["orderId1", "orderId2"];
 
 async function main() {
-  const client = new DaprClient(host, port, protocol);
+  const client = new DaprClient({daprHost, daprPort, communicationProtocol});
   // Get config items from the config store
   try {
     const config = await client.configuration.get(DAPR_CONFIGURATION_STORE, CONFIGURATION_ITEMS);
