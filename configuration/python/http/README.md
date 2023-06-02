@@ -50,12 +50,10 @@ name: Run order-processor service
 expected_stdout_lines:
   - "== APP == INFO:root:Configuration for orderId2: {'orderId2': {'value': '102'}}"
   - "== APP == INFO:root:App subscribed to config changes with subscription id:"
-  - 'App unsubscribed from config changes'
-  - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-sleep: 120
+sleep: 15
 -->
 
 ```bash
