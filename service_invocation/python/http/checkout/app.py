@@ -20,6 +20,6 @@ for i in range(1, 20):
         data=json.dumps(order),
         headers=headers
     )
-    print('Order passed: ' + json.dumps(order))
+    print('Order passed: ' + json.dumps(order), flush=True)
 
     time.sleep(1)

@@ -12,7 +12,7 @@ This quickstart includes one service:
 
 ### Run the client service with Dapr and resiliency enabled
 
-1. Navigate to the app directory, install dependencies, and run the service with resiliency: 
+1. Navigate to the app directory, install dependencies, and run the service with resiliency:
 
 ### C# example:
 
@@ -51,11 +51,11 @@ dapr run --app-id order-processor  --resources-path ../../../resources/ -- npm s
 
 ```bash
 cd ../state_management/python/sdk/order-processor
-pip3 install -r requirements.txt 
-dapr run --app-id order-processor  --resources-path ../../../resources/ -- python3 
+pip3 install -r requirements.txt
+dapr run --app-id order-processor  --resources-path ../../../resources/ -- python3
 ```
 
-### Expected output: 
+### Expected output:
 
 ```bash
 == APP == Saving Order:  { orderId: '1' }
@@ -69,7 +69,7 @@ dapr run --app-id order-processor  --resources-path ../../../resources/ -- pytho
 ```
 <!-- END_STEP -->
 
-### Simulate a component failure by stopping the Redis container instance 
+### Simulate a component failure by stopping the Redis container instance
 
 In a new terminal window, stop the Redis container that's running on your machine:
 
@@ -85,19 +85,19 @@ Policies defined in the resiliency.yaml spec:
 retryForever:
   policy: constant
   duration: 5s
-  maxRetries: -1 
+  maxRetries: -1
 
 circuitBreakers:
   simpleCB:
   maxRequests: 1
-  timeout: 5s 
+  timeout: 5s
   trip: consecutiveFailures >= 5
 ```
 
 Applied policies:
 
 ```bash
-INFO[0006] Error processing operation component[statestore] output. Retrying... 
+INFO[0006] Error processing operation component[statestore] output. Retrying...
 INFO[0026] Circuit breaker "simpleCB-statestore" changed state from closed to open
 INFO[0031] Circuit breaker "simpleCB-statestore" changed state from open to half-open
 INFO[0031] Circuit breaker "simpleCB-statestore" changed state from half-open to open

@@ -331,7 +331,34 @@ dapr stop --app-id react-form
 
 <!-- END_STEP -->
 
-4. If you want to deploy this same application to Kubernetes, move onto the next step. Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
+4. If you want more insights into the Cloud Events being published on Redis streams, keep going.  If you want to deploy this same application to Kubernetes,  jump to the [Run in Kubernetes](#Run-in-Kubernetes). Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
+
+## Insights into the Cloud Events being published on Redis streams
+If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that are being published on [Redis stream](https://redis.io/docs/data-types/streams/), follow the below steps: 
+
+1. Redis is running inside of a docker container, so to access it via CLI, pass the following command to a new terminal:
+
+
+```bash
+docker exec -it dapr_redis redis-cli
+```
+
+
+2. There can be multiple items/orders/messages inside a Redis stream. It is possible to get the number of orders inside a stream by using the `XLEN` command:
+
+
+```bash
+XLEN orders
+```
+
+
+3. To show the details of each order in the Redis stream events, use the `XRANGE` command. Specify two IDs, start and end. The range returned includes the elements having `start` or `end` as ID. The two special IDs - and + respectively mean the smallest and the greatest ID possible. Add an optional `COUNT` option at the end to get the first N items only. For example, the command shows the first 2 events.
+
+
+```bash
+XRANGE orders - + Count 2
+```
+
 
 
 ## Run in Kubernetes
@@ -724,4 +751,4 @@ Pub-sub allows us to completely decouple the components. Publishers need not be 
 
 ## Next steps:
 
-- Explore additional [quickstarts](../README.md#quickstarts).
+- Explore additional [quickstarts](../README.md#quickstarts)

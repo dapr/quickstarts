@@ -43,7 +43,7 @@ sleep: 10
 
 ```bash
 cd ./order-processor
-dapr run --app-port 7006 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 <!-- END_STEP -->

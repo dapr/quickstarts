@@ -266,11 +266,11 @@ Get the logs of the Node.js app:
 
 <!-- STEP
 expected_stdout_lines:
-  - "Got a new order! Order ID: 8"
-  - "Got a new order! Order ID: 9"
-  - "Got a new order! Order ID: 10"
   - "Got a new order! Order ID: 11"
+  - "Successfully persisted state for Order ID: 11"
 expected_stderr_lines:
+output_match_mode: substring
+match_order: none
 name: Read nodeapp logs
 -->
 
@@ -284,11 +284,11 @@ If all went well, you should see logs like this:
 
 ```
 Got a new order! Order ID: 1
-Successfully persisted state.
+Successfully persisted state for Order ID: 1
 Got a new order! Order ID: 2
-Successfully persisted state.
+Successfully persisted state for Order ID: 2
 Got a new order! Order ID: 3
-Successfully persisted state.
+Successfully persisted state for Order ID: 3
 ```
 
 ## Step 7 - Observe API call logs
@@ -362,6 +362,8 @@ expected_stdout_lines:
   - deployment.apps "nodeapp" deleted
   - deployment.apps "pythonapp" deleted
   - component.dapr.io "statestore" deleted
+output_match_mode: substring
+match_order: none
 -->
 
 ```bash

@@ -2,7 +2,7 @@ version: 1
 apps:
   - appDirPath: ./order-processor/
     appID: order-processor
-    appPort: 7006
+    appPort: 7001
     command: ["dotnet", "run"]
   - appID: checkout
     appDirPath: ./checkout/

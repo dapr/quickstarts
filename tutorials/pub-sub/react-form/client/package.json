@@ -14,6 +14,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "resolutions": {
+    "nth-check": "^2.0.1"
+  },
   "proxy": "http://localhost:8080/",
   "eslintConfig": {
     "extends": "react-app"
