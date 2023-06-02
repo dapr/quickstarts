@@ -26,12 +26,18 @@ const daprPort = process.env.DAPR_HTTP_PORT || '3500';
 const serverHost = "127.0.0.1";
 const serverPort = process.env.APP_PORT || '5005';
 
-const client = new DaprClient(daprHost, daprPort);
-
-const server = new DaprServer(serverHost, serverPort, daprHost, daprPort);
+const client = new DaprClient({ daprHost, daprPort });
+const server = new DaprServer({
+    serverHost,
+    serverPort,
+    clientOptions: {
+        daprHost,
+        daprPort
+    }
+});
 
 async function start() {
-    await server.binding.receive(cronBindingName,processBatch);
+    await server.binding.receive(cronBindingName, processBatch);
     await server.start();
 }
 
@@ -41,7 +47,7 @@ start().catch((e) => {
 });
 
 
-async function processBatch(){
+async function processBatch() {
     const loc = '../../../orders.json';
     fs.readFile(loc, 'utf8', (err, data) => {
         const orders = JSON.parse(data).orders;
