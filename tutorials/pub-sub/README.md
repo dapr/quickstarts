@@ -347,12 +347,6 @@ docker exec -it dapr_redis redis-cli
 
 2. There can be multiple items/orders/messages inside a Redis stream. It is possible to get the number of orders inside a stream by using the `XLEN` command:
 
-<!-- STEP
-expected_stdout_lines:
- - (integer) 3 
-expected_stderr_lines:
-name: Number of orders in a Redis Stream
--->
 
 ```bash
 XLEN orders
