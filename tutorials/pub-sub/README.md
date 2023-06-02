@@ -351,7 +351,6 @@ docker exec -it dapr_redis redis-cli
 XLEN orders
 ```
 
-<!-- END_STEP -->
 
 3. To show the details of each order in the Redis stream events, use the `XRANGE` command. Specify two IDs, start and end. The range returned includes the elements having `start` or `end` as ID. The two special IDs - and + respectively mean the smallest and the greatest ID possible. Add an optional `COUNT` option at the end to get the first N items only. For example, the command shows the first 2 events.
 
