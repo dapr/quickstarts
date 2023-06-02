@@ -359,7 +359,6 @@ XLEN orders
 XRANGE orders - + Count 2
 ```
 
-<!-- END_STEP -->
 
 
 ## Run in Kubernetes
