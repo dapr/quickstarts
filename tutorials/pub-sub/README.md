@@ -338,12 +338,6 @@ If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that 
 
 1. Redis is running inside of a docker container, so to access it via CLI, pass the following command to a new terminal:
 
-<!-- STEP
-expected_stdout_lines:
- - 127.0.0.1:6379>
-expected_stderr_lines:
-name: Redis Docker Image
--->
 
 ```bash
 docker exec -it dapr_redis redis-cli
