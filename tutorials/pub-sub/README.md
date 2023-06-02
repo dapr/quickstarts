@@ -343,7 +343,6 @@ If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that 
 docker exec -it dapr_redis redis-cli
 ```
 
-<!-- END_STEP -->
 
 2. There can be multiple items/orders/messages inside a Redis stream. It is possible to get the number of orders inside a stream by using the `XLEN` command:
 
