@@ -4,7 +4,7 @@ In this quickstart, you'll create a simple console application to demonstrate Da
 
 This quickstart includes one project:
 
-- python console app `order-processor` 
+- Python console app `order-processor` 
 
 The quickstart contains 1 workflow order_processing_workflow to simulate purchasing items from a store, and 5 unique activities within the workflow. These 5 activities are as follows:
 
