@@ -6,7 +6,7 @@ This quickstart includes one project:
 
 - Python console app `order-processor` 
 
-The quickstart contains 1 workflow order_processing_workflow to simulate purchasing items from a store, and 5 unique activities within the workflow. These 5 activities are as follows:
+The quickstart contains 1 workflow (order_processing_workflow) which simulates purchasing items from a store, and 5 unique activities within the workflow. These 5 activities are as follows:
 
 - notify_activity: This activity utilizes a logger to print out messages throughout the workflow. These messages notify the user when there is insufficient inventory, their payment couldn't be processed, and more.
 - process_payment_activity: This activity is responsible for processing and authorizing the payment.
