@@ -1,5 +1,4 @@
 from datetime import datetime
-from model import InventoryItem, OrderPayload
 import threading
 from time import sleep
 
@@ -9,7 +8,7 @@ from dapr.ext.workflow import WorkflowRuntime
 
 from workflow import order_processing_workflow, notify_activity, process_payment_activity, \
     verify_inventory_activity, update_inventory_activity, requst_approval_activity
-
+from model import InventoryItem, OrderPayload
 
 store_name = "statestore-actors"
 workflow_component = "dapr"
