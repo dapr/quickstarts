@@ -39,10 +39,9 @@ jobs:
       KUBERNETES_VERSION: v1.25.3
       KIND_VERSION: v0.17.0
       KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
-      PODMAN_VERSION: 4.4.4
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -64,16 +63,16 @@ jobs:
         timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
-          # Install podman
-          curl -sL -o podman.pkg https://github.com/containers/podman/releases/download/v${{ env.PODMAN_VERSION }}/podman-installer-macos-amd64.pkg
-          sudo installer -pkg podman.pkg -target /
-          export PATH=/opt/podman/bin:$PATH
-          echo "/opt/podman/bin" >> $GITHUB_PATH
-          # Start podman machine
-          sudo podman-mac-helper install
+          sudo rm -rf `brew --cache`
+          brew upgrade
+          brew install podman
+          which podman-mac-helper
+          podman_helper=$(which podman-mac-helper)
+          sudo ${podman_helper} install
           podman machine init
-          podman machine start --log-level debug
-          echo "CONTAINER_RUNTIME=podman" >> $GITHUB_ENV
+          podman machine start || echo "VM might not have started"
+          sleep 10
+          podman machine inspect
       - name: Install podman-compose
         if: matrix.os == 'macos-latest'
         run: |
@@ -106,12 +105,12 @@ jobs:
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
             do
-              if [ ! -d "workflows/python/$variant" ]; 
+              if [ ! -d "$building_block/python/$variant" ]; 
               then
-                echo "workflows/python/$variant does not exist."
+                echo "$building_block/python/$variant does not exist."
               else
-                pushd workflows/python/$variant
-                echo "Validating workflows/python/$variant quickstart"
+                pushd $building_block/python/$variant
+                echo "Validating $building_block/python/$variant quickstart"
                 make validate 
                 popd
               fi
