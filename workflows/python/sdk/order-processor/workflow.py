@@ -6,11 +6,10 @@ from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext, when
 from model import InventoryItem, Notification, InventoryRequest, OrderPayload, OrderResult,\
     PaymentRequest, InventoryResult
 from dapr.clients import DaprClient
-from util import get_address
+from dapr.conf import settings
 
 store_name = "statestore-actors"
 
-address = get_address()
 logging.basicConfig(level=logging.INFO)
 
 
@@ -101,7 +100,7 @@ def verify_inventory_activity(ctx: WorkflowActivityContext,
 
     logger.info('Verifying inventory for order '+f'{input.request_id}'+' of '
                 +f'{input.quantity}' +' ' +f'{input.item_name}')
-    with DaprClient(f'{address["host"]}:{address["port"]}') as client:
+    with DaprClient(f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}') as client:
         result = client.get_state(store_name, input.item_name)
     if result.data is None:
         return InventoryResult(False, None)
@@ -125,7 +124,7 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
 
     logger.info('Checking inventory for order ' +f'{input.request_id}'+' for '
                 +f'{input.quantity}' +' ' +f'{input.item_being_purchased}')
-    with DaprClient(f'{address["host"]}:{address["port"]}') as client:
+    with DaprClient(f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}') as client:
         result = client.get_state(store_name, input.item_being_purchased)
         res_json=json.loads(str(result.data.decode('utf-8')))
         new_quantity = res_json['quantity'] - input.quantity

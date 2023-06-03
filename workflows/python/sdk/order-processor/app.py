@@ -6,8 +6,8 @@ from workflow import order_processing_workflow, notify_activity, process_payment
     verify_inventory_activity, update_inventory_activity, requst_approval_activity
 from dapr.clients import DaprClient
 from model import InventoryItem, OrderPayload
-from util import get_address
 from datetime import datetime
+from dapr.conf import settings
 
 store_name = "statestore-actors"
 workflow_component = "dapr"
@@ -21,8 +21,7 @@ class WorkflowConsoleApp:
         # Wait for the sidecar to become available
         sleep(5)
 
-        address = get_address()
-        workflowRuntime = WorkflowRuntime(address["host"], address["port"])
+        workflowRuntime = WorkflowRuntime(settings.DAPR_RUNTIME_HOST, settings.DAPR_GRPC_PORT)
         workflowRuntime.register_workflow(order_processing_workflow)
         workflowRuntime.register_activity(notify_activity)
         workflowRuntime.register_activity(requst_approval_activity)
@@ -31,7 +30,7 @@ class WorkflowConsoleApp:
         workflowRuntime.register_activity(update_inventory_activity)
         workflowRuntime.start()
 
-        daprClient = DaprClient(address=f'{address["host"]}:{address["port"]}')
+        daprClient = DaprClient(address=f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}')
         baseInventory = {}
         baseInventory["paperclip"] = InventoryItem("Paperclip", 5, 100)
         baseInventory["cars"] = InventoryItem("Cars", 15000, 100)
@@ -50,7 +49,32 @@ class WorkflowConsoleApp:
                                                workflow_name=workflow_name,
                                                input=order)
         _id = start_resp.instance_id
+
         def prompt_for_approval(daprClient: DaprClient):
+            """This is a helper function to prompt for approval.
+            Not using the prompt here ACTUALLY, as quickstart validation is required to be automated.
+            
+            But, in case you may want to run this sample manually, you can uncomment the following lines:
+                try:
+                    signal.alarm(15)
+                    approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N] ')
+                    signal.alarm(0) # cancel the alarm
+                except TimeoutError:
+                    approved = "y"
+                if state.runtime_status.name == "COMPLETED":
+                    return
+                if approved.lower() == "y":
+                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
+                else:
+                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
+
+                ## Additionally, you would need to import signal and TimeoutError:
+                # import signal
+                # def timeout_error(*_):
+                #     raise TimeoutError
+
+                # signal.signal(signal.SIGALRM, timeout_error)
+            """
             daprClient.raise_workflow_event(instance_id=_id, workflow_component=workflow_component, 
                                             event_name="manager_approval", event_data={'approval': True})
 
