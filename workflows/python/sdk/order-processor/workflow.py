@@ -2,11 +2,13 @@
 from datetime import timedelta
 import logging
 import json
+
 from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext, when_any
-from model import InventoryItem, Notification, InventoryRequest, OrderPayload, OrderResult,\
-    PaymentRequest, InventoryResult
 from dapr.clients import DaprClient
 from dapr.conf import settings
+
+from model import InventoryItem, Notification, InventoryRequest, OrderPayload, OrderResult,\
+    PaymentRequest, InventoryResult
 
 store_name = "statestore-actors"
 
