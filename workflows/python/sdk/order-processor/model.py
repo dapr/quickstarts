@@ -1,11 +1,17 @@
 
 from dataclasses import dataclass
+import make_json_serializable  # apply monkey-patch
 
 @dataclass
-class OrderPayload:
+class OrderPayload():
     item_name: str
     total_cost: int
     quantity: int
+
+    def to_json(self):  # New special method.
+        """ Convert to JSON format string representation. """
+        return f'{{"item_name": "{self.item_name}", "quantity": {self.quantity},\
+                          "total_cost": {self.total_cost}}}'
 
     def __str__(self):
         return f"OrderPayload(name={self.item_name}, total_cost={self.total_cost}, quantity={self.quantity})"

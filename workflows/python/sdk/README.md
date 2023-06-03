@@ -33,7 +33,7 @@ pip3 install -r requirements.txt
 name: Running this example
 expected_stdout_lines:
   - "There are now 89 cars left in stock"
-  - "Purchase of item is  COMPLETED"
+  - "Purchase of item is  Completed"
 output_match_mode: substring
 background: true
 timeout_seconds: 30
@@ -67,8 +67,8 @@ INFO:ProcessPaymentActivity:Payment for request ID b903d749cd814e099f06ebf4a56a2
 INFO:UpdateInventoryActivity:Checking inventory for order b903d749cd814e099f06ebf4a56a2f90 for 11 cars
 INFO:UpdateInventoryActivity:There are now 89 cars left in stock
 INFO:NotifyActivity:Order b903d749cd814e099f06ebf4a56a2f90 has completed!
-Workflow completed! Result: COMPLETED
-  Purchase of item is  COMPLETED
+Workflow completed! Result: Completed
+  Purchase of item is  Completed
 ```
 
 ### View workflow output with Zipkin
