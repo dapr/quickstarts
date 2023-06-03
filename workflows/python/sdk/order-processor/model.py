@@ -36,7 +36,7 @@ class InventoryResult:
     inventory_item: InventoryItem
 
     def __str__(self):
-        return f"InventoryResult(success={self.success}, order_payload={self.order_payload})"
+        return f"InventoryResult(success={self.success}, inventory_item={self.inventory_item})"
 
 @dataclass
 class PaymentRequest:

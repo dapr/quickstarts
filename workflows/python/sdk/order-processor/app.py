@@ -2,7 +2,8 @@ import sys
 import threading
 from time import sleep
 from dapr.ext.workflow import WorkflowRuntime, DaprWorkflowClient
-from workflow_activities import order_processing_workflow, notify_activity, process_payment_activity, verify_inventory_activity, update_inventory_activity, requst_approval_activity
+from workflow import order_processing_workflow, notify_activity, process_payment_activity, \
+    verify_inventory_activity, update_inventory_activity, requst_approval_activity
 from dapr.clients import DaprClient
 from model import InventoryItem, OrderPayload
 from util import get_address
@@ -21,7 +22,7 @@ class WorkflowConsoleApp:
         sleep(5)
 
         address = get_address()
-        workflowRuntime = WorkflowRuntime()
+        workflowRuntime = WorkflowRuntime(address=f'{address["host"]}:{address["port"]}')
         workflowRuntime.register_workflow(order_processing_workflow)
         workflowRuntime.register_activity(notify_activity)
         workflowRuntime.register_activity(requst_approval_activity)
@@ -39,7 +40,6 @@ class WorkflowConsoleApp:
         self.restock_inventory(daprClient, baseInventory)
 
         client = DaprWorkflowClient(address["host"], address["port"])
-        sleep(1)
         print("==========Begin the purchase of item:==========")        
         item_name = default_item_name
         order_quantity = 11
@@ -50,7 +50,8 @@ class WorkflowConsoleApp:
         _id = client.schedule_new_workflow(order_processing_workflow, input=order)
 
         def prompt_for_approval(client: DaprWorkflowClient):
-            client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
+            client.raise_workflow_event(instance_id=_id, event_name="manager_approval", 
+                                        data={'approval': True})
 
         approval_seeked = False
         while True:
@@ -63,17 +64,22 @@ class WorkflowConsoleApp:
                     break
             except TimeoutError:
                 state = client.get_workflow_state(_id)
-                if total_cost > 50000 and (state.runtime_status.name != "COMPLETED" or state.runtime_status.name != "FAILED") and not approval_seeked:
+                if total_cost > 50000 and (
+                    state.runtime_status.name != "COMPLETED" or 
+                    state.runtime_status.name != "FAILED" or
+                    state.runtime_status.name != "TERMINATED"
+                    ) and not approval_seeked:
                     approval_seeked = True
                     # TODO - can it be main thread?
                     threading.Thread(target=prompt_for_approval(client), daemon=True).start()
 
-        print("  Purchase of item is ", state.runtime_status.name)
+        print("Purchase of item is ", state.runtime_status.name)
 
     def restock_inventory(self, daprClient: DaprClient, baseInventory):
         for key, item in baseInventory.items():
             print(f'item: {item}')
-            item_str = f'{{"name": "{item.item_name}", "quantity": {item.quantity}, "per_item_cost": {item.per_item_cost}}}'
+            item_str = f'{{"name": "{item.item_name}", "quantity": {item.quantity},\
+                          "per_item_cost": {item.per_item_cost}}}'
             daprClient.save_state("statestore-actors", key, item_str)
 
 if __name__ == '__main__':

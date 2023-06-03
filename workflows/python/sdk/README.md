@@ -42,7 +42,7 @@ sleep: 15
 
 ```sh
 cd ./order-processor
-dapr run --app-id order-processor --app-protocol grpc --dapr-grpc-port 4001 --components-path ../../../components/ --placement-host-address localhost:50005 -- python3 app.py
+dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->
