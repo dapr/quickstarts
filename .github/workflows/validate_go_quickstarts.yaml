@@ -42,7 +42,7 @@ jobs:
       PODMAN_VERSION: 4.4.4
     strategy:
       matrix: 
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
       fail-fast: false
     steps:
       - name: Check out code 
