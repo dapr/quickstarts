@@ -16,13 +16,11 @@ class WorkflowConsoleApp:
     def main(self):
         print("*** Welcome to the Dapr Workflow console app sample!")
         print("*** Using this app, you can place orders that start workflows.")
-        print("*** Ensure that Dapr is running in a separate terminal window using the following command:")
-        print("dapr run --dapr-grpc-port 4001 --app-id order-processor")
         # Wait for the sidecar to become available
         sleep(5)
 
         address = get_address()
-        workflowRuntime = WorkflowRuntime(address=f'{address["host"]}:{address["port"]}')
+        workflowRuntime = WorkflowRuntime(address["host"], address["port"])
         workflowRuntime.register_workflow(order_processing_workflow)
         workflowRuntime.register_activity(notify_activity)
         workflowRuntime.register_activity(requst_approval_activity)
