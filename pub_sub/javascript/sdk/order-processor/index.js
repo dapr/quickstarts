@@ -1,15 +1,26 @@
-import { DaprServer } from '@dapr/dapr';
+import { DaprServer } from "@dapr/dapr";
 
-const DAPR_HOST = process.env.DAPR_HOST || "http://localhost";
-const DAPR_HTTP_PORT = process.env.DAPR_HTTP_PORT || "3501";
-const SERVER_HOST = process.env.SERVER_HOST || "127.0.0.1";
-const SERVER_PORT = process.env.APP_PORT || 5002;
+const daprHost = process.env.DAPR_HOST || "http://localhost";
+const daprPort = process.env.DAPR_HTTP_PORT || "3501";
+const serverHost = process.env.SERVER_HOST || "127.0.0.1";
+const serverPort = process.env.APP_PORT || 5002;
+const pubSubName = "orderpubsub";
+const pubSubTopic = "orders";
 
 async function main() {
-  const server = new DaprServer(SERVER_HOST, SERVER_PORT, DAPR_HOST, DAPR_HTTP_PORT);
+  const server = new DaprServer({
+    serverHost,
+    serverPort,
+    clientOptions: {
+      daprHost,
+      daprPort,
+    },
+  });
 
   // Dapr subscription routes orders topic to this route
-  server.pubsub.subscribe("orderpubsub", "orders", (data) => console.log("Subscriber received: " + JSON.stringify(data)));
+  server.pubsub.subscribe(pubSubName, pubSubTopic, data =>
+    console.log("Subscriber received: " + JSON.stringify(data))
+  );
 
   await server.start();
 }

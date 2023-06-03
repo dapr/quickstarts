@@ -1,0 +1,10 @@
+go 1.19
+
+use (
+	./bindings/go/sdk/batch
+	./configuration/go/sdk/order-processor
+	./pub_sub/go/sdk/checkout
+	./pub_sub/go/sdk/order-processor
+	./secrets_management/go/sdk/order-processor
+	./state_management/go/sdk/order-processor
+)

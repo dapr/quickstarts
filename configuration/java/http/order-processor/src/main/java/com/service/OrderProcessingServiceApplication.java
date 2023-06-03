@@ -35,7 +35,7 @@ public class OrderProcessingServiceApplication {
             for (String configurationItem : CONFIGURATION_ITEMS) {
                 URI uri = baseUrl
                         .resolve(
-                                "/v1.0-alpha1/configuration/" + DAPR_CONFIGURATION_STORE + "?key=" +
+                                "/v1.0/configuration/" + DAPR_CONFIGURATION_STORE + "?key=" +
                                         configurationItem);
                 HttpRequest request = HttpRequest.newBuilder()
                         .GET()
@@ -65,7 +65,7 @@ public class OrderProcessingServiceApplication {
         String subscriptionId = null;
         try {
             URI uri = baseUrl
-                    .resolve("/v1.0-alpha1/configuration/" + DAPR_CONFIGURATION_STORE + "/subscribe");
+                    .resolve("/v1.0/configuration/" + DAPR_CONFIGURATION_STORE + "/subscribe");
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
@@ -85,7 +85,7 @@ public class OrderProcessingServiceApplication {
         try {
             // unsubscribe from config updates
             URI uri = baseUrl
-                    .resolve("/v1.0-alpha1/configuration/" + DAPR_CONFIGURATION_STORE + "/" + subscriptionId
+                    .resolve("/v1.0/configuration/" + DAPR_CONFIGURATION_STORE + "/" + subscriptionId
                             + "/unsubscribe");
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()

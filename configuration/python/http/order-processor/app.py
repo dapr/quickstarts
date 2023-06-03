@@ -17,7 +17,7 @@ CONFIGURATION_ITEMS = ['orderId1', 'orderId2']
 # Get config items from the config store
 for item in CONFIGURATION_ITEMS:
     config = requests.get(
-        url='%s/v1.0-alpha1/configuration/%s?key=%s' % (BASE_URL, DAPR_CONFIGURATION_STORE, item)
+        url='%s/v1.0/configuration/%s?key=%s' % (BASE_URL, DAPR_CONFIGURATION_STORE, item)
         )
     if config.status_code == 200:
         logging.info('Configuration for ' +item+ ": " + str(config.json()))
@@ -28,7 +28,7 @@ def subscribe_config_updates():
     # Add delay to allow app channel to be ready
     time.sleep(3)
     subscription = requests.get(
-        url = '%s/v1.0-alpha1/configuration/%s/subscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE)
+        url = '%s/v1.0/configuration/%s/subscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE)
             )
     if subscription.status_code == 200 and 'errCode' not in str(subscription.json()) :
         logging.info('App subscribed to config changes with subscription id: ' + str(subscription.json()['id']))
@@ -51,7 +51,7 @@ subscription_id = subscribe_config_updates()
 # Unsubscribe to config updates and exit app after 20 seconds
 time.sleep(20)
 unsubscribe = requests.get(
-    url = '%s/v1.0-alpha1/configuration/%s/%s/unsubscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE, subscription_id)
+    url = '%s/v1.0/configuration/%s/%s/unsubscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE, subscription_id)
 )
 if unsubscribe.status_code == 200 and 'True' in str(unsubscribe.json()):
     logging.info('App unsubscribed from config changes')

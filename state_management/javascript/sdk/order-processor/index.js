@@ -1,19 +1,19 @@
 import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr"
 
-const protocol = (process.env.DAPR_PROTOCOL === "grpc")
+const communicationProtocol = (process.env.DAPR_PROTOCOL === "grpc")
     ? CommunicationProtocolEnum.GRPC
     : CommunicationProtocolEnum.HTTP
 
-const host = process.env.DAPR_HOST ?? "localhost"
+const daprHost = process.env.DAPR_HOST ?? "localhost"
 
-let port
-switch (protocol) {
+let daprPort
+switch (communicationProtocol) {
     case CommunicationProtocolEnum.HTTP: {
-        port = process.env.DAPR_HTTP_PORT
+        daprPort = process.env.DAPR_HTTP_PORT
         break
     }
     case CommunicationProtocolEnum.GRPC: {
-        port = process.env.DAPR_GRPC_PORT
+        daprPort = process.env.DAPR_GRPC_PORT
         break
     }
     default: {
@@ -24,7 +24,7 @@ switch (protocol) {
 const DAPR_STATE_STORE_NAME = "statestore"
 
 async function main() {
-    const client = new DaprClient(host, port, protocol)
+    const client = new DaprClient({ daprHost, daprPort, communicationProtocol })
 
     // For each loop, Save order, Get order, and Delete order
     for (let i = 1; i <= 100; i++) {
