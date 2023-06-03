@@ -242,7 +242,8 @@ Or, using the Visual Studio Code [Rest Client Plugin](https://marketplace.visual
 
 [sample.http](sample.http)
 ```http
-POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder
+POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder HTTP/1.1
+Content-Type: application/json
 
 {
   "data": {
