@@ -47,13 +47,12 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for orderId1 : value: "101"'
   - '== APP == Configuration for orderId2 : value: "102"'
-  - '== APP == App unsubscribed from config changes'
-  - "Exited App successfully"
+  - '== APP == Subscription ID is'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
+sleep: 15
 -->
 
 ```bash

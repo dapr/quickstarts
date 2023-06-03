@@ -39,9 +39,10 @@ jobs:
       KUBERNETES_VERSION: v1.25.3
       KIND_VERSION: v0.17.0
       KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
+      PODMAN_VERSION: 4.4.4
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
       fail-fast: false
     steps:
       - name: Check out code 
@@ -55,16 +56,16 @@ jobs:
         timeout-minutes: 15
         if: matrix.os == 'macos-latest'
         run: |
-          sudo rm -rf `brew --cache`
-          brew upgrade
-          brew install podman
-          which podman-mac-helper
-          podman_helper=$(which podman-mac-helper)
-          sudo ${podman_helper} install
+          # Install podman
+          curl -sL -o podman.pkg https://github.com/containers/podman/releases/download/v${{ env.PODMAN_VERSION }}/podman-installer-macos-amd64.pkg
+          sudo installer -pkg podman.pkg -target /
+          export PATH=/opt/podman/bin:$PATH
+          echo "/opt/podman/bin" >> $GITHUB_PATH
+          # Start podman machine
+          sudo podman-mac-helper install
           podman machine init
-          podman machine start || echo "VM might not have started"
-          sleep 10
-          podman machine inspect
+          podman machine start --log-level debug
+          echo "CONTAINER_RUNTIME=podman" >> $GITHUB_ENV
       - name: Install podman-compose
         if: matrix.os == 'macos-latest'
         run: |

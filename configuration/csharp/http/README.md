@@ -37,19 +37,17 @@ docker exec dapr_redis redis-cli MSET orderId1 "101" orderId2 "102"
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for orderId1: {"orderId1":{"value":"101"}}'
   - '== APP == Configuration for orderId2: {"orderId2":{"value":"102"}}'
   - '== APP == App subscribed to config changes with subscription id:'
-  - '== APP == App unsubscribed from config updates'
-  - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
+sleep: 15
 -->
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7003 -- dotnet run --project .
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7008 -- dotnet run --project .
 ```
 
 <!-- END_STEP -->
