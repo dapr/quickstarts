@@ -69,7 +69,7 @@ class WorkflowConsoleApp:
                 else:
                     client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
 
-                ## Additionally, you would need to import signal and TimeoutError:
+                ## Additionally, you would need to import signal and define timeout_error:
                 # import signal
                 # def timeout_error(*_):
                 #     raise TimeoutError
