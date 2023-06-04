@@ -17,7 +17,6 @@ default_item_name = "cars"
 
 class WorkflowConsoleApp:    
     def main(self):
-        daprClient = DaprClient(address=f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}')
         print("*** Welcome to the Dapr Workflow console app sample!", flush=True)
         print("*** Using this app, you can place orders that start workflows.", flush=True)
         # Wait for the sidecar to become available
@@ -32,6 +31,7 @@ class WorkflowConsoleApp:
         workflowRuntime.register_activity(update_inventory_activity)
         workflowRuntime.start()
 
+        daprClient = DaprClient(address=f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}')
         baseInventory = {}
         baseInventory["paperclip"] = InventoryItem("Paperclip", 5, 100)
         baseInventory["cars"] = InventoryItem("Cars", 15000, 100)
