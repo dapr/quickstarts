@@ -42,7 +42,7 @@ sleep: 15
 
 ```sh
 cd ./order-processor
-dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->
@@ -81,7 +81,7 @@ For a more detailed view of the workflow activities (duration, progress etc.), t
 
 ### What happened? 
 
-When you ran `dapr run --app-id order-processor --components-path ../../../components/ -- python3 app.py`
+When you ran `dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py`
 
 1. First the user inputs an order for 11 cars into the concole app.
 2. A unique order ID for the workflow is generated (in the above example, `b903d749cd814e099f06ebf4a56a2f90`) and the workflow is scheduled.
