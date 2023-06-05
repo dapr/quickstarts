@@ -1,6 +1,9 @@
-# Dapr secrets management (Dapr SDK)
+# Dapr cryptography (Dapr SDK)
 
-In this quickstart, you'll create an application that encrypts, and then decrypts, a short message and a large file using the Dapr cryptography APIs (high-level).
+In this quickstart, you'll create an application that encrypts, and then decrypts, data using the Dapr cryptography APIs (high-level). We will:
+
+- Encrypt and then decrypt a short string, reading the result in-memory, in a Go byte slice
+- Encrypt and then decrypt a large file, storing the encrypted and decrypted data to files using streams
 
 Visit the documentation to learn more about the [Cryptography building block](https://docs.dapr.io/developing-applications/building-blocks/cryptography/) in Dapr.
 
