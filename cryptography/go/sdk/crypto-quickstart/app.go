@@ -29,14 +29,14 @@ func main() {
 	}
 	defer client.Close()
 
-	// Step 1: encrypt a message, using the RSA key
-	encryptDecryptMessage(client)
+	// Step 1: encrypt a string using the RSA key, then decrypt it and show the output in the terminal
+	encryptDecryptString(client)
 
-	// Step 2: encrypt a large file, using the AES key
+	// Step 2: encrypt a large file and then decrypt it, using the AES key
 	encryptDecryptFile(client)
 }
 
-func encryptDecryptMessage(client dapr.Client) {
+func encryptDecryptString(client dapr.Client) {
 	const message = `The secret is "passw0rd"`
 
 	// Encrypt the message
