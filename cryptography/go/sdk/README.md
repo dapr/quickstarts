@@ -45,7 +45,7 @@ mkdir -p keys
 # Generate a private RSA key, 4096-bit keys
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out keys/rsa-private-key.pem
 # Generate a 256-bit key for AES
-openssl rand 32 -out keys/symmetric-key-256
+openssl rand -out keys/symmetric-key-256 32
 ```
 
 <!-- END_STEP -->
