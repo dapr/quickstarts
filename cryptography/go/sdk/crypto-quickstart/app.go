@@ -18,7 +18,7 @@ const (
 	// Name of the RSA private key to use
 	RSAKeyName = "rsa-private-key.pem"
 	// Name of the symmetric (AES) key to use
-	SymmetricKeyName = "symmetric-key-256.b64"
+	SymmetricKeyName = "symmetric-key-256"
 )
 
 func main() {
@@ -37,7 +37,7 @@ func main() {
 }
 
 func encryptDecryptMessage(client dapr.Client) {
-	const message = "Ognuno sta solo sul cuor della terra\ntrafitto da un raggio di sole:\ned è subito sera."
+	const message = `The secret is "passw0rd"`
 
 	// Encrypt the message
 	encStream, err := client.Encrypt(context.Background(),
@@ -83,7 +83,7 @@ func encryptDecryptMessage(client dapr.Client) {
 	}
 
 	// Print the message on the console
-	fmt.Println("Salvatore Quasimodo wrote:")
+	fmt.Printf("Decrypted the message, got %d bytes\n", len(decBytes))
 	fmt.Println(string(decBytes))
 }
 

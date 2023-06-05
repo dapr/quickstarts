@@ -8,4 +8,4 @@ spec:
   metadata:
     - name: path
       # Path is relative to the folder where the example is located
-      value: ../../../fixtures/keys
+      value: ./keys

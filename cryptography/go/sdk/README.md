@@ -15,16 +15,50 @@ This quickstart includes one application:
 
 ### Run Go service with Dapr
 
-1. Run the Go service app with Dapr:
+> In order to run this sample, make sure that OpenSSL is available on your system.
+
+1. Navigate into the folder with the source code:
+
+<!-- STEP
+name: Navigate into folder
+expected_stdout_lines:
+expected_stderr_lines:
+-->
+
+```bash
+cd ./crypto-quickstart
+```
+
+<!-- END_STEP -->
+
+2. This sample requires a private RSA key and a 256-bit symmetric (AES) key. We will generate them using OpenSSL:
+
+<!-- STEP
+name: Generate keys
+working_dir: crypto-quickstart
+expected_stdout_lines:
+expected_stderr_lines:
+-->
+
+```bash
+mkdir -p keys
+# Generate a private RSA key, 4096-bit keys
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out keys/rsa-private-key.pem
+# Generate a 256-bit key for AES
+openssl rand 32 -out keys/symmetric-key-256
+```
+
+<!-- END_STEP -->
+
+3. Run the Go service app with Dapr:
 
 <!-- STEP
 name: Run order-processor service
+working_dir: crypto-quickstart
 expected_stdout_lines:
-  - '== APP == Encrypted the message, got 918 bytes'
-  - '== APP == Salvatore Quasimodo wrote:'
-  - '== APP == Ognuno sta solo sul cuor della terra'
-  - '== APP == trafitto da un raggio di sole:'
-  - '== APP == ed è subito sera.'
+  - '== APP == Encrypted the message, got 856 bytes'
+  - '== APP == Decrypted the message, got 24 bytes'
+  - '== APP == The secret is "passw0rd"'
   - '== APP == Wrote decrypted data to encrypted.out'
   - '== APP == Wrote decrypted data to decrypted.out.jpg'
   - "Exited App successfully"
@@ -33,7 +67,6 @@ output_match_mode: substring
 -->
 
 ```bash
-cd ./crypto-quickstart
 dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- go run .
 ```
 
