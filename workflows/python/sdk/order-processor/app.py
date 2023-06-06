@@ -17,8 +17,8 @@ default_item_name = "cars"
 
 class WorkflowConsoleApp:    
     def main(self):
-        print("*** Welcome to the Dapr Workflow console app sample!")
-        print("*** Using this app, you can place orders that start workflows.")
+        print("*** Welcome to the Dapr Workflow console app sample!", flush=True)
+        print("*** Using this app, you can place orders that start workflows.", flush=True)
         # Wait for the sidecar to become available
         sleep(5)
 
@@ -39,13 +39,13 @@ class WorkflowConsoleApp:
 
         self.restock_inventory(daprClient, baseInventory)
 
-        print("==========Begin the purchase of item:==========")        
+        print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
         order_quantity = 11
 
         total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
         order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
-        print(f'Starting order workflow, purchasing {order_quantity} of {item_name}')
+        print(f'Starting order workflow, purchasing {order_quantity} of {item_name}', flush=True)
         start_resp = daprClient.start_workflow(workflow_component=workflow_component,
                                                workflow_name=workflow_name,
                                                input=order)
@@ -89,7 +89,7 @@ class WorkflowConsoleApp:
             elif state.runtime_status == "Completed" or\
                     state.runtime_status == "Failed" or\
                     state.runtime_status == "Terminated":
-                print(f'Workflow completed! Result: {state.runtime_status}')
+                print(f'Workflow completed! Result: {state.runtime_status}', flush=True)
                 break
             if time_delta.total_seconds() >= 10:
                 state = daprClient.get_workflow(instance_id=_id, workflow_component=workflow_component)
@@ -101,7 +101,7 @@ class WorkflowConsoleApp:
                     approval_seeked = True
                     threading.Thread(target=prompt_for_approval(daprClient), daemon=True).start()
             
-        print("Purchase of item is ", state.runtime_status)
+        print("Purchase of item is ", state.runtime_status, flush=True)
 
     def restock_inventory(self, daprClient: DaprClient, baseInventory):
         for key, item in baseInventory.items():
