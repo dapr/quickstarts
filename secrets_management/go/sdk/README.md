@@ -1,4 +1,4 @@
-# Dapr secrets management (HTTP Client)
+# Dapr secrets management (Dapr SDK)
 
 In this quickstart, you'll create a microservice to demonstrate Dapr's secrets management API. The service fetches a secret from a secret store. See [Why secrets management](#why-secrets-management) to understand when to use this API.
 
