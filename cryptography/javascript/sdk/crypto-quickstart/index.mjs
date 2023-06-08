@@ -2,7 +2,7 @@ import { createReadStream, createWriteStream } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
 
-import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
+import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr-dev";
 
 const daprHost = process.env.DAPR_HOST ?? "127.0.0.1";
 const daprPort = process.env.DAPR_GRPC_PORT ?? "50001";
@@ -30,18 +30,18 @@ async function encryptDecryptBuffer(client) {
   // First, encrypt the message
   console.log("== Encrypting message using buffers");
 
-  const ciphertext = await client.crypto.encrypt(plaintext, {
-    componentName: "crypto-local",
-    keyName: "my-rsa-key",
+  const encrypted = await client.crypto.encrypt(plaintext, {
+    componentName: "localstorage",
+    keyName: "rsa-private-key.pem",
     keyWrapAlgorithm: "RSA",
   });
 
-  console.log("Encrypted the message, got", ciphertext.length, "bytes");
+  console.log("Encrypted the message, got", encrypted.length, "bytes");
 
   // Decrypt the message
   console.log("== Decrypting message using buffers");
-  const decrypted = await client.crypto.decrypt(ciphertext, {
-    componentName: "crypto-local",
+  const decrypted = await client.crypto.decrypt(encrypted, {
+    componentName: "localstorage",
   });
 
   console.log("Decrypted the message, got", decrypted.length, "bytes");
@@ -56,32 +56,32 @@ async function encryptDecryptBuffer(client) {
 async function encryptDecryptStream(client) {
   // First, encrypt the message
   console.log("== Encrypting message using streams");
-  console.log("Encrypting", testFileName, "to ciphertext.out");
+  console.log("Encrypting", testFileName, "to encrypted.out");
 
   await pipeline(
     createReadStream(testFileName),
     await client.crypto.encrypt({
-      componentName: "crypto-local",
-      keyName: "symmetric256",
+      componentName: "localstorage",
+      keyName: "symmetric-key-256",
       keyWrapAlgorithm: "A256KW",
     }),
-    createWriteStream("ciphertext.out"),
+    createWriteStream("encrypted.out"),
   );
 
-  console.log("Encrypted the message to ciphertext.out");
+  console.log("Encrypted the message to encrypted.out");
 
   // Decrypt the message
   console.log("== Decrypting message using streams");
-  console.log("Encrypting ciphertext.out to plaintext.out");
+  console.log("Encrypting encrypted.out to decrypted.out");
   await pipeline(
-    createReadStream("ciphertext.out"),
+    createReadStream("encrypted.out"),
     await client.crypto.decrypt({
-      componentName: "crypto-local",
+      componentName: "localstorage",
     }),
-    createWriteStream("plaintext.out.jpg"),
+    createWriteStream("decrypted.out.jpg"),
   );
 
-  console.log("Decrypted the message to plaintext.out.jpg");
+  console.log("Decrypted the message to decrypted.out.jpg");
 }
 
 await start();

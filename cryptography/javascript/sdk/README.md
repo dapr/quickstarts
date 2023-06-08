@@ -13,7 +13,7 @@ This quickstart includes one application:
 
 - Node.js application `crypto-quickstart`
 
-### Run Node.js service with Dapr
+### Run Node.js app with Dapr
 
 1. Navigate into the folder with the source and install dependencies:
 
@@ -46,13 +46,22 @@ openssl rand -out keys/symmetric-key-256 32
 
 <!-- END_STEP -->
 
-3. Run the Node.js service app with Dapr:
+3. Run the Node.js app with Dapr:
 
 <!-- STEP
-name: Run Node publisher
+name: Run Node.js app
 expected_stdout_lines:
-  - "== APP == Saving Order:  { orderId: '1' }"
-  - "== APP == Getting Order:  { orderId: '1' }"
+  - "== APP == == Encrypting message using buffers"
+  - "== APP == Encrypted the message, got 856 bytes"
+  - "== APP == == Decrypting message using buffers"
+  - "== APP == Decrypted the message, got 24 bytes"
+  - '== APP == The secret is "passw0rd"'
+  - "== APP == == Encrypting message using streams"
+  - "== APP == Encrypting federico-di-dio-photography-Q4g0Q-eVVEg-unsplash.jpg to encrypted.out"
+  - "== APP == Encrypted the message to encrypted.out"
+  - "== APP == == Decrypting message using streams"
+  - "== APP == Encrypting encrypted.out to decrypted.out"
+  - "== APP == Decrypted the message to decrypted.out.jpg"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./crypto-quickstart
