@@ -1,0 +1,20 @@
+{
+    "name": "crypto-quickstart",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.mjs",
+        "start:dapr": "dapr run --app-id crypto-quickstart --dapr-grpc-port 50001 -- npm run start"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@dapr/dapr": "^3.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.42.0"
+    }
+}
