@@ -1,1 +1,1 @@
-dapr-dev #This is for RC testing and is unsupported.  Replace with `dapr` for stable releases.
+dapr
