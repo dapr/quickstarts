@@ -2,7 +2,7 @@ module dapr_example
 
 go 1.19
 
-require github.com/dapr/go-sdk v1.6.1-0.20230526171131-942dcb8512fb
+require github.com/dapr/go-sdk v1.8.0
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect
