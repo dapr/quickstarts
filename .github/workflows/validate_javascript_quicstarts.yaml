@@ -35,7 +35,7 @@ jobs:
     env:
       DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      GOVER: 1.18
+      GOVER: 1.19
       KUBERNETES_VERSION: v1.25.3
       KIND_VERSION: v0.17.0
       KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
