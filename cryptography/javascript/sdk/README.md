@@ -23,7 +23,7 @@ name: Install Node dependencies
 
 ```bash
 cd ./crypto-quickstart
-npm ci
+npm install
 ```
 <!-- END_STEP -->
 
