@@ -14,7 +14,7 @@ And one order processor service:
 
 ## Run all apps with multi-app run template file:
 
-This section shows how to run all applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) along with `dapr run -f .`.  This is a quick and easy approach to test or debug interactions with multiple applications.  
+This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
 
 1. Open a new terminal window and install dependencies for `order-processor` and `checkout` apps:
 
