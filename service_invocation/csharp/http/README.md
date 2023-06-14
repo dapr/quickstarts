@@ -166,10 +166,9 @@ timeout_seconds: 60
 cd ./checkout
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
-
+<!-- END_STEP -->
 
 3. Stop and clean up application processes
 ```bash
 dapr stop --app-id order-processor
 ```
-<!-- END_STEP -->
