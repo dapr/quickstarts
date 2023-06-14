@@ -34,6 +34,8 @@ func main() {
 			log.Fatal(err.Error())
 		}
 
+		req.Header.Set("Content-Type", "application/json")
+
 		// Publish an event using Dapr pub/sub
 		res, err := client.Do(req)
 		if err != nil {

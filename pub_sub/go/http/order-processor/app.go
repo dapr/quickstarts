@@ -45,6 +45,7 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	var result Result
+	fmt.Println(string(data))
 	err = json.Unmarshal(data, &result)
 	if err != nil {
 		log.Fatal(err.Error())
