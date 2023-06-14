@@ -2,7 +2,7 @@ module order_processor_sdk_example
 
 go 1.19
 
-require github.com/dapr/go-sdk v1.6.1-0.20230529015951-df5bd08997c3
+require github.com/dapr/go-sdk v1.8.0
 
 require (
 	github.com/go-chi/chi/v5 v5.0.8 // indirect
