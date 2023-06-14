@@ -1,9 +1,9 @@
 module dapr_output_binding
 
-go 1.18
+go 1.19
 
 require (
-	github.com/dapr/go-sdk v1.6.1-0.20230529015951-df5bd08997c3
+	github.com/dapr/go-sdk v1.8.0
 	github.com/gorilla/mux v1.8.0
 )
 
