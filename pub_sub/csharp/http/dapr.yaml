@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appDirPath: ./order-processor/
+    appID: order-processor-http
+    appPort: 7005
+    command: ["dotnet", "run"]
+  - appID: checkout-http
+    appDirPath: ./checkout/
+    command: ["dotnet", "run"]

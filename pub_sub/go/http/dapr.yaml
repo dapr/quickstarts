@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appDirPath: ./order-processor/
+    appID: order-processor
+    appPort: 6002
+    command: ["go", "run", "."]
+  - appID: checkout-http
+    appDirPath: ./checkout/
+    command: ["go", "run", "."]

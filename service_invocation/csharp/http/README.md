@@ -16,27 +16,11 @@ And one order processor service:
 
 This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
 
-1. Open a new terminal window and install dependencies for `order-processor` and `checkout` apps:
-
-<!-- STEP
-name: Install Dotnet dependencies for order-processor and checkout
--->
-
-```bash
-cd ./order-processor
-dotnet restore
-cd ../checkout
-dotnet restore
-```
-
-<!-- END_STEP -->
-
-2. Run `order-processor` and `checkout` using the multi app run template defined in [dapr.yaml](./dapr.yaml):
+1. Open a new terminal window and run `order-processor` and `checkout` using the multi app run template defined in [dapr.yaml](./dapr.yaml):
 
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - 'This is a preview feature and subject to change in future releases'
   - 'Validating config and starting app "order-processor"'
   - 'Started Dapr with app id "order-processor"'
   - 'Writing log files to directory'
@@ -85,7 +69,7 @@ The terminal console output should look similar to this:
 == APP - checkout == Order passed: Order { OrderId = 12 }
 ```
 
-3. Stop and clean up application processes
+2. Stop and clean up application processes
 
 ```bash
 dapr stop -f .
@@ -94,25 +78,11 @@ dapr stop -f .
 
 ## Run a single app at a time with Dapr (Optional)
 
-An altnerative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- dotnet run` commands.  This next section covers how to do this. 
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- dotnet run` commands.  This next section covers how to do this. 
 
 ### Run .NET `order-processor` with Dapr
 
-
-1. Open a new terminal window and navigate to `order-processor` directory and install dependencies: 
-
-<!-- STEP
-name: Install Dotnet dependencies
--->
-
-```bash
-cd ./order-processor
-dotnet restore
-```
-
-<!-- END_STEP -->
-
-2. Run the Dotnet order-processor app with Dapr: 
+1. Open a new terminal window and run the Dotnet order-processor app with Dapr: 
 
 <!-- STEP
 name: Run order-processor service
@@ -134,20 +104,7 @@ dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-htt
 
 ### Run .NET `checkout` with Dapr
 
-1. Open a new terminal window and navigate to the `checkout` directory and install dependencies:
-
-<!-- STEP
-name: Install Dotnet dependencies
--->
-
-```bash
-cd ./checkout
-dotnet restore
-```
-
-<!-- END_STEP -->
-
-2. Run the Dotnet checkout app with Dapr: 
+1. Open a new terminal and run the Dotnet checkout app with Dapr: 
 
 <!-- STEP
 name: Run checkout service
@@ -168,7 +125,7 @@ dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet 
 ```
 <!-- END_STEP -->
 
-3. Stop and clean up application processes
+2. Stop and clean up application processes
 ```bash
 dapr stop --app-id order-processor
 ```
