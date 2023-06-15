@@ -60,7 +60,7 @@ expected_stdout_lines:
   - "== APP == Encrypting federico-di-dio-photography-Q4g0Q-eVVEg-unsplash.jpg to encrypted.out"
   - "== APP == Encrypted the message to encrypted.out"
   - "== APP == == Decrypting message using streams"
-  - "== APP == Encrypting encrypted.out to decrypted.out"
+  - "== APP == Decrypting encrypted.out to decrypted.out.jpg"
   - "== APP == Decrypted the message to decrypted.out.jpg"
   - "Exited App successfully"
 expected_stderr_lines:
