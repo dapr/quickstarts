@@ -32,7 +32,7 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Running this example
 expected_stdout_lines:
-  - "There are now 89 cars left in stock"
+  - "There are now 90 cars left in stock"
   - "Purchase of item is  Completed"
 output_match_mode: substring
 background: true
