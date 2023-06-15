@@ -8,7 +8,7 @@ This quickstart shows method invocation and state persistent capabilities of Dap
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/). 
-Kudos to [greatbunny](https://github.com/greatbunny) whose [React calculator](https://github.com/greatbunny/calculator) is adapted here. 
+Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator) 
 
 The following architecture diagram illustrates the components that make up this quickstart: 
 
