@@ -18,7 +18,7 @@ type JSONObj struct {
 }
 
 type Result struct {
-	Data string `json:"data"`
+	Data map[string]int `json:"data"`
 }
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
@@ -49,7 +49,10 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	fmt.Println("Subscriber received:", string(result.Data))
+	for k, v := range result.Data {
+		d := fmt.Sprintf(`Subscriber received: {"%s":%d}`, k, v)
+		fmt.Println(d)
+	}
 	obj, err := json.Marshal(data)
 	if err != nil {
 		log.Fatal(err.Error())
