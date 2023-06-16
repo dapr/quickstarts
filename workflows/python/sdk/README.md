@@ -32,7 +32,7 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Running this example
 expected_stdout_lines:
-  - "There are now 89 cars left in stock"
+  - "There are now 90 cars left in stock"
   - "Purchase of item is  Completed"
 output_match_mode: substring
 background: true
@@ -54,18 +54,18 @@ dapr run --app-id order-processor --resources-path ../../../components/ -- pytho
 To restock items, type 'restock'.
 To exit workflow console app, type 'exit'.
 Enter the name of one of the following items to order: paperclip, cars, computers: cars
-How many cars would you like to purchase? 11
-Starting order workflow, purchasing 11 of cars
-INFO:NotifyActivity:Received order b903d749cd814e099f06ebf4a56a2f90 for 11 cars at $165000 !
-INFO:VerifyInventoryActivity:Verifying inventory for order b903d749cd814e099f06ebf4a56a2f90 of 11 cars
+How many cars would you like to purchase? 10
+Starting order workflow, purchasing 10 of cars
+INFO:NotifyActivity:Received order b903d749cd814e099f06ebf4a56a2f90 for 10 cars at $150000 !
+INFO:VerifyInventoryActivity:Verifying inventory for order b903d749cd814e099f06ebf4a56a2f90 of 10 cars
 INFO:VerifyInventoryActivity:There are 100 Cars available for purchase
-INFO:RequestApprovalActivity:Requesting approval for payment of 165000 USD for 11 cars
+INFO:RequestApprovalActivity:Requesting approval for payment of 150000 USD for 10 cars
 (ID = b903d749cd814e099f06ebf4a56a2f90) requires approval. Approve? [Y/N] y
 INFO:NotifyActivity:Payment for order b903d749cd814e099f06ebf4a56a2f90 has been approved!
-INFO:ProcessPaymentActivity:Processing payment: b903d749cd814e099f06ebf4a56a2f90 for 11 cars at 165000 USD
+INFO:ProcessPaymentActivity:Processing payment: b903d749cd814e099f06ebf4a56a2f90 for 10 cars at 150000 USD
 INFO:ProcessPaymentActivity:Payment for request ID b903d749cd814e099f06ebf4a56a2f90 processed successfully
-INFO:UpdateInventoryActivity:Checking inventory for order b903d749cd814e099f06ebf4a56a2f90 for 11 cars
-INFO:UpdateInventoryActivity:There are now 89 cars left in stock
+INFO:UpdateInventoryActivity:Checking inventory for order b903d749cd814e099f06ebf4a56a2f90 for 10 cars
+INFO:UpdateInventoryActivity:There are now 90 cars left in stock
 INFO:NotifyActivity:Order b903d749cd814e099f06ebf4a56a2f90 has completed!
 Workflow completed! Result: Completed
   Purchase of item is  Completed
@@ -83,9 +83,9 @@ For a more detailed view of the workflow activities (duration, progress etc.), t
 
 When you ran `dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py`
 
-1. First the user inputs an order for 11 cars into the concole app.
+1. First the user inputs an order for 10 cars into the concole app.
 2. A unique order ID for the workflow is generated (in the above example, `b903d749cd814e099f06ebf4a56a2f90`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for 11 cars has been received.
+3. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
 4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 5. The `RequestApprovalActivity` workflow activity is triggered due to buisness logic for orders exceeding $50k and user is prompted to manually approve the purchase before continuing order. 
 6. The workflow starts and notifies you of its status.
