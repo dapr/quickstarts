@@ -20,7 +20,7 @@ dapr run --app-id batch-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-p
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -56,7 +56,7 @@ func processBatch(w http.ResponseWriter, r *http.Request) {
 
 	defer fileContent.Close()
 
-	byteResult, _ := ioutil.ReadAll(fileContent)
+	byteResult, _ := io.ReadAll(fileContent)
 
 	var orders Orders
 

@@ -1,8 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 
@@ -10,7 +11,7 @@ import (
 )
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Error reading body:", err.Error())
 	}
@@ -29,7 +30,7 @@ func main() {
 	// Start the server listening on port 6001
 	// This is a blocking call
 	err := http.ListenAndServe(":6006", r)
-	if err != http.ErrServerClosed {
+	if !errors.Is(err, http.ErrServerClosed) {
 		log.Println("Error starting HTTP server")
 	}
 }
