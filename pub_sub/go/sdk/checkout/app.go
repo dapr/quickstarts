@@ -33,6 +33,6 @@ func main() {
 
 		fmt.Println("Published data:", order)
 
-		time.Sleep(1000)
+		time.Sleep(time.Second)
 	}
 }
