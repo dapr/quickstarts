@@ -28,7 +28,7 @@ func main() {
 
 	// Start the server listening on port 6001
 	// This is a blocking call
-	err := http.ListenAndServe(":6006", r)
+	err := http.ListenAndServe(":6001", r)
 	if err != http.ErrServerClosed {
 		log.Println("Error starting HTTP server")
 	}
