@@ -9,3 +9,5 @@ spec:
   metadata:
   - name: schedule
     value: "@every 10s" # valid cron schedule
+  - name: direction
+    value: "input"
