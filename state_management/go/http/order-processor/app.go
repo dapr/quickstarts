@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -51,7 +51,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		result, err := ioutil.ReadAll(getResponse.Body)
+		result, err := io.ReadAll(getResponse.Body)
 		if err != nil {
 			panic(err)
 		}

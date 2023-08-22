@@ -21,7 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -57,7 +57,7 @@ func processBatch(w http.ResponseWriter, r *http.Request) {
 
 	defer fileContent.Close()
 
-	byteResult, _ := ioutil.ReadAll(fileContent)
+	byteResult, _ := io.ReadAll(fileContent)
 
 	var orders Orders
 
