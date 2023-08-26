@@ -27,7 +27,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/orders", getOrder).Methods("POST")
 
-	// Start the server listening on port 6001
+	// Start the server listening on port 6006
 	// This is a blocking call
 	err := http.ListenAndServe(":6006", r)
 	if !errors.Is(err, http.ErrServerClosed) {
