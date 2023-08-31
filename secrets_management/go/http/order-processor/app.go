@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 )
@@ -25,6 +25,6 @@ func main() {
 		fmt.Print(err.Error())
 		os.Exit(1)
 	}
-	result, _ := ioutil.ReadAll(getResponse.Body)
+	result, _ := io.ReadAll(getResponse.Body)
 	fmt.Println("Fetched Secret: ", string(result))
 }
