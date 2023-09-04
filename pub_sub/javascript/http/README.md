@@ -18,7 +18,22 @@ And one subscriber:
 
 This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
 
-1. Open a new terminal window and run the multi app run template:
+1. Install dependencies: 
+
+<!-- STEP
+name: Install Node dependencies
+-->
+
+```bash
+cd ./order-processor
+npm install
+cd ..
+cd ./checkout
+npm install
+```
+<!-- END_STEP -->
+
+2. Open a new terminal window and run the multi app run template:
 
 <!-- STEP
 name: Run multi app run template

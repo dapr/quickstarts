@@ -62,7 +62,7 @@ The terminal console output should look similar to this:
 == APP - order-processor == Subscriber received : Order { OrderId = 10 }
 ```
 
-3. Stop and clean up application processes
+2. Stop and clean up application processes
 
 ```bash
 dapr stop -f .
