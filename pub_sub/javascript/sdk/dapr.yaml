@@ -4,8 +4,8 @@ common:
 apps:
   - appID: order-processor
     appDirPath: ./order-processor/
-    appPort: 7006
-    command: ["dotnet", "run"]
+    appPort: 5002
+    command: ["npm", "run", "start"]
   - appID: checkout-sdk
     appDirPath: ./checkout/
-    command: ["dotnet", "run"]
+    command: ["npm", "run", "start"]

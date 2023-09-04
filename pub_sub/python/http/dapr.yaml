@@ -4,8 +4,8 @@ common:
 apps:
   - appID: order-processor-http
     appDirPath: ./order-processor/
-    appPort: 7005
-    command: ["dotnet", "run"]
+    appPort: 6021
+    command: ["uvicorn", "app:app"]
   - appID: checkout-http
     appDirPath: ./checkout/
-    command: ["dotnet", "run"]
+    command: ["python3", "app.py"]

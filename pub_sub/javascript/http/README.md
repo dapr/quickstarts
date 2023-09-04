@@ -14,6 +14,137 @@ And one subscriber:
  
 - Node subscriber `order-processor`
 
+## Run all apps with multi-app run template file:
+
+This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
+
+1. Open a new terminal window and run the multi app run template:
+
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - 'Started Dapr with app id "order-processor-http"'
+  - 'Started Dapr with app id "checkout-sdk-http"'
+  - '== APP - checkout-sdk-http == Published data: {"orderId":1}'
+  - '== APP - order-processor-http == Subscriber received: { orderId: 1 }'
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+-->
+
+```bash
+dapr run -f .
+```
+
+The terminal console output should look similar to this:
+
+```text
+== APP - checkout-sdk-http == Published data: {"orderId":1}
+== APP - order-processor-http == Subscriber received: { orderId: 1 }
+== APP - checkout-sdk-http == Published data: {"orderId":2}
+== APP - order-processor-http == Subscriber received: { orderId: 2 }
+== APP - checkout-sdk-http == Published data: {"orderId":3}
+== APP - order-processor-http == Subscriber received: { orderId: 3 }
+== APP - checkout-sdk-http == Published data: {"orderId":4}
+== APP - order-processor-http == Subscriber received: { orderId: 4 }
+== APP - checkout-sdk-http == Published data: {"orderId":5}
+== APP - order-processor-http == Subscriber received: { orderId: 5 }
+== APP - checkout-sdk-http == Published data: {"orderId":6}
+== APP - order-processor-http == Subscriber received: { orderId: 6 }
+== APP - checkout-sdk-http == Published data: {"orderId":7}
+== APP - order-processor-http == Subscriber received: { orderId: 7 }
+== APP - checkout-sdk-http == Published data: {"orderId":8}
+== APP - order-processor-http == Subscriber received: { orderId: 8 }
+== APP - checkout-sdk-http == Published data: {"orderId":9}
+== APP - order-processor-http == Subscriber received: { orderId: 9 }
+== APP - checkout-sdk-http == Published data: {"orderId":10}
+== APP - order-processor-http == Subscriber received: { orderId: 10 }
+```
+
+3. Stop and clean up application processes
+
+```bash
+dapr stop -f .
+```
+<!-- END_STEP -->
+
+## Run a single app at a time with Dapr (Optional)
+
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- npm run start` commands.  This next section covers how to do this. 
+
+### Run Node message subscriber with Dapr
+
+1. Install dependencies: 
+
+<!-- STEP
+name: Install Node dependencies
+-->
+
+```bash
+cd ./order-processor
+npm install
+```
+<!-- END_STEP -->
+3. Run the Node publisher app with Dapr: 
+
+<!-- STEP
+name: Run Node publisher
+expected_stdout_lines:
+  - '== APP == Subscriber received: {"orderId":2}'
+  - "Exited App successfully"
+expected_stderr_lines:
+working_dir: ./order-processor
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+    
+```bash
+dapr run --app-port 5003 --app-id order-processing-http --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
+```
+
+<!-- END_STEP -->
+
+### Run Node message publisher with Dapr
+
+1. Install dependencies: 
+
+<!-- STEP
+name: Install Node dependencies
+-->
+
+```bash
+cd ./checkout
+npm install
+```
+<!-- END_STEP -->
+3. Run the Node publisher app with Dapr: 
+
+<!-- STEP
+name: Run Node publisher
+expected_stdout_lines:
+  - '== APP == Published data: {"orderId":2}'
+  - '== APP == Published data: {"orderId":3}'
+  - "Exited App successfully"
+expected_stderr_lines:
+working_dir: ./checkout
+output_match_mode: substring
+background: true
+sleep: 10
+-->
+    
+```bash
+dapr run --app-id checkout-http --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- npm run start
+```
+
+<!-- END_STEP -->
+
+```bash
+dapr stop --app-id checkout-http
+dapr stop --app-id order-processor-http
+```
+
 ### Run Node message subscriber with Dapr
 
 1. Install dependencies: 
