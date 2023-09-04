@@ -40,8 +40,8 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
   - 'Started Dapr with app id "checkout-http"'
-  - '== APP - checkout-sdk == INFO:root:Published data: {"orderId": 1}'
-  - '== APP - order-processor-sdk == Subscriber received : 1'
+  - '== APP - checkout-http == INFO:root:Published data: {"orderId": 1}'
+  - '== APP - order-processor-http == Subscriber received : 1'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -124,7 +124,7 @@ sleep: 10
 -->
 
 ```bash
-dapr run --app-id order-processor-sdk --resources-path ../../../components/ --app-port 6021 -- uvicorn app:app --port 6002
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 6021 -- uvicorn app:app --port 6002
 ```
 
 <!-- END_STEP -->
@@ -159,12 +159,12 @@ sleep: 10
 -->
 
 ```bash
-dapr run --app-id checkout-sdk --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id checkout-http --resources-path ../../../components/ -- python3 app.py
 ```
 
 <!-- END_STEP -->
 
 ```bash
-dapr stop --app-id checkout-sdk
-dapr stop --app-id order-processor-sdk
+dapr stop --app-id checkout-http
+dapr stop --app-id order-processor-http
 ```

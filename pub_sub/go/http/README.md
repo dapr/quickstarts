@@ -48,8 +48,8 @@ The terminal console output should look similar to this:
 == APP - order-processor-http == Subscriber received: {"orderId":5}
 == APP - checkout-http == Published data: {"orderId":6}
 == APP - order-processor-http == Subscriber received: {"orderId":6}
-== APP - order-processor-http == Subscriber received: {"orderId":7}
 == APP - checkout-http == Published data: {"orderId":7}
+== APP - order-processor-http == Subscriber received: {"orderId":7}
 == APP - checkout-http == Published data: {"orderId":8}
 == APP - order-processor-http == Subscriber received: {"orderId":8}
 == APP - checkout-http == Published data: {"orderId":9}

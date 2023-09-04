@@ -42,14 +42,14 @@ The terminal console output should look similar to this:
 == APP - order-processor == Subscriber received: map[orderId:2]
 == APP - checkout-sdk == Published data: {"orderId":3}
 == APP - order-processor == Subscriber received: map[orderId:3]
-== APP - order-processor == Subscriber received: map[orderId:4]
 == APP - checkout-sdk == Published data: {"orderId":4}
+== APP - order-processor == Subscriber received: map[orderId:4]
 == APP - checkout-sdk == Published data: {"orderId":5}
 == APP - order-processor == Subscriber received: map[orderId:5]
 == APP - checkout-sdk == Published data: {"orderId":6}
 == APP - order-processor == Subscriber received: map[orderId:6]
-== APP - order-processor == Subscriber received: map[orderId:7]
 == APP - checkout-sdk == Published data: {"orderId":7}
+== APP - order-processor == Subscriber received: map[orderId:7]
 == APP - checkout-sdk == Published data: {"orderId":8}
 == APP - order-processor == Subscriber received: map[orderId:8]
 == APP - checkout-sdk == Published data: {"orderId":9}

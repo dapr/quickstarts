@@ -69,8 +69,8 @@ The terminal console output should look similar to this:
 == APP - order-processor == Subscriber received: {"orderId":7}
 == APP - checkout-sdk == Published data: {"orderId":8}
 == APP - order-processor == Subscriber received: {"orderId":8}
-== APP - order-processor == Subscriber received: {"orderId":9}
 == APP - checkout-sdk == Published data: {"orderId":9}
+== APP - order-processor == Subscriber received: {"orderId":9}
 == APP - checkout-sdk == Published data: {"orderId":10}
 == APP - order-processor == Subscriber received: {"orderId":10}
 ```
