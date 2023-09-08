@@ -53,18 +53,6 @@ working_dir: "./go"
 <!-- END_STEP -->
 
 <!-- STEP
-name: "Build go app"
-working_dir: "./go"
--->
-
-- Build the app. Run:
-   ```bash
-   go build .
-   ```
-
-<!-- END_STEP -->
-
-<!-- STEP
 expected_stdout_lines:
 - "You're up and running! Both Dapr and your app logs will appear here."
 - "== APP == Adding 52.000000 to 34.000000"
