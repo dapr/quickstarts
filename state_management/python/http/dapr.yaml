@@ -1,0 +1,8 @@
+
+version: 1
+common:
+  resourcesPath: ../../resources/
+apps:
+  - appID: order-processor
+    appDirPath: ./order-processor/
+    command: ["python3" , "app.py"]

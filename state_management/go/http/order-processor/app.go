@@ -28,7 +28,7 @@ func main() {
 		Timeout: 15 * time.Second,
 	}
 
-	for i := 1; i <= 100; i++ {
+	for i := 1; i <= 10; i++ {
 		orderId := i
 		order := `{"orderId":` + strconv.Itoa(orderId) + "}"
 		state, _ := json.Marshal([]map[string]string{

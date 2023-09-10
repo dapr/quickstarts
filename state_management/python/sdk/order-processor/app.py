@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO)
 
 DAPR_STORE_NAME = "statestore"
 with DaprClient() as client:
-    for i in range(1, 100):
+    for i in range(1, 10):
         orderId = str(i)
         order = {'orderId': orderId}
 
