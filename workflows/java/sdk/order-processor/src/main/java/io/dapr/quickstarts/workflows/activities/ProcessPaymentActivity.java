@@ -14,7 +14,7 @@ public class ProcessPaymentActivity implements WorkflowActivity {
   public Object run(WorkflowActivityContext ctx) {
     PaymentRequest req = ctx.getInput(PaymentRequest.class);
     logger.info("Processing payment: {} for {} {} at ${}",
-        req.getRequestId(), req.getAmount(), req.getItemBeingPurchased(), req.getQuantity());
+        req.getRequestId(), req.getQuantity(), req.getItemBeingPurchased(), req.getAmount());
 
     // Simulate slow processing
     try {

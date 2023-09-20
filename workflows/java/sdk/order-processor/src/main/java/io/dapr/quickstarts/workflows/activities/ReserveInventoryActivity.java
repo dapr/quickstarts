@@ -3,6 +3,9 @@ package io.dapr.quickstarts.workflows.activities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.dapr.client.DaprClient;
+import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.domain.State;
 import io.dapr.quickstarts.workflows.models.InventoryItem;
 import io.dapr.quickstarts.workflows.models.InventoryRequest;
 import io.dapr.quickstarts.workflows.models.InventoryResult;
@@ -12,23 +15,28 @@ import io.dapr.workflows.runtime.WorkflowActivityContext;
 public class ReserveInventoryActivity implements WorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(ReserveInventoryActivity.class);
 
+  private static final String STATE_STORE_NAME = "statestore-actors";
+
+  private DaprClient daprClient;
+
+  public ReserveInventoryActivity() {
+    this.daprClient = new DaprClientBuilder().build();
+  }
+
   @Override
   public Object run(WorkflowActivityContext ctx) {
     InventoryRequest inventoryRequest = ctx.getInput(InventoryRequest.class);
     logger.info("Reserving inventory for order '{}' of {} {}",
         inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());
 
-    // hard code that we have some inventory in this example
-    // TBD: use DaprClient to query state store for inventory
-    InventoryItem item = new InventoryItem();
-    item.setName(inventoryRequest.getItemName());
-    item.setQuantity(1000);
-    item.setPerItemCost(10);
+    State<InventoryItem> inventoryState = daprClient.getState(STATE_STORE_NAME, inventoryRequest.getItemName(), InventoryItem.class).block();
+    InventoryItem inventory = inventoryState.getValue();
+
     logger.info("There are {} {} available for purchase",
-        item.getQuantity(), item.getName());
+        inventory.getQuantity(), inventory.getName());
 
     // See if there're enough items to purchase
-    if (item.getQuantity() >= inventoryRequest.getQuantity()) {
+    if (inventory.getQuantity() >= inventoryRequest.getQuantity()) {
       // Simulate slow processing
       try {
         Thread.sleep(2 * 1000);
@@ -38,7 +46,7 @@ public class ReserveInventoryActivity implements WorkflowActivity {
           inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());
       InventoryResult inventoryResult = new InventoryResult();
       inventoryResult.setSuccess(true);
-      inventoryResult.setInventoryItem(item);
+      inventoryResult.setInventoryItem(inventory);
       return inventoryResult;
     }
 
@@ -47,7 +55,7 @@ public class ReserveInventoryActivity implements WorkflowActivity {
         inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());
     InventoryResult inventoryResult = new InventoryResult();
     inventoryResult.setSuccess(false);
-    inventoryResult.setInventoryItem(item);
+    inventoryResult.setInventoryItem(inventory);
     return inventoryResult;
   }
 

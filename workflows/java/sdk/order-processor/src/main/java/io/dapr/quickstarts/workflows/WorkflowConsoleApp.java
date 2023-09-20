@@ -60,9 +60,7 @@ public class WorkflowConsoleApp {
       runtime.start(false);
     }
 
-    InventoryItem inventory = prepareInventory();
-    DaprClient daprClient = new DaprClientBuilder().build();
-    restockInventory(daprClient, inventory);
+    InventoryItem inventory = prepareInventoryAndOrder();
 
     DaprWorkflowClient workflowClient = new DaprWorkflowClient();
     try (workflowClient) {
@@ -107,14 +105,24 @@ public class WorkflowConsoleApp {
     } catch (TimeoutException e) {
       System.out.printf("workflow instance %s did not complete within 30 seconds%n", instanceId);
     }
+
   }
 
-  private static InventoryItem prepareInventory() {
-    InventoryItem cars = new InventoryItem();
-    cars.setName("cars");
-    cars.setPerItemCost(15000);
-    cars.setQuantity(100);
-    return cars;
+  private static InventoryItem prepareInventoryAndOrder() {
+    // prepare 100 cars in inventory
+    InventoryItem inventory = new InventoryItem();
+    inventory.setName("cars");
+    inventory.setPerItemCost(15000);
+    inventory.setQuantity(100);
+    DaprClient daprClient = new DaprClientBuilder().build();
+    restockInventory(daprClient, inventory);
+
+    // prepare order for 10 cars
+    InventoryItem order = new InventoryItem();
+    order.setName("cars");
+    order.setPerItemCost(15000);
+    order.setQuantity(10);
+    return order;
   }
 
   private static void restockInventory(DaprClient daprClient, InventoryItem inventory) {
