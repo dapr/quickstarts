@@ -16,6 +16,8 @@ And one subscriber:
 
 ### Run Python message subscriber with Dapr
 
+1. Run the Python subscriber app (flask version) with Dapr: 
+
 <!-- STEP
 name: run
 -->
@@ -26,8 +28,6 @@ pip3 install -r requirements.txt
 ```
 
 <!-- END_STEP -->
-
-2. Run the Python subscriber app with Dapr: 
 
 <!-- STEP
 name: Run python subscriber
@@ -42,7 +42,38 @@ sleep: 10
 -->
 
 ```bash
-dapr run --app-id order-processor-sdk --resources-path ../../../components/ --app-port 6001 -- uvicorn app:app --port 6002
+dapr run --app-id order-processor-sdk --resources-path ../../../components/ --app-port 6002 -- uvicorn app:app --port 6002
+```
+
+<!-- END_STEP -->
+
+2. Run the Python subscriber app (fastapi version) with Dapr: 
+
+<!-- STEP
+name: run
+-->
+
+```bash
+cd ./order-processor-fastapi
+pip3 install -r requirements.txt
+```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: Run python subscriber
+expected_stdout_lines:
+  - '== APP == Subscriber received : 4'
+  - "Exited App successfully"
+expected_stderr_lines:
+output_match_mode: substring
+working_dir: ./order-processor-fastapi
+background: true
+sleep: 10
+-->
+
+```bash
+dapr run --app-id order-processor-sdk-fastapi --resources-path ../../../components/ --app-port 6003 -- uvicorn app:app --port 6003
 ```
 
 <!-- END_STEP -->
@@ -61,7 +92,7 @@ pip3 install -r requirements.txt
 ```
 <!-- END_STEP -->
 
-3. Run the Python publisher app with Dapr: 
+2. Run the Python publisher app with Dapr: 
 
 <!-- STEP
 name: Run python publisher
@@ -85,4 +116,5 @@ dapr run --app-id checkout-sdk --resources-path ../../../components/ -- python3 
 ```bash
 dapr stop --app-id checkout-sdk
 dapr stop --app-id order-processor-sdk
+dapr stop --app-id order-processor-sdk-fastapi
 ```
