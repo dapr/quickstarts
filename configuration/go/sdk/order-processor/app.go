@@ -55,7 +55,5 @@ func main() {
 		fmt.Println("App unsubscribed to config changes")
 	}
 
-	time.Sleep(10 * time.Second)
-
 	os.Exit(0)
 }
