@@ -46,7 +46,7 @@ func main() {
 	}
 	fmt.Println("App subscribed to config changes with subscription id: " + subscriptionID)
 
-	time.Sleep(5 * time.Second)
+<-ctx.Done()
 
 	os.Exit(0)
 }
