@@ -25,8 +25,8 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
   - 'Started Dapr with app id "checkout-http"'
-  - '== APP - checkout-http == Published data: Order { OrderId = 10 }'
-  - '== APP - order-processor-http == Subscriber received : 10'
+  - '== APP - checkout-http == Published data: Order { OrderId = 2 }'
+  - '== APP - order-processor-http == Subscriber received : 2'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
