@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: order-processor-http
+    appDirPath: ./order-processor/
+    appPort: 5003
+    command: ["npm", "run", "start"]
+  - appID: checkout-http
+    appDirPath: ./checkout/
+    command: ["npm", "run", "start"]

@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: order-processor-http
+    appDirPath: ./order-processor/
+    appPort: 6021
+    command: ["uvicorn", "app:app"]
+  - appID: checkout-http
+    appDirPath: ./checkout/
+    command: ["python3", "app.py"]

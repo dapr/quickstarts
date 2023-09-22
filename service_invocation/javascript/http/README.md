@@ -12,83 +12,9 @@ And one order-processor service:
  
 - Node order-processor service `order-processor`
 
-### Run Node order-processor with Dapr
+## Run all apps with multi-app run template file:
 
-1. Open a new terminal window and navigate to `order-processor` directory and install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
--->
-
-```bash
-cd ./order-processor
-npm install
-```
-
-<!-- END_STEP -->
-
-3. Run the Node order-processor app with Dapr: 
-
-<!-- STEP
-name: Run order-processor service
-expected_stdout_lines:
-  - '== APP == Order received: { orderId: 10 }'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
--->
-
-```bash
-cd ./order-processor
-dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
-```
-
-<!-- END_STEP -->
-
-### Run Node checkout with Dapr
-
-1. Open a new terminal window and navigate to `checkout` directory and install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
--->
-
-```bash
-cd ./checkout
-npm install
-```
-
-<!-- END_STEP -->
-
-2. Run the Node checkout app with Dapr: 
-
-<!-- STEP
-name: Run checkout service
-expected_stdout_lines:
-  - '== APP == Order passed: {"orderId":1}'
-  - '== APP == Order passed: {"orderId":2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
--->
-    
-```bash
-cd ./checkout
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
-```
-
-<!-- END_STEP -->
-
-```bash
-dapr stop --app-id checkout
-dapr stop --app-id order-processor
-```
-
-### Start all apps with multi app run template file:
+This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
 
 1. Open a new terminal window and install dependencies for `order-processor` and `checkout` apps:
 
@@ -101,6 +27,7 @@ cd ./order-processor
 npm install
 cd ../checkout
 npm install
+cd ..
 ```
 
 <!-- END_STEP -->
@@ -110,7 +37,6 @@ npm install
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - 'This is a preview feature and subject to change in future releases'
   - 'Validating config and starting app "order-processor"'
   - 'Started Dapr with app id "order-processor"'
   - 'Writing log files to directory'
@@ -119,16 +45,90 @@ expected_stdout_lines:
   - 'Writing log files to directory'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
 dapr run -f .
 ```
 
-<!-- END_STEP -->
+The terminal console output should look similar to this:
+
+```text
+== APP - order-processor == Order received: { orderId: 1 }
+== APP - checkout == Order passed: {"orderId":1}
+== APP - order-processor == Order received: { orderId: 2 }
+== APP - checkout == Order passed: {"orderId":2}
+== APP - order-processor == Order received: { orderId: 3 }
+== APP - checkout == Order passed: {"orderId":3}
+== APP - order-processor == Order received: { orderId: 4 }
+== APP - checkout == Order passed: {"orderId":4}
+== APP - order-processor == Order received: { orderId: 5 }
+== APP - checkout == Order passed: {"orderId":5}
+== APP - order-processor == Order received: { orderId: 6 }
+== APP - checkout == Order passed: {"orderId":6}
+== APP - order-processor == Order received: { orderId: 7 }
+== APP - checkout == Order passed: {"orderId":7}
+== APP - order-processor == Order received: { orderId: 8 }
+== APP - checkout == Order passed: {"orderId":8}
+== APP - order-processor == Order received: { orderId: 9 }
+== APP - checkout == Order passed: {"orderId":9}
+== APP - order-processor == Order received: { orderId: 10 }
+== APP - checkout == Order passed: {"orderId":10}
+== APP - order-processor == Order received: { orderId: 11 }
+== APP - checkout == Order passed: {"orderId":11}
+== APP - order-processor == Order received: { orderId: 12 }
+== APP - checkout == Order passed: {"orderId":12}
+```
+
+3. Stop and clean up application processes
 
 ```bash
 dapr stop -f .
+```
+
+<!-- END_STEP -->
+
+## Run a single app at a time with Dapr (Optional)
+
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- npm start` commands.  This next section covers how to do this. 
+
+### Run Node order-processor with Dapr
+
+1. Open a new terminal window and navigate to `order-processor` directory and install dependencies: 
+
+```bash
+cd ./order-processor
+npm install
+```
+
+3. Run the Node order-processor app with Dapr: 
+
+```bash
+dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
+```
+
+### Run Node checkout with Dapr
+
+1. Open a new terminal window and navigate to `checkout` directory and install dependencies: 
+
+```bash
+cd ./checkout
+npm install
+```
+
+2. Run the Node checkout app with Dapr: 
+
+```bash
+dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
+```
+
+### Stop and clean up application processes
+
+```bash
+dapr stop --app-id checkout
+dapr stop --app-id order-processor
 ```

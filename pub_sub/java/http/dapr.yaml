@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: order-processor-http
+    appDirPath: ./order-processor/target/
+    appPort: 8080
+    command: ["java", "-jar", "OrderProcessingService-0.0.1-SNAPSHOT.jar"]
+  - appID: checkout-http
+    appDirPath: ./checkout/target/
+    command: ["java", "-jar", "CheckoutService-0.0.1-SNAPSHOT.jar"]
