@@ -43,8 +43,7 @@ sleep: 15
 -->
     
 ```bash
-cd ./order-processor
-dapr run --app-id order-processor dotnet run
+dapr run -f .
 ```
 
 <!-- END_STEP -->

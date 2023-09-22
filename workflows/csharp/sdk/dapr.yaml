@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components
+apps:
+  - appID: order-processor
+    appDirPath: ./order-processor/
+    command: ["dotnet", "run"]
