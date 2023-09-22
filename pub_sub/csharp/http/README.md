@@ -81,7 +81,7 @@ An alternative to running all or multiple applications at once is to run single 
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7005 -- dotnet run
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7006 -- dotnet run
 ```
 
 ### Run Dotnet message publisher with Dapr
