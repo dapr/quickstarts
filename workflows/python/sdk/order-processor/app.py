@@ -41,7 +41,7 @@ class WorkflowConsoleApp:
 
         print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
-        order_quantity = 11
+        order_quantity = 10
 
         total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
         order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)

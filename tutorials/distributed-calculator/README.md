@@ -8,7 +8,7 @@ This quickstart shows method invocation and state persistent capabilities of Dap
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/). 
-Kudos to [greatbunny](https://github.com/greatbunny) whose [React calculator](https://github.com/greatbunny/calculator) is adapted here. 
+Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator) 
 
 The following architecture diagram illustrates the components that make up this quickstart: 
 
@@ -48,18 +48,6 @@ working_dir: "./go"
 - Install the gorilla/mux package: Run:
    ```bash
    go get -u github.com/gorilla/mux
-   ```
-
-<!-- END_STEP -->
-
-<!-- STEP
-name: "Build go app"
-working_dir: "./go"
--->
-
-- Build the app. Run:
-   ```bash
-   go build .
    ```
 
 <!-- END_STEP -->

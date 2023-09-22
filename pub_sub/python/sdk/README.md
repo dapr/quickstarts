@@ -20,6 +20,8 @@ This section shows how to run both applications at once using [multi-app run tem
 
 1. Install dependencies: 
 
+1. Run the Python subscriber app (flask version) with Dapr: 
+
 <!-- STEP
 name: Install Python dependencies
 -->
@@ -33,7 +35,9 @@ pip3 install -r requirements.txt
 cd ..
 ```
 <!-- END_STEP -->
+
 2. Open a new terminal window and run the multi app run template:
+
 
 <!-- STEP
 name: Run multi app run template
@@ -84,6 +88,7 @@ The terminal console output should look similar to this:
 == APP - checkout-sdk == INFO:root:Published data: {"orderId": 9}
 == APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:27] "POST /orders HTTP/1.1" 200 -
 == APP - order-processor-sdk == Subscriber received : 9
+
 ```
 
 3. Stop and clean up application processes
@@ -132,4 +137,5 @@ dapr run --app-id checkout-sdk --resources-path ../../../components/ -- python3 
 ```bash
 dapr stop --app-id checkout-sdk
 dapr stop --app-id order-processor-sdk
+dapr stop --app-id order-processor-sdk-fastapi
 ```

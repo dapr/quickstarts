@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -39,7 +39,7 @@ func main() {
 			fmt.Print("Could not get config item, err:" + err.Error())
 			os.Exit(1)
 		}
-		result, _ := ioutil.ReadAll(getResponse.Body)
+		result, _ := io.ReadAll(getResponse.Body)
 		fmt.Println("Configuration for "+item+":", string(result))
 	}
 
@@ -69,7 +69,7 @@ func subscribeToConfigUpdates(subscriptionId *string) {
 		fmt.Println("Error subscribing to config updates, err:" + err.Error())
 		os.Exit(1)
 	}
-	sub, err := ioutil.ReadAll(subscription.Body)
+	sub, err := io.ReadAll(subscription.Body)
 	if err != nil {
 		fmt.Print("Unable to read subscription id, err: " + err.Error())
 		os.Exit(1)
@@ -115,7 +115,7 @@ func unsubscribeFromConfigUpdates(subscriptionId string) {
 	if err != nil {
 		fmt.Println("Error unsubscribing from config updates, err:" + err.Error())
 	}
-	unsub, err := ioutil.ReadAll(unsubscribe.Body)
+	unsub, err := io.ReadAll(unsubscribe.Body)
 	if err != nil {
 		fmt.Print("Unable to read unsubscribe response, err: " + err.Error())
 	}
@@ -128,7 +128,7 @@ func unsubscribeFromConfigUpdates(subscriptionId string) {
 }
 
 func configUpdateHandler(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Panic(err)
 	}

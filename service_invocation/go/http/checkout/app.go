@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -40,7 +40,7 @@ func main() {
 		}
 
 		// Read the response
-		result, err := ioutil.ReadAll(response.Body)
+		result, err := io.ReadAll(response.Body)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -2,8 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +19,7 @@ type JSONObj struct {
 }
 
 type Result struct {
-	Data string `json:"data"`
+	Data map[string]int `json:"data"`
 }
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +41,7 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func postOrder(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -49,7 +50,10 @@ func postOrder(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	fmt.Println("Subscriber received:", string(result.Data))
+	for k, v := range result.Data {
+		d := fmt.Sprintf(`Subscriber received: {"%s":%d}`, k, v)
+		fmt.Println(d)
+	}
 	obj, err := json.Marshal(data)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -76,7 +80,7 @@ func main() {
 
 	// Start the server; this is a blocking call
 	err := http.ListenAndServe(":"+appPort, r)
-	if err != http.ErrServerClosed {
+	if !errors.Is(err, http.ErrServerClosed) {
 		log.Panic(err)
 	}
 }

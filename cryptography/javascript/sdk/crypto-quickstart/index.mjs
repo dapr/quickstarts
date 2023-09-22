@@ -72,7 +72,7 @@ async function encryptDecryptStream(client) {
 
   // Decrypt the message
   console.log("== Decrypting message using streams");
-  console.log("Encrypting encrypted.out to decrypted.out");
+  console.log("Decrypting encrypted.out to decrypted.out.jpg");
   await pipeline(
     createReadStream("encrypted.out"),
     await client.crypto.decrypt({
@@ -84,4 +84,5 @@ async function encryptDecryptStream(client) {
   console.log("Decrypted the message to decrypted.out.jpg");
 }
 
+// Start the code
 await start();
