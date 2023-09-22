@@ -60,6 +60,8 @@ public class UpdateInventoryActivity implements WorkflowActivity {
 
     logger.info("Updated inventory for order '{}': there are now {} {} left in stock",
         inventoryRequest.getRequestId(), newQuantity, inventoryRequest.getItemName());
+    // in addition to print to std out for validation
+    System.out.println("there are now " + newQuantity + " " + inventoryRequest.getItemName() + " left in stock");
     InventoryResult inventoryResult = new InventoryResult();
     inventoryResult.setSuccess(true);
     return inventoryResult;

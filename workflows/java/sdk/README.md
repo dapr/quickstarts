@@ -33,8 +33,8 @@ mvn clean install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP ==       there are now 90 cars left in stoc'
-  - '== APP == workflow instance 75e89047-75f0-4748-8821-127b1a1201ab completed, out is: {"processed":true}'
+  - '== APP == there are now 90 cars left in stock'
+  - '== APP == workflow instance completed, out is: {"processed":true}'
 expected_stderr_lines:
 output_match_mode: substring
 background: true

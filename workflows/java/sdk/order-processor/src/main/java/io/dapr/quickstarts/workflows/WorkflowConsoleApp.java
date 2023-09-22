@@ -97,7 +97,7 @@ public class WorkflowConsoleApp {
           Duration.ofSeconds(30),
           true);
       if (workflowStatus != null) {
-        System.out.printf("workflow instance %s completed, out is: %s %n", instanceId,
+        System.out.printf("workflow instance completed, out is: %s%n",
             workflowStatus.getSerializedOutput());
       } else {
         System.out.printf("workflow instance %s not found%n", instanceId);
