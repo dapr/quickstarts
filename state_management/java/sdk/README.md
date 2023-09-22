@@ -78,6 +78,7 @@ name: Build Java file
 ```bash
 cd ./order-processor
 mvn clean install
+cd ..
 ```
 
 <!-- END_STEP -->
@@ -102,10 +103,10 @@ sleep: 15
 cd ./order-processor
 dapr run --app-id order-processor --resources-path ../../../resources/ -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
+<!-- END_STEP -->
 
 3. Stop and cleanup application process
 
 ```bash
 dapr stop --app-id order-processor
 ```
-<!-- END_STEP -->
