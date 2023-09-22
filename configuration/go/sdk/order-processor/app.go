@@ -46,14 +46,7 @@ func main() {
 	}
 	fmt.Println("App subscribed to config changes with subscription id: " + subscriptionID)
 
-	time.Sleep(10 * time.Second)
-
-	err = client.UnsubscribeConfigurationItems(context.Background(), DAPR_CONFIGURATION_STORE, subscriptionID)
-	if err != nil {
-		fmt.Println("Error unsubscribing to config updates, err:" + err.Error())
-	} else {
-		fmt.Println("App unsubscribed to config changes")
-	}
+	time.Sleep(5 * time.Second)
 
 	os.Exit(0)
 }
