@@ -45,8 +45,10 @@ expected_stdout_lines:
   - 'Writing log files to directory'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -98,74 +100,33 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Open a new terminal window and navigate to `order-processor` directory and install dependencies: 
 
-<!-- STEP
-name: Install Node dependencies
--->
-
 ```bash
 cd ./order-processor
 npm install
 ```
 
-<!-- END_STEP -->
-
 3. Run the Node order-processor app with Dapr: 
-
-<!-- STEP
-name: Run order-processor service
-expected_stdout_lines:
-  - '== APP == Order received: { orderId: 10 }'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
-working_dir: ./order-processor
--->
 
 ```bash
 dapr run --app-port 5001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
-<!-- END_STEP -->
-
 ### Run Node checkout with Dapr
 
 1. Open a new terminal window and navigate to `checkout` directory and install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
--->
 
 ```bash
 cd ./checkout
 npm install
 ```
 
-<!-- END_STEP -->
-
 2. Run the Node checkout app with Dapr: 
 
-<!-- STEP
-name: Run checkout service
-expected_stdout_lines:
-  - '== APP == Order passed: {"orderId":1}'
-  - '== APP == Order passed: {"orderId":2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
-working_dir: ./checkout
--->
-    
 ```bash
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- npm start
 ```
 
-<!-- END_STEP -->
-
-3. Stop and clean up application processes
+### Stop and clean up application processes
 
 ```bash
 dapr stop --app-id checkout

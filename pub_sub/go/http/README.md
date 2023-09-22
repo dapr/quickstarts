@@ -21,12 +21,14 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
   - 'Started Dapr with app id "checkout-http"'
-  - '== APP - checkout-http == Published data: {"orderId":1}'
-  - '== APP - order-processor-http == Subscriber received: map[orderId:1]'
+  - '== APP - checkout-http == Published data: {"orderId":10}'
+  - '== APP - order-processor-http == Subscriber received: {"orderId":10}'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -73,46 +75,19 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Run the Go subscriber app with Dapr in the `order-processor` folder:
 
-<!-- STEP
-name: Run Go subscriber
-expected_stdout_lines:
-  - '== APP == Subscriber received: {"orderId":10}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
--->
-
 ```bash
 cd ./order-processor
-dapr run --app-port 6003 --app-id order-processor --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- go run .
+dapr run --app-port 6003 --app-id order-processor-http --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- go run .
 ```
-
-<!-- END_STEP -->
 
 ### Run Go message publisher with Dapr
 
 1. Run the Go publisher app with Dapr in the `checkout` folder:
 
-<!-- STEP
-name: Run Go publisher
-expected_stdout_lines:
-  - '== APP == Published data: {"orderId":1}'
-  - '== APP == Published data: {"orderId":2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
--->
-
 ```bash
 cd ./checkout
 dapr run --app-id checkout-http --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- go run .
 ```
-
-<!-- END_STEP -->
 
 To stop:
 

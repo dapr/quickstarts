@@ -42,8 +42,10 @@ expected_stdout_lines:
   - '== APP - order-processor == Subscriber received: {"orderId":1}'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash

@@ -39,13 +39,15 @@ npm install
 name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
-  - 'Started Dapr with app id "checkout-sdk-http"'
-  - '== APP - checkout-sdk-http == Published data: {"orderId":1}'
-  - '== APP - order-processor-http == Subscriber received: { orderId: 1 }'
+  - 'Started Dapr with app id "checkout-http"'
+  - '== APP - checkout-http == Published data: {"orderId":10}'
+  - '== APP - order-processor-http == Subscriber received: { orderId: 10 }'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -92,140 +94,33 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Install dependencies: 
 
-<!-- STEP
-name: Install Node dependencies
--->
-
 ```bash
 cd ./order-processor
 npm install
 ```
-<!-- END_STEP -->
-3. Run the Node publisher app with Dapr: 
 
-<!-- STEP
-name: Run Node publisher
-expected_stdout_lines:
-  - '== APP == Subscriber received: {"orderId":2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./order-processor
-output_match_mode: substring
-background: true
-sleep: 10
--->
+2. Run the Node publisher app with Dapr: 
     
 ```bash
 dapr run --app-port 5003 --app-id order-processing-http --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
 ```
 
-<!-- END_STEP -->
-
 ### Run Node message publisher with Dapr
 
 1. Install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
--->
 
 ```bash
 cd ./checkout
 npm install
 ```
-<!-- END_STEP -->
-3. Run the Node publisher app with Dapr: 
 
-<!-- STEP
-name: Run Node publisher
-expected_stdout_lines:
-  - '== APP == Published data: {"orderId":2}'
-  - '== APP == Published data: {"orderId":3}'
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./checkout
-output_match_mode: substring
-background: true
-sleep: 10
--->
+2. Run the Node publisher app with Dapr: 
     
 ```bash
 dapr run --app-id checkout-http --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- npm run start
 ```
 
-<!-- END_STEP -->
-
-```bash
-dapr stop --app-id checkout-http
-dapr stop --app-id order-processor-http
-```
-
-### Run Node message subscriber with Dapr
-
-1. Install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
--->
-
-```bash
-cd ./order-processor
-npm install
-```
-<!-- END_STEP -->
-2. Run the Node publisher app with Dapr: 
-
-<!-- STEP
-name: Run Node publisher
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./order-processor
-output_match_mode: substring
-background: true
-sleep: 10
--->
-    
-```bash
-dapr run --app-id order-processor-http --resources-path ../../../components/  --app-port 5003 -- node .
-```
-
-<!-- END_STEP -->
-
-### Run Node message publisher with Dapr
-
-1. Install dependencies: 
-
-<!-- STEP
-name: Install Node dependencies
--->
-
-```bash
-cd ./checkout
-npm install
-```
-<!-- END_STEP -->
-2. Run the Node publisher app with Dapr: 
-
-<!-- STEP
-name: Run Node publisher
-expected_stdout_lines:
-  - '== APP == Published data: {"orderId":2}'
-  - '== APP == Published data: {"orderId":3}'
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./checkout
-output_match_mode: substring
-background: true
-sleep: 10
--->
-    
-```bash
-dapr run --app-id checkout-http --resources-path ../../../components/  --app-port 5003 -- node .
-```
-
-<!-- END_STEP -->
+### Stop the apps and clean up
 
 ```bash
 dapr stop --app-id checkout-http

@@ -25,7 +25,7 @@ output_match_mode: substring
 match_order: none
 background: true
 sleep: 15
-timeout_seconds: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -72,18 +72,6 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Run the order-processor app with Dapr in the `order-processor` folder:
 
-<!-- STEP
-name: Run order-processor service
-expected_stdout_lines:
-  - '== APP == Order received: {"orderId":10}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
-timeout_seconds: 30
--->
-
 ```bash
 cd ./order-processor
 dapr run \
@@ -94,24 +82,9 @@ dapr run \
   -- go run .
 ```
 
-<!-- END_STEP -->
-
 ### Run Go checkout with Dapr
 
 1. Open a new terminal window and navigate to `checkout` directory, then run the Go checkout app with Dapr:
-
-<!-- STEP
-name: Run checkout service
-expected_stdout_lines:
-  - '== APP == Order passed: {"orderId":10}'
-  - '== APP == Order passed: {"orderId":11}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
-timeout_seconds: 15
--->
 
 ```bash
 cd ./checkout
@@ -121,9 +94,7 @@ dapr run \
   -- go run .
 ```
 
-<!-- END_STEP -->
-
-To stop:
+### Stop the apps and clean up
 
 ```bash
 dapr stop --app-id checkout

@@ -54,8 +54,10 @@ expected_stdout_lines:
   - 'Writing log files to directory'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -106,71 +108,33 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Open a new terminal window and navigate to `order-processor` directory and install dependencies:
 
-<!-- STEP
-name: Install maven dependencies
--->
-
 ```bash
 cd ./order-processor
 mvn clean install
 ```
-<!-- END_STEP -->
 
 2. Run the Java order-processor app with Dapr:
-
-<!-- STEP
-name: Run Java order-processor service
-expected_stdout_lines:
-  - "== APP == Order received: 1"
-  - "== APP == Order received: 2"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 10
-working_dir: ./order-processor
--->
 
 ```bash
 dapr run --app-id order-processor --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
-<!-- END_STEP -->
-
 ### Run Java checkout service with Dapr
 
 1. Open a new terminal window and navigate to `checkout` directory and install dependencies:
-
-<!-- STEP
-name: Install maven dependencies
--->
 
 ```bash
 cd ./checkout
 mvn clean install
 ```
-<!-- END_STEP -->
 
 2. Run the Java checkout app with Dapr:
-
-<!-- STEP
-name: Run Java checkout service
-expected_stdout_lines:
-  - "== APP == Order passed: 1"
-  - "== APP == Order passed: 2"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 15
-working_dir: ./checkout
--->
 
 ```bash
 dapr run --app-id checkout --app-protocol http --dapr-http-port 3500 -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
 
-<!-- END_STEP -->
-
-3. Stop and clean up application processes
+### Stop and clean up application processes
 
 ```bash
 dapr stop --app-id checkout

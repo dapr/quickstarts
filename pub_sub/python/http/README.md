@@ -21,7 +21,7 @@ This section shows how to run both applications at once using [multi-app run tem
 1. Install dependencies: 
 
 <!-- STEP
-name: Install Node dependencies
+name: Install Python dependencies
 -->
 
 ```bash
@@ -44,8 +44,10 @@ expected_stdout_lines:
   - '== APP - order-processor-http == Subscriber received : 1'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -98,71 +100,33 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Install dependencies: 
 
-<!-- STEP
-name: Install Node dependencies
--->
-
 ```bash
 cd ./order-processor
 pip3 install -r requirements.txt
 ```
 
-<!-- END_STEP -->
-
 2. Run the Python subscriber app with Dapr: 
-
-<!-- STEP
-name: Run python subscriber
-expected_stdout_lines:
-  - '== APP == Subscriber received : 4'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-working_dir: ./order-processor
-background: true
-sleep: 10
--->
 
 ```bash
 dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 6021 -- uvicorn app:app --port 6002
 ```
 
-<!-- END_STEP -->
-
 ### Run Python message publisher with Dapr
 
 1. Install dependencies: 
-
-<!-- STEP
-name: Install python dependencies
--->
 
 ```bash
 cd ./checkout
 pip3 install -r requirements.txt 
 ```
-<!-- END_STEP -->
 
 2. Run the Python publisher app with Dapr: 
-
-<!-- STEP
-name: Run python publisher
-expected_stdout_lines:
-  - '== APP == INFO:root:Published data: {"orderId": 1}'
-  - '== APP == INFO:root:Published data: {"orderId": 2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-working_dir: ./checkout
-background: true
-sleep: 10
--->
 
 ```bash
 dapr run --app-id checkout-http --resources-path ../../../components/ -- python3 app.py
 ```
 
-<!-- END_STEP -->
+### Stop the apps and clean up
 
 ```bash
 dapr stop --app-id checkout-http

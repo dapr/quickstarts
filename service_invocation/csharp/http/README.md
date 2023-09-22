@@ -27,13 +27,14 @@ expected_stdout_lines:
   - 'Validating config and starting app "checkout"'
   - 'Started Dapr with app id "checkout"'
   - 'Writing log files to directory'
-  - '== APP - order-processor == Order received : Order { orderId = 12 }'
-  - '== APP - checkout == Order passed: Order { OrderId = 12 }'
+  - '== APP - order-processor == Order received : Order { orderId = 10 }'
+  - '== APP - checkout == Order passed: Order { OrderId = 10 }'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
-timeout_seconds: 60
+timeout_seconds: 30
 -->
 
 ```bash
@@ -63,10 +64,6 @@ The terminal console output should look similar to this:
 == APP - checkout == Order passed: Order { OrderId = 9 }
 == APP - order-processor == Order received : Order { orderId = 10 }
 == APP - checkout == Order passed: Order { OrderId = 10 }
-== APP - order-processor == Order received : Order { orderId = 11 }
-== APP - checkout == Order passed: Order { OrderId = 11 }
-== APP - order-processor == Order received : Order { orderId = 12 }
-== APP - checkout == Order passed: Order { OrderId = 12 }
 ```
 
 2. Stop and clean up application processes
@@ -84,48 +81,22 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Open a new terminal window and run the Dotnet order-processor app with Dapr: 
 
-<!-- STEP
-name: Run order-processor service
-expected_stdout_lines:
-  - '== APP == Order received : Order { orderId = 10 }'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 10
--->
-
 ```bash
 cd ./order-processor
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
-<!-- END_STEP -->
-
 ### Run .NET `checkout` with Dapr
 
 1. Open a new terminal and run the Dotnet checkout app with Dapr: 
-
-<!-- STEP
-name: Run checkout service
-expected_stdout_lines:
-  - '== APP == Order passed: Order { OrderId = 1 }'
-  - '== APP == Order passed: Order { OrderId = 2 }'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-background: true
-sleep: 10
-timeout_seconds: 60
--->
 
 ```bash
 cd ./checkout
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
 ```
-<!-- END_STEP -->
 
-2. Stop and clean up application processes
+### Stop and clean up application processes
 ```bash
 dapr stop --app-id order-processor
+dapr stop --app-id checkout
 ```

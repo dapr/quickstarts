@@ -49,12 +49,14 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
   - 'Started Dapr with app id "checkout-http"'
-  - '== APP - checkout-sdk == Published data: Order { OrderId = 10 }'
-  - '== APP - order-processor == Subscriber received : Order { OrderId = 10 }'
+  - 'Published data: 10'
+  - 'Subscriber received: 10'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -100,66 +102,34 @@ An alternative to running all or multiple applications at once is to run single 
 ### Run Java message subscriber app with Dapr
 
 1. Navigate to directory and install dependencies:
-<!-- STEP
-name: Install Java dependencies
--->
 
 ```bash
 cd ./order-processor
 mvn clean install
 ```
-<!-- END_STEP -->
 
 2. Run the Java subscriber app with Dapr:
-<!-- STEP
-name: Run Java publisher
-expected_stdout_lines:
-  - 'Subscriber received: 2'
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./order-processor
-output_match_mode: substring
-background: true
-sleep: 10
--->
+
 ```bash
 cd ./order-processor
  dapr run --app-port 8080 --app-id order-processor-http --resources-path ../../../components -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
-<!-- END_STEP -->
+
 ### Run Java message publisher app with Dapr
 
 1. Navigate to the directory and install dependencies:
-
-<!-- STEP
-name: Install Java dependencies
--->
 
 ```bash
 cd ./checkout
 mvn clean install
 ```
-<!-- END_STEP -->
 
 2. Run the Java publisher app with Dapr:
-<!-- STEP
-name: Run Java publisher
-expected_stdout_lines:
-  - 'Published data: 1'
-  - 'Published data: 2'
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./checkout
-output_match_mode: substring
-background: true
-sleep: 10
--->
 
 ```bash
 cd ./checkout
  dapr run --app-id checkout-http --resources-path ../../../components -- java -jar target/CheckoutService-0.0.1-SNAPSHOT.jar
 ```
-<!-- END_STEP -->
 
 ```bash
 dapr stop --app-id checkout-http

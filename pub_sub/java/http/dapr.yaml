@@ -4,7 +4,7 @@ common:
 apps:
   - appID: order-processor-http
     appDirPath: ./order-processor/target/
-    appPort: 8081
+    appPort: 8080
     command: ["java", "-jar", "OrderProcessingService-0.0.1-SNAPSHOT.jar"]
   - appID: checkout-http
     appDirPath: ./checkout/target/

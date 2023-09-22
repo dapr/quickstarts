@@ -29,8 +29,10 @@ expected_stdout_lines:
   - '== APP - order-processor == Subscriber received : Order { OrderId = 10 }'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
 sleep: 15
+timeout_seconds: 30
 -->
 
 ```bash
@@ -77,52 +79,20 @@ An alternative to running all or multiple applications at once is to run single 
 
 1. Run the Dotnet subscriber app with Dapr: 
 
-<!-- STEP
-name: Run Dotnet subscriber
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Subscriber received : Order { OrderId = 2 }'
-  - "Exited Dapr successfully"
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./order-processor
-output_match_mode: substring
-background: true
-sleep: 10
--->
-
-
 ```bash
 cd ./order-processor
 dapr run --app-id order-processor --resources-path ../../../components/ --app-port 7006 -- dotnet run
 ```
 
-<!-- END_STEP -->
 ### Run Dotnet message publisher with Dapr
 
 1. Run the Dotnet publisher app with Dapr: 
 
-<!-- STEP
-name: Run Dotnet publisher
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Published data: Order { OrderId = 1 }'
-  - '== APP == Published data: Order { OrderId = 2 }'
-  - "Exited App successfully"
-  - "Exited Dapr successfully"
-expected_stderr_lines:
-working_dir: ./checkout
-output_match_mode: substring
-background: true
-sleep: 10
--->
-    
+   
 ```bash
 cd ./checkout
 dapr run --app-id checkout-sdk --resources-path ../../../components/ -- dotnet run
 ```
-
-<!-- END_STEP -->
 
 2. Stop and clean up application processes
 
