@@ -33,6 +33,9 @@ cd ..
 cd ./order-processor
 pip3 install -r requirements.txt
 cd ..
+cd ./order-processor-fastapi
+pip3 install -r requirements.txt
+cd ..
 ```
 <!-- END_STEP -->
 

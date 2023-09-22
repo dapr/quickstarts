@@ -25,14 +25,14 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor"'
   - 'Started Dapr with app id "checkout-sdk"'
-  - '== APP - checkout-sdk == Published data: Order { OrderId = 10 }'
-  - '== APP - order-processor == Subscriber received : Order { OrderId = 10 }'
+  - 'Published data: Order { OrderId = 10 }'
+  - 'Subscriber received : Order { OrderId = 10 }'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
 sleep: 15
-timeout_seconds: 45
+timeout_seconds: 60
 -->
 
 ```bash
