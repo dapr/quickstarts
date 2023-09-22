@@ -42,6 +42,7 @@ sleep: 15
 -->
     
 ```bash
+cd ./order-processor
 dapr run --app-id WorkflowConsoleApp --resources-path ../../../components/ --dapr-grpc-port 50001 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar io.dapr.quickstarts.workflows.WorkflowConsoleApp
 ```
 
