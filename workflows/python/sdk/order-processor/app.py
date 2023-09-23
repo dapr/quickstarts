@@ -10,7 +10,7 @@ from workflow import order_processing_workflow, notify_activity, process_payment
     verify_inventory_activity, update_inventory_activity, requst_approval_activity
 from model import InventoryItem, OrderPayload
 
-store_name = "statestore-actors"
+store_name = "statestore"
 workflow_component = "dapr"
 workflow_name = "order_processing_workflow"
 default_item_name = "cars"
@@ -108,7 +108,7 @@ class WorkflowConsoleApp:
             print(f'item: {item}')
             item_str = f'{{"name": "{item.item_name}", "quantity": {item.quantity},\
                           "per_item_cost": {item.per_item_cost}}}'
-            daprClient.save_state("statestore-actors", key, item_str)
+            daprClient.save_state(store_name, key, item_str)
 
 if __name__ == '__main__':
     app = WorkflowConsoleApp()
