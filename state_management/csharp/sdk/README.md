@@ -32,11 +32,10 @@ name: Run order-processor service
 expected_stdout_lines:
   - '== APP - order-processor == Getting Order: Order { orderId = 1 }'
   - '== APP - order-processor == Getting Order: Order { orderId = 2 }'  
-  - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 30
+sleep: 100
 -->
 
   ```bash

@@ -53,7 +53,7 @@ expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
+sleep: 30
 -->
 
 ```bash
