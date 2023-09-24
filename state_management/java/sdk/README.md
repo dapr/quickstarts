@@ -44,9 +44,9 @@ name: Build Java file
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - order-processor == Saving order: 1'
-  - '== APP - order-processor == Getting order: 1'
-  - '== APP - order-processor == Deleting order: 1'
+  - '== APP - order-processor == Saving Order: 1'
+  - '== APP - order-processor == Getting Order: 1'
+  - '== APP - order-processor == Deleting Order: 1'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -85,10 +85,9 @@ cd ..
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Saving order: 1'
-  - '== APP == Order saved: {"orderId":1}'
-  - '== APP == Deleting order: 1'
-  - '== APP == Deletion Status code :204'
+  - '== APP - order-processor == Saving Order: 1'
+  - '== APP - order-processor == Getting Order: 1'
+  - '== APP - order-processor == Deleting Order: 1'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
