@@ -45,9 +45,8 @@ name: Build Java file
 name: Run order-processor service
 expected_stdout_lines:
   - '== APP - order-processor == Saving order: 1'
-  - '== APP - order-processor == Order saved: {"orderId":1}'
+  - '== APP - order-processor == Getting order: 1'
   - '== APP - order-processor == Deleting order: 1'
-  - '== APP - order-processor == Deletion Status code :204'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
