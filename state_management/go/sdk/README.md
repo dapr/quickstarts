@@ -69,15 +69,12 @@ The Terminal console output should look similar to this:
 ```text
 You're up and running! Both Dapr and your app logs will appear here.
 
-== APP == Saving Order: Order { orderId = 1 }
-== APP == Getting Order: Order { orderId = 1 }
-== APP == Deleting Order: Order { orderId = 1 }
-== APP == Saving Order: Order { orderId = 2 }
-== APP == Getting Order: Order { orderId = 2 }
-== APP == Deleting Order: Order { orderId = 2 }
-== APP == Saving Order: Order { orderId = 3 }
-== APP == Getting Order: Order { orderId = 3 }
-== APP == Deleting Order: Order { orderId = 3 }
+    == APP - order-processor == Saved Order: {"orderId":1}
+		== APP - order-processor == Retrieved Order: {"orderId":1}
+		== APP - order-processor == Deleted Order: {"orderId":1}
+		== APP - order-processor == Saved Order: {"orderId":2}
+		== APP - order-processor == Retrieved Order: {"orderId":2}
+		== APP - order-processor == Deleted Order: {"orderId":2}
 ```
 
 2. Stop and clean up application processes

@@ -94,7 +94,7 @@ expected_stdout_lines:
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
-match_order: 30
+match_order: none
 background: true
 sleep: 15
 -->
