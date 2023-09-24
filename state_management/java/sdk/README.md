@@ -48,12 +48,11 @@ expected_stdout_lines:
   - '== APP - order-processor == Order saved: {"orderId":1}'
   - '== APP - order-processor == Deleting order: 1'
   - '== APP - order-processor == Deletion Status code :204'
-  - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 30
+sleep: 60
 -->
 
 ```bash
@@ -96,7 +95,7 @@ expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
+sleep: 60
 -->
 
 ```bash

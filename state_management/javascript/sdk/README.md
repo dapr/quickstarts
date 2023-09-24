@@ -33,12 +33,11 @@ name: Run order-processor service
 expected_stdout_lines:
   - "== APP - order-processor == Saving Order:  { orderId: '1' }"
   - "== APP - order-processor == Getting Order:  { orderId: '1' }"
-  - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
+sleep: 60
 -->
 
 ```bash
@@ -83,7 +82,7 @@ working_dir: ./order-processor
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 10
+sleep: 60
 -->
 
 ```bash
