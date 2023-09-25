@@ -14,78 +14,87 @@ And one subscriber:
  
 - Dotnet subscriber `order-processor`
 
-### Run Dotnet message subscriber with Dapr
+## Run all apps with multi-app run template file:
 
-1. Navigate to the directory and install dependencies: 
+This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
+
+1. Open a new terminal window and run `order-processor` and `checkout` using the multi app run template defined in [dapr.yaml](./dapr.yaml):
 
 <!-- STEP
-name: Install Dotnet dependencies
+name: Run multi app run template
+expected_stdout_lines:
+  - 'Started Dapr with app id "order-processor-http"'
+  - 'Started Dapr with app id "checkout-http"'
+  - '== APP - checkout-http == Published data: Order { OrderId = 2 }'
+  - '== APP - order-processor-http == Subscriber received : 2'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: true
+sleep: 15
+timeout_seconds: 45
 -->
+
+```bash
+dapr run -f .
+```
+
+The terminal console output should look similar to this:
+
+```text
+== APP - checkout-http == Published data: Order { OrderId = 1 }
+== APP - order-processor-http == Subscriber received : 1
+== APP - checkout-http == Published data: Order { OrderId = 2 }
+== APP - order-processor-http == Subscriber received : 2
+== APP - checkout-http == Published data: Order { OrderId = 3 }
+== APP - order-processor-http == Subscriber received : 3
+== APP - checkout-http == Published data: Order { OrderId = 4 }
+== APP - order-processor-http == Subscriber received : 4
+== APP - checkout-http == Published data: Order { OrderId = 5 }
+== APP - order-processor-http == Subscriber received : 5
+== APP - checkout-http == Published data: Order { OrderId = 6 }
+== APP - order-processor-http == Subscriber received : 6
+== APP - checkout-http == Published data: Order { OrderId = 7 }
+== APP - order-processor-http == Subscriber received : 7
+== APP - checkout-http == Published data: Order { OrderId = 8 }
+== APP - order-processor-http == Subscriber received : 8
+== APP - checkout-http == Published data: Order { OrderId = 9 }
+== APP - order-processor-http == Subscriber received : 9
+== APP - checkout-http == Published data: Order { OrderId = 10 }
+== APP - order-processor-http == Subscriber received : 10
+```
+
+2. Stop and clean up application processes
+
+```bash
+dapr stop -f .
+```
+<!-- END_STEP -->
+
+## Run a single app at a time with Dapr (Optional)
+
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- dotnet run` commands.  This next section covers how to do this. 
+
+### Run Dotnet message subscriber with Dapr
+
+1. Run the Dotnet subscriber app with Dapr: 
 
 ```bash
 cd ./order-processor
-dotnet restore
-dotnet build
-```
-<!-- END_STEP -->
-2. Run the Dotnet subscriber app with Dapr: 
-
-<!-- STEP
-name: Run Dotnet subscriber
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Subscriber received : 2'
-  - "Exited Dapr successfully"
-  - "Exited App successfully"
-expected_stderr_lines:
-working_dir: ./order-processor
-output_match_mode: substring
-background: true
-sleep: 10
--->
-
-
-```bash
-dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7005 -- dotnet run --project .
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 7005 -- dotnet run
 ```
 
-<!-- END_STEP -->
 ### Run Dotnet message publisher with Dapr
 
-1. Navigate to the directory and install dependencies: 
+1. Run the Dotnet publisher app with Dapr: 
 
-<!-- STEP
-name: Install Dotnet dependencies
--->
-
+  
 ```bash
 cd ./checkout
-dotnet restore
-dotnet build
-```
-<!-- END_STEP -->
-2. Run the Dotnet publisher app with Dapr: 
-
-<!-- STEP
-name: Run Dotnet publisher
-expected_stdout_lines:
-  - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Published data: Order { OrderId = 1 }'
-  - '== APP == Published data: Order { OrderId = 2 }'
-  - "Exited App successfully"
-  - "Exited Dapr successfully"
-expected_stderr_lines:
-working_dir: ./checkout
-output_match_mode: substring
-background: true
-sleep: 10
--->
-    
-```bash
-dapr run --app-id checkout-http --resources-path ../../../components/ -- dotnet run --project .
+dapr run --app-id checkout-http --resources-path ../../../components/ -- dotnet run
 ```
 
-<!-- END_STEP -->
+2. Stop and clean up application processes
 
 ```bash
 dapr stop --app-id order-processor-http

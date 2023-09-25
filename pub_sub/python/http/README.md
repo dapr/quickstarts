@@ -14,73 +14,119 @@ And one subscriber:
  
 - Python subscriber `order-processor`
 
-### Run Python message subscriber with Dapr
+## Run all apps with multi-app run template file:
 
-2. Install dependencies: 
+This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
+
+1. Install dependencies: 
 
 <!-- STEP
-name: Install python dependencies
+name: Install Python dependencies
 -->
+
+```bash
+cd ./checkout
+pip3 install -r requirements.txt
+cd ..
+cd ./order-processor
+pip3 install -r requirements.txt
+cd ..
+```
+<!-- END_STEP -->
+2. Open a new terminal window and run the multi app run template:
+
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - 'Started Dapr with app id "order-processor-http"'
+  - 'Started Dapr with app id "checkout-http"'
+  - '== APP - checkout-http == INFO:root:Published data: {"orderId": 1}'
+  - '== APP - order-processor-http == Subscriber received : 1'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: true
+sleep: 15
+timeout_seconds: 30
+-->
+
+```bash
+dapr run -f .
+```
+
+The terminal console output should look similar to this:
+
+```text
+== APP - order-processor-http == Subscriber received : 1
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:21] "POST /orders HTTP/1.1" 200 -
+== APP - checkout-http == INFO:root:Published data: {"orderId": 2}
+== APP - order-processor-http == Subscriber received : 2
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:22] "POST /orders HTTP/1.1" 200 -
+== APP - checkout-http == INFO:root:Published data: {"orderId": 3}
+== APP - order-processor-http == Subscriber received : 3
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:23] "POST /orders HTTP/1.1" 200 -
+== APP - checkout-http == INFO:root:Published data: {"orderId": 4}
+== APP - order-processor-http == Subscriber received : 4
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:24] "POST /orders HTTP/1.1" 200 -
+== APP - checkout-http == INFO:root:Published data: {"orderId": 5}
+== APP - order-processor-http == Subscriber received : 5
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:25] "POST /orders HTTP/1.1" 200 -
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:26] "POST /orders HTTP/1.1" 200 -
+== APP - order-processor-http == Subscriber received : 6
+== APP - checkout-http == INFO:root:Published data: {"orderId": 6}
+== APP - checkout-http == INFO:root:Published data: {"orderId": 7}
+== APP - order-processor-http == Subscriber received : 7
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:27] "POST /orders HTTP/1.1" 200 -
+== APP - checkout-http == INFO:root:Published data: {"orderId": 8}
+== APP - order-processor-http == Subscriber received : 8
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:28] "POST /orders HTTP/1.1" 200 -
+== APP - checkout-http == INFO:root:Published data: {"orderId": 9}
+== APP - order-processor-http == Subscriber received : 9
+== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:29] "POST /orders HTTP/1.1" 200 -
+```
+
+3. Stop and clean up application processes
+
+```bash
+dapr stop -f .
+```
+<!-- END_STEP -->
+
+## Run a single app at a time with Dapr (Optional)
+
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- python3 app.py` commands.  This next section covers how to do this. 
+
+### Run Python message subscriber with Dapr
+
+1. Install dependencies: 
 
 ```bash
 cd ./order-processor
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt
 ```
-<!-- END_STEP -->
-3. Run the Python subscriber app with Dapr: 
 
-<!-- STEP
-name: Run python subscriber
-expected_stdout_lines:
-  - '== APP == Subscriber received : 2'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-working_dir: ./order-processor
-background: true
-sleep: 10
--->
-
+2. Run the Python subscriber app with Dapr: 
 
 ```bash
-dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 6001 -- python3 app.py
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 6021 -- uvicorn app:app --port 6002
 ```
-
-<!-- END_STEP -->
 
 ### Run Python message publisher with Dapr
 
 1. Install dependencies: 
 
-<!-- STEP
-name: Install python dependencies
--->
-
 ```bash
 cd ./checkout
 pip3 install -r requirements.txt 
 ```
-<!-- END_STEP -->
-3. Run the Python publisher app with Dapr: 
 
-<!-- STEP
-name: Run python publisher
-expected_stdout_lines:
-  - '== APP == INFO:root:Published data: {"orderId": 1}'
-  - '== APP == INFO:root:Published data: {"orderId": 2}'
-  - "Exited App successfully"
-expected_stderr_lines:
-output_match_mode: substring
-working_dir: ./checkout
-background: true
-sleep: 10
--->
-    
+2. Run the Python publisher app with Dapr: 
+
 ```bash
 dapr run --app-id checkout-http --resources-path ../../../components/ -- python3 app.py
 ```
 
-<!-- END_STEP -->
+### Stop the apps and clean up
 
 ```bash
 dapr stop --app-id checkout-http
