@@ -248,7 +248,7 @@ kubectl create ns kafka
 ```
 
 ```bash
-helm install dapr-kafka bitnami/kafka --wait --namespace kafka -f ./kafka-non-persistence.yaml
+helm install dapr-kafka bitnami/kafka --version 23.0.7 --wait --namespace kafka --timeout 10m0s -f ./kafka-non-persistence.yaml
 ```
 
 <!-- END_STEP -->
