@@ -6,7 +6,7 @@ Visit the Dapr documentation on [State Management](https://docs.dapr.io/developi
 
 > **Note:** This example leverages the Dapr Client SDK. You can find an example using plain HTTP in the [`http` folder](../http/).
 
-This quickstarts includes one service: Go client service `order-processor`
+This quickstart includes one service: Go client service `order-processor`
 
 ## Run multiple apps with multi-app run template file
 
