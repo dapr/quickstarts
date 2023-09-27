@@ -30,7 +30,7 @@ This section shows how to run both applications at once using [multi-app run tem
 1. Install dependencies: 
 
 <!-- STEP
-name: Install Node dependencies
+name: Install Java dependencies
 -->
 ```bash
 cd ./order-processor
