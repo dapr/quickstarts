@@ -30,6 +30,7 @@ npm install
 cd ..
 cd ./checkout
 npm install
+cd ..
 ```
 <!-- END_STEP -->
 
