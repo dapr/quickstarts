@@ -1,4 +1,4 @@
-# Dapr state management (HTTP Client)
+# Dapr state management (SDK Client)
 
 In this quickstart, you'll create a microservice to demonstrate Dapr's state management API. The service generates messages to store data in a state store. See [Why state management](#why-state-management) to understand when this pattern might be a good choice for your software architecture.
 
