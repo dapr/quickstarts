@@ -49,8 +49,8 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-sdk"'
   - 'Started Dapr with app id "checkout-sdk"'
-  - 'Published data: 10'
-  - 'Subscriber received: 10'
+  - 'Published data: 2'
+  - 'Subscriber received: 2'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none

@@ -134,7 +134,7 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
-          helm install redis bitnami/redis
+          helm install redis bitnami/redis --version 17.14.5
           dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
           kubectl get nodes -o wide
           for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
