@@ -33,13 +33,13 @@ dotnet build
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP ==       There are now: 90 Cars left in stock'
-  - '== APP == Workflow Status: Completed'
-  - "Exited App successfully"
+  - "== APP - order-processor ==       There are now: 90 Cars left in stock"
+  - "== APP - order-processor == Workflow Status: Completed"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
 sleep: 15
+timeout_seconds: 120
 -->
     
 ```bash

@@ -34,10 +34,10 @@ cd ..
 name: Running this example
 expected_stdout_lines:
   - "There are now 90 cars left in stock"
-  - "Purchase of item is  Completed"
+  - "Workflow completed! Result: Completed"
 output_match_mode: substring
 background: true
-timeout_seconds: 240
+timeout_seconds: 120
 sleep: 15
 -->
 
