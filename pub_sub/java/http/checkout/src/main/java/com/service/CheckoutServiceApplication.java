@@ -26,7 +26,7 @@ public class CheckoutServiceApplication {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		String uri = DAPR_HOST + ":" + DAPR_HTTP_PORT + "/v1.0/publish/" + PUBSUB_NAME + "/" + TOPIC;
-		for (int i = 0; i <= 10; i++) {
+		for (int i = 1; i <= 10; i++) {
 			int orderId = i;
 			JSONObject obj = new JSONObject();
 			obj.put("orderId", orderId);
@@ -40,7 +40,7 @@ public class CheckoutServiceApplication {
 
 			HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 			logger.info("Published data: {}", orderId);
-			TimeUnit.MILLISECONDS.sleep(3000);
+			TimeUnit.MILLISECONDS.sleep(1000);
 		}
 	}
 }

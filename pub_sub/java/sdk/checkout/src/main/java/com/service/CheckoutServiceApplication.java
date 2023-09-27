@@ -16,7 +16,7 @@ public class CheckoutServiceApplication {
 		String PUBSUB_NAME = "orderpubsub";
 		DaprClient client = new DaprClientBuilder().build();
 
-		for (int i = 0; i <= 10; i++) {
+		for (int i = 1; i <= 10; i++) {
 			int orderId = i;
 			Order order = new Order(orderId);
 
@@ -26,7 +26,7 @@ public class CheckoutServiceApplication {
 					TOPIC_NAME,
 					order).block();
 			logger.info("Published data: " + order.getOrderId());
-			TimeUnit.MILLISECONDS.sleep(5000);
+			TimeUnit.MILLISECONDS.sleep(1000);
 		}
 	}
 }
