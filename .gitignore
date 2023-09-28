@@ -1,6 +1,7 @@
 # General
 .venv
 .env
+*.exe
 *.suo
 *.user
 _ReSharper.*
