@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Actors" Version="1.10.0" />
+    <PackageReference Include="Dapr.Actors" Version="1.12.*-*" />
   </ItemGroup>
 
 </Project>
