@@ -4,7 +4,7 @@ common:
 apps:
   - appID: order-processor-http
     appDirPath: ./order-processor/
-    appPort: 6003
+    appPort: 6007
     command: ["go", "run", "."]
   - appID: checkout-http
     appDirPath: ./checkout/
