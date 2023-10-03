@@ -1,0 +1,10 @@
+version: 1
+apps:
+  - appDirPath: ./node
+    appID: nodeapp
+    appPort: 3000
+    containerImage: ghcr.io/dapr/samples/hello-k8s-node:latest
+    createService: true
+  - appDirPath: ./python
+    appID: pythonapp
+    containerImage: ghcr.io/dapr/samples/hello-k8s-python:latest
