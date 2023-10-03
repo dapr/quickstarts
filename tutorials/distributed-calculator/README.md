@@ -382,6 +382,13 @@ kubectl apply -f .
 
 <!-- END_STEP -->
 
+   > **Note**: If you had previously installed, dapr using the `dapr init -k --dev` command, the `appconfig` previously installed, would have changed with the above command to point to a different zipkin collector. To point it back to the zipkin collector installed during `dapr init -k --dev`, replace the `endpointAddress` in `appconfig.yaml` with the following:
+   `endpointAddress: "http://dapr-dev-zipkin.default.svc.cluster.local:9411/api/v2/spans"`
+ and run the following command:
+   ```bash
+   kubectl apply -f appconfig.yaml
+   ```
+
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for the front-end, which allows us to connect to it externally.

@@ -22,23 +22,22 @@ cd quickstarts/tutorials/hello-kubernetes
 
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluster in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/).
 
-## Using Dapr Mutli-app run
+## Using Dapr Multi-app run with Dapr `dev` mode deployment
 
 ### Step 1 - Setup Dapr dev mode on your Kubernetes cluster
 
-Follow the steps below to deploy Dapr to Kubernetes. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
+Follow the steps below to deploy Dapr to Kubernetes using the `--dev` flag. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
 
-> Please note, any previous Dapr installations in the Kubernetes cluster need to be uninstalled first.
-> Please note, the CLI will install to the dapr-system namespace by default. If this namespace does not exist, the CLI will create it.
-> If you need to deploy to a different namespace, you can use `-n mynamespace`.
-> Please note, the CLI will install `dapr-dev-redis` and `dapr-dev-zipkin` in the `default` namespace.
-> Please note, the `statestore`, `pubsub` and `appconfig`  default components and configuration will be applied in the `default` Kubernetes namespace only if they do not exist.
+  > **Note**: Any previous Dapr installations in the Kubernetes cluster need to be uninstalled first. You can use `dapr uninstall -k ` to remove Dapr
+
+With the `dapr init -k --dev` command, the CLI will also install he Redis and Zipkin containers `dapr-dev-redis` and `dapr-dev-zipkin` in the `default` namespace apart from the `Dapr` control plane in `dapr-system` namespace. The `statestore`, `pubsub` and `appconfig`  default components and configuration are applied in the `default` Kubernetes namespace if they do not exist. You can use `dapr components -k` and `dapr configurations -k`to see these.
+
 
 ```bash
 dapr init -k --dev
 ```
 
-Expected output
+Expected output in a fresh Kubernetes cluster without Dapr installed:
 ```
 ⌛  Making the jump to hyperspace...
 ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
@@ -127,7 +126,7 @@ This spins down the Kubernetes resources that were deployed in the previous step
 ## Using the `kubectl` CLI
 ### Step 1 - Setup Dapr on your Kubernetes cluster
 
-> Note: This step can be skipped if already done above.
+  > **Note**: This step can be skipped if already done above.
 
 Follow the steps below to deploy Dapr to Kubernetes. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
 
@@ -203,7 +202,7 @@ kubectl apply -f ./deploy/redis.yaml
 component.dapr.io/statestore created
 ```
 
-> Note: If you installed Dapr in the Dev mode in Kubernetes, then the statestore component will be created automatically in the `default` namespace. The above commmand will output `component.dapr.io/statestore configured` instead of `component.dapr.io/statestore created`.
+  > **Note**: If you installed Dapr  using the `--dev` flag in Kubernetes, then the statestore component will be created automatically in the `default` namespace. The above commmand will output `component.dapr.io/statestore configured` instead of `component.dapr.io/statestore created`. If the `--dev` flag was used for Dapr init, and you want to use the `dapr-dev-redis` deployment as state store, replace the `redisHost` value inside `./deploy/redis.yaml` with `dapr-dev-redis-master:6379` and also the `secretKeyRef`, `name` with `dapr-dev-redis`. Then run the command `kubectl apply -f ./deploy/redis.yaml`, to apply the file again. This will create a `statestore` Dapr component pointing to `dapr-dev-redis` deployment.
 
 ### Step 3 - Deploy the Node.js app with the Dapr sidecar
 
@@ -505,6 +504,8 @@ kubectl delete -f .
 <!-- END_STEP -->
 
 This will spin down each resource defined by the `.yaml` files in the `deploy` directory, including the state component.
+
+  > **Note**: This will also delete the state store component. If the `--dev` flag was used for Dapr init, and you want to use the `dapr-dev-redis` deployment as state store, replace the `redisHost` value inside `./deploy/redis.yaml` with `dapr-dev-redis-master:6379` and also the `secretKeyRef`, `name` with `dapr-dev-redis`. Then run the command `kubectl apply -f ./deploy/redis.yaml`, to apply the file again. This will create a `statestore` Dapr component pointing to `dapr-dev-redis` deployment.
 
 ## Deploying your code
 
