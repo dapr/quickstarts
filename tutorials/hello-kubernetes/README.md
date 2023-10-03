@@ -20,11 +20,115 @@ cd quickstarts/tutorials/hello-kubernetes
 
 > **Note**: See https://github.com/dapr/quickstarts#supported-dapr-runtime-version for supported tags. Use `git clone https://github.com/dapr/quickstarts.git` when using the edge version of dapr runtime.
 
-## Step 1 - Setup Dapr on your Kubernetes cluster
-
 The first thing you need is an RBAC enabled Kubernetes cluster. This could be running on your machine using Minikube, or it could be a fully-fledged cluster in Azure using [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/).
 
-Once you have a cluster, follow the steps below to deploy Dapr to it. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
+## Using Dapr Multi-app run with Dapr `dev` mode deployment
+
+### Step 1 - Setup Dapr dev mode on your Kubernetes cluster
+
+Follow the steps below to deploy Dapr to Kubernetes using the `--dev` flag. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
+
+  > **Note**: Any previous Dapr installations in the Kubernetes cluster need to be uninstalled first. You can use `dapr uninstall -k ` to remove Dapr
+
+With the `dapr init -k --dev` command, the CLI will also install he Redis and Zipkin containers `dapr-dev-redis` and `dapr-dev-zipkin` in the `default` namespace apart from the `Dapr` control plane in `dapr-system` namespace. The `statestore`, `pubsub` and `appconfig`  default components and configuration are applied in the `default` Kubernetes namespace if they do not exist. You can use `dapr components -k` and `dapr configurations -k`to see these.
+
+
+```bash
+dapr init -k --dev
+```
+
+Expected output in a fresh Kubernetes cluster without Dapr installed:
+```
+⌛  Making the jump to hyperspace...
+ℹ️  Note: To install Dapr using Helm, see here: https://docs.dapr.io/getting-started/install-dapr-kubernetes/#install-with-helm-advanced
+
+ℹ️  Container images will be pulled from Docker Hub
+✅  Deploying the Dapr control plane with latest version to your cluster...
+✅  Deploying the Dapr dashboard with latest version to your cluster...
+✅  Deploying the Dapr Redis with latest version to your cluster...
+✅  Deploying the Dapr Zipkin with latest version to your cluster...
+ℹ️  Applying "statestore" component to Kubernetes "default" namespace.
+ℹ️  Applying "pubsub" component to Kubernetes "default" namespace.
+ℹ️  Applying "appconfig" zipkin configuration to Kubernetes "default" namespace.
+✅  Success! Dapr has been installed to namespace dapr-system. To verify, run `dapr status -k' in your terminal. To get started, go here: https://aka.ms/dapr-getting-started
+```
+
+### Step 2 - Run the Multi-app run template to deploy both the Node.js and Python apps
+
+To run both the Node.js and Python apps, run the following command from the `hello-kubernetes` directory:
+<!-- STEP
+name: "Run hello-kubernetes multi-app run template"
+tags:
+  - multi-app
+timeout_seconds: 60
+expected_return_code:
+expected_stdout_lines:
+  - 'Deploying app "nodeapp" to Kubernetes'
+  - 'Deploying app "pythonapp" to Kubernetes'
+  - '== APP - nodeapp == Got a new order! Order ID: 12'
+  - '== APP - nodeapp == Successfully persisted state for Order ID: 12'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+-->
+```bash
+dapr run -k -f dapr.yaml
+```
+
+<!-- END_STEP -->
+
+Expected output
+```
+ℹ️  This is a preview feature and subject to change in future releases.
+ℹ️  Validating config and starting app "nodeapp"
+ℹ️  Deploying app "nodeapp" to Kubernetes
+ℹ️  Deploying service YAML "/path/quickstarts/tutorials/hello-kubernetes/node/.dapr/deploy/service.yaml" to Kubernetes
+ℹ️  Deploying deployment YAML "/path/quickstarts/tutorials/hello-kubernetes/node/.dapr/deploy/deployment.yaml" to Kubernetes
+ℹ️  Streaming logs for containers in pod "nodeapp-6dcddb44f5-q5gnr"
+ℹ️  Writing log files to directory : /path/quickstarts/tutorials/hello-kubernetes/node/.dapr/logs
+ℹ️  Validating config and starting app "pythonapp"
+ℹ️  Deploying app "pythonapp" to Kubernetes
+ℹ️  Deploying deployment YAML "/path/quickstarts/tutorials/hello-kubernetes/python/.dapr/deploy/deployment.yaml" to Kubernetes
+== APP - nodeapp == Node App listening on port 3000!
+ℹ️  Streaming logs for containers in pod "pythonapp-7479cdcb7b-z827w"
+ℹ️  Writing log files to directory : /path/quickstarts/tutorials/hello-kubernetes/python/.dapr/logs
+ℹ️  Starting to monitor Kubernetes pods for deletion.
+== APP - nodeapp == Got a new order! Order ID: 2
+== APP - nodeapp == Successfully persisted state for Order ID: 2
+== APP - nodeapp == Got a new order! Order ID: 3
+== APP - nodeapp == Successfully persisted state for Order ID: 3
+== APP - nodeapp == Got a new order! Order ID: 4
+== APP - nodeapp == Successfully persisted state for Order ID: 4
+== APP - nodeapp == Got a new order! Order ID: 5
+== APP - nodeapp == Successfully persisted state for Order ID: 5
+```
+
+Use `Ctrl+C` to stop the apps. Or you can run the following command to stop the apps:
+<!-- STEP
+name: "Stop hello-kubernetes multi-app run template"
+tags:
+  - multi-app
+timeout_seconds: 60
+expected_return_code:
+expected_stdout_lines:
+expected_stderr_lines:
+-->
+<!-- Properly stop multi-app run template if not already stopped.-->
+
+```bash
+dapr stop -k -f dapr.yaml
+```
+
+<!-- END_STEP -->
+
+This spins down the Kubernetes resources that were deployed in the previous step.
+
+## Using the `kubectl` CLI
+### Step 1 - Setup Dapr on your Kubernetes cluster
+
+  > **Note**: This step can be skipped if already done above.
+
+Follow the steps below to deploy Dapr to Kubernetes. For more details, see [Deploy Dapr on a Kubernetes cluster](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-deploy/).
 
 > Please note, the CLI will install to the dapr-system namespace by default. If this namespace does not exist, the CLI will create it.
 > If you need to deploy to a different namespace, you can use `-n mynamespace`.
@@ -45,8 +149,11 @@ Sample output:
 
 > Without the `--wait` flag the Dapr CLI will exit as soon as the kubernetes deployments are created. Kubernetes deployments are asyncronous by default, so we use `--wait` here to make sure the dapr control plane is completely deployed and running before continuing.
 
+<!-- Introducing sleep here to first let the previous execution complete -->
 <!-- STEP
 name: Check dapr status
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -66,7 +173,7 @@ You will see output like the following. All services should show `True` in the H
   dapr-sidecar-injector  dapr-system  True     Running  1         1.0.1    13s  2021-03-08 11:00.21
 ```
 
-## Step 2 - Create and configure a state store
+### Step 2 - Create and configure a state store
 
 Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cassandra, etc) to persist and retrieve state. This demo will use Redis.
 
@@ -75,11 +182,14 @@ Dapr can use a number of different state stores (Redis, CosmosDB, DynamoDB, Cass
    > **Note:** the `redis.yaml` file provided in this quickstart will work securely out-of-the-box with a Redis installed with `helm install bitnami/redis`. If you have your own Redis setup, replace the `redisHost` value with your own Redis master address, and the redisPassword with your own Secret. You can learn more [here](https://docs.dapr.io/operations/components/component-secrets/).
 3. Apply the `redis.yaml` file and observe that your state store was successfully configured!
 
+<!-- As part of previous dev-init, expecting that the state store component is already there for hello-kubernetes run. At the end of this run, it will be deleted.-->
 <!-- STEP
 name: Deploy redis config
 sleep: 1
 expected_stdout_lines:
-  - "component.dapr.io/statestore created"
+  - "component.dapr.io/statestore configured"
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -92,7 +202,9 @@ kubectl apply -f ./deploy/redis.yaml
 component.dapr.io/statestore created
 ```
 
-## Step 3 - Deploy the Node.js app with the Dapr sidecar
+  > **Note**: If you installed Dapr  using the `--dev` flag in Kubernetes, then the statestore component will be created automatically in the `default` namespace. The above commmand will output `component.dapr.io/statestore configured` instead of `component.dapr.io/statestore created`. If the `--dev` flag was used for Dapr init, and you want to use the `dapr-dev-redis` deployment as state store, replace the `redisHost` value inside `./deploy/redis.yaml` with `dapr-dev-redis-master:6379` and also the `secretKeyRef`, `name` with `dapr-dev-redis`. Then run the command `kubectl apply -f ./deploy/redis.yaml`, to apply the file again. This will create a `statestore` Dapr component pointing to `dapr-dev-redis` deployment.
+
+### Step 3 - Deploy the Node.js app with the Dapr sidecar
 
 <!-- STEP
 name: Deploy Node App
@@ -101,6 +213,8 @@ expected_stdout_lines:
   - "service/nodeapp created"
   - "deployment.apps/nodeapp created"
   - 'deployment "nodeapp" successfully rolled out'
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -133,6 +247,8 @@ background: true
 sleep: 2
 timeout_seconds: 10
 expected_return_code:
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -149,7 +265,7 @@ This will make your service available on http://localhost:8080.
 kubectl get svc nodeapp
 ```
 
-## Step 4 - Verify Service
+### Step 4 - Verify Service
 
 To call the service that you set up port forwarding to, from a command prompt run:
 
@@ -157,6 +273,8 @@ To call the service that you set up port forwarding to, from a command prompt ru
 name: Curl Test
 expected_stdout_lines:
   - '{"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}'
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -177,6 +295,8 @@ Next submit an order to the app
 name: neworder Test
 expected_stdout_lines:
   - ''
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -194,6 +314,8 @@ Confirm the order was persisted by requesting it from the app
 name: order Test
 expected_stdout_lines:
   - '{"orderId":"42"}'
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -214,7 +336,7 @@ Expected output:
 dapr dashboard -k -p 9999
 ```
 
-## Step 5 - Deploy the Python app with the Dapr sidecar
+### Step 5 - Deploy the Python app with the Dapr sidecar
 
 Next, take a quick look at the Python app. Navigate to the Python app in the kubernetes quickstart: `cd quickstarts/tutorials/hello-kubernetes/python` and open `app.py`.
 
@@ -240,6 +362,8 @@ sleep: 11
 expected_stdout_lines:
   - deployment.apps/pythonapp created
   - 'deployment "pythonapp" successfully rolled out'
+tags:
+  - normal-run
 -->
 
 Deploy the Python app to your Kubernetes cluster:
@@ -256,7 +380,7 @@ kubectl rollout status deploy/pythonapp
 
 <!-- END_STEP -->
 
-## Step 6 - Observe messages
+### Step 6 - Observe messages
 
 Now that the Node.js and Python applications are deployed, watch messages come through:
 
@@ -272,6 +396,8 @@ expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 name: Read nodeapp logs
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -291,7 +417,7 @@ Got a new order! Order ID: 3
 Successfully persisted state for Order ID: 3
 ```
 
-## Step 7 - Observe API call logs
+### Step 7 - Observe API call logs
 
 Now that the Node.js and Python applications are deployed, watch API call logs come through:
 
@@ -303,6 +429,8 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 name: Read nodeapp logs
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -326,6 +454,8 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 name: Read pythonapp logs
+tags:
+  - normal-run
 -->
 
 ```bash
@@ -338,7 +468,7 @@ time="2022-04-27T02:47:49.972688145Z" level=info method="POST /neworder" app_id=
 time="2022-04-27T02:47:50.984994545Z" level=info method="POST /neworder" app_id=pythonapp instance=pythonapp-545df48d55-jvj52 scope=dapr.runtime.http-info type=log ver=1.7.2
 ```
 
-## Step 8 - Confirm successful persistence
+### Step 8 - Confirm successful persistence
 
 Call the Node.js app's order endpoint to get the latest order. Grab the external IP address that you saved before and, append "/order" and perform a GET request against it (enter it into your browser, use Postman, or curl it!):
 
@@ -349,7 +479,7 @@ curl $NODE_APP/order
 
 You should see the latest JSON in response!
 
-## Step 9 - Cleanup
+### Step 9 - Cleanup
 
 Once you're done, you can spin down your Kubernetes resources by navigating to the `./deploy` directory and running:
 
@@ -364,15 +494,18 @@ expected_stdout_lines:
   - component.dapr.io "statestore" deleted
 output_match_mode: substring
 match_order: none
+tags:
+  - normal-run
 -->
 
 ```bash
 kubectl delete -f .
 ```
-
 <!-- END_STEP -->
 
-This will spin down each resource defined by the .yaml files in the `deploy` directory, including the state component.
+This will spin down each resource defined by the `.yaml` files in the `deploy` directory, including the state component.
+
+  > **Note**: This will also delete the state store component. If the `--dev` flag was used for Dapr init, and you want to use the `dapr-dev-redis` deployment as state store, replace the `redisHost` value inside `./deploy/redis.yaml` with `dapr-dev-redis-master:6379` and also the `secretKeyRef`, `name` with `dapr-dev-redis`. Then run the command `kubectl apply -f ./deploy/redis.yaml`, to apply the file again. This will create a `statestore` Dapr component pointing to `dapr-dev-redis` deployment.
 
 ## Deploying your code
 
