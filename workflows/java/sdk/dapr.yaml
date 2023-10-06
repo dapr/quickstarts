@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components
+apps:
+  - appID: WorkflowConsoleApp
+    appDirPath: ./order-processor/target
+    command: ["java", "-jar", "OrderProcessingService-0.0.1-SNAPSHOT.jar", "io.dapr.quickstarts.workflows.WorkflowConsoleApp"]
