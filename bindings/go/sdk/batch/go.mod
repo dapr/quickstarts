@@ -3,12 +3,12 @@ module dapr_output_binding
 go 1.19
 
 require (
-	github.com/dapr/go-sdk v1.9.0-rc-1
+	github.com/dapr/go-sdk v1.9.0
 	github.com/gorilla/mux v1.8.0
 )
 
 require (
-	github.com/dapr/dapr v1.12.0-rc.4 // indirect
+	github.com/dapr/dapr v1.12.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
