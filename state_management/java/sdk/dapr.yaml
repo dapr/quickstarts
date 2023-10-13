@@ -1,0 +1,8 @@
+
+version: 1
+common:
+  resourcesPath: ../../resources/
+apps:
+  - appID: order-processor
+    appDirPath: ./order-processor/
+    command: ["java", "-jar", "target/OrderProcessingService-0.0.1-SNAPSHOT.jar"]

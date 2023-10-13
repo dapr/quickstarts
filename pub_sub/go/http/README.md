@@ -77,7 +77,7 @@ An alternative to running all or multiple applications at once is to run single 
 
 ```bash
 cd ./order-processor
-dapr run --app-port 6003 --app-id order-processor-http --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- go run .
+dapr run --app-port 6007 --app-id order-processor-http --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- go run .
 ```
 
 ### Run Go message publisher with Dapr

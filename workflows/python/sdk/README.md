@@ -25,6 +25,7 @@ name: Install requirements
 ```sh
 cd ./order-processor
 pip3 install -r requirements.txt
+cd ..
 ```
 
 <!-- END_STEP -->
@@ -33,19 +34,16 @@ pip3 install -r requirements.txt
 name: Running this example
 expected_stdout_lines:
   - "There are now 90 cars left in stock"
-  - "Purchase of item is  Completed"
+  - "Workflow completed! Result: Completed"
 output_match_mode: substring
 background: true
-timeout_seconds: 30
+timeout_seconds: 120
 sleep: 15
 -->
 
 ```sh
-cd ./order-processor
-dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
+dapr run -f .
 ```
-
-<!-- END_STEP -->
 
 3. Expected output
 
@@ -70,6 +68,15 @@ INFO:NotifyActivity:Order b903d749cd814e099f06ebf4a56a2f90 has completed!
 Workflow completed! Result: Completed
   Purchase of item is  Completed
 ```
+
+4. Stop Dapr workflow with CTRL-C or:
+<!-- END_STEP -->
+
+```sh
+dapr stop -f .
+```
+
+
 
 ### View workflow output with Zipkin
 
