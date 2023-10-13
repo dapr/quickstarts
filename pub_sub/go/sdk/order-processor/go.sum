@@ -1,8 +1,8 @@
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
-github.com/dapr/dapr v1.12.0-rc.4 h1:LOPbekXZ+21HTqlk6Kg4Bf/lFiqq9cRq/IrgZgvK4mM=
-github.com/dapr/dapr v1.12.0-rc.4/go.mod h1:JZGZh8T0rz75DZBX3zGESi1p9IWWM0ZAGAzaGMHp+5o=
-github.com/dapr/go-sdk v1.9.0-rc-1 h1:14GjWVv32ke/E86Srh0TT28K+4kxl3KU233hdUDBgck=
-github.com/dapr/go-sdk v1.9.0-rc-1/go.mod h1:bK9bNEsC6hY3RMKh69r0nBjLqb6njeWTEGVMOgP9g20=
+github.com/dapr/dapr v1.12.0 h1:JrnzIYupSHLVK95YWlMZv+h/rfg5rGl53ml9EG4Vrqg=
+github.com/dapr/dapr v1.12.0/go.mod h1:LjmQepPe5+A898VHMUsmX0r0D0OTj6ijtqCIZqMvo7o=
+github.com/dapr/go-sdk v1.9.0 h1:36pUgSwgh/SIYniRT6t1DAu3tv4DcYUmdIvktI6QpoM=
+github.com/dapr/go-sdk v1.9.0/go.mod h1:bK9bNEsC6hY3RMKh69r0nBjLqb6njeWTEGVMOgP9g20=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
 github.com/go-chi/chi/v5 v5.0.10 h1:rLz5avzKpjqxrYwXNfmjkrYYXOyLJd37pz53UFHC6vk=
 github.com/go-chi/chi/v5 v5.0.10/go.mod h1:DslCQbL2OYiznFReuXYUmQ2hGd1aDpCnlMNITLSKoi8=
