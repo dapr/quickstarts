@@ -9,7 +9,7 @@ const string DAPR_STATE_STORE = "statestore";
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-for (int i = 1; i <= 10; i++) {
+for (int i = 1; i <= 100; i++) {
     var orderId = i;
     var order = new Order(orderId);
     var orderJson = JsonSerializer.Serialize(

@@ -27,8 +27,8 @@ expected_stdout_lines:
   - 'Validating config and starting app "checkout"'
   - 'Started Dapr with app id "checkout"'
   - 'Writing log files to directory'
-  - '== APP - order-processor == Order received : Order { orderId = 10 }'
-  - '== APP - checkout == Order passed: Order { OrderId = 10 }'
+  - '== APP - order-processor == Order received : Order { orderId = 2 }'
+  - '== APP - checkout == Order passed: Order { OrderId = 2 }'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none

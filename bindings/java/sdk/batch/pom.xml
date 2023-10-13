@@ -28,12 +28,12 @@
 		<dependency>
 			<groupId>io.dapr</groupId>
 			<artifactId>dapr-sdk-springboot</artifactId>
-			<version>1.9.0</version>
+			<version>1.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.dapr</groupId>
 			<artifactId>dapr-sdk</artifactId>
-			<version>1.9.0</version>
+			<version>1.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

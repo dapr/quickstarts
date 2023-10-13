@@ -31,18 +31,18 @@ jobs:
   deploy:
     name: Validate tutorials on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    timeout-minutes: 40
     env:
       GOVER: 1.17
       KUBERNETES_VERSION: v1.21.1
       KIND_VERSION: v0.12.0
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
     strategy:
-      matrix: 
+      matrix:
         os: [ubuntu-latest]
       fail-fast: false
     steps:
-      - name: Check out code 
+      - name: Check out code
         uses: actions/checkout@v2
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
@@ -90,12 +90,12 @@ jobs:
           - role: worker
             image: kindest/node:${{ env.KUBERNETES_VERSION }}@${{ env.KIND_IMAGE_SHA }}
           EOF
-  
+
           # Log the generated kind.yaml for easy reference.
           cat kind.yaml
 
       - name: Create KinD Cluster - Linux
-        if: matrix.os == 'ubuntu-latest' 
+        if: matrix.os == 'ubuntu-latest'
         uses: helm/kind-action@v1.2.0
         with:
           config: kind.yaml
@@ -124,7 +124,7 @@ jobs:
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
       - name: Set up Dapr CLI - Windows
         if: matrix.os == 'windows-latest'
-        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"     
+        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"
       - name: Install Dapr
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
@@ -134,8 +134,8 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo update
-          helm install redis bitnami/redis
-          dapr init -k --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
+          helm install redis bitnami/redis --version 17.14.5
+          dapr init -k --dev --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
           kubectl get nodes -o wide
           for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
       - name: Install utilities dependencies
@@ -148,11 +148,17 @@ jobs:
           pushd tutorials/hello-world
           make validate
           popd
-      - name: Validate hello-kubernetes
+      - name: Validate hello-kubernetes multi app run
         if: matrix.os == 'ubuntu-latest'
         run: |
           pushd tutorials/hello-kubernetes
-          make validate
+          make validate_multi_app_run
+          popd
+      - name: Validate hello-kubernetes normal run
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          pushd tutorials/hello-kubernetes
+          make validate_normal_run
           popd
       - name: Validate distributed-calculator
         if: matrix.os == 'ubuntu-latest'
