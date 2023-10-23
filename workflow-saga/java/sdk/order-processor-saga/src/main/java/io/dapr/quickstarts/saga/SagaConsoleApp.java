@@ -11,26 +11,26 @@
 limitations under the License.
 */
 
-package io.dapr.quickstarts.workflows;
+package io.dapr.quickstarts.saga;
 
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
-import io.dapr.quickstarts.workflows.activities.NotifyActivity;
-import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
-import io.dapr.quickstarts.workflows.activities.RequestApprovalActivity;
-import io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity;
-import io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity;
-import io.dapr.quickstarts.workflows.models.InventoryItem;
-import io.dapr.quickstarts.workflows.models.OrderPayload;
+import io.dapr.quickstarts.saga.activities.NotifyActivity;
+import io.dapr.quickstarts.saga.activities.ProcessPaymentActivity;
+import io.dapr.quickstarts.saga.activities.RequestApprovalActivity;
+import io.dapr.quickstarts.saga.activities.ReserveInventoryActivity;
+import io.dapr.quickstarts.saga.activities.UpdateInventoryActivity;
+import io.dapr.quickstarts.saga.models.InventoryItem;
+import io.dapr.quickstarts.saga.models.OrderPayload;
 import io.dapr.workflows.client.DaprWorkflowClient;
 import io.dapr.workflows.client.WorkflowInstanceStatus;
 import io.dapr.workflows.runtime.WorkflowRuntime;
 import io.dapr.workflows.runtime.WorkflowRuntimeBuilder;
 
-public class WorkflowConsoleApp {
+public class SagaConsoleApp {
 
   private static final String STATE_STORE_NAME = "statestore";
 
@@ -41,7 +41,7 @@ public class WorkflowConsoleApp {
    * @throws Exception An Exception.
    */
   public static void main(String[] args) throws Exception {
-    System.out.println("*** Welcome to the Dapr Workflow console app sample!");
+    System.out.println("*** Welcome to the Dapr saga console app sample!");
     System.out.println("*** Using this app, you can place orders that start workflows.");
     // Wait for the sidecar to become available
     Thread.sleep(5 * 1000);

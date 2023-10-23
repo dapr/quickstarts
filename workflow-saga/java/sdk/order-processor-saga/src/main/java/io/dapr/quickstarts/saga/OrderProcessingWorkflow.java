@@ -1,19 +1,19 @@
-package io.dapr.quickstarts.workflows;
+package io.dapr.quickstarts.saga;
 
 import org.slf4j.Logger;
 
-import io.dapr.quickstarts.workflows.activities.NotifyActivity;
-import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
-import io.dapr.quickstarts.workflows.activities.RequestApprovalActivity;
-import io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity;
-import io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity;
-import io.dapr.quickstarts.workflows.models.ApprovalResult;
-import io.dapr.quickstarts.workflows.models.InventoryRequest;
-import io.dapr.quickstarts.workflows.models.InventoryResult;
-import io.dapr.quickstarts.workflows.models.Notification;
-import io.dapr.quickstarts.workflows.models.OrderPayload;
-import io.dapr.quickstarts.workflows.models.OrderResult;
-import io.dapr.quickstarts.workflows.models.PaymentRequest;
+import io.dapr.quickstarts.saga.activities.NotifyActivity;
+import io.dapr.quickstarts.saga.activities.ProcessPaymentActivity;
+import io.dapr.quickstarts.saga.activities.RequestApprovalActivity;
+import io.dapr.quickstarts.saga.activities.ReserveInventoryActivity;
+import io.dapr.quickstarts.saga.activities.UpdateInventoryActivity;
+import io.dapr.quickstarts.saga.models.ApprovalResult;
+import io.dapr.quickstarts.saga.models.InventoryRequest;
+import io.dapr.quickstarts.saga.models.InventoryResult;
+import io.dapr.quickstarts.saga.models.Notification;
+import io.dapr.quickstarts.saga.models.OrderPayload;
+import io.dapr.quickstarts.saga.models.OrderResult;
+import io.dapr.quickstarts.saga.models.PaymentRequest;
 import io.dapr.workflows.Workflow;
 import io.dapr.workflows.WorkflowStub;
 

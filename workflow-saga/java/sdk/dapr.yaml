@@ -2,6 +2,6 @@ version: 1
 common:
   resourcesPath: ../../components
 apps:
-  - appID: WorkflowConsoleApp
+  - appID: SagaConsoleApp
     appDirPath: ./order-processor-saga/target
-    command: ["java", "-jar", "OrderProcessingSagaService-0.0.1-SNAPSHOT.jar", "io.dapr.quickstarts.workflows.WorkflowConsoleApp"]
+    command: ["java", "-jar", "SagaService-0.0.1-SNAPSHOT.jar", "io.dapr.quickstarts.saga.SagaConsoleApp"]

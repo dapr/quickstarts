@@ -1,4 +1,4 @@
-package io.dapr.quickstarts.workflows.models;
+package io.dapr.quickstarts.saga.models;
 
 public class InventoryRequest {
 
