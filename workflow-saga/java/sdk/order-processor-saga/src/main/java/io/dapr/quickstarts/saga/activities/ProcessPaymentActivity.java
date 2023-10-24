@@ -6,8 +6,9 @@ import org.slf4j.LoggerFactory;
 import io.dapr.quickstarts.saga.models.PaymentRequest;
 import io.dapr.workflows.runtime.WorkflowActivity;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
+import io.dapr.workflows.saga.CompensatableWorkflowActivity;
 
-public class ProcessPaymentActivity implements WorkflowActivity {
+public class ProcessPaymentActivity implements WorkflowActivity, CompensatableWorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(ProcessPaymentActivity.class);
 
   @Override
@@ -26,4 +27,17 @@ public class ProcessPaymentActivity implements WorkflowActivity {
     return true;
   }
 
+  @Override
+  public void compensate(Object activityInput, Object activityOutput) {
+    PaymentRequest input = (PaymentRequest) activityInput;
+
+    // Simulate slow processing
+    try {
+      Thread.sleep(3 * 1000);
+    } catch (InterruptedException e) {
+    }
+
+    logger.info("Compensating payment for request ID '{}' at ${}", 
+      input.getRequestId(), input.getAmount());
+  }
 }

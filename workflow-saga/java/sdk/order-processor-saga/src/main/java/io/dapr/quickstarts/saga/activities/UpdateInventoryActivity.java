@@ -12,8 +12,9 @@ import io.dapr.quickstarts.saga.models.InventoryResult;
 import io.dapr.quickstarts.saga.models.OrderPayload;
 import io.dapr.workflows.runtime.WorkflowActivity;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
+import io.dapr.workflows.saga.CompensatableWorkflowActivity;
 
-public class UpdateInventoryActivity implements WorkflowActivity {
+public class UpdateInventoryActivity implements WorkflowActivity, CompensatableWorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(UpdateInventoryActivity.class);
 
   private static final String STATE_STORE_NAME = "statestore";
@@ -65,6 +66,36 @@ public class UpdateInventoryActivity implements WorkflowActivity {
     InventoryResult inventoryResult = new InventoryResult();
     inventoryResult.setSuccess(true);
     return inventoryResult;
+  }
+
+  @Override
+  public void compensate(Object activityInput, Object activityOutput) {
+    InventoryRequest inventoryRequest = (InventoryRequest) activityInput;
+    logger.info("Compensating inventory for order '{}' of {} {}",
+        inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());
+
+    // Simulate slow processing
+    try {
+      Thread.sleep(2 * 1000);
+    } catch (InterruptedException e) {
+    }
+
+    State<InventoryItem> inventoryState = daprClient
+        .getState(STATE_STORE_NAME, inventoryRequest.getItemName(), InventoryItem.class).block();
+    InventoryItem inventory = inventoryState.getValue();
+    int newQuantity = inventory.getQuantity() + inventoryRequest.getQuantity();
+
+    // Update the statestore with the new amount
+    OrderPayload updatedOrderPayload = new OrderPayload();
+    updatedOrderPayload.setItemName(inventoryRequest.getItemName());
+    updatedOrderPayload.setQuantity(newQuantity);
+    daprClient.saveState(STATE_STORE_NAME, inventoryRequest.getItemName(), inventoryState.getEtag(),
+        updatedOrderPayload, null).block();
+
+    logger.info("Compensated inventory for order '{}': there are now {} {} left in stock",
+        inventoryRequest.getRequestId(), newQuantity, inventoryRequest.getItemName());
+    // in addition to print to std out for validation
+    System.out.println("there are now " + newQuantity + " " + inventoryRequest.getItemName() + " left in stock");
   }
 
 }
