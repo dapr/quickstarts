@@ -7,10 +7,10 @@ This quickstart shows method invocation and state persistent capabilities of Dap
 - **Division**: Node [Express](https://expressjs.com/) application
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
-The front-end application consists of a server and a client written in [React](https://reactjs.org/). 
-Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator) 
+The front-end application consists of a server and a client written in [React](https://reactjs.org/).
+Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator)
 
-The following architecture diagram illustrates the components that make up this quickstart: 
+The following architecture diagram illustrates the components that make up this quickstart:
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
@@ -109,7 +109,7 @@ name: "Run dotnet app"
 output_match_mode: substring
 working_dir: "./csharp/bin/Debug/netcoreapp7.0"
 background: true
-env: 
+env:
   ASPNETCORE_URLS: 'http://localhost:7001'
 sleep: 5
 -->
@@ -175,7 +175,7 @@ working_dir: "./python"
    ```bash
    #Linux/Mac OS:
    export FLASK_RUN_PORT=5001
-   
+
    #Windows:
    set FLASK_RUN_PORT=5001
    ```
@@ -245,7 +245,7 @@ sleep: 15
 
     ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence and the different apps that are contacted to perform the operation. 
+7. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence and the different apps that are contacted to perform the operation.
 
 <!-- STEP
 name: Pause for manual validation
@@ -291,7 +291,7 @@ name: "Curl test"
    ```
 
    ```bash
-   curl -s http://localhost:8080/state 
+   curl -s http://localhost:8080/state
    ```
 
 <!-- END_STEP -->
@@ -302,7 +302,7 @@ name: "Curl test"
    18
    1.5294117647058822
    1768
-   
+
    {"operation":null,"total":"54","next":null}
    ```
 
@@ -328,11 +328,11 @@ name: Cleanup local
    ```bash
    dapr stop --app-id subtractapp
    ```
-   
+
    ```bash
    dapr stop --app-id divideapp
    ```
-   
+
    ```bash
    dapr stop --app-id multiplyapp
    ```
@@ -359,14 +359,14 @@ working_dir: "./node"
 1. Navigate to the deploy directory in this quickstart directory: `cd deploy`
    > **Note**: `appconfig.yaml` is not used directly for this quickstart but is present for the [observability quickstart](../observability).
 2. Follow [these instructions](https://docs.dapr.io/getting-started/tutorials/configure-state-pubsub/#step-1-create-a-redis-store) to create and configure a Redis store
-3. Deploy all of your resources: 
+3. Deploy all of your resources:
 
-
+<!-- Changing appconfig to configured as validate.yaml GH WF, inits Dapr using dev mode.-->
 <!-- STEP
 name: "Deploy Kubernetes"
 working_dir: "./deploy"
 expected_stdout_lines:
-  - "configuration.dapr.io/appconfig created"
+  - "configuration.dapr.io/appconfig configured"
   - "deployment.apps/subtractapp created"
   - "deployment.apps/addapp created"
   - "deployment.apps/divideapp created"
@@ -376,11 +376,18 @@ expected_stdout_lines:
   - "component.dapr.io/statestore created"
 -->
 
-```bash 
+```bash
 kubectl apply -f .
-``` 
+```
 
 <!-- END_STEP -->
+
+   > **Note**: If you had previously installed, dapr using the `dapr init -k --dev` command, the `appconfig` previously installed, would have changed with the above command to point to a different zipkin collector. To point it back to the zipkin collector installed during `dapr init -k --dev`, replace the `endpointAddress` in `appconfig.yaml` with the following:
+   `endpointAddress: "http://dapr-dev-zipkin.default.svc.cluster.local:9411/api/v2/spans"`
+ and run the following command:
+   ```bash
+   kubectl apply -f appconfig.yaml
+   ```
 
    > **Note**: Services could also be deployed one-by-one by specifying the .yaml file: `kubectl apply -f go-adder.yaml`.
 
@@ -462,7 +469,7 @@ This will make your service available on http://localhost:8000. Navigate to this
 
 > **Optional**: If you are using a public cloud provider, you can substitue your EXTERNAL-IP address instead of port forwarding. You can find it with:
 
-```bash 
+```bash
 kubectl get svc
 ```
 
@@ -495,21 +502,21 @@ manual_pause_message: "Calculator APP running on http://localhost:8000. Please o
 
 ![Calculator Screenshot](./img/calculator-screenshot.JPG)
 
-6. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence: 
+6. Open your browser's console window (using F12 key) to see the logs produced as you use the calculator. Note that each time you click a button, you see logs that indicate state persistence:
 
 ```js
 Persisting State:
 {total: "21", next: "2", operation: "x"}
 ```
 
-`total`, `next`, and `operation` reflect the three pieces of state a calculator needs to operate. The app persists these to a Redis store (see [Simplified State Management](#simplified-state-management) section below). By persisting these, you can refresh the page or take down the front-end pod and still jump right back where you were. Try it! Enter something into the calculator and refresh the page. The calculator should have retained the state, and the console should read: 
+`total`, `next`, and `operation` reflect the three pieces of state a calculator needs to operate. The app persists these to a Redis store (see [Simplified State Management](#simplified-state-management) section below). By persisting these, you can refresh the page or take down the front-end pod and still jump right back where you were. Try it! Enter something into the calculator and refresh the page. The calculator should have retained the state, and the console should read:
 
 ```js
 Rehydrating State:
 {total: "21", next: "2", operation: "x"}
 ```
 
-Also note that each time you enter a full equation (e.g. "126 ÷ 3 =") the logs indicate that a call is made to the service: 
+Also note that each time you enter a full equation (e.g. "126 ÷ 3 =") the logs indicate that a call is made to the service:
 
 ```js
 Calling divide service
@@ -563,7 +570,7 @@ curl -s http://localhost:8000/persist -H Content-Type:application/json --data @p
 ```
 
 ```bash
-curl -s http://localhost:8000/state 
+curl -s http://localhost:8000/state
 ```
 
 <!-- END_STEP -->
@@ -575,7 +582,7 @@ You should get the following output:
    18
    1.5294117647058822
    1768
-   
+
    {"operation":null,"total":"54","next":null}
    ```
 
@@ -624,13 +631,13 @@ const daprUrl = `http://localhost:${daprPort}/v1.0/invoke`;
 
 app.post('/calculate/add', async (req, res) => {
   const appResponse = await axios.post(`${daprUrl}/addapp/method/add`, req.body);
-  return res.send(`${appResponse.data}`); 
+  return res.send(`${appResponse.data}`);
 });
 
 
 app.post('/calculate/subtract', async (req, res) => {
   const appResponse = await axios.post(`${daprUrl}/subtractapp/method/subtract`, req.body);
-  return res.send(`${appResponse.data}`); 
+  return res.send(`${appResponse.data}`);
 });
 ...
 ```
@@ -643,20 +650,20 @@ Learn more about Dapr [service invocation](https://docs.dapr.io/developing-appli
 
 Dapr sidecars provide [state management](https://docs.dapr.io/developing-applications/building-blocks/state-management/). In this quickstart, the calculator's state is persisted each time a new button is clicked. This means a user can refresh the page, close the page or even take down the `calculator-front-end` pod, and still retain the same state when they next open it. Dapr adds a layer of indirection so that the app doesn't need to know where it's persisting state. It doesn't have to keep track of keys, handle retry logic or worry about state provider specific configuration. All it has to do is GET or POST against its Dapr sidecar's state endpoint: `http://localhost:3500/v1.0/state/${stateStoreName}`.
 
-Take a look at `server.js` in the `react-calculator` directory. Note that it exposes two state endpoints for the React client to get and set state: the GET `/state` endpoint and the POST `/persist` endpoint. Both forward client calls to the Dapr state endpoint: 
+Take a look at `server.js` in the `react-calculator` directory. Note that it exposes two state endpoints for the React client to get and set state: the GET `/state` endpoint and the POST `/persist` endpoint. Both forward client calls to the Dapr state endpoint:
 
 ```js
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 ```
 
-Our client persists state by simply POSTing JSON key-value pairs (see `react-calculator/client/src/component/App.js`): 
+Our client persists state by simply POSTing JSON key-value pairs (see `react-calculator/client/src/component/App.js`):
 
 ```js
-    const state = [{ 
-      key: "calculatorState", 
-      value 
+    const state = [{
+      key: "calculatorState",
+      value
     }];
-    
+
     fetch("/persist", {
       method: "POST",
       body: JSON.stringify(state),

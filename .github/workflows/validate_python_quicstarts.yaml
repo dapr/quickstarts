@@ -99,6 +99,7 @@ jobs:
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
+          pip3 install fastapi uvicorn
       - name: Validate building blocks with Python
         run: |
           variants=("http" "sdk")

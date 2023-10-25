@@ -1,6 +1,7 @@
 # General
 .venv
 .env
+*.exe
 *.suo
 *.user
 _ReSharper.*
@@ -42,3 +43,8 @@ packages
 
 # macOS
 .DS_Store
+
+# Auto generated deploy dir inside .dapr directory
+**/.dapr/deploy
+# Auto generated logs dir inside .dapr directory
+**/.dapr/logs

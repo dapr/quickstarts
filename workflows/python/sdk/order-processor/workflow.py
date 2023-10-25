@@ -10,7 +10,7 @@ from dapr.conf import settings
 from model import InventoryItem, Notification, InventoryRequest, OrderPayload, OrderResult,\
     PaymentRequest, InventoryResult
 
-store_name = "statestore-actors"
+store_name = "statestore"
 
 logging.basicConfig(level=logging.INFO)
 
