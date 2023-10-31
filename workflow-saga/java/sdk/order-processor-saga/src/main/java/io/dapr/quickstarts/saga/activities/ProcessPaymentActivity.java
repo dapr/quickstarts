@@ -31,13 +31,16 @@ public class ProcessPaymentActivity implements WorkflowActivity, CompensatableWo
   public void compensate(Object activityInput, Object activityOutput) {
     PaymentRequest input = (PaymentRequest) activityInput;
 
+    logger.info("Compensating payment for request ID '{}' at ${}",
+        input.getRequestId(), input.getAmount());
+
     // Simulate slow processing
     try {
       Thread.sleep(3 * 1000);
     } catch (InterruptedException e) {
     }
-
-    logger.info("Compensating payment for request ID '{}' at ${}", 
-      input.getRequestId(), input.getAmount());
+    
+    logger.info("Compensated payment for request ID '{}' at ${}",
+        input.getRequestId(), input.getAmount());
   }
 }
