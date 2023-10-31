@@ -6,14 +6,14 @@ import org.slf4j.LoggerFactory;
 import io.dapr.workflows.runtime.WorkflowActivity;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
 
-public class DistributionActivity implements WorkflowActivity {
-    private static Logger logger = LoggerFactory.getLogger(DistributionActivity.class);
+public class DeliveryActivity implements WorkflowActivity {
+    private static Logger logger = LoggerFactory.getLogger(DeliveryActivity.class);
 
   @Override
   public Object run(WorkflowActivityContext ctx) {
-    // in this quickstart, we assume that the distribution will be failed
-    // So that the workflow will be compensated
-    logger.info("Distribution failed");
+    // in this quickstart, we assume that the Delivery will be failed
+    // So that the workflow will be failed and compensated
+    logger.info("Delivery failed");
     throw new RuntimeException("Distribution failed");
   }
 

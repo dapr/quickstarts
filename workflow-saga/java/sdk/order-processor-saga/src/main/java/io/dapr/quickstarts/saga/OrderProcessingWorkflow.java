@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 
 import com.microsoft.durabletask.OrchestratorBlockedException;
 
-import io.dapr.quickstarts.saga.activities.DistributionActivity;
+import io.dapr.quickstarts.saga.activities.DeliveryActivity;
 import io.dapr.quickstarts.saga.activities.NotifyActivity;
 import io.dapr.quickstarts.saga.activities.ProcessPaymentActivity;
 import io.dapr.quickstarts.saga.activities.RequestApprovalActivity;
@@ -111,8 +111,8 @@ public class OrderProcessingWorkflow extends Workflow {
         // Update Inventory activity is succeed, register for compensation
         saga.registerCompensation(UpdateInventoryActivity.class.getName(), inventoryRequest, inventoryResult);
 
-        // step6: distribution (allways be failed to trigger compensation)
-        ctx.callActivity(DistributionActivity.class.getName(), null).await();
+        // step6: delevery (allways be failed to trigger compensation)
+        ctx.callActivity(DeliveryActivity.class.getName(), null).await();
 
         // step7: Let user know their order was processed(won't be executed if step6
         // failed)
@@ -124,6 +124,7 @@ public class OrderProcessingWorkflow extends Workflow {
         orderResult.setProcessed(true);
         ctx.complete(orderResult);
       } catch (OrchestratorBlockedException e) {
+        //TODO: try to improve design and remove this exception catch
         throw e;
       } catch (Exception e) {
         orderResult.setCompensated(true);

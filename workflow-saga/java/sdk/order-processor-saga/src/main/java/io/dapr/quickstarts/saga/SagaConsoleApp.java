@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
-import io.dapr.quickstarts.saga.activities.DistributionActivity;
+import io.dapr.quickstarts.saga.activities.DeliveryActivity;
 import io.dapr.quickstarts.saga.activities.NotifyActivity;
 import io.dapr.quickstarts.saga.activities.ProcessPaymentActivity;
 import io.dapr.quickstarts.saga.activities.RequestApprovalActivity;
@@ -54,7 +54,7 @@ public class SagaConsoleApp {
     builder.registerActivity(RequestApprovalActivity.class);
     builder.registerActivity(ReserveInventoryActivity.class);
     builder.registerActivity(UpdateInventoryActivity.class);
-    builder.registerActivity(DistributionActivity.class);
+    builder.registerActivity(DeliveryActivity.class);
 
     // Build and then start the workflow runtime pulling and executing tasks
     try (WorkflowRuntime runtime = builder.build()) {
