@@ -1,9 +1,9 @@
 
 version: 1
 common:
-  resourcesPath: ../../resources/
+  resourcesPath: ../../../resources/
 apps:
   - appID: order-processor
-    appDirPath: ./order-processor/
+    appDirPath: ./
     command: ["dotnet", "run"]
     

@@ -5,4 +5,4 @@ common:
 apps:
   - appID: order-processor
     appDirPath: ./
-    command: ["java", "-jar", "target/OrderProcessingService-0.0.1-SNAPSHOT.jar"]
+    command: ["python" , "app.py"]
