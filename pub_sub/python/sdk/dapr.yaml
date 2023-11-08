@@ -8,4 +8,4 @@ apps:
     command: ["uvicorn", "app:app"]
   - appID: checkout-sdk
     appDirPath: ./checkout/
-    command: ["python", "app.py"]
+    command: ["python3", "app.py"]

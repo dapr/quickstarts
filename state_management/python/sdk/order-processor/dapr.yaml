@@ -5,4 +5,4 @@ common:
 apps:
   - appID: order-processor
     appDirPath: ./
-    command: ["python" , "app.py"]
+    command: ["python3" , "app.py"]
