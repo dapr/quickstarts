@@ -17,21 +17,21 @@ public class ReserveInventoryActivity implements WorkflowActivity {
 
   private static final String STATE_STORE_NAME = "statestore";
 
-  private DaprClient daprClient;
-
-  public ReserveInventoryActivity() {
-    this.daprClient = new DaprClientBuilder().build();
-  }
-
   @Override
   public Object run(WorkflowActivityContext ctx) {
     InventoryRequest inventoryRequest = ctx.getInput(InventoryRequest.class);
     logger.info("Reserving inventory for order '{}' of {} {}",
         inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());
 
-    State<InventoryItem> inventoryState = daprClient.getState(STATE_STORE_NAME, inventoryRequest.getItemName(), InventoryItem.class).block();
+    State<InventoryItem> inventoryState;
+    try {
+      DaprClient daprClient = new DaprClientBuilder().build();
+      inventoryState = daprClient.getState(STATE_STORE_NAME, inventoryRequest.getItemName(), InventoryItem.class).block();
+    } catch (Exception e) {
+      throw e;
+    }
+    
     InventoryItem inventory = inventoryState.getValue();
-
     logger.info("There are {} {} available for purchase",
         inventory.getQuantity(), inventory.getName());
 

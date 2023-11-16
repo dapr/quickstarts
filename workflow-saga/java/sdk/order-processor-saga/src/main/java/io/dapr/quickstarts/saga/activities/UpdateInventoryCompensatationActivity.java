@@ -8,62 +8,47 @@ import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.domain.State;
 import io.dapr.quickstarts.saga.models.InventoryItem;
 import io.dapr.quickstarts.saga.models.InventoryRequest;
-import io.dapr.quickstarts.saga.models.InventoryResult;
 import io.dapr.quickstarts.saga.models.OrderPayload;
-import io.dapr.workflows.runtime.WorkflowActivity;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
+import io.dapr.workflows.saga.CompensatableWorkflowActivity;
 
-public class UpdateInventoryActivity implements WorkflowActivity {
-  private static Logger logger = LoggerFactory.getLogger(UpdateInventoryActivity.class);
+public class UpdateInventoryCompensatationActivity implements CompensatableWorkflowActivity {
+  private static Logger logger = LoggerFactory.getLogger(UpdateInventoryCompensatationActivity.class);
 
   private static final String STATE_STORE_NAME = "statestore";
 
   @Override
   public Object run(WorkflowActivityContext ctx) {
     InventoryRequest inventoryRequest = ctx.getInput(InventoryRequest.class);
-    logger.info("Updating inventory for order '{}' of {} {}",
+
+    logger.info("Compensating inventory for order '{}' of {} {}",
         inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());
 
-    // Simulate slow processing
-    try {
-      Thread.sleep(2 * 1000);
-    } catch (InterruptedException e) {
-    }
+    logger.info("Compensating inventory for order '{}' of {} {}",
+        inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());
 
     try {
       DaprClient daprClient = new DaprClientBuilder().build();
-
-      // Determine if there are enough Items for purchase
       State<InventoryItem> inventoryState = daprClient
           .getState(STATE_STORE_NAME, inventoryRequest.getItemName(), InventoryItem.class).block();
       InventoryItem inventory = inventoryState.getValue();
-      int newQuantity = inventory.getQuantity() - inventoryRequest.getQuantity();
-      if (newQuantity < 0) {
-        logger.info("Not enough inventory for order '{}' of {} {}, there are only {} {}",
-            inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName(),
-            inventory.getQuantity(), inventory.getName());
+      int newQuantity = inventory.getQuantity() + inventoryRequest.getQuantity();
 
-        InventoryResult inventoryResult = new InventoryResult();
-        inventoryResult.setSuccess(false);
-        return inventoryResult;
-      }
-
-      // Update the statestore with the new amount of paper clips
+      // Update the statestore with the new amount
       OrderPayload updatedOrderPayload = new OrderPayload();
       updatedOrderPayload.setItemName(inventoryRequest.getItemName());
       updatedOrderPayload.setQuantity(newQuantity);
       daprClient.saveState(STATE_STORE_NAME, inventoryRequest.getItemName(), inventoryState.getEtag(),
           updatedOrderPayload, null).block();
 
-      logger.info("Updated inventory for order '{}': there are now {} {} left in stock",
+      logger.info("Compensated inventory for order '{}': there are now {} {} left in stock",
           inventoryRequest.getRequestId(), newQuantity, inventoryRequest.getItemName());
       // in addition to print to std out for validation
       System.out.println("there are now " + newQuantity + " " + inventoryRequest.getItemName() + " left in stock");
-      InventoryResult inventoryResult = new InventoryResult();
-      inventoryResult.setSuccess(true);
-      return inventoryResult;
+      return null;
     } catch (Exception e) {
       throw e;
     }
   }
+
 }

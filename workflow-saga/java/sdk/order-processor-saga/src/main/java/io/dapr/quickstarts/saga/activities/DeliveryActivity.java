@@ -14,7 +14,7 @@ public class DeliveryActivity implements WorkflowActivity {
     // in this quickstart, we assume that the Delivery will be failed
     // So that the workflow will be failed and compensated
     logger.info("Delivery failed");
-    throw new RuntimeException("Distribution failed");
+    throw new RuntimeException("Delivery failed");
   }
 
 }

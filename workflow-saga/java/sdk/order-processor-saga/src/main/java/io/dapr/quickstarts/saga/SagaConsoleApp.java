@@ -21,9 +21,11 @@ import io.dapr.client.DaprClientBuilder;
 import io.dapr.quickstarts.saga.activities.DeliveryActivity;
 import io.dapr.quickstarts.saga.activities.NotifyActivity;
 import io.dapr.quickstarts.saga.activities.ProcessPaymentActivity;
+import io.dapr.quickstarts.saga.activities.ProcessPaymentCompensatationActivity;
 import io.dapr.quickstarts.saga.activities.RequestApprovalActivity;
 import io.dapr.quickstarts.saga.activities.ReserveInventoryActivity;
 import io.dapr.quickstarts.saga.activities.UpdateInventoryActivity;
+import io.dapr.quickstarts.saga.activities.UpdateInventoryCompensatationActivity;
 import io.dapr.quickstarts.saga.models.InventoryItem;
 import io.dapr.quickstarts.saga.models.OrderPayload;
 import io.dapr.workflows.client.DaprWorkflowClient;
@@ -55,6 +57,9 @@ public class SagaConsoleApp {
     builder.registerActivity(ReserveInventoryActivity.class);
     builder.registerActivity(UpdateInventoryActivity.class);
     builder.registerActivity(DeliveryActivity.class);
+
+    builder.registerActivity(ProcessPaymentCompensatationActivity.class);
+    builder.registerActivity(UpdateInventoryCompensatationActivity.class);
 
     // Build and then start the workflow runtime pulling and executing tasks
     try (WorkflowRuntime runtime = builder.build()) {
@@ -116,8 +121,17 @@ public class SagaConsoleApp {
     inventory.setName("cars");
     inventory.setPerItemCost(15000);
     inventory.setQuantity(100);
+
     DaprClient daprClient = new DaprClientBuilder().build();
-    restockInventory(daprClient, inventory);
+    try {
+      String key = inventory.getName();
+      daprClient.saveState(STATE_STORE_NAME, key, inventory).block();
+    } finally {
+      try{
+        daprClient.close();
+      } catch (Exception e) { 
+      }
+    }
 
     // prepare order for 10 cars
     InventoryItem order = new InventoryItem();
@@ -125,10 +139,5 @@ public class SagaConsoleApp {
     order.setPerItemCost(15000);
     order.setQuantity(10);
     return order;
-  }
-
-  private static void restockInventory(DaprClient daprClient, InventoryItem inventory) {
-    String key = inventory.getName();
-    daprClient.saveState(STATE_STORE_NAME, key, inventory).block();
   }
 }
