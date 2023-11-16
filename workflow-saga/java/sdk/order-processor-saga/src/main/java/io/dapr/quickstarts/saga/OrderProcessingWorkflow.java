@@ -2,7 +2,7 @@ package io.dapr.quickstarts.saga;
 
 import org.slf4j.Logger;
 
-import com.microsoft.durabletask.OrchestratorBlockedException;
+import com.microsoft.durabletask.interruption.OrchestratorBlockedException;
 
 import io.dapr.quickstarts.saga.activities.DeliveryActivity;
 import io.dapr.quickstarts.saga.activities.NotifyActivity;
