@@ -20,7 +20,8 @@ import io.dapr.quickstarts.saga.models.PaymentRequest;
 import io.dapr.workflows.Workflow;
 import io.dapr.workflows.WorkflowStub;
 import io.dapr.workflows.saga.Saga;
-import io.dapr.workflows.saga.SagaConfiguration;
+import io.dapr.workflows.saga.SagaCompensationException;
+import io.dapr.workflows.saga.SagaOption;
 
 public class OrderProcessingWorkflow extends Workflow {
 
@@ -33,10 +34,10 @@ public class OrderProcessingWorkflow extends Workflow {
       logger.info("Instance ID(order ID): " + orderId);
       logger.info("Current Orchestration Time: " + ctx.getCurrentInstant());
 
-      SagaConfiguration config = SagaConfiguration.newBuilder()
+      SagaOption option = SagaOption.newBuilder()
           .setParallelCompensation(false)
           .setContinueWithError(true).build();
-      Saga saga = new Saga(config);
+      Saga saga = new Saga(option);
 
       OrderPayload order = ctx.getInput(OrderPayload.class);
       logger.info("Received Order: " + order.toString());
@@ -95,7 +96,7 @@ public class OrderProcessingWorkflow extends Workflow {
           return;
         }
         // payment activity is processed, register for compensation
-        saga.registerCompensation(ProcessPaymentActivity.class.getName(), paymentRequest, isOK);
+        saga.registerCompensation(ProcessPaymentActivity.class.getName(), paymentRequest);
 
         // step5: Update the inventory (need compensation)
         inventoryResult = ctx.callActivity(UpdateInventoryActivity.class.getName(),
@@ -104,12 +105,15 @@ public class OrderProcessingWorkflow extends Workflow {
           // Let users know their payment processing failed
           notification.setMessage("Order failed to update inventory! : " + orderId);
           ctx.callActivity(NotifyActivity.class.getName(), notification).await();
-
-          // throw exception to trigger compensation
-          throw new RuntimeException("Failed to update inventory");
+          
+          // trigger saga compensation gracefully
+          saga.compensate();
+          orderResult.setCompensated(true);
+          ctx.complete(orderResult);
+          return;
         }
         // Update Inventory activity is succeed, register for compensation
-        saga.registerCompensation(UpdateInventoryActivity.class.getName(), inventoryRequest, inventoryResult);
+        saga.registerCompensation(UpdateInventoryActivity.class.getName(), inventoryRequest);
 
         // step6: delevery (allways be failed to trigger compensation)
         ctx.callActivity(DeliveryActivity.class.getName(), null).await();
@@ -124,13 +128,17 @@ public class OrderProcessingWorkflow extends Workflow {
         orderResult.setProcessed(true);
         ctx.complete(orderResult);
       } catch (OrchestratorBlockedException e) {
-        //TODO: try to improve design and remove this exception catch
+        throw e;
+      } catch (SagaCompensationException e) {
+        // Saga compensation is triggered gracefully but failed
+        // don't need to trigger compensation again
         throw e;
       } catch (Exception e) {
+        // trigger saga compensation on exception
+        saga.compensate();
+
         orderResult.setCompensated(true);
         ctx.complete(orderResult);
-        
-        saga.compensate();
       }
     };
   }

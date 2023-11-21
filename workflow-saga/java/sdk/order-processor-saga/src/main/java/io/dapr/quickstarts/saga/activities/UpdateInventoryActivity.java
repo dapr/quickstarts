@@ -69,7 +69,7 @@ public class UpdateInventoryActivity implements WorkflowActivity, CompensatableW
   }
 
   @Override
-  public void compensate(Object activityInput, Object activityOutput) {
+  public void compensate(Object activityInput) {
     InventoryRequest inventoryRequest = (InventoryRequest) activityInput;
     logger.info("Compensating inventory for order '{}' of {} {}",
         inventoryRequest.getRequestId(), inventoryRequest.getQuantity(), inventoryRequest.getItemName());

@@ -28,7 +28,7 @@ public class ProcessPaymentActivity implements WorkflowActivity, CompensatableWo
   }
 
   @Override
-  public void compensate(Object activityInput, Object activityOutput) {
+  public void compensate(Object activityInput) {
     PaymentRequest input = (PaymentRequest) activityInput;
 
     logger.info("Compensating payment for request ID '{}' at ${}",

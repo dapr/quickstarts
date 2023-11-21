@@ -45,7 +45,7 @@ public class SagaConsoleApp {
     System.out.println("*** Welcome to the Dapr saga console app sample!");
     System.out.println("*** Using this app, you can place orders that start workflows.");
     // Wait for the sidecar to become available
-    Thread.sleep(5 * 1000);
+    Thread.sleep(2 * 1000);
 
     // Register the OrderProcessingWorkflow and its activities with the builder.
     WorkflowRuntimeBuilder builder = new WorkflowRuntimeBuilder().registerWorkflow(OrderProcessingWorkflow.class);
@@ -116,8 +116,18 @@ public class SagaConsoleApp {
     inventory.setName("cars");
     inventory.setPerItemCost(15000);
     inventory.setQuantity(100);
-    DaprClient daprClient = new DaprClientBuilder().build();
-    restockInventory(daprClient, inventory);
+
+    DaprClient daprClient = null;
+    try {
+      daprClient = new DaprClientBuilder().build();
+      restockInventory(daprClient, inventory);
+    } finally {
+      try {
+        daprClient.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
 
     // prepare order for 10 cars
     InventoryItem order = new InventoryItem();
