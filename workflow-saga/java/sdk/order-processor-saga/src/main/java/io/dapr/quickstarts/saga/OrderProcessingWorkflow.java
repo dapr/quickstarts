@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import io.dapr.quickstarts.saga.activities.DeliveryActivity;
 import io.dapr.quickstarts.saga.activities.NotifyActivity;
 import io.dapr.quickstarts.saga.activities.ProcessPaymentActivity;
-import io.dapr.quickstarts.saga.activities.ProcessPaymentCompensatationActivity;
+import io.dapr.quickstarts.saga.activities.ProcessPaymentCompensationActivity;
 import io.dapr.quickstarts.saga.activities.RequestApprovalActivity;
 import io.dapr.quickstarts.saga.activities.ReserveInventoryActivity;
 import io.dapr.quickstarts.saga.activities.UpdateInventoryActivity;
-import io.dapr.quickstarts.saga.activities.UpdateInventoryCompensatationActivity;
+import io.dapr.quickstarts.saga.activities.UpdateInventoryCompensationActivity;
 import io.dapr.quickstarts.saga.models.ApprovalResult;
 import io.dapr.quickstarts.saga.models.InventoryRequest;
 import io.dapr.quickstarts.saga.models.InventoryResult;
@@ -19,7 +19,7 @@ import io.dapr.quickstarts.saga.models.OrderResult;
 import io.dapr.quickstarts.saga.models.PaymentRequest;
 import io.dapr.workflows.Workflow;
 import io.dapr.workflows.WorkflowStub;
-import io.dapr.workflows.saga.SagaConfiguration;
+import io.dapr.workflows.saga.SagaOption;
 
 public class OrderProcessingWorkflow extends Workflow {
 
@@ -85,7 +85,7 @@ public class OrderProcessingWorkflow extends Workflow {
         ctx.complete(orderResult);
         return;
       }
-      ctx.getSaga().registerCompensation(ProcessPaymentCompensatationActivity.class.getName(), paymentRequest);
+      ctx.registerCompensation(ProcessPaymentCompensationActivity.class.getName(), paymentRequest);
 
       // step5: Update the inventory (need compensation)
       inventoryResult = ctx.callActivity(UpdateInventoryActivity.class.getName(),
@@ -95,10 +95,13 @@ public class OrderProcessingWorkflow extends Workflow {
         notification.setMessage("Order failed to update inventory! : " + orderId);
         ctx.callActivity(NotifyActivity.class.getName(), notification).await();
 
-        // throw exception to trigger compensation
-        throw new RuntimeException("Failed to update inventory");
+        // trigger saga compensation gracefully
+        ctx.compensate();
+        orderResult.setCompensated(true);
+        ctx.complete(orderResult);
+        return;
       }
-      ctx.getSaga().registerCompensation(UpdateInventoryCompensatationActivity.class.getName(), inventoryRequest);
+      ctx.registerCompensation(UpdateInventoryCompensationActivity.class.getName(), inventoryRequest);
 
       // step6: delevery (allways be failed to trigger compensation)
       ctx.callActivity(DeliveryActivity.class.getName()).await();
@@ -116,8 +119,8 @@ public class OrderProcessingWorkflow extends Workflow {
   }
 
   @Override
-  public SagaConfiguration getSagaConfiguration() {
-    return SagaConfiguration.newBuilder().setParallelCompensation(false)
+  public SagaOption getSagaOption() {
+    return SagaOption.newBuilder().setParallelCompensation(false)
         .setContinueWithError(true).build();
   }
 

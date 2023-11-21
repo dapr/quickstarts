@@ -21,11 +21,11 @@ import io.dapr.client.DaprClientBuilder;
 import io.dapr.quickstarts.saga.activities.DeliveryActivity;
 import io.dapr.quickstarts.saga.activities.NotifyActivity;
 import io.dapr.quickstarts.saga.activities.ProcessPaymentActivity;
-import io.dapr.quickstarts.saga.activities.ProcessPaymentCompensatationActivity;
+import io.dapr.quickstarts.saga.activities.ProcessPaymentCompensationActivity;
 import io.dapr.quickstarts.saga.activities.RequestApprovalActivity;
 import io.dapr.quickstarts.saga.activities.ReserveInventoryActivity;
 import io.dapr.quickstarts.saga.activities.UpdateInventoryActivity;
-import io.dapr.quickstarts.saga.activities.UpdateInventoryCompensatationActivity;
+import io.dapr.quickstarts.saga.activities.UpdateInventoryCompensationActivity;
 import io.dapr.quickstarts.saga.models.InventoryItem;
 import io.dapr.quickstarts.saga.models.OrderPayload;
 import io.dapr.workflows.client.DaprWorkflowClient;
@@ -58,8 +58,8 @@ public class SagaConsoleApp {
     builder.registerActivity(UpdateInventoryActivity.class);
     builder.registerActivity(DeliveryActivity.class);
 
-    builder.registerActivity(ProcessPaymentCompensatationActivity.class);
-    builder.registerActivity(UpdateInventoryCompensatationActivity.class);
+    builder.registerActivity(ProcessPaymentCompensationActivity.class);
+    builder.registerActivity(UpdateInventoryCompensationActivity.class);
 
     // Build and then start the workflow runtime pulling and executing tasks
     try (WorkflowRuntime runtime = builder.build()) {

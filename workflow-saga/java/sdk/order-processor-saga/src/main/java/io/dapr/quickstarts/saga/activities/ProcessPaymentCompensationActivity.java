@@ -7,8 +7,8 @@ import io.dapr.quickstarts.saga.models.PaymentRequest;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
 import io.dapr.workflows.saga.CompensatableWorkflowActivity;
 
-public class ProcessPaymentCompensatationActivity implements CompensatableWorkflowActivity {
-  private static Logger logger = LoggerFactory.getLogger(ProcessPaymentCompensatationActivity.class);
+public class ProcessPaymentCompensationActivity implements CompensatableWorkflowActivity {
+  private static Logger logger = LoggerFactory.getLogger(ProcessPaymentCompensationActivity.class);
 
   @Override
   public Object run(WorkflowActivityContext ctx) {

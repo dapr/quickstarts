@@ -12,8 +12,8 @@ import io.dapr.quickstarts.saga.models.OrderPayload;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
 import io.dapr.workflows.saga.CompensatableWorkflowActivity;
 
-public class UpdateInventoryCompensatationActivity implements CompensatableWorkflowActivity {
-  private static Logger logger = LoggerFactory.getLogger(UpdateInventoryCompensatationActivity.class);
+public class UpdateInventoryCompensationActivity implements CompensatableWorkflowActivity {
+  private static Logger logger = LoggerFactory.getLogger(UpdateInventoryCompensationActivity.class);
 
   private static final String STATE_STORE_NAME = "statestore";
 
