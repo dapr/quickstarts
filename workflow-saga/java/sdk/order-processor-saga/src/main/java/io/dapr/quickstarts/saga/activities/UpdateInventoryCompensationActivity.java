@@ -9,10 +9,10 @@ import io.dapr.client.domain.State;
 import io.dapr.quickstarts.saga.models.InventoryItem;
 import io.dapr.quickstarts.saga.models.InventoryRequest;
 import io.dapr.quickstarts.saga.models.OrderPayload;
+import io.dapr.workflows.runtime.WorkflowActivity;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
-import io.dapr.workflows.saga.CompensatableWorkflowActivity;
 
-public class UpdateInventoryCompensationActivity implements CompensatableWorkflowActivity {
+public class UpdateInventoryCompensationActivity implements WorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(UpdateInventoryCompensationActivity.class);
 
   private static final String STATE_STORE_NAME = "statestore";

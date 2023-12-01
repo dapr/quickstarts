@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.dapr.quickstarts.saga.models.PaymentRequest;
+import io.dapr.workflows.runtime.WorkflowActivity;
 import io.dapr.workflows.runtime.WorkflowActivityContext;
-import io.dapr.workflows.saga.CompensatableWorkflowActivity;
 
-public class ProcessPaymentCompensationActivity implements CompensatableWorkflowActivity {
+public class ProcessPaymentCompensationActivity implements WorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(ProcessPaymentCompensationActivity.class);
 
   @Override
