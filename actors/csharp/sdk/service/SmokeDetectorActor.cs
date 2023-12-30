@@ -47,10 +47,10 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     /// <param name="data">the user-defined MyData which will be stored into state store as "device_data" state</param>
     public async Task<string> SetDataAsync(SmartDeviceData data)
     {
-        // All data operations performed on the actor are maintained against a per-actor cache and are not persisted
-        // to the actor state store until you've called `this.StateManager.SaveStateAsync();` Per the actor lifetime documentation,
-        // "If an actor is not used for a period of time, the Dapr actor runtime garbage-collects the in-memory object" meaning that 
-        // if you haven't persisted your changes to the underlying Dapr state store, your changes will be lost.
+        // This set state action can happen along other state changing operations in each actor method and those changes will be maintained
+        // in a local cache to be committed as a single transaction to the backing store when the method has completed. As such, there is 
+        // no need to (and in fact makes your code less transactional) call `this.StateManager.SaveStateAsync()` as it will be automatically
+        // invoked by the actor runtime following the conclusion of this method as part of the internal `OnPostActorMethodAsyncInternal` method.
 
         // Note also that all saved state must be DataContract serializable.
         await StateManager.SetStateAsync<SmartDeviceData>(
