@@ -18,10 +18,9 @@ This section shows how to run applications at once using [multi-app run template
 name: Install Dotnet dependencies
 -->
 
-    ```bash
-    dotnet restore
-    dotnet build
-    ```
+```bash
+dotnet build
+```
 
 <!-- END_STEP -->
 
@@ -39,13 +38,13 @@ sleep: 100
 -->
 
   ```bash
-    dapr run -f .
+  dapr run -f .
   ```
 
 3. Stop and clean up application processes
 
 ```bash
-    dapr stop -f .
+dapr stop -f .
 ```
 <!-- END_STEP -->
 
@@ -90,5 +89,7 @@ You're up and running! Both Dapr and your app logs will appear here.
 
 2. Stop and clean up application processes
 
+```bash
 dapr stop --app-id order-processor
+```
 <!-- END_STEP -->
