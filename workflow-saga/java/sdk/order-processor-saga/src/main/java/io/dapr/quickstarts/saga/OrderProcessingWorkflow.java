@@ -85,7 +85,7 @@ public class OrderProcessingWorkflow extends Workflow {
         ctx.complete(orderResult);
         return;
       }
-      ctx.registerCompensation(ProcessPaymentCompensationActivity.class.getName(), paymentRequest);
+      ctx.getSagaContext().registerCompensation(ProcessPaymentCompensationActivity.class.getName(), paymentRequest);
 
       // step5: Update the inventory (need compensation)
       inventoryResult = ctx.callActivity(UpdateInventoryActivity.class.getName(),
@@ -96,12 +96,12 @@ public class OrderProcessingWorkflow extends Workflow {
         ctx.callActivity(NotifyActivity.class.getName(), notification).await();
 
         // trigger saga compensation gracefully
-        ctx.compensate();
+        ctx.getSagaContext().compensate();
         orderResult.setCompensated(true);
         ctx.complete(orderResult);
         return;
       }
-      ctx.registerCompensation(UpdateInventoryCompensationActivity.class.getName(), inventoryRequest);
+      ctx.getSagaContext().registerCompensation(UpdateInventoryCompensationActivity.class.getName(), inventoryRequest);
 
       // step6: delevery (allways be failed to trigger compensation)
       ctx.callActivity(DeliveryActivity.class.getName()).await();
