@@ -133,7 +133,7 @@ public class SagaConsoleApp {
       }
     }
 
-    // prepare order for 10 cars
+    // prepare the order for 10 cars
     InventoryItem order = new InventoryItem();
     order.setName("cars");
     order.setPerItemCost(15000);
