@@ -35,8 +35,10 @@ cd ..
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
+  - 'Compensated inventory for order'
   - '== APP - SagaConsoleApp == there are now 100 cars left in stock'
-  - '== APP - SagaConsoleApp == workflow instance completed, out is: {"processed":false,"compensated":true}'
+  - 'Compensated payment for request ID'
+  - '== APP - SagaConsoleApp == workflow instance completed'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
