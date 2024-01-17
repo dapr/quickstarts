@@ -101,7 +101,8 @@ public class OrderProcessingWorkflow extends Workflow {
         ctx.complete(orderResult);
         return;
       }
-      ctx.getSagaContext().registerCompensation(UpdateInventoryCompensationActivity.class.getName(), inventoryRequest);
+      ctx.getSagaContext().registerCompensation(UpdateInventoryCompensationActivity.class.getName(),
+          inventoryRequest);
 
       // step6: delevery (allways be failed to trigger compensation)
       ctx.callActivity(DeliveryActivity.class.getName()).await();
