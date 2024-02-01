@@ -100,7 +100,7 @@ func main() {
 			fmt.Printf("Workflow completed - result: %v\n", metadata.RuntimeStatus.String())
 			break
 		}
-		if timeDelta.Seconds() >= 1 {
+		if timeDelta.Seconds() >= 10 {
 			metadata, err := wfClient.FetchWorkflowMetadata(context.Background(), id)
 			if err != nil {
 				log.Fatalf("failed to fetch workflow: %v", err)
