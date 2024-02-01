@@ -11,6 +11,7 @@ import (
 	"github.com/dapr/go-sdk/workflow"
 )
 
+// OrderProcessingWorkflow is the main workflow for orchestrating activities in the order process.
 func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	orderID := ctx.InstanceID()
 	var orderPayload OrderPayload
@@ -100,8 +101,7 @@ func ProcessPaymentActivity(ctx workflow.ActivityContext) (any, error) {
 	return nil, nil
 }
 
-// VerifyInventoryActivity is used to verify if an item is availabe in the inventory
-// g
+// VerifyInventoryActivity is used to verify if an item is available in the inventory
 func VerifyInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 	var input InventoryRequest
 	if err := ctx.GetInput(&input); err != nil {
@@ -126,13 +126,14 @@ func VerifyInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 	if err := json.Unmarshal(item.Value, &result); err != nil {
 		log.Fatalf("failed to parse inventory result %v", err)
 	}
-	fmt.Printf("VerifyInventoryActivity: There are %d of %s available for purchase\n", result.Quantity, result.ItemName)
+	fmt.Printf("VerifyInventoryActivity: There are %d %s available for purchase\n", result.Quantity, result.ItemName)
 	if result.Quantity >= input.Quantity {
 		return InventoryResult{Success: true, InventoryItem: result}, nil
 	}
 	return InventoryResult{Success: false, InventoryItem: InventoryItem{}}, nil
 }
 
+// UpdateInventoryActivity modifies the inventory.
 func UpdateInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 	var input PaymentRequest
 	if err := ctx.GetInput(&input); err != nil {
@@ -166,6 +167,7 @@ func UpdateInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 	return InventoryResult{Success: true, InventoryItem: result}, nil
 }
 
+// RequestApprovalActivity requests approval for the order
 func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
 	var input OrderPayload
 	if err := ctx.GetInput(&input); err != nil {

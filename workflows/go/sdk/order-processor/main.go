@@ -110,6 +110,8 @@ func main() {
 				promptForApproval(id)
 			}
 		}
+		// Sleep to not DoS the dapr dev instance
+		time.Sleep(time.Second)
 	}
 
 	fmt.Println("Purchase of item is complete")
