@@ -61,6 +61,7 @@ All contributions come through pull requests. To submit a proposed change, we re
 1. Commit and open a PR
 1. Wait for the CI process to finish and make sure all checks are green
 1. A maintainer of the project will be assigned, and you can expect a review within a few days
+1. Make sure the checks/test actions pass with your changes.  See [Test authoring] for information around how this works and how to troubleshoot.
 
 #### Use work-in-progress PRs for early feedback
 
@@ -175,6 +176,30 @@ A non-exclusive list of code that must be places in `vendor/`:
 - Tools or libraries or protocols that are open source, free software, or commercially licensed.
 
 **Thank You!** - Your contributions to open source, large or small, make projects like this possible. Thank you for taking the time to contribute.
+
+### Updating Quickstarts for new releases of Dapr
+1. Create a PR to create a new branch of of `master` named `release-<version>`, e.g. `release-1.3`.  This is the right place to put version dependent quickstarts, any stabilization work in the endgame of a release.  [Example branch](https://github.com/dapr/quickstarts/tree/release-1.13).
+2. Create a PR to change to the global Dapr runtime version in `/.github/env/global.env` to be used by Dapr CLI in all CI/CD actions and tests.  [Example PR](https://github.com/dapr/quickstarts/pull/976)
+3. Analyze checks/tests and push on maintainers to revert or address any breaks to existing quickstarts.  
+4. Ensure clean tests that match stability in `master`.  
+
+This branch is now ready to release and/or take incoming PRs for new Quickstarts.
+
+### Adding a new Quickstart
+TODO
+
+### Authoring tests for new Quickstarts
+TODO
+
+### Troubleshooting tests
+TODO
+
+### Cutting a release of quickstarts
+1. Change to the release branch created above.
+2. Make sure the matching runtime and CLI versions are set to match intent in `global.env` file
+3. Create a new [Tag](https://github.com/dapr/quickstarts/tags) from this release branch in the form of v.M.mm-rcN, e.g. `v1.13-rc1`. 
+4. After the final RC is promoted to a full release, create a new Tag dropping the RC, e.g. `v1.13.0`.  
+5. Create a new [Release]() in the form of `v1.13` and reference the tag from last step.  Note the releases have convention of no dot releases (e.g. v1.13.0) unless patched (e.g. v1.13.1).  Include highlights and changelist in the release notes, and double check that contributors get credit.  
 
 ## Code of Conduct
 
