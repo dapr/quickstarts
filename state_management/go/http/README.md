@@ -79,9 +79,8 @@ You're up and running! Both Dapr and your app logs will appear here.
 == APP == Retrieved Order: "{\"orderId\":3}"
 == APP == 2023/09/24 23:31:27 Deleted Order: {"orderId":3}
 ```
-<!-- END_STEP -->
 
 2. Stop and clean up application processes
-```bash
 dapr stop --app-id order-processor
-```
+
+<!-- END_STEP -->

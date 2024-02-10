@@ -88,11 +88,10 @@ sleep: 60
 ```bash
 dapr run --app-id order-processor --resources-path ../../../resources/ -- npm start
 ```
-<!-- END_STEP -->
 
 2. Stop and cleanup the process
 
 ```bash
 dapr stop --app-id order-processor
 ```
-
+<!-- END_STEP -->
