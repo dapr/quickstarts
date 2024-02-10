@@ -74,8 +74,8 @@ sleep: 15
 cd ./order-processor
 dapr run --app-id order-processor --resources-path ../../../resources/ -- dotnet run
 ```
+<!-- END_STEP -->
 
 2. Stop and clean up application processes
 
 dapr stop --app-id order-processor
-<!-- END_STEP -->
