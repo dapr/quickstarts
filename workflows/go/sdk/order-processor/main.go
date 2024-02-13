@@ -110,13 +110,15 @@ func main() {
 				promptForApproval(id)
 			}
 		}
-		// Sleep to not DoS the dapr dev instance
+		// Sleep before the next iteration
 		time.Sleep(time.Second)
 	}
 
 	fmt.Println("Purchase of item is complete")
 }
 
+// promptForApproval is an example case. There is no user input required here due to this being for testing purposes only.
+// It would be perfectly valid to add a wait here or display a prompt to continue the process.
 func promptForApproval(id string) {
 	wfClient, err := workflow.NewClient()
 	if err != nil {

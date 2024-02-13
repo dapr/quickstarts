@@ -18,7 +18,10 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	if err := ctx.GetInput(&orderPayload); err != nil {
 		return nil, err
 	}
-	if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Received order %s for %d %s - $%d", orderID, orderPayload.Quantity, orderPayload.ItemName, orderPayload.TotalCost)})).Await(nil); err != nil {
+	err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{
+		Message: fmt.Sprintf("Received order %s for %d %s - $%d", orderID, orderPayload.Quantity, orderPayload.ItemName, orderPayload.TotalCost),
+	})).Await(nil)
+	if err != nil {
 		return OrderResult{Processed: false}, err
 	}
 
@@ -32,9 +35,9 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	}
 
 	if !verifyInventoryResult.Success {
-		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Insufficient inventory for %s", orderPayload.ItemName)})).Await(nil); err != nil {
-			return OrderResult{Processed: false}, err
-		}
+		notification := Notification{Message: fmt.Sprintf("Insufficient inventory for %s", orderPayload.ItemName)}
+		err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(notification)).Await(nil)
+		return OrderResult{Processed: false}, err
 	}
 
 	if orderPayload.TotalCost > 50000 {
@@ -54,21 +57,29 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 			if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been rejected!", orderID)})).Await(nil); err != nil {
 				log.Printf("failed to notify of an unsuccessful order :%v\n", err)
 			}
-			return OrderResult{Processed: false}, nil
+			return OrderResult{Processed: false}, err
 		}
 	}
-	if err := ctx.CallActivity(ProcessPaymentActivity, workflow.ActivityInput(PaymentRequest{
+	err = ctx.CallActivity(ProcessPaymentActivity, workflow.ActivityInput(PaymentRequest{
 		RequestID:          orderID,
 		ItemBeingPurchased: orderPayload.ItemName,
 		Amount:             orderPayload.TotalCost,
 		Quantity:           orderPayload.Quantity,
-	})).Await(nil); err != nil {
+	})).Await(nil)
+	if err != nil {
 		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
 			log.Printf("failed to notify of a failed order: %v", err)
 		}
 		return OrderResult{Processed: false}, err
 	}
-	if err := ctx.CallActivity(UpdateInventoryActivity, workflow.ActivityInput(PaymentRequest{RequestID: orderID, ItemBeingPurchased: orderPayload.ItemName, Amount: orderPayload.TotalCost, Quantity: orderPayload.Quantity})).Await(nil); err != nil {
+
+	err = ctx.CallActivity(UpdateInventoryActivity, workflow.ActivityInput(PaymentRequest{
+		RequestID:          orderID,
+		ItemBeingPurchased: orderPayload.ItemName,
+		Amount:             orderPayload.TotalCost,
+		Quantity:           orderPayload.Quantity,
+	})).Await(nil)
+	if err != nil {
 		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
 			log.Printf("failed to notify of a failed order: %v", err)
 		}
@@ -78,7 +89,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s has completed!", orderID)})).Await(nil); err != nil {
 		log.Printf("failed to notify of a successful order: %v", err)
 	}
-	return OrderResult{Processed: true}, nil
+	return OrderResult{Processed: true}, err
 }
 
 // NotifyActivity outputs a notification message

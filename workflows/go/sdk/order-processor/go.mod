@@ -1,6 +1,8 @@
 module dapr_example
 
-go 1.21.6
+go 1.21
+
+toolchain go1.21.6
 
 require github.com/dapr/go-sdk v1.6.1-0.20240209153236-ac26e622c4a6
 
