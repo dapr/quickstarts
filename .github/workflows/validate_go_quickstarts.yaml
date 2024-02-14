@@ -35,23 +35,23 @@ jobs:
     env:
       DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      GOVER: 1.18
+      GOVER: 1.21
       KUBERNETES_VERSION: v1.21.1
       KIND_VERSION: v0.11.0
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
       PODMAN_VERSION: 4.4.4
     strategy:
-      matrix: 
+      matrix:
         os: [ubuntu-latest]
       fail-fast: false
     steps:
-      - name: Check out code 
-        uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v4
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
-          envFile: './.github/env/global.env'
-          expand: 'true'
+          envFile: "./.github/env/global.env"
+          expand: "true"
       - name: Install podman - MacOS
         timeout-minutes: 15
         if: matrix.os == 'macos-latest'
@@ -76,7 +76,7 @@ jobs:
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Set up Go ${{ env.GOVER }}
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GOVER }}
       - name: Set up Dapr CLI - Mac/Linux
@@ -84,7 +84,7 @@ jobs:
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
       - name: Set up Dapr CLI - Windows
         if: matrix.os == 'windows-latest'
-        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"     
+        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"
       - name: Install Dapr
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
@@ -116,3 +116,4 @@ jobs:
       - name: Linkcheck README.md
         run: |
           make validate
+
