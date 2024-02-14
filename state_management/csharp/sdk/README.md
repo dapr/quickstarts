@@ -92,4 +92,3 @@ You're up and running! Both Dapr and your app logs will appear here.
 ```bash
 dapr stop --app-id order-processor
 ```
-<!-- END_STEP -->
