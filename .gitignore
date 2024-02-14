@@ -18,6 +18,7 @@ release.properties
 mvnw
 packages
 **/__pycache__/
+Debug/
 
 # IDE generated files and directories
 *.iml
