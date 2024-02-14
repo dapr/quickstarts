@@ -24,8 +24,8 @@ expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
-timeout_seconds: 30
+sleep: 30
+timeout_seconds: 60
 -->
 
 ```bash
