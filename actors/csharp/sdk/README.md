@@ -34,15 +34,15 @@ Run the `SmartDevice.Service`, which will start service itself and the Dapr side
 <!-- STEP
 name: Run actor service
 expected_stdout_lines:
-  - "Request finished HTTP/1.1 GET http://127.0.0.1:5001/healthz - - - 200"
+  - "Request finished HTTP/1.1 GET http://127.0.0.1:5001/healthz - 200"
 expected_stderr_lines:
-working_dir: ./service
+working_dir: .
 output_match_mode: substring
 background: true
 sleep: 30
 -->
 ```bash
-cd actors/csharp/sdk/service
+cd service
 dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-port 56001 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
 <!-- END_STEP -->
@@ -70,13 +70,13 @@ name: Run actor client
 expected_stdout_lines:
   - "Device 2 state: Location: Second Floor, Status: Ready"
 expected_stderr_lines:
-working_dir: ./client
+working_dir: .
 output_match_mode: substring
 background: true
 sleep: 60
 -->
 ```bash
-cd ./actors/csharp/sdk/client
+cd client
 dapr run --app-id actorclient -- dotnet run
 ```
 <!-- END_STEP -->
