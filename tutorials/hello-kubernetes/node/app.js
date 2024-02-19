@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 const daprPort = process.env.DAPR_HTTP_PORT ?? "3500"; 
 const daprGRPCPort = process.env.DAPR_GRPC_PORT ?? "50001";
 
-const stateStoreName = `statestore`;
+const stateStoreName = process.env.STATE_STORE_NAME ?? "statestore";
 const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
 const port = process.env.APP_PORT ?? "3000";
 
