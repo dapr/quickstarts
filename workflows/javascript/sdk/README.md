@@ -35,8 +35,9 @@ cd ..
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - there are now 90 item1 in stock'
-  - '== APP - processed successfully!'
+  - '== APP - workflowApp == == APP == Payment of 100 for 10 item1 processed successfully'
+  - 'there are now 90 item1 in stock'
+  - 'processed successfully!'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
