@@ -10,7 +10,7 @@ export const notifyActivity = async (_: WorkflowActivityContext, orderNotificati
   return;
 };
 
-//Defines Verify Inventory Activity. This is used by the workflow to verify if inventory is available for the order
+//Defines Reserve Inventory Activity. This is used by the workflow to verify if inventory is available for the order
 export const reserveInventoryActivity = async (_: WorkflowActivityContext, inventoryRequest: InventoryRequest) => {
   console.log(`Reserving inventory for ${inventoryRequest.requestId} of ${inventoryRequest.quantity} ${inventoryRequest.itemName}`);
   const result = await daprClient.state.get(storeName, inventoryRequest.itemName);

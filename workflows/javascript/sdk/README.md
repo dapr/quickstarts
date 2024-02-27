@@ -26,7 +26,6 @@ name: build order-process app
 cd ./javascript/sdk
 npm install
 npm run build
-cd ..
 ```
 
 <!-- END_STEP -->

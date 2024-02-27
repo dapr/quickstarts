@@ -4,16 +4,8 @@ import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, reques
 
 async function start() {
   // Update the gRPC client and worker to use a local address and port
-  const daprHost = "localhost";
-  const daprPort = "50001";
-  const workflowClient = new DaprWorkflowClient({
-    daprHost,
-    daprPort,
-  });
-  const workflowRuntime = new WorkflowRuntime({
-    daprHost,
-    daprPort,
-  });
+  const workflowClient = new DaprWorkflowClient();
+  const workflowWorker = new WorkflowRuntime();
 
   const daprClient = new DaprClient();
   const storeName = "statestore";
@@ -30,7 +22,7 @@ async function start() {
 
   const order = new OrderPayload("item1", 100, 10);
 
-  workflowRuntime
+  workflowWorker
   .registerWorkflow(orderProcessingWorkflow)
   .registerActivity(notifyActivity)
   .registerActivity(reserveInventoryActivity)
@@ -40,7 +32,7 @@ async function start() {
 
   // Wrap the worker startup in a try-catch block to handle any errors during startup
   try {
-    await workflowRuntime.start();
+    await workflowWorker.start();
     console.log("Workflow runtime started successfully");
   } catch (error) {
     console.error("Error starting workflow runtime:", error);
@@ -57,13 +49,11 @@ async function start() {
     console.log(`Orchestration completed! Result: ${state?.serializedOutput}`);
   } catch (error) {
     console.error("Error scheduling or waiting for orchestration:", error);
+    throw error;
   }
 
-  await workflowRuntime.stop();
+  await workflowWorker.stop();
   await workflowClient.stop();
-
-  // stop the dapr side car
-  process.exit(0);
 }
 
 start().catch((e) => {
