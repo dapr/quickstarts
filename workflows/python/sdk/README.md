@@ -49,16 +49,11 @@ dapr run -f .
 
 ```
 ==========Begin the purchase of item:==========
-To restock items, type 'restock'.
-To exit workflow console app, type 'exit'.
-Enter the name of one of the following items to order: paperclip, cars, computers: cars
-How many cars would you like to purchase? 10
 Starting order workflow, purchasing 10 of cars
 INFO:NotifyActivity:Received order b903d749cd814e099f06ebf4a56a2f90 for 10 cars at $150000 !
 INFO:VerifyInventoryActivity:Verifying inventory for order b903d749cd814e099f06ebf4a56a2f90 of 10 cars
 INFO:VerifyInventoryActivity:There are 100 Cars available for purchase
 INFO:RequestApprovalActivity:Requesting approval for payment of 150000 USD for 10 cars
-(ID = b903d749cd814e099f06ebf4a56a2f90) requires approval. Approve? [Y/N] y
 INFO:NotifyActivity:Payment for order b903d749cd814e099f06ebf4a56a2f90 has been approved!
 INFO:ProcessPaymentActivity:Processing payment: b903d749cd814e099f06ebf4a56a2f90 for 10 cars at 150000 USD
 INFO:ProcessPaymentActivity:Payment for request ID b903d749cd814e099f06ebf4a56a2f90 processed successfully
