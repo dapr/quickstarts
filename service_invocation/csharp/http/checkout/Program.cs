@@ -1,21 +1,19 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Dapr.Client;
 
-var baseURL = (Environment.GetEnvironmentVariable("BASE_URL") ?? "http://localhost") + ":" + (Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3500");
-
-var client = new HttpClient();
-client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-// Adding app id as part of the header
-client.DefaultRequestHeaders.Add("dapr-app-id", "order-processor");
+var client = DaprClient.CreateInvokeHttpClient(appId: "order-processor");
 
 for (int i = 1; i <= 20; i++) {
     var order = new Order(i);
-    var orderJson = JsonSerializer.Serialize<Order>(order);
-    var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
+
+    var cts = new CancellationTokenSource();
+    Console.CancelKeyPress += (object? sender, ConsoleCancelEventArgs e) => cts.Cancel();
 
     // Invoking a service
-    var response = await client.PostAsync($"{baseURL}/orders", content);
+    var response = await client.PostAsJsonAsync("/orders", order, cts.Token);
+
     Console.WriteLine("Order passed: " + order);
 
     await Task.Delay(TimeSpan.FromSeconds(1));
