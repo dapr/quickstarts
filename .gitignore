@@ -19,6 +19,7 @@ mvnw
 packages
 **/__pycache__/
 **/dist/
+Debug/
 
 # IDE generated files and directories
 *.iml
