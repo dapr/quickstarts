@@ -13,7 +13,7 @@
 	<name>BatchProcessingService</name>
 	<description>Quickstart for Dapr Bindings building block</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
