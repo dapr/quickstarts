@@ -1,2 +1,2 @@
-dapr
+dapr==1.13.0rc1
 typing-extensions
