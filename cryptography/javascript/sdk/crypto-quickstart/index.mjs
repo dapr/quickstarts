@@ -2,7 +2,7 @@ import { createReadStream, createWriteStream } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
 
-import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
+import { DaprClient, CommunicationProtocolEnum } from "@dapr/dapr-dev";
 
 const daprHost = process.env.DAPR_HOST ?? "127.0.0.1";
 const daprPort = process.env.DAPR_GRPC_PORT ?? "50001";

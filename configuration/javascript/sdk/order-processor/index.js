@@ -1,4 +1,4 @@
-import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr";
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr-dev";
 
 // JS SDK does not support Configuration API over HTTP protocol yet
 const communicationProtocol = CommunicationProtocolEnum.GRPC;

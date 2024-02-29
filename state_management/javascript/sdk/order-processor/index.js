@@ -1,4 +1,4 @@
-import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr"
+import { CommunicationProtocolEnum, DaprClient } from "@dapr/dapr-dev"
 
 const communicationProtocol = (process.env.DAPR_PROTOCOL === "grpc")
     ? CommunicationProtocolEnum.GRPC

@@ -8,7 +8,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@dapr/dapr": "^3.2.0",
+        "@dapr/dapr-dev": "^3.2.0-20240212030427-319e2fb",
         "axios": "^0.25.0"
     }
 }

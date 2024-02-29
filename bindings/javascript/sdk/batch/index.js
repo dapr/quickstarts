@@ -15,7 +15,7 @@ limitations under the License.
 dapr run --app-id batch-sdk --app-port 5002 --dapr-http-port 3500 --resources-path ../../../components -- node index.js
 */
 
-import { DaprClient, DaprServer } from "@dapr/dapr";
+import { DaprClient, DaprServer } from "@dapr/dapr-dev";
 import fs from 'fs';
 
 const cronBindingName = "cron";
