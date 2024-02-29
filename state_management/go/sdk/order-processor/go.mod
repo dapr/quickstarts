@@ -2,8 +2,6 @@ module order_processor_sdk_example
 
 go 1.21
 
-toolchain go1.22.0
-
 require github.com/dapr/go-sdk v1.10.0-rc-1
 
 require (
