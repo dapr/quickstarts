@@ -15,19 +15,6 @@ This section shows how to run applications at once using [multi-app run template
 1. Open a new terminal window and run  `order-processor` using the multi app run template defined in [dapr.yaml](./dapr.yaml):
 
 <!-- STEP
-name: Install Dotnet dependencies
--->
-
-    ```bash
-    dotnet restore
-    dotnet build
-    ```
-
-<!-- END_STEP -->
-
-2. Run the Dotnet service app with Dapr:
-
-<!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
   - '== APP - order-processor == Getting Order: Order { orderId = 1 }'
@@ -38,14 +25,14 @@ background: true
 sleep: 100
 -->
 
-  ```bash
-    dapr run -f .
-  ```
+```bash
+dapr run -f .
+```
 
-3. Stop and clean up application processes
+2. Stop and clean up application processes
 
 ```bash
-    dapr stop -f .
+dapr stop -f .
 ```
 <!-- END_STEP -->
 
@@ -71,6 +58,7 @@ sleep: 15
 cd ./order-processor
 dapr run --app-id order-processor --resources-path ../../../resources/ -- dotnet run
 ```
+<!-- END_STEP -->
 
 The Terminal console output should look similar to this:
 
@@ -90,5 +78,6 @@ You're up and running! Both Dapr and your app logs will appear here.
 
 2. Stop and clean up application processes
 
+```bash
 dapr stop --app-id order-processor
-<!-- END_STEP -->
+```

@@ -12,7 +12,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@dapr/dapr": "^3.2.0"
+        "@dapr/dapr": "^3.3.0"
     },
     "devDependencies": {
         "eslint": "^8.8.0",

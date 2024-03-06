@@ -1,0 +1,22 @@
+{
+  "name": "dapr-example-workflow-authoring",
+  "version": "1.0.0",
+  "description": "An example utilizing the Dapr JS-SDK to author workflow",
+  "private": "true",
+  "scripts": {
+    "build": "npx tsc --outDir ./dist/",
+    "start:order-process": "npm run build && node dist/workflowApp.js",
+    "start:dapr:order-process": "dapr run --app-id activity-sequence-workflow --app-protocol grpc --dapr-grpc-port 50001 --components-path ../../components npm run start:order-process"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/readline-sync": "^1.4.8",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@dapr/dapr": "^3.3.0",
+    "@types/node": "^18.16.3"
+  }
+}

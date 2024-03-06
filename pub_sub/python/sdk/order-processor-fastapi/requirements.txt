@@ -1,4 +1,4 @@
 fastapi
-dapr-ext-fastapi==1.10.0
+dapr-ext-fastapi-dev
 cloudevents
 uvicorn
