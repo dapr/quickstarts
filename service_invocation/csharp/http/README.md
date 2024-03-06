@@ -33,7 +33,7 @@ expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
+sleep: 60
 timeout_seconds: 30
 -->
 

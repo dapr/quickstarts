@@ -1,4 +1,4 @@
-import { DaprWorkflowClient, WorkflowRuntime, DaprClient } from "@dapr/dapr-dev";
+import { DaprWorkflowClient, WorkflowRuntime, DaprClient } from "@dapr/dapr";
 import { InventoryItem, OrderPayload } from "./model";
 import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, requestApprovalActivity, reserveInventoryActivity, updateInventoryActivity } from "./orderProcessingWorkflow";
 

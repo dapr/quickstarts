@@ -1,4 +1,4 @@
-import { WorkflowActivityContext, WorkflowContext, TWorkflow, DaprClient } from "@dapr/dapr-dev";
+import { WorkflowActivityContext, WorkflowContext, TWorkflow, DaprClient } from "@dapr/dapr";
 import { InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest } from "./model";
 
 const daprClient = new DaprClient();
