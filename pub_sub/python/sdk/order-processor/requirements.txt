@@ -3,3 +3,4 @@ dapr>=1.13.0a,<1.14.0
 cloudevents
 uvicorn
 typing-extensions
+werkzeug>=3.0.3 # not directly required, pinned by Snyk to avoid a vulnerability
