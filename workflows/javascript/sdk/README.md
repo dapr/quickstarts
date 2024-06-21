@@ -50,12 +50,14 @@ timeout_seconds: 120
 ```bash
 dapr run -f .
 ```
+<!-- END_STEP -->
 
 - Entry point 2 : Express app
 
 ```bash
 dapr run -f dapr-AppWithExpressServer.yaml
 ```
+
 ```bash
 curl --request POST \
   --url http://localhost:3500/v1.0/invoke/workflowApp/method/start-workflow
@@ -165,4 +167,3 @@ When you ran `dapr run --app-id activity-sequence-workflow --app-protocol grpc -
 8. The `notifyActivity` workflow activity sends a notification saying that order `0c332155-1e02-453a-a333-28cfc7777642` has completed and processed.
 9. The workflow terminates as completed and processed.
 
-<!-- END_STEP -->
