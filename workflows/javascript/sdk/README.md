@@ -30,9 +30,22 @@ npm install
 npm run build
 ```
 
+<!-- END_STEP -->
 2. Run the app 
 
 - Entry point 1 : JavaScript console app
+<!-- STEP
+name: Run order-processor service
+expected_stdout_lines:
+  - '== APP - workflowApp == == APP == Payment of 100 for 10 item1 processed successfully'
+  - 'there are now 90 item1 in stock'
+  - 'processed successfully!'
+expected_stderr_lines:
+output_match_mode: substring
+background: true
+sleep: 15
+timeout_seconds: 120
+-->
 
 ```bash
 dapr run -f .
@@ -152,3 +165,4 @@ When you ran `dapr run --app-id activity-sequence-workflow --app-protocol grpc -
 8. The `notifyActivity` workflow activity sends a notification saying that order `0c332155-1e02-453a-a333-28cfc7777642` has completed and processed.
 9. The workflow terminates as completed and processed.
 
+<!-- END_STEP -->
