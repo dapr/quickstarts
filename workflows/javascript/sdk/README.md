@@ -37,7 +37,7 @@ npm run build
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - workflowApp == == APP == Payment of 100 for 10 item1 processed successfully'
+  - '== APP - workflowApp == Payment of 100 for 10 item1 processed successfully'
   - 'there are now 90 item1 in stock'
   - 'processed successfully!'
 expected_stderr_lines:
