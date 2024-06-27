@@ -19,11 +19,11 @@ const app = express();
 app.use(bodyParser.json());
 
 // These ports are injected automatically into the container.
-const daprPort = process.env.DAPR_HTTP_PORT ?? "3500"; 
-const daprGRPCPort = process.env.DAPR_GRPC_PORT ?? "50001";
+const daprHttpEndpoint = process.env.DAPR_HTTP_ENDPOINT ?? "http://localhost:3500"; 
+const daprGRPCEndpoint = process.env.DAPR_GRPC_ENDPOINT ?? "http://localhost:50001";
 
 const stateStoreName = process.env.STATE_STORE_NAME ?? "statestore";
-const stateUrl = `http://localhost:${daprPort}/v1.0/state/${stateStoreName}`;
+const stateUrl = `${daprHttpEndpoint}/v1.0/state/${stateStoreName}`;
 const port = process.env.APP_PORT ?? "3000";
 
 app.get('/order', async (_req, res) => {
@@ -71,9 +71,9 @@ app.post('/neworder', async (req, res) => {
 });
 
 app.get('/ports', (_req, res) => {
-    console.log("DAPR_HTTP_PORT: " + daprPort);
-    console.log("DAPR_GRPC_PORT: " + daprGRPCPort);
-    res.status(200).send({DAPR_HTTP_PORT: daprPort, DAPR_GRPC_PORT: daprGRPCPort })
+    console.log("DAPR_HTTP_ENDPOINT: " + daprHttpEndpoint);
+    console.log("DAPR_GRPC_ENDPOINT: " + daprGRPCEndpoint);
+    res.status(200).send({DAPR_HTTP_ENDPOINT: daprHttpEndpoint, DAPR_GRPC_ENDPOINT: daprGRPCEndpoint })
 });
 
 app.listen(port, () => console.log(`Node App listening on port ${port}!`));
