@@ -1,0 +1,48 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: order-processor-app
+  labels:
+    app: order-processor
+spec:
+  selector:
+    app: order-processor
+  ports:
+  - protocol: TCP
+    port: 7006
+    targetPort: 7006
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-processor-app
+  labels:
+    app: order-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-processor
+  template:
+    metadata:
+      labels:
+        app: order-processor
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "order-processor"
+        dapr.io/app-port: "7006"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "appconfig"
+        dapr.io/log-level: "debug"
+        dapr.io/enable-api-logging: "true"
+    spec:
+      containers:
+      - name: order-processor-csharp
+        image: docker.io/library/order-processor:latest
+        ports:
+        - containerPort: 7006
+        imagePullPolicy: Never
+        env:
+        - name: "ASPNETCORE_HTTP_PORTS"
+          value: "7006"

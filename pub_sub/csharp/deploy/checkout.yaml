@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-app
+  labels:
+    app: checkout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "checkout"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "appconfig"
+        dapr.io/log-level: "debug"
+        dapr.io/enable-api-logging: "true"
+    spec:
+      containers:
+      - name: checkout-csharp
+        image: docker.io/library/checkout:latest
+        imagePullPolicy: Never
