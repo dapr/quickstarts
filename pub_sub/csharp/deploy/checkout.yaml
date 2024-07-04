@@ -17,7 +17,6 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "checkout"
         dapr.io/log-as-json: "true"
-        dapr.io/config: "appconfig"
         dapr.io/log-level: "debug"
         dapr.io/enable-api-logging: "true"
     spec:

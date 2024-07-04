@@ -33,7 +33,6 @@ spec:
         dapr.io/app-id: "order-processor"
         dapr.io/app-port: "7006"
         dapr.io/log-as-json: "true"
-        dapr.io/config: "appconfig"
         dapr.io/log-level: "debug"
         dapr.io/enable-api-logging: "true"
     spec:

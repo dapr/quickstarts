@@ -7,7 +7,7 @@ spec:
   version: v1
   metadata:
   - name: redisHost
-    value: dapr-dev-redis-master:6379
+    value: dapr-dev-redis-master.default.svc.cluster.local:6379
   - name: redisPassword
     secretKeyRef:
       name: dapr-dev-redis
