@@ -1,66 +1,70 @@
-# Dapr Scheduler (HTTP)
+# Dapr Job (Dapr SDK)
 
-In this quickstart, you'll create a microservice to demonstrate Dapr's scheudler API to work with external systems as inputs and outputs. The service listens to input binding events from a system CRON and then outputs the contents of local data to a PostreSql output binding. 
+In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
-Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindings/) link for more information about Dapr and Bindings.
+Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Job API.
 
-> **Note:** This example leverages only HTTP REST.  If you are looking for the example using the Dapr SDK [click here](../sdk).
+> **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
 This quickstart includes one service:
  
 - Go service `app`
 
-### Run and initialize PostgreSQL container
+### Run and initialize the server
 
-1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
-
-<!-- STEP
-name: Run and initialize PostgreSQL container
-expected_return_code:
-background: true
-sleep: 60
-timeout_seconds: 120
--->
+Open a new terminal, change directories to `/maintenance-scheduler`, and start the server: 
 
 ```bash
-cd ../../db
-docker-compose up
+cd maintenance-scheduler
+dapr run --app-id job-http --app-port 3500 --dapr-http-port 6002 --log-level debug -- go run .
 ```
 
-<!-- END_STEP -->
+### Schedule a job using an HTTP request
 
-### Run Go service with Dapr
-
-2. Open a new terminal, change directories to `./batch` in the quickstart directory and run: 
-
-<!-- STEP
-name: Install Go dependencies
--->
+ Open a new terminal window and run:
 
 ```bash
-cd ./batch
-go build .
+curl -X POST \
+  http://localhost:6002/v1.0-alpha1/jobs/r2-d2 \
+  -H "Content-Type: application/json" 
+  -d '{
+        "job": {
+            "data": {
+                "maintenanceType": "Oil Change"
+            },
+            "dueTime": "30s"
+        }
+    }'
 ```
 
-<!-- END_STEP -->
-3. Run the Go service app with Dapr: 
+You should see a `202` response.
 
-<!-- STEP
-name: Run batch-http service
-working_dir: ./batch
-expected_stdout_lines:
-  - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
-  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.40)'
-  - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
-  - '== APP == Finished processing batch'
-expected_stderr_lines:
-output_match_mode: substring
-sleep: 11
-timeout_seconds: 30
--->
-    
+### Get a scheduled job using an HTTP request
+
+On the same terminal window yoy used to schedule the job or a new one, run:
+
 ```bash
-dapr run --app-id batch-http --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 --resources-path ../../../components -- go run .
+curl -X GET http://localhost:6002/v1.0-alpha1/jobs/r2-d2 -H "Content-Type: application/json" 
 ```
 
-<!-- END_STEP -->
+You should see the following:
+
+```bash
+{
+  "name":"r2-d2",
+  "dueTime":"30s",
+  "data": {
+     "maintenanceType": "Oil Change"
+   }
+}   
+```
+
+### Delete a scheduled job using an HTTP request
+
+On the same terminal window you used to schedule the job or a new one, run:
+
+```bash
+curl -X DELETE http://localhost:6002/v1.0-alpha1/jobs/r2-d2 -H "Content-Type: application/json" 
+```
+
+You should see a `202` response.
