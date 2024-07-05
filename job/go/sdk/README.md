@@ -10,57 +10,23 @@ This quickstart includes one service:
  
 - Go service `app`
 
-### Run and initialize PostgreSQL container
+### Run the Go service app with Dapr
 
-1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
+This example will schedule 6 different droid manintenance jobs:
 
-<!-- STEP
-name: Run and initialize PostgreSQL container
-expected_return_code:
-background: true
-sleep: 60
-timeout_seconds: 120
--->
-
-```bash
-cd ../../db
-docker-compose up
+```go
+droids := []Droid{
+  {Name: "R2-D2", Jobs: []string{"Oil Change", "Circuitry Check"}},
+  {Name: "C-3PO", Jobs: []string{"Memory Wipe", "Limb Calibration"}},
+  {Name: "BB-8", Jobs: []string{"Internal Gyroscope Check", "Map Data Update"}},
+}
 ```
 
-<!-- END_STEP -->
-
-### Run Go service with Dapr
-
-2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run: 
-
-<!-- STEP
-name: Install Go dependencies
--->
+Open a terminal window and run, navigate to the `/maintenance-scheduler` folder and run:
 
 ```bash
-cd ./batch
-go build .
-```
-
-<!-- END_STEP -->
-3. Run the Go service app with Dapr: 
-
-<!-- STEP
-name: Run batch-sdk service
-working_dir: ./batch
-expected_stdout_lines:
-  - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
-  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.40)'
-  - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
-  - '== APP == Finished processing batch'
-expected_stderr_lines:
-output_match_mode: substring
-sleep: 11
-timeout_seconds: 30
--->
-    
-```bash
-dapr run --app-id batch-sdk --app-port 6004 --dapr-http-port 3502 --dapr-grpc-port 60002 --resources-path ../../../components -- go run .
+cd maintenance-scheduler
+dapr run --app-id job-sdk --app-port 6004 --dapr-http-port 3502 --dapr-grpc-port 60002 -- go run .
 ```
 
 <!-- END_STEP -->
