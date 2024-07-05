@@ -14,7 +14,7 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id job-sdk --app-port 6003 --dapr-http-port 3503 --dapr-grpc-port 60003 -- go run .
+dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 -- go run .
 */
 
 import (

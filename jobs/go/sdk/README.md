@@ -15,6 +15,7 @@ This quickstart includes one service:
 This example will schedule 6 different droid manintenance jobs:
 
 ```go
+
 droids := []Droid{
   {Name: "R2-D2", Jobs: []string{"Oil Change", "Circuitry Check"}},
   {Name: "C-3PO", Jobs: []string{"Memory Wipe", "Limb Calibration"}},

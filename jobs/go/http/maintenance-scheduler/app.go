@@ -14,7 +14,7 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id job-http --app-port 3500 --dapr-http-port 60021 --log-level debug --scheduler-host-address=127.0.0.1:50006 -- go run .
+dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --log-level debug --scheduler-host-address=127.0.0.1:50006 -- go run .
 */
 
 import (
