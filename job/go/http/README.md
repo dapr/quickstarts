@@ -26,7 +26,7 @@ dapr run --app-id job-http --app-port 3500 --dapr-http-port 6002 --log-level deb
 ```bash
 curl -X POST \
   http://localhost:6002/v1.0-alpha1/jobs/r2-d2 \
-  -H "Content-Type: application/json" 
+  -H "Content-Type: application/json" \
   -d '{
         "job": {
             "data": {
