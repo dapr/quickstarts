@@ -1,4 +1,4 @@
-# Dapr Job (Dapr SDK)
+# Dapr Job (SDK))
 
 In this quickstart, you'll create a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
@@ -27,7 +27,7 @@ Open a terminal window and run, navigate to the `/maintenance-scheduler` folder 
 
 ```bash
 cd maintenance-scheduler
-dapr run --app-id job-sdk --app-port 6004 --dapr-http-port 3502 --dapr-grpc-port 60002 -- go run .
+dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 -- go run .
 ```
 
 <!-- END_STEP -->
