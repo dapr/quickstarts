@@ -1,4 +1,4 @@
-# Dapr Job (Dapr SDK)
+# Dapr Job (HTTP request)
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
