@@ -1,4 +1,4 @@
-# Dapr Job (HTTP request)
+# Dapr Job (Dapr SDK)
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
@@ -16,7 +16,7 @@ Open a new terminal, change directories to `/maintenance-scheduler`, and start t
 
 ```bash
 cd maintenance-scheduler
-dapr run --app-id job-http --app-port 3500 --dapr-http-port 6002 --log-level debug -- go run .
+dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --log-level debug -- go run .
 ```
 
 ### Schedule a job using an HTTP request

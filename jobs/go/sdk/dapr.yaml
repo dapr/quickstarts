@@ -1,0 +1,9 @@
+version: 1
+apps:
+  - appDirPath: ./maintenance-scheduler/
+    appID: maintenance-scheduler
+    appPort: 5200
+    appProtocol: http
+    daprHTTPPort: 5280
+    daprGRPCPort: 5201
+    command: ["go", "run", "."]
