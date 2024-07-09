@@ -47,7 +47,7 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for orderId2 : value: "102"'
+  - '== APP == Configuration for orderId2 : 102'
   - '== APP == Subscription ID is'
 expected_stderr_lines:
 output_match_mode: substring

@@ -15,11 +15,11 @@ with DaprClient() as client:
     # Get config items from the config store
     for key in CONFIGURATION_KEYS:
         resp = client.get_configuration(store_name=DAPR_CONFIGURATION_STORE, keys=[key], config_metadata={})
-        print(f"Configuration for {key} : {resp.items[key]}", flush=True)
+        print(f"Configuration for {key} : {resp.items[key].value}", flush=True)
 
 def handler(id: str, resp: ConfigurationResponse):
     for key in resp.items:
-        print("Configuration update {'"+key+"' : {'value': '"+ resp.items[key].value +"'}}", flush=True)
+        print(f"Configuration update {key} : {resp.items[key].value}", flush=True)
 
 
 async def subscribe_config():
@@ -38,6 +38,3 @@ async def subscribe_config():
             print("Error unsubscribing from config updates", flush=True)
 
 asyncio.run(subscribe_config())
-
-
-
