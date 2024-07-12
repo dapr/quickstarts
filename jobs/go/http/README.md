@@ -24,13 +24,16 @@ expected_stdout_lines:
   - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
   - '== APP - job-scheduler == Job Scheduled: C-3PO'
-  - '== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}'
+  - '== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}'
+  - '== APP - job-service == Received job request...'
+  - '== APP - job-service == Starting droid: C-3PO'
+  - '== APP - job-service == Executing maintenance job: Limb Calibration'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
 sleep: 10
-timeout_seconds: 80
+timeout_seconds: 60
 -->
 
 ```bash
@@ -50,15 +53,21 @@ The terminal console output should look similar to this, where:
 == APP - job-service == Starting droid: R2-D2
 == APP - job-service == Executing maintenance job: Oil Change
 == APP - job-scheduler == Job Scheduled: C-3PO
-== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
+== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
 ```
 
-After 60 seconds, the terminal output should present the `C-3PO` job being processed:
+After 30 seconds, the terminal output should present the `C-3PO` job being processed:
 
 ```text
 == APP - job-service == Received job request...
 == APP - job-service == Starting droid: C-3PO
 == APP - job-service == Executing maintenance job: Limb Calibration
+```
+
+2. Stop and clean up application processes
+
+```bash
+dapr stop -f .
 ```
 
 <!-- END_STEP -->
@@ -110,7 +119,7 @@ curl -X POST \
       "@type": "type.googleapis.com/google.type.Expr",
       "expression": "C-3PO:Limb Calibration"
     },
-    "dueTime": "60s"
+    "dueTime": "30s"
   }
 }' 
 ```
@@ -126,7 +135,7 @@ curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: appli
 You should see the following:
 
 ```text
-{"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
+{"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
 ```
 
 ### Delete a scheduled job
@@ -134,7 +143,7 @@ You should see the following:
 1. On the same terminal window, run the command below to deleted the recently scheduled `C-3PO` job.
 
 ```bash
-curl -X DELETE http://localhost:6002/v1.0-alpha1/jobs/r2-d2 -H "Content-Type: application/json" 
+curl -X DELETE http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
 ```
 
 2. Run the command below to attempt to retrieve rhe deleted job:
