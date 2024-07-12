@@ -1,4 +1,6 @@
-# Dapr Job (SDK))
+# Dapr Job (SDK)
+
+// Run dapr in debug mode - Cassie's example
 
 In this quickstart, you'll create a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
@@ -24,6 +26,25 @@ droids := []Droid{
 ```
 
 Open a terminal window and run, navigate to the `/maintenance-scheduler` folder and run:
+
+<!-- STEP
+name: Run sidecar
+output_match_mode: substring
+expected_stdout_lines:
+  - 'Scheduler stream connected'
+  - 'schedulejob - success'
+  - 'job 0 received'
+  - 'extracted payload: {db-backup {my-prod-db /backup-dir}}'
+  - 'job 1 received'
+  - 'extracted payload: {db-backup {my-prod-db /backup-dir}}'
+  - 'job 2 received'
+  - 'extracted payload: {db-backup {my-prod-db /backup-dir}}'
+  - 'getjob - resp: &{prod-db-backup @every 1s 10   value:"{\"task\":\"db-backup\",\"metadata\":{\"db_name\":\"my-prod-db\",\"backup_location\":\"/backup-dir\"}}"}'
+  - 'deletejob - success'
+background: true
+sleep: 30
+timeout_seconds: 60
+-->
 
 ```bash
 cd maintenance-scheduler

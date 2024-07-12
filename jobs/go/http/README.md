@@ -1,4 +1,4 @@
-# Dapr Jobs (API)
+# Dapr Hobs
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
@@ -6,65 +6,145 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/)
 
 > **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
-This quickstart includes one service:
- 
-- Go service `app`
+This quickstart includes two apps:
 
-### Run and initialize the server
+- `job-scheduler.go`, responsible for scheduling, retrieving and deleting jobs.
+- `job-service`, responsible for handling the scheduled jobs.
 
-Open a new terminal, change directories to `/maintenance-scheduler`, and start the server: 
+## Run the app with the template file
+
+This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
+
+Open a new terminal window and run the multi app run template:
+
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - == APP - job-service == Received job request...
+  - == APP - job-service == Starting droid: R2-D2
+  - == APP - job-service == Executing maintenance job: Oil Change
+  - == APP - job-scheduler == Job Scheduled: C-3PO
+  - == APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: true
+sleep: 10
+timeout_seconds: 60
+-->
 
 ```bash
-cd maintenance-scheduler
-dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 -- go run .
+dapr run -f .
 ```
 
-### Schedule a job using an HTTP request
+The terminal console output should look similar to this, where:
 
- Open a new terminal window and run:
+- The `R2-D2` job is being scheduled.
+- The `R2-D2` job is being executed after 2 seconds.
+- The `C-3PO` job is being scheduled.
+- The `C-3PO` job is being retrieved.
+
+```text
+== APP - job-scheduler == Job Scheduled: R2-D2
+== APP - job-service == Received job request...
+== APP - job-service == Starting droid: R2-D2
+== APP - job-service == Executing maintenance job: Oil Change
+== APP - job-scheduler == Job Scheduled: C-3PO
+== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
+```
+
+After 60 seconds, the terminal output should present the `C-3PO` job being processed:
+
+```text
+== APP - job-service == Received job request...
+== APP - job-service == Starting droid: C-3PO
+== APP - job-service == Executing maintenance job: Limb Calibration
+```
+
+<!-- END_STEP -->
+
+## Run the Jobs APIs individually
+
+### Schedule Jobs
+
+1. Open a terminal and run the `job-service` app:
+
+```bash
+dapr run --app-id job-service --app-port 5200 --dapr-http-port 5280 -- go run .
+```
+
+2. On a new terminal window, schedule the `R2-D2` Job using the Jobs API.
 
 ```bash
 curl -X POST \
-  http://localhost:6002/v1.0-alpha1/jobs/r2-d2 \
+  http://localhost:5280/v1.0-alpha1/jobs/r2-d2 \
   -H "Content-Type: application/json" \
   -d '{
-        "job": {
-            "data": {
-                "maintenanceType": "Oil Change"
-            },
-            "dueTime": "30s"
-        }
-    }'
+  "job": {
+    "data": {
+      "@type": "type.googleapis.com/google.type.Expr",
+      "expression": "R2-D2:Oil Change"
+    },
+    "dueTime": "2s"
+  }
+}' 
 ```
 
-You should see a `202` response.
+Back at the `job-service` app terminal window, the output should be:
 
-### Get a scheduled job using an HTTP request
+```text
+== APP - job-app == Received job request...
+== APP - job-app == Starting droid: R2-D2
+== APP - job-app == Executing maintenance job: Oil Change
+```
 
-On the same terminal window yoy used to schedule the job or a new one, run:
+3. On the same terminal window, schedule the `C-3PO` Job using the Jobs API.
 
 ```bash
-curl -X GET http://localhost:6002/v1.0-alpha1/jobs/r2-d2 -H "Content-Type: application/json" 
+curl -X POST \
+  http://localhost:5280/v1.0-alpha1/jobs/c-3po \
+  -H "Content-Type: application/json" \
+  -d '{
+  "job": {
+    "data": {
+      "@type": "type.googleapis.com/google.type.Expr",
+      "expression": "C-3PO:Limb Calibration"
+    },
+    "dueTime": "60s"
+  }
+}' 
+```
+
+### Get a scheduled job
+
+1. On the same terminal window, run the command below to get the recently scheduled `C-3PO` job.
+
+```bash
+curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
 ```
 
 You should see the following:
 
-```bash
-{
-  "name":"r2-d2",
-  "dueTime":"30s",
-  "data": {
-     "maintenanceType": "Oil Change"
-   }
-}   
+```text
+{"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
 ```
 
-### Delete a scheduled job using an HTTP request
+### Delete a scheduled job
 
-On the same terminal window you used to schedule the job or a new one, run:
+1. On the same terminal window, run the command below to deleted the recently scheduled `C-3PO` job.
 
 ```bash
 curl -X DELETE http://localhost:6002/v1.0-alpha1/jobs/r2-d2 -H "Content-Type: application/json" 
 ```
 
-You should see a `202` response.
+2. Run the command below to attempt to retrieve rhe deleted job:
+
+```bash
+curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
+```
+
+Back at the `job-service` app terminal window, the output should be:
+
+```text
+ERRO[0249] Error getting job c-3po due to: rpc error: code = Unknown desc = job not found: app||default||job-service||c-3po  instance=diagrid.local scope=dapr.api type=log ver=1.14.0-rc.2
+```

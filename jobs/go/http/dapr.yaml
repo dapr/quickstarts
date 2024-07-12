@@ -1,8 +1,12 @@
 version: 1
 apps:
-  - appDirPath: ./maintenance-scheduler/
-    appID: maintenance-scheduler
+  - appDirPath: ./job-service/
+    appID: job-service
     appPort: 5200
-    appProtocol: http
     daprHTTPPort: 5280
+    command: ["go", "run", "."]
+  - appDirPath: ./job-scheduler/
+    appID: job-scheduler
+    appPort: 5300
+    daprHTTPPort: 5380
     command: ["go", "run", "."]
