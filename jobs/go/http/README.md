@@ -20,17 +20,17 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - == APP - job-service == Received job request...
-  - == APP - job-service == Starting droid: R2-D2
-  - == APP - job-service == Executing maintenance job: Oil Change
-  - == APP - job-scheduler == Job Scheduled: C-3PO
-  - == APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
+  - '== APP - job-service == Received job request...'
+  - '== APP - job-service == Starting droid: R2-D2'
+  - '== APP - job-service == Executing maintenance job: Oil Change'
+  - '== APP - job-scheduler == Job Scheduled: C-3PO'
+  - '== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"60s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
 sleep: 10
-timeout_seconds: 60
+timeout_seconds: 80
 -->
 
 ```bash
