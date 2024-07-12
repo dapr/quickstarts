@@ -28,12 +28,6 @@ import (
 dapr run --app-id job-app --app-port 5200 --dapr-http-port 5280 --log-level debug --scheduler-host-address=127.0.0.1:50006 -- go run .
 */
 
-var jobMap = map[string]string{
-	"R2-D2": "Oil Change",
-	"C-3PO": "Memory Wipe",
-	"BB-8":  "Internal Gyroscope Check",
-}
-
 type Job struct {
 	TypeURL string `json:"type_url"`
 	Value   string `json:"value"`
@@ -97,19 +91,10 @@ func handleJob(w http.ResponseWriter, r *http.Request) {
 }
 
 func setDroidJob(decodedValue string) DroidJob {
+	// Removing new lines from decoded value - Workaround for base64 encoding issue
 	droidStr := strings.ReplaceAll(decodedValue, "\n", "")
 	droidArray := strings.Split(droidStr, ":")
 
 	droidJob := DroidJob{Droid: droidArray[0], Task: droidArray[1]}
 	return droidJob
 }
-
-// func handleGetJob(w http.ResponseWriter, r *http.Request) {
-// 	w.WriteHeader(http.StatusOK)
-
-// }
-
-// func handleDeleteJob(w http.ResponseWriter, r *http.Request) {
-// 	w.WriteHeader(http.StatusOK)
-
-// }
