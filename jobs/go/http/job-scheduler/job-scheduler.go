@@ -16,7 +16,7 @@ var c3poJobBody = `{
 		"@type": "type.googleapis.com/google.type.Expr",
 		"expression": "C-3PO:Limb Calibration"
 	  },
-	  "dueTime": "60s"
+	  "dueTime": "30"
 	}
   }`
 
