@@ -14,7 +14,7 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 -- go run .
+dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 --scheduler-host-address=127.0.0.1:50006 -- go run .
 */
 
 import (
@@ -23,9 +23,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
-	daprc "github.com/mikeee/dapr_go-sdk/tree/feat-dist-scheduler/client"
+	daprc "github.com/dapr/go-sdk/client"
 
 	"github.com/dapr/go-sdk/service/common"
 	daprs "github.com/dapr/go-sdk/service/grpc"
@@ -56,15 +57,13 @@ func main() {
 		{Name: "BB-8", Jobs: []string{"Internal Gyroscope Check", "Map Data Update"}},
 	}
 
-	//Create new Dapr client
-	daprClient, err := daprc.NewClient()
-	if err != nil {
-		panic(err)
+	appPort := os.Getenv("APP_PORT")
+	if appPort == "" {
+		appPort = "5280"
 	}
-	defer daprClient.Close()
 
 	// Create a new Dapr service
-	server, err := daprs.NewService(":6003")
+	server, err := daprs.NewService(":" + appPort)
 	if err != nil {
 		log.Fatalf("failed to start the server: %v", err)
 	}
@@ -75,6 +74,13 @@ func main() {
 			log.Fatalf("failed to start server: %v", err)
 		}
 	}()
+
+	//Create new Dapr client
+	daprClient, err := daprc.NewClient()
+	if err != nil {
+		panic(err)
+	}
+	defer daprClient.Close()
 
 	// Brief intermission to allow for the server to initialize.
 	time.Sleep(10 * time.Second)
@@ -104,7 +110,11 @@ func main() {
 			// schedule job
 			scheduleJob(ctx, maintenanceJob, jobData)
 
+			break
+
 		}
+
+		break
 	}
 }
 
@@ -112,16 +122,20 @@ func scheduleJob(ctx context.Context, maintenanceJob MaintenanceJob, jobData []b
 	// schedule job
 	job := daprc.Job{
 		Name:     maintenanceJob.JobName,
-		Schedule: "@every 1s",
+		Schedule: "@every 10s",
 		Repeats:  10,
+		TTL:      "60s",
+		DueTime:  "1s",
 		Data: &anypb.Any{
 			Value: jobData,
 		},
 	}
 
+	fmt.Printf("Scheduling job %+v\n", job)
+
 	err := daprClient.ScheduleJobAlpha1(ctx, &job)
 	if err != nil {
-		log.Fatalf("failed to schedule job %v: %v", maintenanceJob.JobName, err)
+		fmt.Printf("failed to schedule job %v: %v", maintenanceJob.JobName, err)
 	}
 
 	fmt.Println("schedulejob - success")
