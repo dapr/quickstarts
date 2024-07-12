@@ -58,6 +58,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	if res.StatusCode != http.StatusNoContent {
+		log.Fatalf("failed to register job event handler. status code: %v", res.StatusCode)
+	}
+
 	defer res.Body.Close()
 
 	fmt.Println("Job Scheduled:", jobName)
