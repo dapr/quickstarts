@@ -2,7 +2,7 @@
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
-Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Job API.
+Visit [this](https://v1-14.docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Job API.
 
 > **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
@@ -24,7 +24,7 @@ expected_stdout_lines:
   - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
   - '== APP - job-scheduler == Job Scheduled: C-3PO'
-  - '== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}'
+  - '== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"C-3PO:Limb Calibration"}}'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: C-3PO'
   - '== APP - job-service == Executing maintenance job: Limb Calibration'
@@ -32,8 +32,8 @@ expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 10
-timeout_seconds: 60
+sleep: 60
+timeout_seconds: 120
 -->
 
 ```bash
@@ -53,7 +53,7 @@ The terminal console output should look similar to this, where:
 == APP - job-service == Starting droid: R2-D2
 == APP - job-service == Executing maintenance job: Oil Change
 == APP - job-scheduler == Job Scheduled: C-3PO
-== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
+== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"ttype.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
 ```
 
 After 30 seconds, the terminal output should present the `C-3PO` job being processed:
@@ -91,8 +91,8 @@ curl -X POST \
   -d '{
   "job": {
     "data": {
-      "@type": "type.googleapis.com/google.type.Expr",
-      "expression": "R2-D2:Oil Change"
+      "@type": "type.googleapis.com/google.protobuf.StringValue",
+      "value": "R2-D2:Oil Change"
     },
     "dueTime": "2s"
   }
@@ -116,8 +116,8 @@ curl -X POST \
   -d '{
   "job": {
     "data": {
-      "@type": "type.googleapis.com/google.type.Expr",
-      "expression": "C-3PO:Limb Calibration"
+      "@type": "type.googleapis.com/google.protobuf.StringValue",
+      "value": "C-3PO:Limb Calibration"
     },
     "dueTime": "30s"
   }
@@ -135,7 +135,7 @@ curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: appli
 You should see the following:
 
 ```text
-{"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.type.Expr", "expression":"C-3PO:Limb Calibration"}}
+{"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
 ```
 
 ### Delete a scheduled job
@@ -146,7 +146,7 @@ You should see the following:
 curl -X DELETE http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
 ```
 
-2. Run the command below to attempt to retrieve rhe deleted job:
+2. Run the command below to attempt to retrieve the deleted job:
 
 ```bash
 curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 

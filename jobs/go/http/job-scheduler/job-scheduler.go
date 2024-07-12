@@ -13,18 +13,18 @@ import (
 var c3poJobBody = `{
 	"job": {
 	  "data": {
-		"@type": "type.googleapis.com/google.type.Expr",
-		"expression": "C-3PO:Limb Calibration"
+		"@type": "type.googleapis.com/google.protobuf.StringValue",
+		"value": "C-3PO:Limb Calibration"
 	  },
-	  "dueTime": "30"
+	  "dueTime": "30s"
 	}
   }`
 
 var r2d2JobBody = `{
 	"job": {
 	  "data": {
-		"@type": "type.googleapis.com/google.type.Expr",
-		"expression": "R2-D2:Oil Change"
+		"@type": "type.googleapis.com/google.protobuf.StringValue",
+		"value": "R2-D2:Oil Change"
 	  },
 	  "dueTime": "2s"
 	}
