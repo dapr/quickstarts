@@ -1,4 +1,4 @@
-# Dapr Hobs
+# Dapr Jobs
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
@@ -9,7 +9,7 @@ Visit [this](https://v1-14.docs.dapr.io/developing-applications/building-blocks/
 This quickstart includes two apps:
 
 - `job-scheduler.go`, responsible for scheduling, retrieving and deleting jobs.
-- `job-service`, responsible for handling the scheduled jobs.
+- `job-service.go`, responsible for handling the scheduled jobs.
 
 ## Run the app with the template file
 
