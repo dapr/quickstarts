@@ -38,18 +38,26 @@ type Droid struct {
 	Jobs []string
 }
 
-type DroidJob struct {
-	DroidName string
-	DroidJob  string
+type Metadata struct {
+	DroidName string `json:"droidName"`
+}
+
+type DroidTask struct {
+	Task     string   `json:"task"`
+	Metadata Metadata `json:"metadata"`
 }
 
 func main() {
 
 	// Define the droids and their maintenance jobs
+	// droids := []Droid{
+	// 	{Name: "R2-D2", Jobs: []string{"Oil Change", "Circuitry Check"}},
+	// 	{Name: "C-3PO", Jobs: []string{"Memory Wipe", "Limb Calibration"}},
+	// 	{Name: "BB-8", Jobs: []string{"Internal Gyroscope Check", "Map Data Update"}},
+	// }
+
 	droids := []Droid{
-		{Name: "R2-D2", Jobs: []string{"Oil Change", "Circuitry Check"}},
-		{Name: "C-3PO", Jobs: []string{"Memory Wipe", "Limb Calibration"}},
-		{Name: "BB-8", Jobs: []string{"Internal Gyroscope Check", "Map Data Update"}},
+		{Name: "R2-D2", Jobs: []string{"Oil Change"}},
 	}
 
 	//Create new Dapr client
@@ -64,32 +72,33 @@ func main() {
 		for _, job := range droid.Jobs {
 
 			//create maintenance job
-			droidJob := DroidJob{
-				DroidName: droid.Name,
-				DroidJob:  job,
-			}
-
-			jobData, err := json.Marshal(droidJob)
-			if err != nil {
-				log.Fatalf("failed to marshall job %v: %v", droidJob.DroidJob, err)
+			task := DroidTask{
+				Task: job,
+				Metadata: Metadata{
+					DroidName: droid.Name,
+				},
 			}
 
 			ctx := context.Background()
 			//schedule job
-			scheduleJob(ctx, droidJob, jobData)
+			scheduleJob(ctx, task)
 
 		}
 	}
 }
 
-func scheduleJob(ctx context.Context, droidJob DroidJob, jobData []byte) {
+func scheduleJob(ctx context.Context, task DroidTask) {
+
+	jobData, err := json.Marshal(task)
+	if err != nil {
+		log.Fatalf("failed to marshall job %v: %v", task.Metadata.DroidName, err)
+	}
+
 	// schedule job
 	job := daprc.Job{
-		Name:     droidJob.DroidName,
-		Schedule: "@every 10s",
+		Name:     task.Metadata.DroidName,
+		Schedule: "@every 5s",
 		Repeats:  10,
-		TTL:      "60s",
-		DueTime:  "1s",
 		Data: &anypb.Any{
 			Value: jobData,
 		},
@@ -97,12 +106,17 @@ func scheduleJob(ctx context.Context, droidJob DroidJob, jobData []byte) {
 
 	fmt.Printf("Scheduling job %+v\n", job)
 
-	err := daprClient.ScheduleJobAlpha1(ctx, &job)
+	err = daprClient.ScheduleJobAlpha1(ctx, &job)
 	if err != nil {
-		fmt.Printf("failed to schedule job for %v: %v", droidJob.DroidName, err)
+		fmt.Println("failed to schedule job. err: ", err)
 	}
 
-	fmt.Println("schedulejob - success")
-
 	time.Sleep(3 * time.Second)
+
+	resp, err := daprClient.GetJobAlpha1(ctx, task.Metadata.DroidName)
+	if err != nil {
+		fmt.Println("failed to get job. err: ", task.Metadata.DroidName, err)
+	}
+	fmt.Println("getjob - resp: ", resp) // parse
+
 }

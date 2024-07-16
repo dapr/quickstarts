@@ -4,6 +4,8 @@ apps:
     appID: job-service
     appPort: 5200
     daprHTTPPort: 5280
+    daprGRPCPort: 5281
+    appProtocol: grpc
     command: ["go", "run", "."]
   - appDirPath: ./job-scheduler/
     appID: job-scheduler

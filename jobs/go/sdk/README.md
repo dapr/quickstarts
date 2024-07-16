@@ -1,54 +1,159 @@
-# Dapr Job (SDK)
+# Dapr Hobs
 
-// Run dapr in debug mode - Cassie's example
+In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
-In this quickstart, you'll create a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
+Visit [this](https://v1-14.docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Job API.
 
-Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Job API.
+> **Note:** This example leverages the SDK only.  If you are looking for the example using the HTTP requests (recommended) [click here](../http/).
 
-> **Note:** This example leverages the Dapr SDK.  If you are looking for the example using HTTP REST only [click here](../http).
+This quickstart includes two apps:
 
-This quickstart includes one service:
- 
-- Go service `app`
+- `job-scheduler.go`, responsible for scheduling, retrieving and deleting jobs.
+- `job-service.go`, responsible for handling the scheduled jobs.
 
-### Run the Go service app with Dapr
+## Run the app with the template file
 
-This example will schedule 6 different droid manintenance jobs:
+This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
 
-```go
-
-droids := []Droid{
-  {Name: "R2-D2", Jobs: []string{"Oil Change", "Circuitry Check"}},
-  {Name: "C-3PO", Jobs: []string{"Memory Wipe", "Limb Calibration"}},
-  {Name: "BB-8", Jobs: []string{"Internal Gyroscope Check", "Map Data Update"}},
-}
-```
-
-Open a terminal window and run, navigate to the `/maintenance-scheduler` folder and run:
+Open a new terminal window and run the multi app run template:
 
 <!-- STEP
-name: Run sidecar
-output_match_mode: substring
+name: Run multi app run template
 expected_stdout_lines:
-  - 'Scheduler stream connected'
-  - 'schedulejob - success'
-  - 'job 0 received'
-  - 'extracted payload: {db-backup {my-prod-db /backup-dir}}'
-  - 'job 1 received'
-  - 'extracted payload: {db-backup {my-prod-db /backup-dir}}'
-  - 'job 2 received'
-  - 'extracted payload: {db-backup {my-prod-db /backup-dir}}'
-  - 'getjob - resp: &{prod-db-backup @every 1s 10   value:"{\"task\":\"db-backup\",\"metadata\":{\"db_name\":\"my-prod-db\",\"backup_location\":\"/backup-dir\"}}"}'
-  - 'deletejob - success'
+  - '== APP - job-service == Received job request...'
+  - '== APP - job-service == Starting droid: R2-D2'
+  - '== APP - job-service == Executing maintenance job: Oil Change'
+  - '== APP - job-scheduler == Job Scheduled: C-3PO'
+  - '== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"C-3PO:Limb Calibration"}}'
+  - '== APP - job-service == Received job request...'
+  - '== APP - job-service == Starting droid: C-3PO'
+  - '== APP - job-service == Executing maintenance job: Limb Calibration'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
 background: true
-sleep: 30
-timeout_seconds: 60
+sleep: 60
+timeout_seconds: 120
 -->
 
 ```bash
-cd maintenance-scheduler
-dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 -- go run .
+dapr run -f .
+```
+
+The terminal console output should look similar to this, where:
+
+- The `R2-D2` job is being scheduled.
+- The `R2-D2` job is being executed after 2 seconds.
+- The `C-3PO` job is being scheduled.
+- The `C-3PO` job is being retrieved.
+
+```text
+== APP - job-scheduler == Job Scheduled: R2-D2
+== APP - job-service == Received job request...
+== APP - job-service == Starting droid: R2-D2
+== APP - job-service == Executing maintenance job: Oil Change
+== APP - job-scheduler == Job Scheduled: C-3PO
+== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"ttype.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
+```
+
+After 30 seconds, the terminal output should present the `C-3PO` job being processed:
+
+```text
+== APP - job-service == Received job request...
+== APP - job-service == Starting droid: C-3PO
+== APP - job-service == Executing maintenance job: Limb Calibration
+```
+
+2. Stop and clean up application processes
+
+```bash
+dapr stop -f .
 ```
 
 <!-- END_STEP -->
+
+## Run the Jobs APIs individually
+
+### Schedule Jobs
+
+1. Open a terminal and run the `job-service` app:
+
+```bash
+dapr run --app-id job-service --app-port 5200 --dapr-http-port 5280 -- go run .
+```
+
+2. On a new terminal window, schedule the `R2-D2` Job using the Jobs API.
+
+```bash
+curl -X POST \
+  http://localhost:5280/v1.0-alpha1/jobs/r2-d2 \
+  -H "Content-Type: application/json" \
+  -d '{
+  "job": {
+    "data": {
+      "@type": "type.googleapis.com/google.protobuf.StringValue",
+      "value": "R2-D2:Oil Change"
+    },
+    "dueTime": "2s"
+  }
+}' 
+```
+
+Back at the `job-service` app terminal window, the output should be:
+
+```text
+== APP - job-app == Received job request...
+== APP - job-app == Starting droid: R2-D2
+== APP - job-app == Executing maintenance job: Oil Change
+```
+
+3. On the same terminal window, schedule the `C-3PO` Job using the Jobs API.
+
+```bash
+curl -X POST \
+  http://localhost:5280/v1.0-alpha1/jobs/c-3po \
+  -H "Content-Type: application/json" \
+  -d '{
+  "job": {
+    "data": {
+      "@type": "type.googleapis.com/google.protobuf.StringValue",
+      "value": "C-3PO:Limb Calibration"
+    },
+    "dueTime": "30s"
+  }
+}' 
+```
+
+### Get a scheduled job
+
+1. On the same terminal window, run the command below to get the recently scheduled `C-3PO` job.
+
+```bash
+curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
+```
+
+You should see the following:
+
+```text
+{"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
+```
+
+### Delete a scheduled job
+
+1. On the same terminal window, run the command below to deleted the recently scheduled `C-3PO` job.
+
+```bash
+curl -X DELETE http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
+```
+
+2. Run the command below to attempt to retrieve the deleted job:
+
+```bash
+curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
+```
+
+Back at the `job-service` app terminal window, the output should be:
+
+```text
+ERRO[0249] Error getting job c-3po due to: rpc error: code = Unknown desc = job not found: app||default||job-service||c-3po  instance=diagrid.local scope=dapr.api type=log ver=1.14.0-rc.2
+```
