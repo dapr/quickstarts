@@ -10,5 +10,4 @@ apps:
   - appDirPath: ./job-scheduler/
     appID: job-scheduler
     appPort: 5300
-    daprHTTPPort: 5380
     command: ["go", "run", "."]
