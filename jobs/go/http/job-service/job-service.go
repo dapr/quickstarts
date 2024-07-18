@@ -24,10 +24,6 @@ import (
 	"strings"
 )
 
-/*
-dapr run --app-id job-app --app-port 5200 --dapr-http-port 5280 --log-level debug --scheduler-host-address=127.0.0.1:50006 -- go run .
-*/
-
 type Job struct {
 	TypeURL string `json:"type_url"`
 	Value   string `json:"value"`
@@ -41,7 +37,7 @@ type DroidJob struct {
 func main() {
 	appPort := os.Getenv("APP_PORT")
 	if appPort == "" {
-		appPort = "5280"
+		appPort = "5200"
 	}
 
 	// Setup job handler
