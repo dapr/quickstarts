@@ -2,11 +2,11 @@ version: 1
 apps:
   - appDirPath: ./job-service/
     appID: job-service
-    appPort: 5200
-    daprHTTPPort: 5280
+    appPort: 6200
+    daprHTTPPort: 6280
     command: ["go", "run", "."]
   - appDirPath: ./job-scheduler/
     appID: job-scheduler
-    appPort: 5300
-    daprHTTPPort: 5380
+    appPort: 6300
+    daprHTTPPort: 6380
     command: ["go", "run", "."]

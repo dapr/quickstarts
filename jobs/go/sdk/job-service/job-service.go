@@ -58,7 +58,7 @@ func main() {
 
 	appPort := os.Getenv("APP_PORT")
 	if appPort == "" {
-		appPort = "5200"
+		appPort = "6200"
 	}
 
 	//Create new Dapr client

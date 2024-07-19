@@ -31,12 +31,15 @@ var r2d2JobBody = `{
   }`
 
 func main() {
+	//Sleep for 5 seconds to wait for job-service to start
+	time.Sleep(5 * time.Second)
+
 	daprHost := os.Getenv("DAPR_HOST")
 	if daprHost == "" {
 		daprHost = "http://localhost"
 	}
 
-	schedulerDaprHttpPort := "5280"
+	schedulerDaprHttpPort := "6280"
 
 	client := http.Client{
 		Timeout: 15 * time.Second,
