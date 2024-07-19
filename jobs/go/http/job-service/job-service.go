@@ -37,7 +37,7 @@ type DroidJob struct {
 func main() {
 	appPort := os.Getenv("APP_PORT")
 	if appPort == "" {
-		appPort = "5200"
+		appPort = "6200"
 	}
 
 	// Setup job handler

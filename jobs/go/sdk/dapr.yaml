@@ -2,12 +2,12 @@ version: 1
 apps:
   - appDirPath: ./job-service/
     appID: job-service
-    appPort: 5200
-    daprHTTPPort: 5280
-    daprGRPCPort: 5281
+    appPort: 6200
+    daprHTTPPort: 6280
+    daprGRPCPort: 6281
     appProtocol: grpc
     command: ["go", "run", "."]
   - appDirPath: ./job-scheduler/
     appID: job-scheduler
-    appPort: 5300
+    appPort: 6300
     command: ["go", "run", "."]

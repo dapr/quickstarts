@@ -102,7 +102,7 @@ dapr stop -f .
 1. Open a terminal and run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 --app-protocol grpc -- go run .
+dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --dapr-grpc-port 6281 --app-protocol grpc -- go run .
 ```
 
 The output should be:
@@ -118,7 +118,7 @@ The output should be:
 2. On a new terminal window, run the `job-scheduler` app:
 
 ```bash
-dapr run --app-id job-scheduler --app-port 5300 -- go run .
+dapr run --app-id job-scheduler --app-port 6300 -- go run .
 ```
 
 The output should be:

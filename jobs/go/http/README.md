@@ -79,7 +79,7 @@ dapr stop -f .
 1. Open a terminal and run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 5200 --dapr-http-port 5280 -- go run .
+dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- go run .
 ```
 
 2. On a new terminal window, schedule the `R2-D2` Job using the Jobs API.
