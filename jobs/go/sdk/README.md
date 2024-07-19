@@ -25,10 +25,10 @@ expected_stdout_lines:
   - '== APP - job-service == Registered job handler for:  BB-8'
   - '== APP - job-service == Job scheduled:  R2-D2'
   - '== APP - job-service == Job scheduled:  C-3PO'
-  - '== APP - job-scheduler == Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}`
+  - '== APP - job-scheduler == Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}'
   - '== APP - job-service == Job scheduled:  BB-8'
   - '== APP - job-scheduler == Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}'
-  - '== APP - job-scheduler == Job deleted: BB-8'
+  - '== APP - job-scheduler == Job deleted:  BB-8'
   - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
   - '== APP - job-service == Starting droid: C-3PO'
