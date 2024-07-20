@@ -17,7 +17,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Dapr.Client;
-
+using System.Globalization;
 
 // dapr run --app-id batch-sdk --app-port 7002 --resources-path ../../../components -- dotnet run
 
@@ -27,18 +27,23 @@ var sqlBindingName = "sqldb";
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
+if (app.Environment.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
 
 // Triggered by Dapr input binding
-app.MapPost("/" + cronBindingName, async () => {
-
+app.MapPost("/" + cronBindingName, async () =>
+{
     Console.WriteLine("Processing batch..");
+
+    // Ensure the culture is set to one that uses dot notation
+    CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     string jsonFile = File.ReadAllText("../../../orders.json");
     var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
     using var client = new DaprClientBuilder().Build();
-    foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
+    foreach (Order ord in ordersArray?.orders ?? new Order[] { })
+    {
         var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
-        var command = new Dictionary<string,string>(){
+        var command = new Dictionary<string, string>(){
             {"sql",
             sqlText}
         };

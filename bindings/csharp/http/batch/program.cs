@@ -16,7 +16,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Globalization;
 
 //dapr run --app-id batch-http --app-port 7001 --resources-path ../../../components -- dotnet run
 
@@ -30,18 +30,23 @@ var daprUrl = $"{baseURL}:{daprPort}/v1.0/bindings/{sqlBindingName}";
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
+if (app.Environment.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
 
 var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
 // Triggered by Dapr input binding
-app.MapPost("/" + cronBindingName, async () => {
+app.MapPost("/" + cronBindingName, async () =>
+{
      Console.WriteLine("Processing batch..");
+
+     // Ensure the culture is set to one that uses dot notation
+     CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
      string jsonFile = File.ReadAllText("../../../orders.json");
      var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
-     foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
+     foreach (Order ord in ordersArray?.orders ?? new Order[] { })
+     {
           var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
           var payload = new DaprPayload(sql: new DaprPostgresBindingMetadata(cmd: sqlText), operation: "exec");
           var orderJson = JsonSerializer.Serialize<DaprPayload>(payload);
@@ -50,19 +55,21 @@ app.MapPost("/" + cronBindingName, async () => {
           Console.WriteLine(sqlText);
 
           // Insert order using Dapr output binding via HTTP Post
-          try {
+          try
+          {
                var resp = await httpClient.PostAsync(daprUrl, content);
                resp.EnsureSuccessStatusCode();
-          } 
-          catch (HttpRequestException e) {
+          }
+          catch (HttpRequestException e)
+          {
                Console.WriteLine(e.ToString());
                throw e;
           }
 
      }
-               
+
      Console.WriteLine("Finished processing batch");
-     
+
      return Results.Ok();
 });
 
