@@ -3,7 +3,7 @@ module dapr_job_example
 go 1.22.5
 
 require (
-	github.com/dapr/go-sdk v0.0.0-00010101000000-000000000000
+	github.com/dapr/go-sdk v1.10.0-rc-1.0.20240722191953-77c213de6164
 	google.golang.org/protobuf v1.34.2
 )
 
@@ -19,6 +19,3 @@ require (
 	google.golang.org/grpc v1.65.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-//replace github.com/dapr/go-sdk => github.com/mikeee/dapr_go-sdk v0.0.0-9008fd7e91b1562678ec84f3383950dbda4b7449
-replace github.com/dapr/go-sdk => /Users/rocha/Developer/dapr/go-sdk

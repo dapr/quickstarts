@@ -112,7 +112,7 @@ The output should be:
 == APP == Registered job handler for:  R2-D2
 == APP == Registered job handler for:  C-3PO
 == APP == Registered job handler for:  BB-8
-== APP == Starting server on port: 5200
+== APP == Starting server on port: 6200
 ```
 
 2. On a new terminal window, run the `job-scheduler` app:
@@ -124,7 +124,7 @@ dapr run --app-id job-scheduler --app-port 6300 -- go run .
 The output should be:
 
 ```text
-== APP == dapr client initializing for: 127.0.0.1:63896
+== APP == dapr client initializing for: 
 == APP == Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}
 == APP == Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}
 == APP == Job deleted:  BB-8
