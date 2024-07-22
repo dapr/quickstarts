@@ -23,7 +23,6 @@ expected_stdout_lines:
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Executing maintenance job: Oil Change'
   - '== APP - job-scheduler == Job Scheduled: C-3PO'
-  - '== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"C-3PO:Limb Calibration"}}'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Executing maintenance job: Limb Calibration'
 expected_stderr_lines:

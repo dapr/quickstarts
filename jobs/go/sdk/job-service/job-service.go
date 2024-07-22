@@ -29,10 +29,8 @@ import (
 	"github.com/dapr/go-sdk/service/common"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	daprs "github.com/dapr/go-sdk/service/grpc"
-	//daprs "github.com/dapr/go-sdk/service/http"
-
 	daprc "github.com/dapr/go-sdk/client"
+	daprs "github.com/dapr/go-sdk/service/grpc"
 )
 
 type App struct {
