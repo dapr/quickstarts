@@ -11,24 +11,20 @@ import (
 )
 
 var c3poJobBody = `{
-	"job": {
-	  "data": {
-		"@type": "type.googleapis.com/google.protobuf.StringValue",
-		"value": "C-3PO:Limb Calibration"
-	  },
-	  "dueTime": "30s"
-	}
+    "data": {
+      "@type": "type.googleapis.com/google.protobuf.StringValue",
+      "value": "C-3PO:Limb Calibration"
+    },
+    "dueTime": "30s"
   }`
 
 var r2d2JobBody = `{
-	"job": {
-	  "data": {
-		"@type": "type.googleapis.com/google.protobuf.StringValue",
-		"value": "R2-D2:Oil Change"
-	  },
-	  "dueTime": "2s"
-	}
-  }`
+        "data": {
+          "@type": "type.googleapis.com/google.protobuf.StringValue",
+          "value": "R2-D2:Oil Change"
+        },
+        "dueTime": "2s"
+    }`
 
 func main() {
 	//Sleep for 5 seconds to wait for job-service to start
