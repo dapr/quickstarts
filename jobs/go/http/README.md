@@ -86,18 +86,16 @@ dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- go run .
 
 ```bash
 curl -X POST \
-  http://localhost:5280/v1.0-alpha1/jobs/r2-d2 \
+  http://localhost:6280/v1.0-alpha1/jobs/jobforjabba \
   -H "Content-Type: application/json" \
   -d '{
-  "job": {
-    "data": {
-      "@type": "type.googleapis.com/google.protobuf.StringValue",
-      "value": "R2-D2:Oil Change"
-    },
-    "dueTime": "2s"
-  }
-}' 
-```
+        "data": {
+          "@type": "type.googleapis.com/google.protobuf.StringValue",
+          "value": "R2-D2:Oil Change"
+        },
+        "dueTime": "2s"
+    }'
+    ```
 
 Back at the `job-service` app terminal window, the output should be:
 
@@ -111,17 +109,15 @@ Back at the `job-service` app terminal window, the output should be:
 
 ```bash
 curl -X POST \
-  http://localhost:5280/v1.0-alpha1/jobs/c-3po \
+  http://localhost:6280/v1.0-alpha1/jobs/c-3po \
   -H "Content-Type: application/json" \
   -d '{
-  "job": {
     "data": {
       "@type": "type.googleapis.com/google.protobuf.StringValue",
       "value": "C-3PO:Limb Calibration"
     },
     "dueTime": "30s"
-  }
-}' 
+  }' 
 ```
 
 ### Get a scheduled job
@@ -129,7 +125,7 @@ curl -X POST \
 1. On the same terminal window, run the command below to get the recently scheduled `C-3PO` job.
 
 ```bash
-curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
+curl -X GET http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
 ```
 
 You should see the following:
