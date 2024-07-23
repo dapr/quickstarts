@@ -185,7 +185,7 @@ func deleteJob(ctx context.Context, in *common.InvocationEvent) (out *common.Con
 		return nil, err
 	}
 
-	err = app.daprClient.DeleteJobAlpha1(context.Background(), string(in.Data))
+	err = app.daprClient.DeleteJobAlpha1(ctx, string(in.Data))
 	if err != nil {
 		fmt.Println("failed to delete job. err: ", err)
 	}
