@@ -4,7 +4,7 @@ In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API.
 
 Visit [this](https://v1-14.docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Job API.
 
-> **Note:** This example leverages the SDK only.  If you are looking for the example using the HTTP requests (recommended) [click here](../http/).
+> **Note:** This example leverages the SDK only.  If you are looking for the example using the HTTP requests [click here](../http/).
 
 This quickstart includes two apps:
 
