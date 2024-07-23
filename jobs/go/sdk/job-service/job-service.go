@@ -164,7 +164,7 @@ func getJob(ctx context.Context, in *common.InvocationEvent) (out *common.Conten
 		return nil, err
 	}
 
-	job, err := app.daprClient.GetJobAlpha1(context.Background(), string(in.Data))
+	job, err := app.daprClient.GetJobAlpha1(ctx, string(in.Data))
 	if err != nil {
 		fmt.Println("failed to get job. err: ", err)
 	}
