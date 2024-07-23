@@ -136,13 +136,13 @@ You should see the following:
 1. On the same terminal window, run the command below to deleted the recently scheduled `C-3PO` job.
 
 ```bash
-curl -X DELETE http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
+curl -X DELETE http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
 ```
 
 2. Run the command below to attempt to retrieve the deleted job:
 
 ```bash
-curl -X GET http://localhost:5280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
+curl -X GET http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json" 
 ```
 
 Back at the `job-service` app terminal window, the output should be:
