@@ -58,11 +58,11 @@ The terminal console output should look similar to this, where:
 
 
 ```text
-== APP - job-service == dapr client initializing for: 127.0.0.1:5281
+== APP - job-service == dapr client initializing for: 127.0.0.1:6281
 == APP - job-service == Registered job handler for:  R2-D2
 == APP - job-service == Registered job handler for:  C-3PO
 == APP - job-service == Registered job handler for:  BB-8
-== APP - job-service == Starting server on port: 5200
+== APP - job-service == Starting server on port: 6200
 == APP - job-service == Job scheduled:  R2-D2
 == APP - job-service == Job scheduled:  C-3PO
 == APP - job-service == 2024/07/17 18:09:59 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
@@ -108,7 +108,7 @@ dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --dapr-grpc-
 The output should be:
 
 ```text
-== APP == dapr client initializing for: 127.0.0.1:5281
+== APP == dapr client initializing for: 127.0.0.1:6281
 == APP == Registered job handler for:  R2-D2
 == APP == Registered job handler for:  C-3PO
 == APP == Registered job handler for:  BB-8
