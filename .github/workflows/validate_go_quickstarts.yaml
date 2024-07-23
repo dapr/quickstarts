@@ -37,7 +37,7 @@ jobs:
       DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
       GOVER: 1.21
       KUBERNETES_VERSION: v1.28.0
-      KIND_VERSION: v0.11.0
+      KIND_VERSION: v0.22.0
       KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
       PODMAN_VERSION: 4.4.4
     strategy:
