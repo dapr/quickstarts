@@ -138,7 +138,7 @@ func scheduleJob(ctx context.Context, in *common.InvocationEvent) (out *common.C
 		},
 	}
 
-	err = app.daprClient.ScheduleJobAlpha1(context.Background(), &job)
+	err = app.daprClient.ScheduleJobAlpha1(ctx, &job)
 	if err != nil {
 		fmt.Println("failed to schedule job. err: ", err)
 		return nil, err
