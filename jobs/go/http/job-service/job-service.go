@@ -73,8 +73,6 @@ func handleJob(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//fmt.Println("decoded value:", string(decodedValue))
-
 	// Creating Droid Job from decoded value
 	droidJob := setDroidJob(string(decodedValue))
 
