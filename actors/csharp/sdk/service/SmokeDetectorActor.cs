@@ -36,7 +36,7 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     /// </summary>
     protected override Task OnDeactivateAsync()
     {
-        // Provides Opportunity to perform optional cleanup.
+        // Provides opportunity to perform optional cleanup.
         Console.WriteLine($"Deactivating actor id: {Id}");
         return Task.CompletedTask;
     }
@@ -47,9 +47,12 @@ internal class SmokeDetectorActor : Actor, ISmartDevice
     /// <param name="data">the user-defined MyData which will be stored into state store as "device_data" state</param>
     public async Task<string> SetDataAsync(SmartDeviceData data)
     {
-        // Data is saved to configured state store *implicitly* after each method execution by Actor's runtime.
-        // Data can also be saved *explicitly* by calling this.StateManager.SaveStateAsync();
-        // State to be saved must be DataContract serializable.
+        // This set state action can happen along other state changing operations in each actor method and those changes will be maintained
+        // in a local cache to be committed as a single transaction to the backing store when the method has completed. As such, there is 
+        // no need to (and in fact makes your code less transactional) call `this.StateManager.SaveStateAsync()` as it will be automatically
+        // invoked by the actor runtime following the conclusion of this method as part of the internal `OnPostActorMethodAsyncInternal` method.
+
+        // Note also that all saved state must be DataContract serializable.
         await StateManager.SetStateAsync<SmartDeviceData>(
             deviceDataKey,
             data);

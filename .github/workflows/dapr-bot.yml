@@ -32,7 +32,7 @@ jobs:
             const commentBody = payload.comment.body;
             if (!isFromPulls && commentBody && commentBody.indexOf("/assign") == 0) {
               if (!issue.assignees || issue.assignees.length === 0) {
-                await github.issues.addAssignees({
+                await github.rest.issues.addAssignees({
                   owner: issue.owner,
                   repo: issue.repo,
                   issue_number: issue.number,

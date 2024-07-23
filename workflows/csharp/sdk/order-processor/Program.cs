@@ -33,9 +33,7 @@ host.Start();
 
 using var daprClient = new DaprClientBuilder().Build();
 
-// NOTE: WorkflowEngineClient will be replaced with a richer version of DaprClient
-//       in a subsequent SDK release. This is a temporary workaround.
-WorkflowEngineClient workflowClient = host.Services.GetRequiredService<WorkflowEngineClient>();
+DaprWorkflowClient workflowClient = host.Services.GetRequiredService<DaprWorkflowClient>();
 
 // Generate a unique ID for the workflow
 string orderId = Guid.NewGuid().ToString()[..8];
@@ -51,28 +49,25 @@ OrderPayload orderInfo = new OrderPayload(itemToPurchase, 15000, ammountToPurcha
 // Start the workflow
 Console.WriteLine("Starting workflow {0} purchasing {1} {2}", orderId, ammountToPurchase, itemToPurchase);
 
-await daprClient.StartWorkflowAsync(
-    workflowComponent: DaprWorkflowComponent,
-    workflowName: nameof(OrderProcessingWorkflow),
-    input: orderInfo,
-    instanceId: orderId);
+await workflowClient.ScheduleNewWorkflowAsync(
+    name: nameof(OrderProcessingWorkflow),
+    instanceId: orderId,
+    input: orderInfo);
 
 // Wait for the workflow to start and confirm the input
-GetWorkflowResponse state = await daprClient.WaitForWorkflowStartAsync(
-    instanceId: orderId,
-    workflowComponent: DaprWorkflowComponent);
+WorkflowState state = await workflowClient.WaitForWorkflowStartAsync(
+    instanceId: orderId);
 
-Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", state.RuntimeStatus);
+Console.WriteLine("Your workflow has started. Here is the status of the workflow: {0}", Enum.GetName(typeof(WorkflowRuntimeStatus), state.RuntimeStatus));
 
 // Wait for the workflow to complete
-state = await daprClient.WaitForWorkflowCompletionAsync(
-    instanceId: orderId,
-    workflowComponent: DaprWorkflowComponent);
+state = await workflowClient.WaitForWorkflowCompletionAsync(
+    instanceId: orderId);
 
-Console.WriteLine("Workflow Status: {0}", state.RuntimeStatus);
+Console.WriteLine("Workflow Status: {0}", Enum.GetName(typeof(WorkflowRuntimeStatus), state.RuntimeStatus));
 
 void RestockInventory(string itemToPurchase)
 {
-    daprClient.SaveStateAsync<OrderPayload>(StoreName, itemToPurchase,  new OrderPayload(Name: itemToPurchase, TotalCost: 15000, Quantity: 100));
+    daprClient.SaveStateAsync<OrderPayload>(StoreName, itemToPurchase, new OrderPayload(Name: itemToPurchase, TotalCost: 15000, Quantity: 100));
     return;
 }

@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components
+apps:
+  - appID: workflowApp
+    appDirPath: ./order-processor/
+    command: ["npm", "run", "start:dapr:order-process"]

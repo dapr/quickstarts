@@ -10,11 +10,11 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "dependencies": {
-        "@dapr/dapr": "^3.2.0"
-    },
     "devDependencies": {
         "eslint": "^8.8.0",
         "eslint-plugin-react": "^7.28.0"
+    },
+    "dependencies": {
+        "@dapr/dapr": "^3.3.0"
     }
 }
