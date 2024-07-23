@@ -59,8 +59,6 @@ func handleJob(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//fmt.Println("Raw request body:", string(rawBody))
-
 	var jobData Job
 	if err := json.Unmarshal(rawBody, &jobData); err != nil {
 		http.Error(w, fmt.Sprintf("error decoding JSON: %v", err), http.StatusBadRequest)
