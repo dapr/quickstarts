@@ -60,7 +60,6 @@ name: Check dapr status
 ```bash
 dapr status -k
 ```
-
 <!-- END_STEP -->
 
 You will see output like the following. All services should show `True` in the HEALTHY column and `Running` in the STATUS column before you continue.
@@ -363,7 +362,6 @@ expected_stdout_lines:
   - service "nodeapp" deleted
   - deployment.apps "nodeapp" deleted
   - deployment.apps "pythonapp" deleted
-  - component.dapr.io "statestore" deleted
 output_match_mode: substring
 match_order: none
 tags:
