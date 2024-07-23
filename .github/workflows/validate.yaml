@@ -136,8 +136,8 @@ jobs:
           helm repo update
           helm install redis bitnami/redis --version 19.6.0
           dapr init -k --dev --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
-          kubectl describe pod dapr-dev-redis-master-0
-          kubectl logs dapr-dev-redis-master-0
+          kubectl version
+          kubectl logs redis-master-0
           kubectl get nodes -o wide
 
           for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
