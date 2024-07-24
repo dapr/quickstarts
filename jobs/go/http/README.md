@@ -83,7 +83,7 @@ dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- go run .
 
 ```bash
 curl -X POST \
-  http://localhost:6280/v1.0-alpha1/jobs/jobforjabba \
+  http://localhost:6280/v1.0-alpha1/jobs/R2D2 \
   -H "Content-Type: application/json" \
   -d '{
         "data": {
