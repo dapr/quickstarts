@@ -16,8 +16,5 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
-# Expose the port the application runs on
-EXPOSE 80
-
 # Run the application
-ENTRYPOINT ["dotnet", "YourProjectName.dll"]
+ENTRYPOINT ["dotnet", "Subtract.dll"]
