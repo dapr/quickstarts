@@ -3,7 +3,6 @@ apps:
   - appDirPath: ./job-service/
     appID: job-service
     appPort: 6200
-    daprHTTPPort: 6280
     daprGRPCPort: 6281
     appProtocol: grpc
     command: ["go", "run", "."]

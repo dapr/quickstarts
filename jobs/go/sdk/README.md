@@ -102,7 +102,7 @@ dapr stop -f .
 1. Open a terminal and run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --dapr-grpc-port 6281 --app-protocol grpc -- go run .
+dapr run --app-id job-service --app-port 6200 --dapr-grpc-port 6281 --app-protocol grpc -- go run .
 ```
 
 The output should be:
