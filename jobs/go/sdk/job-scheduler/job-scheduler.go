@@ -41,8 +41,8 @@ func main() {
 
 	droidJobs := []DroidJob{
 		{Name: "R2-D2", Job: "Oil Change", DueTime: "5s"},
-		{Name: "C-3PO", Job: "Memory Wipe", DueTime: "10s"},
-		{Name: "BB-8", Job: "Internal Gyroscope Check", DueTime: "15s"},
+		{Name: "C-3PO", Job: "Memory Wipe", DueTime: "15s"},
+		{Name: "BB-8", Job: "Internal Gyroscope Check", DueTime: "30s"},
 	}
 
 	//Create new Dapr client
@@ -62,11 +62,15 @@ func main() {
 		log.Fatalln("Error scheduling job: ", err)
 	}
 
+	time.Sleep(3 * time.Second)
+
 	// Schedule C-3PO job
 	err = schedule(droidJobs[1])
 	if err != nil {
 		log.Fatalln("Error scheduling job: ", err)
 	}
+
+	time.Sleep(5 * time.Second)
 
 	// Get C-3PO job
 	resp, err := get(droidJobs[1])
@@ -81,12 +85,16 @@ func main() {
 		log.Fatalln("Error scheduling job: ", err)
 	}
 
+	time.Sleep(5 * time.Second)
+
 	// Get BB-8 job
 	resp, err = get(droidJobs[2])
 	if err != nil {
 		log.Fatalln("Error retrieving job: ", err)
 	}
 	fmt.Println("Get job response: ", resp)
+
+	time.Sleep(5 * time.Second)
 
 	// Delete BB-8 job
 	err = delete(droidJobs[2])
