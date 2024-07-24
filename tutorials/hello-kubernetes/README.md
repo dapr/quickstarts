@@ -73,6 +73,23 @@ You will see output like the following. All services should show `True` in the H
   dapr-sidecar-injector  dapr-system  True     Running  1         1.13.5   42s  2024-07-22 13:53.04
 ```
 
+### Step 2 - Configure the Redis Statestore component
+
+Apply the `redis.yaml` file and observe that your state store was successfully configured!
+
+<!-- STEP
+name: Deploy redis config
+sleep: 1
+expected_stdout_lines:
+  - "component.dapr.io/statestore created"
+-->
+
+```bash
+kubectl apply -f ./deploy/redis.yaml
+```
+<!-- END_STEP -->
+
+
 ## Using the `kubectl` CLI
 
 ### Step 2 - Deploy the Node.js app with the Dapr sidecar
@@ -362,6 +379,7 @@ expected_stdout_lines:
   - service "nodeapp" deleted
   - deployment.apps "nodeapp" deleted
   - deployment.apps "pythonapp" deleted
+  - component.dapr.io "statestore" deleted
 output_match_mode: substring
 match_order: none
 tags:
