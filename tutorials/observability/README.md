@@ -389,6 +389,8 @@ expected_stdout_lines:
   - '"total":"54"'
 output_match_mode: substring
 name: "Curl test"
+background: false
+sleep: 5
 -->
 
 ```bash
@@ -476,6 +478,7 @@ output_match_mode: substring
 expected_stderr_lines:
 
 name: Curl validate
+background: false
 -->
 
 ```bash

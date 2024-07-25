@@ -33,10 +33,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     env:
-      GOVER: 1.17
-      KUBERNETES_VERSION: v1.21.1
-      KIND_VERSION: v0.12.0
-      KIND_IMAGE_SHA: sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
+      GOVER: 1.22
+      KUBERNETES_VERSION: v1.29.4
+      KIND_VERSION: v0.23.0
+      KIND_IMAGE_SHA: sha256:3abb816a5b1061fb15c6e9e60856ec40d56b7b52bcea5f5f1350bc6e2320b6f8
     strategy:
       matrix:
         os: [ubuntu-latest]
