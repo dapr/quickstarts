@@ -49,11 +49,11 @@ The terminal console output should look similar to this, where:
 
 
 ```text
-== APP - job-service == dapr client initializing for: 127.0.0.1:6281
+== APP - job-service == dapr client initializing for: 127.0.0.1:6481
 == APP - job-service == Registered job handler for:  R2-D2
 == APP - job-service == Registered job handler for:  C-3PO
 == APP - job-service == Registered job handler for:  BB-8
-== APP - job-service == Starting server on port: 6200
+== APP - job-service == Starting server on port: 6400
 == APP - job-service == Job scheduled:  R2-D2
 == APP - job-service == Job scheduled:  C-3PO
 == APP - job-service == 2024/07/17 18:09:59 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
@@ -93,23 +93,23 @@ dapr stop -f .
 1. Open a terminal and run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 6200 --dapr-grpc-port 6281 --app-protocol grpc -- go run .
+dapr run --app-id job-service --app-port 6400 --dapr-grpc-port 6481 --app-protocol grpc -- go run .
 ```
 
 The output should be:
 
 ```text
-== APP == dapr client initializing for: 127.0.0.1:6281
+== APP == dapr client initializing for: 127.0.0.1:6481
 == APP == Registered job handler for:  R2-D2
 == APP == Registered job handler for:  C-3PO
 == APP == Registered job handler for:  BB-8
-== APP == Starting server on port: 6200
+== APP == Starting server on port: 6400
 ```
 
 2. On a new terminal window, run the `job-scheduler` app:
 
 ```bash
-dapr run --app-id job-scheduler --app-port 6300 -- go run .
+dapr run --app-id job-scheduler --app-port 6500 -- go run .
 ```
 
 The output should be:
