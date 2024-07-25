@@ -198,7 +198,7 @@ TODO
 ### Cutting a release of quickstarts
 1. Change to the release branch created above.
 2. Make sure the matching runtime and CLI versions are set to match intent in `global.env` file
-3. Create a new [Tag](https://github.com/dapr/quickstarts/tags) from this release branch in the form of v.M.mm-rcN, e.g. `v1.13-rc1`. 
+3. Create a new [Tag](https://github.com/dapr/quickstarts/tags) from this release branch in the form of v.M.mm-rcN,  for example `v1.13-rc1`. 
 4. After the final RC is promoted to a full release, create a new Tag dropping the RC, e.g. `v1.13.0`.  
 5. Create a new [Release]() in the form of `v1.13` and reference the tag from last step.  Note the releases have convention of no dot releases (e.g. v1.13.0) unless patched (e.g. v1.13.1).  Include highlights and changelist in the release notes, and double check that contributors get credit.  
 
