@@ -1,0 +1,8 @@
+spec:
+  policies:
+    retries:
+      # Global Retry Policy
+      DefaultRetryPolicy:
+        policy: constant
+        duration: 1s
+        maxRetries: -1
