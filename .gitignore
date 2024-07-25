@@ -32,6 +32,7 @@ Debug/
 .settings/
 .metadata
 .project
+out/
 
 # Package Files #
 *.jar
