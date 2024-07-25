@@ -272,7 +272,7 @@ To call the service that you set up port forwarding to, from a command prompt ru
 <!-- STEP
 name: Curl Test
 expected_stdout_lines:
-  - '{"DAPR_HTTP_PORT":"3500","DAPR_GRPC_PORT":"50001"}'
+  - '{"DAPR_HTTP_ENDPOINT":"http://localhost:3500","DAPR_GRPC_ENDPOINT":"http://localhost:50001"}'
 tags:
   - normal-run
 -->
