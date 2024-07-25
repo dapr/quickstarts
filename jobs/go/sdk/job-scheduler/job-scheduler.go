@@ -36,8 +36,8 @@ type App struct {
 var app App
 
 func main() {
-	// Waiting 5 seconds for the job-service to start
-	time.Sleep(5 * time.Second)
+	// Waiting 15 seconds for the job-service to start
+	time.Sleep(15 * time.Second)
 
 	droidJobs := []DroidJob{
 		{Name: "R2-D2", Job: "Oil Change", DueTime: "5s"},
