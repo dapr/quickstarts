@@ -51,7 +51,7 @@ This section describes the guidelines for contributing code / docs to Dapr Quick
 
 ### Pull Requests
 
-All contributions come through pull requests. To submit a proposed change, we recommend following this workflow:
+All contributions come through pull requests. To submit a proposed change, follow this workflow:
 
 1. Make sure there's an issue (bug or proposal) raised, which sets the expectations for the contribution you are about to make.
 1. Assign the issue to yourself by commenting `/assign` in the issue. This triggers the [Dapr GitHub](https://docs.dapr.io/contributing/daprbot/) bot and will assign the issue to you.
