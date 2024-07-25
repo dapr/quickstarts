@@ -179,7 +179,7 @@ A non-exclusive list of code that must be places in `vendor/`:
 **Thank You!** - Your contributions to open source, large or small, make projects like this possible. Thank you for taking the time to contribute.
 
 ### Updating Quickstarts for new releases of Dapr
-1. Create a PR to create a new branch of of `master` named `release-<version>`, e.g. `release-1.3`.  This is the right place to put version dependent quickstarts, any stabilization work in the endgame of a release.  [Example branch](https://github.com/dapr/quickstarts/tree/release-1.13).
+1. Create a PR to create a new branch of of `master` named `release-<version>`, for example `release-1.13`.  This is the right place to put version dependent quickstarts, any stabilization work in the endgame of a release.  [Example branch](https://github.com/dapr/quickstarts/tree/release-1.13).
 2. Create a PR to change to the global Dapr runtime version in `/.github/env/global.env` to be used by Dapr CLI in all CI/CD actions and tests.  [Example PR](https://github.com/dapr/quickstarts/pull/976)
 3. Analyze checks/tests and push on maintainers to revert or address any breaks to existing quickstarts.  
 4. Ensure clean tests that match stability in `master`.  
