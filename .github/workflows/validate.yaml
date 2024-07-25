@@ -135,6 +135,7 @@ jobs:
           dapr init -k --dev --runtime-version=${{ env.DAPR_RUNTIME_VERSION }} --wait || kubectl get pods --all-namespaces
           kubectl get nodes -o wide
           kubectl logs dapr-dev-redis-master-0
+          helm list
           for pod in `dapr status -k | awk '/dapr/ {print $1}'`; do kubectl describe pod -l app=$pod -n dapr-system ; kubectl logs -l app=$pod -n dapr-system; done
       - name: Install utilities dependencies
         run: |
