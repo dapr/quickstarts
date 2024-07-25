@@ -62,15 +62,11 @@ func main() {
 		log.Fatalln("Error scheduling job: ", err)
 	}
 
-	time.Sleep(3 * time.Second)
-
 	// Schedule C-3PO job
 	err = schedule(droidJobs[1])
 	if err != nil {
 		log.Fatalln("Error scheduling job: ", err)
 	}
-
-	time.Sleep(5 * time.Second)
 
 	// Get C-3PO job
 	resp, err := get(droidJobs[1])
@@ -85,8 +81,6 @@ func main() {
 		log.Fatalln("Error scheduling job: ", err)
 	}
 
-	time.Sleep(5 * time.Second)
-
 	// Get BB-8 job
 	resp, err = get(droidJobs[2])
 	if err != nil {
@@ -94,14 +88,14 @@ func main() {
 	}
 	fmt.Println("Get job response: ", resp)
 
-	time.Sleep(5 * time.Second)
-
 	// Delete BB-8 job
 	err = delete(droidJobs[2])
 	if err != nil {
 		log.Fatalln("Error deleting job: ", err)
 	}
 	fmt.Println("Job deleted: ", droidJobs[2].Name)
+
+	//time.Sleep(15 * time.Second)
 }
 
 // Schedules a job by invoking grpc service from job-service passing a DroidJob as an argument

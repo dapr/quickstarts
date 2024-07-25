@@ -38,7 +38,7 @@ output_match_mode: substring
 match_order: none
 background: true
 sleep: 120
-timeout_seconds: 180
+timeout_seconds: 240
 -->
 
 ```bash
