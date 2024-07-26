@@ -32,7 +32,7 @@ expected_stdout_lines:
   - "There are now 90 cars left in stock"
   - "Workflow completed - result: COMPLETED"
 output_match_mode: substring
-background: true
+background: false
 timeout_seconds: 120
 sleep: 30
 -->
@@ -70,9 +70,16 @@ dapr run -f .
 4. Stop Dapr workflow with CTRL-C or:
 <!-- END_STEP -->
 
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
+
 ```sh
 dapr stop -f .
 ```
+
+<!-- END_STEP -->
 
 
 

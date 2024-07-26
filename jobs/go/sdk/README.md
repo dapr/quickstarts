@@ -27,7 +27,7 @@ Open a new terminal window and run the multi app run template:
  expected_stderr_lines:
  output_match_mode: substring
  match_order: none
- background: true
+ background: false
  sleep: 120
  timeout_seconds: 180
  -->
@@ -78,7 +78,13 @@ After 10 seconds, the terminal output should present the `C3-PO` job being proce
 == APP - job-service == Executing maintenance job: Memory Wipe
 ```
 
+<!-- END_STEP -->
+
 2. Stop and clean up application processes
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
 
 ```bash
 dapr stop -f .
