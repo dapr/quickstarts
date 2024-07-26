@@ -12,7 +12,7 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "@dapr/dapr": "^3.3.0"
+        "@dapr/dapr": "^3.3.1"
     },
     "devDependencies": {
         "@types/node": "^18.0.0",
