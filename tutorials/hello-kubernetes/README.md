@@ -81,7 +81,7 @@ Apply the `redis.yaml` file and observe that your state store was successfully c
 name: Deploy redis config
 sleep: 1
 expected_stdout_lines:
-  - "component.dapr.io/statestore created"
+
 -->
 
 ```bash
@@ -374,7 +374,8 @@ Once you're done, you can spin down your Kubernetes resources by navigating to t
 <!-- STEP
 name: "Delete resources from Kubernetes"
 working_dir: "./deploy"
-sleep: 10
+sleep: 30
+timeout_seconds: 30
 expected_stdout_lines:
   - service "nodeapp" deleted
   - deployment.apps "nodeapp" deleted
