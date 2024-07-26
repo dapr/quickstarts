@@ -27,7 +27,6 @@ background: true
 sleep: 15
 timeout_seconds: 30
 -->
-<!-- END_STEP -->
 
 ```bash
 dapr run -f .
@@ -81,7 +80,7 @@ After 10 seconds, the terminal output should present the `C3-PO` job being proce
 dapr stop -f .
 ```
 
-
+<!-- END_STEP -->
 
 ## Run the Jobs APIs individually
 
