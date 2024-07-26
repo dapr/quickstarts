@@ -18,14 +18,18 @@ This section shows how to run both applications at once using [multi-app run tem
 Open a new terminal window and run the multi app run template:
 
 <!-- STEP
-name: Run multi app run template (disabled)
+name: Run multi app run template
 expected_stdout_lines:
+  - '== APP - job-service == Starting droid: R2-D2'
+  - '== APP - job-service == Executing maintenance job: Oil Change'
+  - '== APP - job-service == Starting droid: C-3PO'
+  - '== APP - job-service == Executing maintenance job: Memory Wipe'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
-timeout_seconds: 30
+sleep: 120
+timeout_seconds: 180
 -->
 
 ```bash
