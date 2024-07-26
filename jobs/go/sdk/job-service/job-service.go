@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Dapr Authors
+Copyright 2024 The Dapr Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -14,7 +14,7 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 --scheduler-host-address=127.0.0.1:50006 -- go run .
+dapr run --app-id job-service --app-port 6400 --dapr-grpc-port 6481 --app-protocol grpc -- go run .
 */
 
 import (
@@ -86,6 +86,11 @@ func main() {
 	}
 
 	if err := server.AddServiceInvocationHandler("deleteJob", deleteJob); err != nil {
+		log.Fatalf("error adding invocation handler: %v", err)
+	}
+
+	// add helathz handler
+	if err := server.AddServiceInvocationHandler("healthz", healthz); err != nil {
 		log.Fatalf("error adding invocation handler: %v", err)
 	}
 
@@ -190,6 +195,17 @@ func deleteJob(ctx context.Context, in *common.InvocationEvent) (out *common.Con
 		fmt.Println("failed to delete job. err: ", err)
 	}
 
+	out = &common.Content{
+		Data:        in.Data,
+		ContentType: in.ContentType,
+		DataTypeURL: in.DataTypeURL,
+	}
+
+	return out, err
+}
+
+// Healthz handler
+func healthz(ctx context.Context, in *common.InvocationEvent) (out *common.Content, err error) {
 	out = &common.Content{
 		Data:        in.Data,
 		ContentType: in.ContentType,

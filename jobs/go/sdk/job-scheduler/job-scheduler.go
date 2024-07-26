@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Dapr Authors
+Copyright 2024 The Dapr Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -12,6 +12,10 @@ limitations under the License.
 */
 
 package main
+
+/*
+dapr run --app-id job-scheduler --app-port 6500 -- go run .
+*/
 
 import (
 	"context"
@@ -36,8 +40,6 @@ type App struct {
 var app App
 
 func main() {
-	// Waiting 15 seconds for the job-service to start
-	time.Sleep(15 * time.Second)
 
 	droidJobs := []DroidJob{
 		{Name: "R2-D2", Job: "Oil Change", DueTime: "5s"},
@@ -54,6 +56,17 @@ func main() {
 
 	app = App{
 		daprClient: daprClient,
+	}
+
+	// Wait for job-service to be up and running
+	for {
+		_, err = daprClient.InvokeMethod(context.Background(), "job-service", "healthz", "GET")
+		if err != nil {
+			fmt.Println("job-service not available, retrying...")
+		} else {
+			break
+		}
+		time.Sleep(2 * time.Second) // Wait for 2 seconds before retrying
 	}
 
 	// Schedule R2-D2 job
