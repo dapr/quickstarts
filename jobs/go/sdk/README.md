@@ -18,16 +18,19 @@ This section shows how to run both applications at once using [multi-app run tem
 Open a new terminal window and run the multi app run template:
 
 <!-- STEP
-name: Run multi app run template (disabled)
-expected_stdout_lines:
-expected_stderr_lines:
-output_match_mode: substring
-match_order: none
-background: true
-sleep: 15
-timeout_seconds: 30
--->
-<!-- END_STEP -->
+ name: Run multi app run template
+ expected_stdout_lines:
+   - '== APP - job-service == Starting droid: R2-D2'
+   - '== APP - job-service == Executing maintenance job: Oil Change'
+   - '== APP - job-service == Starting droid: C-3PO'
+   - '== APP - job-service == Executing maintenance job: Memory Wipe'
+ expected_stderr_lines:
+ output_match_mode: substring
+ match_order: none
+ background: true
+ sleep: 120
+ timeout_seconds: 180
+ -->
 
 ```bash
 dapr run -f .
@@ -81,7 +84,7 @@ After 10 seconds, the terminal output should present the `C3-PO` job being proce
 dapr stop -f .
 ```
 
-
+<!-- END_STEP -->
 
 ## Run the Jobs APIs individually
 
