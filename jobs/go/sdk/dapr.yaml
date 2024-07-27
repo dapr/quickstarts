@@ -1,4 +1,7 @@
 version: 1
+common:
+   daprdLogDestination: console
+   logLevel: info
 apps:
   - appDirPath: ./job-service/
     appID: job-service

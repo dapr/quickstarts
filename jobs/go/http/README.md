@@ -28,7 +28,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: true
+background: false
 sleep: 60
 timeout_seconds: 120
 -->
@@ -61,7 +61,14 @@ After 30 seconds, the terminal output should present the `C-3PO` job being proce
 == APP - job-service == Executing maintenance job: Limb Calibration
 ```
 
+<!-- END_STEP -->
+
 2. Stop and clean up application processes
+
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
 
 ```bash
 dapr stop -f .

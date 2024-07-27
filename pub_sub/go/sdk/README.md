@@ -59,8 +59,14 @@ The terminal console output should look similar to this:
 == APP - checkout-sdk == Published data: {"orderId":10}
 == APP - order-processor == Subscriber received: map[orderId:10]
 ```
+<!-- END_STEP -->
 
 2. Stop and clean up application processes
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
+
 
 ```bash
 dapr stop -f .

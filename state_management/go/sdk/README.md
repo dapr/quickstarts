@@ -34,7 +34,14 @@ timeout_seconds: 180
   dapr run -f  .
 ```
 
+<!-- END_STEP -->
+
 2. Stop and cleanup application process
+
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
 
 ```bash
 dapr stop -f .
