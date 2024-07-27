@@ -1,6 +1,6 @@
 # Observability with Dapr
 
-This quickstart explores the [observability](https://docs.dapr.io/concepts/observability-concept/) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this quickstart you'll be enabling [distributed tracing](https://docs.dapr.io/operations/observability/tracing/tracing-overview/) on an application without changing any application code or creating a dependency on any specific tracing system. Since Dapr uses [OpenCensus](https://opencensus.io/), a variety of observability tools can be used to view and capture the traces.
+This quickstart explores the [observability](https://docs.dapr.io/concepts/observability-concept/) capabilities of Dapr. Observability includes metric collection, tracing, logging and health checks. In this quickstart you'll be enabling [distributed tracing](https://docs.dapr.io/operations/observability/tracing/tracing-overview/) on an application without changing any application code or creating a dependency on any specific tracing system. Dapr works with the Zipkin (great for development) and the Open Telemetry (recommended for production) protocols for distributed traces.
 
 In this quickstart you will:
 
