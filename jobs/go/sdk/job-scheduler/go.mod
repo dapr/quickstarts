@@ -2,7 +2,7 @@ module dapr_job_example
 
 go 1.22.5
 
-require github.com/dapr/go-sdk v1.10.0-rc-1.0.20240723205333-9bc7d823cc23
+require github.com/dapr/go-sdk v1.11.0-rc-1
 
 require (
 	github.com/dapr/dapr v1.14.0-rc.5 // indirect
