@@ -1,4 +1,4 @@
-import { DaprWorkflowClient, WorkflowRuntime, DaprClient } from "@dapr/dapr";
+import { DaprWorkflowClient, WorkflowRuntime, DaprClient, CommunicationProtocolEnum } from "@dapr/dapr";
 import { InventoryItem, OrderPayload } from "./model";
 import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, requestApprovalActivity, reserveInventoryActivity, updateInventoryActivity } from "./orderProcessingWorkflow";
 
@@ -7,7 +7,15 @@ async function start() {
   const workflowClient = new DaprWorkflowClient();
   const workflowWorker = new WorkflowRuntime();
 
-  const daprClient = new DaprClient();
+  const daprHost = process.env.DAPR_HOST ?? "127.0.0.1";
+  const daprPort = process.env.DAPR_GRPC_PORT ?? "50001";
+
+  const daprClient = new DaprClient({
+    daprHost,
+    daprPort,
+    communicationProtocol: CommunicationProtocolEnum.GRPC,
+  });
+
   const storeName = "statestore";
 
   const inventory = new InventoryItem("item1", 100, 100);
