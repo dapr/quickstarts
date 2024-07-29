@@ -2,10 +2,12 @@ import { DaprWorkflowClient, WorkflowRuntime, DaprClient, CommunicationProtocolE
 import { InventoryItem, OrderPayload } from "./model";
 import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, requestApprovalActivity, reserveInventoryActivity, updateInventoryActivity } from "./orderProcessingWorkflow";
 
+const workflowWorker = new WorkflowRuntime();
+
 async function start() {
   // Update the gRPC client and worker to use a local address and port
   const workflowClient = new DaprWorkflowClient();
-  const workflowWorker = new WorkflowRuntime();
+
 
   const daprHost = process.env.DAPR_HOST ?? "127.0.0.1";
   const daprPort = process.env.DAPR_GRPC_PORT ?? "50001";
@@ -60,9 +62,12 @@ async function start() {
     throw error;
   }
 
-  await workflowWorker.stop();
   await workflowClient.stop();
 }
+
+process.on('SIGTERM', () => {
+  workflowWorker.stop();
+})
 
 start().catch((e) => {
   console.error(e);
