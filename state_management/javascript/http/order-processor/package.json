@@ -12,7 +12,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.25.0"
+        "axios": "^1.7.2"
     },
     "devDependencies": {
         "eslint": "^8.8.0",
