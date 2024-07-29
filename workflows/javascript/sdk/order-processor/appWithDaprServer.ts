@@ -4,7 +4,7 @@ import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, reques
 import { DaprServer, CommunicationProtocolEnum } from "@dapr/dapr";
 import express from "express";
 
-const daprHost = "127.0.0.1"; // Dapr Sidecar Host
+const daprHost = process.env.DAPR_HOST ?? "localhost"; // Dapr Sidecar Host
 const daprPort = process.env.DAPR_HTTP_PORT || "3500"; // Dapr Sidecar Port of this Example Server
 
 const app = express();
@@ -13,6 +13,7 @@ const daprServer = new DaprServer({
   serverHost:  "127.0.0.1", // App Host
   serverPort: process.env.APP_PORT || "3000", // App Port
   serverHttp: app,
+  communicationProtocol: CommunicationProtocolEnum.HTTP, // Add this line
   clientOptions: {
     daprHost,
     daprPort
