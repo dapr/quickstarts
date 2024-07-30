@@ -5,18 +5,22 @@
   "private": "true",
   "scripts": {
     "build": "npx tsc --outDir ./dist/",
-    "start:order-process": "npm run build && node dist/workflowApp.js",
+    "start:order-process": "npm run build && node dist/app.js",
+    "start:order-process-with-dapr-server": "npm run build && node dist/appWithDaprServer.js",
+    "start:order-process-with-express-server": "npm run build && node dist/appWithExpressServer.js",
     "start:dapr:order-process": "dapr run --app-id activity-sequence-workflow --app-protocol grpc --dapr-grpc-port 50001 --components-path ../../components npm run start:order-process"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/readline-sync": "^1.4.8",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
   "dependencies": {
     "@dapr/dapr": "^3.3.1",
-    "@types/node": "^18.16.3"
+    "@types/node": "^18.16.3",
+    "express": "^4.19.2"
   }
 }
