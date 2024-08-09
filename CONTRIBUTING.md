@@ -32,7 +32,7 @@ There are 4 types of issues:
 Before you file an issue, make sure you've checked the following:
 
 1. Is it the right repository?
-    - The Dapr project is distributed across multiple repositories. Check the list of [repositories](https://github.com/dapr) if you aren't sure which repo is the correct one.
+    - The Dapr project is distributed across multiple repositories. Check the list of [repositories](https://github.com/dapr) if you aren't sure which repo is the correct one. You can also ask for help in the [Dapr Discord](http://bit.ly/dapr-discord).
 1. Check for existing issues
     - Before you create a new issue, please do a search in [open issues](https://github.com/dapr/quickstarts/issues) to see if the issue or feature request has already been filed.
     - If you find your issue already exists, make relevant comments and add your [reaction](https://github.com/blog/2119-add-reaction-to-pull-requests-issues-and-comments). Use a reaction:
@@ -45,22 +45,24 @@ Before you file an issue, make sure you've checked the following:
     - Many changes to the Dapr runtime may require changes to the API. In that case, the best place to discuss the potential feature is the main [Dapr repo](https://github.com/dapr/dapr).
     - Other examples could include bindings, state stores or entirely new components.
 
-## Contributing to Dapr
+## Contributing to Dapr Quickstarts
 
-This section describes the guidelines for contributing code / docs to Dapr.
+This section describes the guidelines for contributing code / docs to Dapr Quickstarts.
 
 ### Pull Requests
 
-All contributions come through pull requests. To submit a proposed change, we recommend following this workflow:
+All contributions come through pull requests. To submit a proposed change, follow this workflow:
 
 1. Make sure there's an issue (bug or proposal) raised, which sets the expectations for the contribution you are about to make.
-1. Fork the relevant repo and create a new branch
-1. Create your change
-    - Code changes require tests
-1. Update relevant documentation for the change
-1. Commit and open a PR
-1. Wait for the CI process to finish and make sure all checks are green
-1. A maintainer of the project will be assigned, and you can expect a review within a few days
+1. Assign the issue to yourself by commenting `/assign` in the issue. This triggers the [Dapr GitHub](https://docs.dapr.io/contributing/daprbot/) bot and it assigns the issue to you.
+1. [Fork](https://github.com/dapr/quickstarts/fork) the Dapr Quickstarts repository into your GitHub account and create a new branch.
+1. Create your change.
+    - Code changes require tests.
+1. Update relevant documentation for the change.
+1. Commit your changes and open a PR to the Dapr Quickstarts repository.
+1. Wait for the CI process to finish and make sure all checks are green.
+1. A maintainer of the project will be assigned, and you can expect a review within a few days.
+1. Make sure the checks/test actions pass with your changes.  See [Test authoring] for information around how this works and how to troubleshoot.
 
 #### Use work-in-progress PRs for early feedback
 
@@ -175,6 +177,30 @@ A non-exclusive list of code that must be places in `vendor/`:
 - Tools or libraries or protocols that are open source, free software, or commercially licensed.
 
 **Thank You!** - Your contributions to open source, large or small, make projects like this possible. Thank you for taking the time to contribute.
+
+### Updating Quickstarts for new releases of Dapr
+1. Create a PR to create a new branch of of `master` named `release-<version>`, for example `release-1.13`.  This is the right place to put version dependent quickstarts, any stabilization work in the endgame of a release.  [Example branch](https://github.com/dapr/quickstarts/tree/release-1.13).
+2. Create a PR to change to the global Dapr runtime version in `/.github/env/global.env` to be used by Dapr CLI in all CI/CD actions and tests.  [Example PR](https://github.com/dapr/quickstarts/pull/976)
+3. Analyze checks/tests and push on maintainers to revert or address any breaks to existing quickstarts.  
+4. Ensure clean tests that match stability in `master`.  
+
+This branch is now ready to release and/or take incoming PRs for new Quickstarts.
+
+### Adding a new Quickstart
+TODO
+
+### Authoring tests for new Quickstarts
+TODO
+
+### Troubleshooting tests
+TODO
+
+### Cutting a release of quickstarts
+1. Change to the release branch created above.
+2. Make sure the matching runtime and CLI versions are set to match intent in `global.env` file
+3. Create a new [Tag](https://github.com/dapr/quickstarts/tags) from this release branch in the form of v.M.mm-rcN,  for example `v1.13-rc1`. 
+4. After the final RC is promoted to a full release, create a new Tag dropping the RC, e.g. `v1.13.0`.  
+5. Create a new [Release]() in the form of `v1.13` and reference the tag from last step.  Note the releases have convention of no dot releases (e.g. v1.13.0) unless patched (e.g. v1.13.1).  Include highlights and changelist in the release notes, and double check that contributors get credit.  
 
 ## Code of Conduct
 
