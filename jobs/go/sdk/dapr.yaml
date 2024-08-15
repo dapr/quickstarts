@@ -1,0 +1,15 @@
+version: 1
+common:
+   daprdLogDestination: console
+   logLevel: info
+apps:
+  - appDirPath: ./job-service/
+    appID: job-service
+    appPort: 6400
+    daprGRPCPort: 6481
+    appProtocol: grpc
+    command: ["go", "run", "."]
+  - appDirPath: ./job-scheduler/
+    appID: job-scheduler
+    appPort: 6500
+    command: ["go", "run", "."]

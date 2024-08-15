@@ -102,13 +102,13 @@ jobs:
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
             do
-              if [ ! -d "$building_block/go/$variant" ]; 
+              if [ ! -d "$building_block/go/$variant" ];
               then
                 echo "$building_block/go/$variant does not exist."
               else
                 pushd $building_block/go/$variant
                 echo "Validating $building_block/go/$variant quickstart"
-                make validate 
+                make validate
                 popd
               fi
             done
