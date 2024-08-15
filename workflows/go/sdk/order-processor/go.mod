@@ -1,12 +1,12 @@
 module dapr_example
 
-go 1.22.5
+go 1.22.6
 
-require github.com/dapr/go-sdk v1.11.0-rc-1
+require github.com/dapr/go-sdk v1.11.0
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/dapr/dapr v1.14.0-rc.5 // indirect
+	github.com/dapr/dapr v1.14.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect

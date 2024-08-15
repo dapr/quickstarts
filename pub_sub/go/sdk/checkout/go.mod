@@ -1,11 +1,11 @@
 module checkout_sdk_example
 
-go 1.22.5
+go 1.22.6
 
-require github.com/dapr/go-sdk v1.11.0-rc-1
+require github.com/dapr/go-sdk v1.11.0
 
 require (
-	github.com/dapr/dapr v1.14.0-rc.5 // indirect
+	github.com/dapr/dapr v1.14.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	go.opentelemetry.io/otel v1.27.0 // indirect
