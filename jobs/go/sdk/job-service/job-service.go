@@ -19,7 +19,6 @@ dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -201,16 +200,8 @@ func deleteJob(ctx context.Context, in *common.InvocationEvent) (out *common.Con
 
 // Handler that handles job events
 func handleJob(ctx context.Context, job *common.JobEvent) error {
-	var jobData common.Job
-	if err := json.Unmarshal(job.Data, &jobData); err != nil {
-		return fmt.Errorf("failed to unmarshal job: %v", err)
-	}
-	decodedPayload, err := base64.StdEncoding.DecodeString(jobData.Value)
-	if err != nil {
-		return fmt.Errorf("failed to decode job payload: %v", err)
-	}
 	var jobPayload JobData
-	if err := json.Unmarshal(decodedPayload, &jobPayload); err != nil {
+	if err := json.Unmarshal(job.Data, &jobPayload); err != nil {
 		return fmt.Errorf("failed to unmarshal payload: %v", err)
 	}
 
