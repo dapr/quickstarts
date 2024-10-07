@@ -14,7 +14,6 @@ limitations under the License.
 package main
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -65,16 +64,8 @@ func handleJob(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Decoding job data
-	decodedValue, err := base64.RawStdEncoding.DecodeString(jobData.Value)
-	if err != nil {
-		fmt.Printf("Error decoding base64: %v", err)
-		http.Error(w, fmt.Sprintf("error decoding base64: %v", err), http.StatusBadRequest)
-		return
-	}
-
 	// Creating Droid Job from decoded value
-	droidJob := setDroidJob(string(decodedValue))
+	droidJob := setDroidJob(jobData.Value)
 
 	fmt.Println("Starting droid:", droidJob.Droid)
 	fmt.Println("Executing maintenance job:", droidJob.Task)
