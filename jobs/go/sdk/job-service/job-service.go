@@ -14,22 +14,21 @@ limitations under the License.
 package main
 
 /*
-dapr run --app-id maintenance-scheduler --app-port 5200 --dapr-http-port 5280 --dapr-grpc-port 5281 --scheduler-host-address=127.0.0.1:50006 -- go run .
+dapr run --app-id job-service --app-port 6400 --dapr-grpc-port 6481 --app-protocol grpc -- go run .
 */
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"os"
 
-	"github.com/dapr/go-sdk/service/common"
 	"google.golang.org/protobuf/types/known/anypb"
 
 	daprc "github.com/dapr/go-sdk/client"
+	"github.com/dapr/go-sdk/service/common"
 	daprs "github.com/dapr/go-sdk/service/grpc"
 )
 
@@ -205,12 +204,9 @@ func handleJob(ctx context.Context, job *common.JobEvent) error {
 	if err := json.Unmarshal(job.Data, &jobData); err != nil {
 		return fmt.Errorf("failed to unmarshal job: %v", err)
 	}
-	decodedPayload, err := base64.StdEncoding.DecodeString(jobData.Value)
-	if err != nil {
-		return fmt.Errorf("failed to decode job payload: %v", err)
-	}
+	
 	var jobPayload JobData
-	if err := json.Unmarshal(decodedPayload, &jobPayload); err != nil {
+	if err := json.Unmarshal(job.Data, &jobPayload); err != nil {
 		return fmt.Errorf("failed to unmarshal payload: %v", err)
 	}
 

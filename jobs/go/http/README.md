@@ -99,7 +99,7 @@ curl -X POST \
         },
         "dueTime": "2s"
     }'
-    ```
+ ```
 
 Back at the `job-service` app terminal window, the output should be:
 
