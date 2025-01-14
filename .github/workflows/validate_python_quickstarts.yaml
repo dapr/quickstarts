@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-name: Validate csharp quickstart
+name: Validate python quickstart
 
 on:
   workflow_dispatch:
@@ -29,17 +29,9 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate C# quickstart on ${{ matrix.os }}
+    name: Validate Python quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 130
-    env:
-      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
-      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      GOVER: 1.18
-      KUBERNETES_VERSION: v1.25.3
-      KIND_VERSION: v0.17.0
-      KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
-      PODMAN_VERSION: 4.4.4
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -52,6 +44,14 @@ jobs:
         with:
           envFile: './.github/env/global.env'
           expand: 'true'
+      - name: Pinning Python to ${{ env.MACOS_PYTHON_VERSION }} on MacOS
+        if: matrix.os == 'macos-latest'
+        run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
+      - name: Verify Python version
+        run: python3 --version
+      - name: Upgrade pip and setuptools
+        if: matrix.os == 'macos-latest'
+        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
       - name: Install podman - MacOS
         timeout-minutes: 15
         if: matrix.os == 'macos-latest'
@@ -75,12 +75,6 @@ jobs:
         run: |
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
-      - name: Install .NET Core 
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: |
-            6.0.x
-            8.0.x
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
@@ -91,25 +85,26 @@ jobs:
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
-          dapr --version 
+          dapr --version
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate building blocks with C#
+          pip3 install fastapi uvicorn
+      - name: Validate building blocks with Python
         run: |
           variants=("http" "sdk")
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
             do
-              if [ ! -d "$building_block/csharp/$variant" ]; 
+              if [ ! -d "$building_block/python/$variant" ]; 
               then
-                echo "$building_block/csharp/$variant does not exist."
+                echo "$building_block/python/$variant does not exist."
               else
-                pushd $building_block/csharp/$variant
-                echo "Validating $building_block/csharp/$variant quickstart"
+                pushd $building_block/python/$variant
+                echo "Validating $building_block/python/$variant quickstart"
                 make validate 
                 popd
               fi
