@@ -42,15 +42,14 @@ app.MapDaprScheduledJobHandler(async (
 var jobsClient = app.Services.GetRequiredService<DaprJobsClient>();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
-//Create a Cron expression to run every day at 6 AM
+//Create a Cron expression to run four times a minute on the 15-second marks
 var cronBuilder = new CronExpressionBuilder()
-    .Each(CronPeriod.DayOfWeek)
-    .On(OnCronPeriod.Hour, 6);
+    .On(OnCronPeriod.Second, 15);
 
-//Schedule ETL job to run indefinitely
+//Schedule ETL job to run for only four invocations
 var payload = new JobEtlPayload("etl-svc", "op-109780792");
 const string nameOfJob = "daily-etl";
-await jobsClient.ScheduleJobWithPayloadAsync(nameOfJob, DaprJobSchedule.FromCronExpression(cronBuilder), payload, DateTime.Now);
+await jobsClient.ScheduleJobWithPayloadAsync(nameOfJob, DaprJobSchedule.FromCronExpression(cronBuilder), payload, DateTime.Now, 4);
 Log.LogJobSchedule(logger, nameOfJob, payload);
 
 await app.RunAsync();
