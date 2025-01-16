@@ -1,0 +1,14 @@
+﻿apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: conversation
+spec:
+  type: conversation.anthropic
+  version: v1
+  metadata:
+    - name: key
+      secretKeyRef:
+        name: anthropic
+        key: anthropic
+auth:
+  secretStore: envvar-secrets

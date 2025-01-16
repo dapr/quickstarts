@@ -1,0 +1,10 @@
+﻿apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: envvar-secrets
+spec:
+  type: secretstores.local.env
+  version: v1
+  metadata:
+    - name: anthropic
+      value: anthropic
