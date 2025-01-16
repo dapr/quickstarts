@@ -16,7 +16,7 @@ This quickstart includes the following two services:
 
 <!-- STEP
 name: Run ETL service
-expected-stdout_lines:
+expected_stdout_lines:
   - 'Starting Dapr with id etl-svc.'
   - 'Updating metadata for app command: dotnet run --project ./EtlService/EtlService.csproj --urls=http://localhost:5001'
   - 'You're up and running! Both Dapr and your app logs will appear here.'
