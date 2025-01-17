@@ -2,9 +2,7 @@
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
-Visit [this](https://v1-14.docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Jobs API.
-
-> **Note:** This example leverages HTTP `requests` only. If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
+Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Jobs API.
 
 This quickstart includes two apps:
 
@@ -18,13 +16,21 @@ This section shows how to run both applications at once using [multi-app run tem
 1. Install dependencies:
 
 <!-- STEP
-name: Install Node dependencies
+name: Install Node dependencies for job-service
 -->
 
 ```bash
 cd ./job-service
 npm install
-cd ..
+```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: Install Node dependencies for job-scheduler
+-->
+
+```bash
 cd ./job-scheduler
 npm install
 ```
@@ -85,21 +91,21 @@ After 20 seconds, the terminal output should present the `C-3PO` job being proce
 
 <!-- END_STEP -->
 
-## Run the Jobs APIs individually
+## Run the apps individually
 
 ### Schedule Jobs
 
 1. Open a terminal and run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- go run .
+dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- npm run start
 ```
 
 2. On a new terminal window, schedule the `R2-D2` Job using the Jobs API.
 
 ```bash
 curl -X POST \
-  http://localhost:6280/v1.0-alpha1/jobs/R2D2 \
+  http://localhost:6280/v1.0-alpha1/jobs/r2-d2 \
   -H "Content-Type: application/json" \
   -d '{
         "data": {
