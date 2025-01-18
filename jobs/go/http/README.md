@@ -2,7 +2,7 @@
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
-Visit [this](https://v1-14.docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Jobs API.
+Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Jobs API.
 
 > **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
@@ -11,7 +11,7 @@ This quickstart includes two apps:
 - `job-scheduler.go`, responsible for scheduling, retrieving and deleting jobs.
 - `job-service.go`, responsible for handling the triggered jobs.
 
-## Run the app with the template file
+## Run all apps with multi-app run template file
 
 This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
 
@@ -76,7 +76,7 @@ dapr stop -f .
 
 <!-- END_STEP -->
 
-## Run the Jobs APIs individually
+## Run apps individually
 
 ### Schedule Jobs
 
