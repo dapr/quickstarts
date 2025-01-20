@@ -1,0 +1,7 @@
+version: 1
+apps:
+  - appDirPath: ./conversation/
+    appID: conversation
+    appPort: 6300
+    daprHTTPPort: 6380
+    command: ["go", "run", "."]
