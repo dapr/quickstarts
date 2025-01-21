@@ -1,8 +1,6 @@
 module conversation
 
-go 1.23.3
-
-toolchain go1.23.5
+go 1.23.5
 
 require github.com/dapr/go-sdk v1.12.0-rc.1
 
