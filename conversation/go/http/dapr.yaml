@@ -1,7 +1,9 @@
 version: 1
+common:
+  resourcesPath: ../../components/
 apps:
   - appDirPath: ./conversation/
     appID: conversation
-    appPort: 6300
-    daprHTTPPort: 6380
+    appPort: 3500
+    daprHTTPPort: 3501
     command: ["go", "run", "."]
