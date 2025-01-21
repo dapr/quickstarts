@@ -1,4 +1,6 @@
 version: 1
+common:
+  resourcesPath: ../../components/
 apps:
   - appDirPath: ./conversation/
     appID: conversation

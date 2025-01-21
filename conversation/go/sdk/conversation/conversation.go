@@ -29,12 +29,12 @@ func main() {
 	}
 
 	input := dapr.ConversationInput{
-		Message: "hello world",
+		Message: "What is dapr?",
 		// Role:     nil, // Optional
 		// ScrubPII: nil, // Optional
 	}
 
-	fmt.Printf("conversation input: %s\n", input.Message)
+	fmt.Println("Input sent:", input.Message)
 
 	var conversationComponent = "echo"
 
@@ -45,5 +45,5 @@ func main() {
 		log.Fatalf("err: %v", err)
 	}
 
-	fmt.Printf("conversation output: %s\n", resp.Outputs[0].Result)
+	fmt.Println("Output response:", resp.Outputs[0].Result)
 }

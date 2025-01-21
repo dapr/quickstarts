@@ -27,7 +27,7 @@ expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: false
-sleep: 5
+sleep: 60
 timeout_seconds: 120
 -->
 
@@ -43,6 +43,19 @@ The terminal console output should look similar to this, where:
 ```text
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
+```
+
+<!-- END_STEP -->
+
+2. Stop and clean up application processes
+
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
+
+```bash
+dapr stop -f .
 ```
 
 <!-- END_STEP -->
