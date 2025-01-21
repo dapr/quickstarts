@@ -60,8 +60,7 @@ func main() {
 
 	// Unmarshal the response
 	var data map[string][]map[string]string
-	err = json.Unmarshal(bodyBytes, &data)
-	if err != nil {
+	if err := json.Unmarshal(bodyBytes, &data); err != nil {
 		log.Fatal(err)
 	}
 
