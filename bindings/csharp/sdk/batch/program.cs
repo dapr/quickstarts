@@ -31,6 +31,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedCultures = [invariantCulture];
 });
 
+builder.Services.AddDaprClient();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
@@ -38,13 +40,12 @@ if (app.Environment.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
 app.UseRequestLocalization();
 
 // Triggered by Dapr input binding
-app.MapPost("/" + cronBindingName, async () =>
+app.MapPost("/" + cronBindingName, async (DaprClient client) =>
 {
     Console.WriteLine("Processing batch..");
 
     string jsonFile = File.ReadAllText("../../../orders.json");
     var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
-    using var client = new DaprClientBuilder().Build();
     foreach (Order ord in ordersArray?.orders ?? new Order[] { })
     {
         var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
@@ -65,5 +66,5 @@ app.MapPost("/" + cronBindingName, async () =>
 
 await app.RunAsync();
 
-public record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
-public record Orders([property: JsonPropertyName("orders")] Order[] orders);
+public sealed record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
+public saeled record Orders([property: JsonPropertyName("orders")] Order[] orders);
