@@ -37,7 +37,7 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app send an input `What is dapr?` to the `echo` LLM.
+- The app sends an input `What is dapr?` to the `echo` LLM.
 - The LLM echoes `What is dapr?`.
 
 ```text
