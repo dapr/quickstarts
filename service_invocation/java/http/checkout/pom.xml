@@ -11,13 +11,13 @@
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<slf4jVersion>1.6.1</slf4jVersion>
+		<slf4jVersion>2.0.13</slf4jVersion>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20211205</version>
+			<version>20240303</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -25,7 +25,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.6.3</version>
+				<version>3.3.1</version>
 				<executions>
 					<execution>
 						<goals>

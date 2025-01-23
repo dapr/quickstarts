@@ -23,7 +23,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: true
+background: false
 sleep: 30
 timeout_seconds: 60
 -->
@@ -56,8 +56,14 @@ The terminal console output should look similar to this:
 == APP - checkout-http == Published data: {"orderId":10}
 == APP - order-processor == Subscriber received: {"orderId":10}
 ```
+<!-- END_STEP -->
 
 3. Stop and clean up application processes
+
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
 
 ```bash
 dapr stop -f .

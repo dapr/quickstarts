@@ -1,0 +1,10 @@
+version: 1
+common:
+  resourcesPath: ../../components
+apps:
+  - appID: workflowApp
+    appDirPath: ./order-processor/
+    appPort: 3000
+    daprHTTPPort: 3500
+    daprGRPCPort: 50001
+    command: ["npm", "run", "start:order-process-with-dapr-server"]

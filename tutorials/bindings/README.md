@@ -49,7 +49,7 @@ sleep: 20
 -->
 
 ```bash
-docker-compose -f ./docker-compose-single-kafka.yml up -d
+docker compose -f ./docker-compose-single-kafka.yml up -d
 ```
 
 2. To see the container running locally, run:
@@ -217,7 +217,7 @@ dapr stop --app-id bindings-pythonapp
 Once you're done, you can spin down your local Kafka Docker Container by running:
 
 ```bash
-docker-compose -f ./docker-compose-single-kafka.yml down
+docker compose -f ./docker-compose-single-kafka.yml down
 ```
 
 <!-- END_STEP -->
