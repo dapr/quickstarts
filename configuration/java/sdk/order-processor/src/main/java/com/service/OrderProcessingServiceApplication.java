@@ -1,7 +1,6 @@
 package com.service;
 
 import io.dapr.client.DaprClientBuilder;
-import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.DaprClient;
 import io.dapr.client.domain.ConfigurationItem;
 import io.dapr.client.domain.SubscribeConfigurationResponse;

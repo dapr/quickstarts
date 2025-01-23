@@ -2,9 +2,11 @@
 
 In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a state store.
 
-This quickstart includes one project:
+This quickstart includes 3 entry points demonstrating different ways to host a workflow:
 
-- JavaScript console app `order-processor` 
+1. JavaScript console app `order-processor` 
+2. Express app `order-process-with-express-server`
+3. Express app via Dapr Server `order-process-with-dapr-server`
 
 The quickstart contains 1 workflow to simulate purchasing items from a store, and 5 unique activities within the workflow. These 5 activities are as follows:
 
@@ -16,7 +18,7 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 
 ### Run the order processor workflow with multi-app-run
 
-1. Open a new terminal window and navigate to `order-processor` directory: 
+1. Open a new terminal window and install the dependencies: 
 
 <!-- STEP
 name: build order-process app
@@ -29,12 +31,13 @@ npm run build
 ```
 
 <!-- END_STEP -->
-2. Run the console app with Dapr: 
+2. Run the app 
 
+- Entry point 1 : JavaScript console app
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - workflowApp == == APP == Payment of 100 for 10 item1 processed successfully'
+  - '== APP - workflowApp == Payment of 100 for 10 item1 processed successfully'
   - 'there are now 90 item1 in stock'
   - 'processed successfully!'
 expected_stderr_lines:
@@ -43,12 +46,32 @@ background: true
 sleep: 15
 timeout_seconds: 120
 -->
-    
+
 ```bash
 dapr run -f .
 ```
-
 <!-- END_STEP -->
+
+- Entry point 2 : Express app
+
+```bash
+dapr run -f dapr-AppWithExpressServer.yaml
+```
+
+```bash
+curl --request POST \
+  --url http://localhost:3500/v1.0/invoke/workflowApp/method/start-workflow
+```
+
+- Entry point 3 : Express app via Dapr Server
+
+```bash
+dapr run -f dapr-AppWithDaprServer.yaml
+```
+```bash
+curl --request POST \
+  --url http://localhost:3500/v1.0/invoke/workflowApp/method/start-workflow
+```
 
 3. Expected output
 

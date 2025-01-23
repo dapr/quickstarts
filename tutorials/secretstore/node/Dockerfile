@@ -1,4 +1,4 @@
-FROM node:17-alpine
+FROM node:20-bullseye
 WORKDIR /app
 COPY . .
 RUN npm install
