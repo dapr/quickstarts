@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.12-alpine
 COPY . /app
 WORKDIR /app
 RUN pip install flask flask_cors

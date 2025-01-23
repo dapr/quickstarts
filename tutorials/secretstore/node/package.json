@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "base-64": "^0.1.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "isomorphic-fetch": "^2.2.1",
-    "base-64": "^0.1.0"
+    "isomorphic-fetch": "^3.0.0"
   }
 }

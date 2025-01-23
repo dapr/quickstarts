@@ -20,6 +20,7 @@ packages
 **/__pycache__/
 **/dist/
 Debug/
+**_example
 
 # IDE generated files and directories
 *.iml
@@ -32,6 +33,7 @@ Debug/
 .settings/
 .metadata
 .project
+out/
 
 # Package Files #
 *.jar
