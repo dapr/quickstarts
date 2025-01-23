@@ -1,9 +1,8 @@
-
 from datetime import timedelta
 import logging
 import json
 
-from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext, when_any
+from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext, WorkflowRuntime, when_any
 from dapr.clients import DaprClient
 from dapr.conf import settings
 
@@ -12,10 +11,13 @@ from model import InventoryItem, Notification, InventoryRequest, OrderPayload, O
 
 store_name = "statestore"
 
+wfr = WorkflowRuntime()
+
 logging.basicConfig(level=logging.INFO)
 
 
-def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: OrderPayload):
+@wfr.workflow(name="order_processing_workflow")
+def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
     """Defines the order processing workflow.
     When the order is received, the inventory is checked to see if there is enough inventory to
     fulfill the order. If there is enough inventory, the payment is processed and the inventory is
@@ -39,7 +41,7 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: Order
         return OrderResult(processed=False)
     
     if order_payload["total_cost"] > 50000:
-        yield ctx.call_activity(requst_approval_activity, input=order_payload)
+        yield ctx.call_activity(request_approval_activity, input=order_payload)
         approval_task = ctx.wait_for_external_event("manager_approval")
         timeout_event = ctx.create_timer(timedelta(seconds=200))
         winner = yield when_any([approval_task, timeout_event])
@@ -76,7 +78,7 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: Order
         message=f'Order {order_id} has completed!'))
     return OrderResult(processed=True)
 
-
+@wfr.activity(name="notify_activity")
 def notify_activity(ctx: WorkflowActivityContext, input: Notification):
     """Defines Notify Activity. This is used by the workflow to send out a notification"""
     # Create a logger
@@ -84,7 +86,7 @@ def notify_activity(ctx: WorkflowActivityContext, input: Notification):
     logger.info(input.message)
 
 
-
+@wfr.activity(name="process_payment_activity")
 def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest):
     """Defines Process Payment Activity.This is used by the workflow to process a payment"""
     logger = logging.getLogger('ProcessPaymentActivity')
@@ -94,6 +96,7 @@ def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest
     logger.info(f'Payment for request ID {input.request_id} processed successfully')
 
 
+@wfr.activity(name="verify_inventory_activity")
 def verify_inventory_activity(ctx: WorkflowActivityContext,
                               input: InventoryRequest) -> InventoryResult:
     """Defines Verify Inventory Activity. This is used by the workflow to verify if inventory
@@ -117,6 +120,8 @@ def verify_inventory_activity(ctx: WorkflowActivityContext,
     return InventoryResult(False, None)
 
 
+
+@wfr.activity(name="update_inventory_activity")
 def update_inventory_activity(ctx: WorkflowActivityContext,
                               input: PaymentRequest) -> InventoryResult:
     """Defines Update Inventory Activity. This is used by the workflow to check if inventory
@@ -139,7 +144,9 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
         logger.info(f'There are now {new_quantity} {input.item_being_purchased} left in stock')
 
 
-def requst_approval_activity(ctx: WorkflowActivityContext,
+
+@wfr.activity(name="request_approval_activity")
+def request_approval_activity(ctx: WorkflowActivityContext,
                              input: OrderPayload):
     """Defines Request Approval Activity. This is used by the workflow to request approval
     for payment of an order. This activity is used only if the order total cost is greater than

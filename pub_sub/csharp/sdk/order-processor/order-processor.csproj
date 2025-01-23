@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <PackageReference Include="Dapr.AspNetCore" Version="1.13.*-*" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.14.*-*" />
   </ItemGroup>
 
 </Project>

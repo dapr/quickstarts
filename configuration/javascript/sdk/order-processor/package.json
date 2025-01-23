@@ -15,6 +15,6 @@
         "eslint-plugin-react": "^7.28.0"
     },
     "dependencies": {
-        "@dapr/dapr": "^3.3.0"
+        "@dapr/dapr": "^3.3.1"
     }
 }
