@@ -1,4 +1,6 @@
 version: 1
+common:
+  resourcesPath: ./resources
 apps:
   - appDirPath: ./node
     appID: nodeapp

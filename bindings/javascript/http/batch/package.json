@@ -8,7 +8,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.25.0",
+        "axios": "^1.7.2",
         "express": "^4.17.2"
     }
 }

@@ -25,7 +25,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: true
+background: false
 sleep: 15
 -->
 
@@ -33,7 +33,13 @@ sleep: 15
   dapr run -f .
 ```
 
+<!-- END_STEP -->
+
 2. Stop and cleanup application process
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
 
 ```bash
 dapr stop -f .

@@ -24,7 +24,7 @@ timeout_seconds: 120
 
 ```bash
 cd ../../db
-docker-compose up
+docker compose up
 ```
 
 <!-- END_STEP -->

@@ -4,14 +4,12 @@ from time import sleep
 
 from dapr.clients import DaprClient
 from dapr.conf import settings
-from dapr.ext.workflow import WorkflowRuntime
+from dapr.ext.workflow import DaprWorkflowClient, WorkflowStatus
 
-from workflow import order_processing_workflow, notify_activity, process_payment_activity, \
-    verify_inventory_activity, update_inventory_activity, requst_approval_activity
+from workflow import wfr, order_processing_workflow
 from model import InventoryItem, OrderPayload
 
 store_name = "statestore"
-workflow_component = "dapr"
 workflow_name = "order_processing_workflow"
 default_item_name = "cars"
 
@@ -19,39 +17,35 @@ class WorkflowConsoleApp:
     def main(self):
         print("*** Welcome to the Dapr Workflow console app sample!", flush=True)
         print("*** Using this app, you can place orders that start workflows.", flush=True)
+        
+        wfr.start()
         # Wait for the sidecar to become available
         sleep(5)
 
-        workflowRuntime = WorkflowRuntime(settings.DAPR_RUNTIME_HOST, settings.DAPR_GRPC_PORT)
-        workflowRuntime.register_workflow(order_processing_workflow)
-        workflowRuntime.register_activity(notify_activity)
-        workflowRuntime.register_activity(requst_approval_activity)
-        workflowRuntime.register_activity(verify_inventory_activity)
-        workflowRuntime.register_activity(process_payment_activity)
-        workflowRuntime.register_activity(update_inventory_activity)
-        workflowRuntime.start()
+        wfClient = DaprWorkflowClient()
+
+        baseInventory = {
+            "paperclip": InventoryItem("Paperclip", 5, 100),
+            "cars": InventoryItem("Cars", 15000, 100),
+            "computers": InventoryItem("Computers", 500, 100),
+        }
+
 
         daprClient = DaprClient(address=f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}')
-        baseInventory = {}
-        baseInventory["paperclip"] = InventoryItem("Paperclip", 5, 100)
-        baseInventory["cars"] = InventoryItem("Cars", 15000, 100)
-        baseInventory["computers"] = InventoryItem("Computers", 500, 100)
-
         self.restock_inventory(daprClient, baseInventory)
 
         print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
         order_quantity = 10
-
         total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
         order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
-        print(f'Starting order workflow, purchasing {order_quantity} of {item_name}', flush=True)
-        start_resp = daprClient.start_workflow(workflow_component=workflow_component,
-                                               workflow_name=workflow_name,
-                                               input=order)
-        _id = start_resp.instance_id
 
-        def prompt_for_approval(daprClient: DaprClient):
+        print(f'Starting order workflow, purchasing {order_quantity} of {item_name}', flush=True)
+        instance_id = wfClient.schedule_new_workflow(
+            workflow=order_processing_workflow, input=order.to_json())
+        _id = instance_id
+
+        def prompt_for_approval(wfClient: DaprWorkflowClient):
             """This is a helper function to prompt for approval.
             Not using the prompt here ACTUALLY, as quickstart validation is required to be automated.
             
@@ -65,9 +59,9 @@ class WorkflowConsoleApp:
                 if state.runtime_status.name == "COMPLETED":
                     return
                 if approved.lower() == "y":
-                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
+                    wfClient.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
                 else:
-                    client.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
+                    wfClient.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
 
                 ## Additionally, you would need to import signal and define timeout_error:
                 # import signal
@@ -76,32 +70,32 @@ class WorkflowConsoleApp:
 
                 # signal.signal(signal.SIGALRM, timeout_error)
             """
-            daprClient.raise_workflow_event(instance_id=_id, workflow_component=workflow_component, 
-                                            event_name="manager_approval", event_data={'approval': True})
+            wfClient.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
 
         approval_seeked = False
         start_time = datetime.now()
         while True:
             time_delta = datetime.now() - start_time
-            state = daprClient.get_workflow(instance_id=_id, workflow_component=workflow_component)
+            state = wfClient.get_workflow_state(instance_id=_id)
+
             if not state:
                 print("Workflow not found!")  # not expected
-            elif state.runtime_status == "Completed" or\
-                    state.runtime_status == "Failed" or\
-                    state.runtime_status == "Terminated":
+                break
+
+            if state.runtime_status in {WorkflowStatus.COMPLETED, WorkflowStatus.FAILED, WorkflowStatus.TERMINATED}:
                 print(f'Workflow completed! Result: {state.runtime_status}', flush=True)
                 break
+
+
             if time_delta.total_seconds() >= 10:
-                state = daprClient.get_workflow(instance_id=_id, workflow_component=workflow_component)
-                if total_cost > 50000 and (
-                    state.runtime_status != "Completed" or 
-                    state.runtime_status != "Failed" or
-                    state.runtime_status != "Terminated"
-                    ) and not approval_seeked:
+                state = wfClient.get_workflow_state(instance_id=_id)
+                if total_cost > 50000 and state not in {WorkflowStatus.COMPLETED, WorkflowStatus.FAILED, WorkflowStatus.TERMINATED} and not approval_seeked:
                     approval_seeked = True
-                    threading.Thread(target=prompt_for_approval(daprClient), daemon=True).start()
+                    threading.Thread(target=prompt_for_approval(wfClient), daemon=True).start()
+
+        wfr.shutdown()
+
             
-        print("Purchase of item is ", state.runtime_status, flush=True)
 
     def restock_inventory(self, daprClient: DaprClient, baseInventory):
         for key, item in baseInventory.items():

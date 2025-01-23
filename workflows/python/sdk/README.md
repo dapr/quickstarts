@@ -34,7 +34,7 @@ cd ..
 name: Running this example
 expected_stdout_lines:
   - "There are now 90 cars left in stock"
-  - "Workflow completed! Result: Completed"
+  - "Workflow completed!"
 output_match_mode: substring
 background: true
 timeout_seconds: 120

@@ -4,4 +4,4 @@ common:
 apps:
   - appID: workflowApp
     appDirPath: ./order-processor/
-    command: ["npm", "run", "start:dapr:order-process"]
+    command: ["npm", "run", "start:order-process"]
