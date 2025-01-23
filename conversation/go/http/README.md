@@ -4,11 +4,11 @@ In this quickstart, you'll send an input to a mock Large Language Model (LLM) us
 
 Visit [this](https://v1-15.docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
 
-> **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
+> **Note:** This example leverages HTTP `requests` only. If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
 This quickstart includes one app:
 
-- `conversation.go`, responsible for sending and input to the underlying LLM and retrieving an output.
+- `conversation.go`, responsible for sending an input to the underlying LLM and retrieving an output.
 
 ## Run the app with the template file
 
@@ -47,7 +47,7 @@ The terminal console output should look similar to this, where:
 
 <!-- END_STEP -->
 
-2. Stop and clean up application processes
+2. Stop and clean up application processes.
 
 <!-- STEP
 name: Stop multi-app run 
