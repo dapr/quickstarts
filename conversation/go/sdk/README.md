@@ -1,4 +1,4 @@
-# Dapr Conversation
+# Dapr Conversation API (Go SDK)
 
 In this quickstart, you'll send an input to a Large Language Model (LLM) using Dapr's Conversation API. This API is responsible for providing one consistent API entry point to talk to underlying LLM providers.
 
