@@ -4,5 +4,4 @@ common:
 apps:
   - appDirPath: ./conversation/
     appID: conversation
-    daprHTTPPort: 3501
     command: ["go", "run", "."]
