@@ -38,7 +38,7 @@ dapr run -f .
 The terminal console output should look similar to this, where:
 
 - The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The LLM echoes `What is dapr?`.
+- The mock LLM echoes `What is dapr?`.
 
 ```text
 == APP - conversation == Input sent: What is dapr?
