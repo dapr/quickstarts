@@ -1,25 +1,19 @@
-﻿namespace WorkflowConsoleApp.Activities
+﻿namespace WorkflowConsoleApp.Activities;
+
+using System.Threading.Tasks;
+using Dapr.Workflow;
+using Microsoft.Extensions.Logging;
+
+internal sealed partial class NotifyActivity(ILogger<NotifyActivity> logger) : WorkflowActivity<Notification, object?>
 {
-    using System.Threading.Tasks;
-    using Dapr.Workflow;
-    using Microsoft.Extensions.Logging;
-
-    record Notification(string Message);
-
-    class NotifyActivity : WorkflowActivity<Notification, object>
+    public override Task<object?> RunAsync(WorkflowActivityContext context, Notification notification)
     {
-        readonly ILogger logger;
-
-        public NotifyActivity(ILoggerFactory loggerFactory)
-        {
-            this.logger = loggerFactory.CreateLogger<NotifyActivity>();
-        }
-
-        public override Task<object> RunAsync(WorkflowActivityContext context, Notification notification)
-        {
-            this.logger.LogInformation(notification.Message);
-
-            return Task.FromResult<object>(null);
-        }
+        LogNotification(logger, notification);
+        return Task.FromResult<object?>(null);
     }
+    
+    [LoggerMessage(LogLevel.Information, "Presenting notification {notification}")]
+    static partial void LogNotification(ILogger logger, Notification notification);
 }
+
+internal sealed record Notification(string Message);
