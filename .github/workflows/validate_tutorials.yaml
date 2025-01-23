@@ -32,11 +32,6 @@ jobs:
     name: Validate tutorials on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
-    env:
-      GOVER: 1.22
-      KUBERNETES_VERSION: v1.29.4
-      KIND_VERSION: v0.23.0
-      KIND_IMAGE_SHA: sha256:3abb816a5b1061fb15c6e9e60856ec40d56b7b52bcea5f5f1350bc6e2320b6f8
     strategy:
       matrix:
         os: [ubuntu-latest]
