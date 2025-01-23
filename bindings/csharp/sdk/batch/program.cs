@@ -10,14 +10,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-using System;
-using System.IO;
-using System.Text;
+
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
 using Dapr.Client;
-
 
 // dapr run --app-id batch-sdk --app-port 7002 --resources-path ../../../components -- dotnet run
 
@@ -25,20 +23,33 @@ var cronBindingName = "cron";
 var sqlBindingName = "sqldb";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var invariantCulture = CultureInfo.InvariantCulture;
+    options.DefaultRequestCulture = new RequestCulture(invariantCulture);
+    options.SupportedCultures = [invariantCulture];
+});
+
+builder.Services.AddDaprClient();
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
+if (app.Environment.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
+
+app.UseRequestLocalization();
 
 // Triggered by Dapr input binding
-app.MapPost("/" + cronBindingName, async () => {
-
+app.MapPost("/" + cronBindingName, async (DaprClient client) =>
+{
     Console.WriteLine("Processing batch..");
+
     string jsonFile = File.ReadAllText("../../../orders.json");
     var ordersArray = JsonSerializer.Deserialize<Orders>(jsonFile);
-    using var client = new DaprClientBuilder().Build();
-    foreach(Order ord in ordersArray?.orders ?? new Order[] {}){
+    foreach (Order ord in ordersArray?.orders ?? new Order[] { })
+    {
         var sqlText = $"insert into orders (orderid, customer, price) values ({ord.OrderId}, '{ord.Customer}', {ord.Price});";
-        var command = new Dictionary<string,string>(){
+        var command = new Dictionary<string, string>(){
             {"sql",
             sqlText}
         };
@@ -55,5 +66,5 @@ app.MapPost("/" + cronBindingName, async () => {
 
 await app.RunAsync();
 
-public record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
-public record Orders([property: JsonPropertyName("orders")] Order[] orders);
+public sealed record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
+public sealed record Orders([property: JsonPropertyName("orders")] Order[] orders);

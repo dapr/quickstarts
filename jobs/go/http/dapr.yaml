@@ -1,0 +1,13 @@
+version: 1
+apps:
+  - appDirPath: ./job-service/
+    appID: job-service
+    appPort: 6200
+    daprHTTPPort: 6280
+    schedulerHostAddress: localhost
+    command: ["go", "run", "."]
+  - appDirPath: ./job-scheduler/
+    appID: job-scheduler
+    appPort: 6300
+    daprHTTPPort: 6380
+    command: ["go", "run", "."]
