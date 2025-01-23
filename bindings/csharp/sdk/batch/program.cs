@@ -67,4 +67,4 @@ app.MapPost("/" + cronBindingName, async (DaprClient client) =>
 await app.RunAsync();
 
 public sealed record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
-public saeled record Orders([property: JsonPropertyName("orders")] Order[] orders);
+public sealed record Orders([property: JsonPropertyName("orders")] Order[] orders);
