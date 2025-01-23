@@ -34,7 +34,7 @@ Run the `SmartDevice.Service`, which will start service itself and the Dapr side
 <!-- STEP
 name: Run actor service
 expected_stdout_lines:
-  - "Request finished HTTP/1.1 GET http://127.0.0.1:5001/healthz - 200"
+  - "Request finished HTTP/1.1 GET http://127.0.0.1:5001/dapr/config - 200"
 expected_stderr_lines:
 working_dir: .
 output_match_mode: substring
@@ -50,14 +50,23 @@ dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-p
 Expected output:
 
 ```bash
+== APP == info: Microsoft.Hosting.Lifetime[14]
+== APP ==       Now listening on: http://localhost:5001
+== APP == info: Microsoft.Hosting.Lifetime[0]
+== APP ==       Application started. Press Ctrl+C to shut down.
+== APP == info: Microsoft.Hosting.Lifetime[0]
+== APP ==       Hosting environment: Production
+== APP == info: Microsoft.Hosting.Lifetime[0]
 == APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
-== APP ==       Request starting HTTP/1.1 GET http://127.0.0.1:5001/healthz - -
+== APP ==       Request starting HTTP/1.1 GET http://127.0.0.1:5001/dapr/config - application/json -
+== APP == warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+== APP ==       Failed to determine the https port for redirect.
 == APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-== APP ==       Executing endpoint 'Dapr Actors Health Check'
+== APP ==       Executing endpoint 'Dapr Actors Config'
 == APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-== APP ==       Executed endpoint 'Dapr Actors Health Check'
+== APP ==       Executed endpoint 'Dapr Actors Config'
 == APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-== APP ==       Request finished HTTP/1.1 GET http://127.0.0.1:5001/healthz - - - 200 - text/plain 5.2599ms
+== APP ==       Request finished HTTP/1.1 GET http://127.0.0.1:5001/dapr/config - 200 - application/json 30.6175ms
 ```
 
 ### Step 4: Run the client app

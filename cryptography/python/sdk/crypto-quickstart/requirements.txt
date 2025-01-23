@@ -1,0 +1,2 @@
+dapr>=1.14
+typing-extensions
