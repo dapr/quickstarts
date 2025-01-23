@@ -4,7 +4,7 @@ In this quickstart, you'll send an input to a mock Large Language Model (LLM) us
 
 Visit [this](https://v1-15.docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
 
-> **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the HTTP API [click here](../http/).
+> **Note:** This example leverages the Dapr SDK.  If you are looking for the example using the HTTP API [click here](../http/).
 
 This quickstart includes one app:
 
@@ -14,7 +14,7 @@ This quickstart includes one app:
 
 This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  
 
-This example uses the Default LLM Component provided by Dapr for testing purposes. Here are other [supported Conversation components](https://v1-15.docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Here are other [supported Conversation components](https://v1-15.docs.dapr.io/reference/components-reference/supported-conversation/).
 
 Open a new terminal window and run the multi app run template:
 
