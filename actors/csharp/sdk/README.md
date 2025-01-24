@@ -13,7 +13,7 @@ Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/devel
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET 7 SDK](https://dotnet.microsoft.com/download).
+- [.NET 8 SDK](https://dotnet.microsoft.com/download).
 - Docker Desktop
 
 ### Step 2: Set up the environment
