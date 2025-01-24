@@ -1,4 +1,4 @@
-# Dapr Conversation API (Go SDK)
+# Dapr Conversation API (C# SDK)
 
 In this quickstart, you'll send an input to a mock Large Language Model (LLM) using Dapr's Conversation API. This API is responsible for providing one consistent API entry point to talk to underlying LLM providers.
 
@@ -8,13 +8,13 @@ Visit [this](https://v1-15.docs.dapr.io/developing-applications/building-blocks/
 
 This quickstart includes one app:
 
-- `conversation.go`, responsible for sending an input to the underlying LLM and retrieving an output.
+- Conversation, responsible for sending an input to the underlying LLM and retrieving an output.
 
 ## Run the app with the template file
 
-This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  
+This section shows how to run the application using the [multi-app run template file](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and Dapr CLI with `dapr run -f .`.  
 
-This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Here are other [supported Conversation components](https://v1-15.docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Integrate with popular LLM models by using one of the other [supported conversation components](https://v1-15.docs.dapr.io/reference/components-reference/supported-conversation/).
 
 Open a new terminal window and run the multi app run template:
 
@@ -26,9 +26,9 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: false
+background: true
 sleep: 15
-timeout_seconds: 30
+timeout_seconds: 15
 -->
 
 ```bash
@@ -50,8 +50,7 @@ The terminal console output should look similar to this, where:
 2. Stop and clean up application processes.
 
 <!-- STEP
-name: Stop multi-app run 
-sleep: 5
+name: Stop multi-app run
 -->
 
 ```bash
@@ -59,3 +58,28 @@ dapr stop -f .
 ```
 
 <!-- END_STEP -->
+
+## Run the app individually
+
+1. Open a terminal and run the `conversation` app. Build the dependencies if you haven't already.
+
+```bash
+cd ./conversation
+dotnet build
+```
+
+2. Run the Dapr process alongside the application.
+
+```bash
+dapr run --app-id conversation --resources-path ../../../components/ -- dotnet run
+```
+
+The terminal console output should look similar to this, where:
+
+- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is dapr?`.
+
+```text
+== APP - conversation == Input sent: What is dapr?
+== APP - conversation == Output response: What is dapr?
+```
