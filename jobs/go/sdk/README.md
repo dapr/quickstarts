@@ -1,4 +1,4 @@
-# Dapr Jobs
+# Dapr Jobs API (SDK)
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
