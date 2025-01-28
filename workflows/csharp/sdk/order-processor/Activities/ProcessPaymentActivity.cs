@@ -1,40 +1,28 @@
-﻿namespace WorkflowConsoleApp.Activities
+﻿namespace WorkflowConsoleApp.Activities;
+
+using System.Threading.Tasks;
+using Dapr.Client;
+using Dapr.Workflow;
+using Microsoft.Extensions.Logging;
+using Models;
+using System;
+
+internal sealed partial class ProcessPaymentActivity(ILogger<ProcessPaymentActivity> logger) : WorkflowActivity<PaymentRequest, object?>
 {
-    using System.Threading.Tasks;
-    using Dapr.Client;
-    using Dapr.Workflow;
-    using Microsoft.Extensions.Logging;
-    using WorkflowConsoleApp.Models;
-    using System;
-
-    class ProcessPaymentActivity : WorkflowActivity<PaymentRequest, object>
+    public override async Task<object?> RunAsync(WorkflowActivityContext context, PaymentRequest req)
     {
-        readonly ILogger logger;
-        readonly DaprClient client;
+        LogPaymentProcessing(logger, req.RequestId, req.Amount, req.ItemBeingPurchased, req.Currency);
 
-        public ProcessPaymentActivity(ILoggerFactory loggerFactory, DaprClient client)
-        {
-            this.logger = loggerFactory.CreateLogger<ProcessPaymentActivity>();
-            this.client = client;
-        }
+        // Simulate slow processing
+        await Task.Delay(TimeSpan.FromSeconds(7));
 
-        public override async Task<object> RunAsync(WorkflowActivityContext context, PaymentRequest req)
-        {
-            this.logger.LogInformation(
-                "Processing payment: {requestId} for {amount} {item} at ${currency}",
-                req.RequestId,
-                req.Amount,
-                req.ItemBeingPruchased,
-                req.Currency);
-
-            // Simulate slow processing
-            await Task.Delay(TimeSpan.FromSeconds(7));
-
-            this.logger.LogInformation(
-                "Payment for request ID '{requestId}' processed successfully",
-                req.RequestId);
-
-            return null;
-        }
+        LogSuccessfulPayment(logger, req.RequestId);
+        return null;
     }
+
+    [LoggerMessage(LogLevel.Information, "Processing payment: request ID '{requestId}' for {amount} {itemBeingPurchased} at ${currency}")]
+    static partial void LogPaymentProcessing(ILogger logger, string requestId, int amount, string itemBeingPurchased, double currency);
+
+    [LoggerMessage(LogLevel.Information, "Payment for request ID '{requestId}' processed successfully")]
+    static partial void LogSuccessfulPayment(ILogger logger, string requestId);
 }
