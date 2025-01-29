@@ -42,7 +42,7 @@ expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-sdk"'
   - 'Started Dapr with app id "checkout-sdk"'
   - '== APP - checkout-sdk == Published data: {"orderId":1}'
-  - '== APP - order-processor == Subscriber received: {"orderId":1}'
+  - '== APP - order-processor-sdk == Subscriber received: {"orderId":1}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
