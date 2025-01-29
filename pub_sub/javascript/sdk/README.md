@@ -39,7 +39,7 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - 'Started Dapr with app id "order-processor"'
+  - 'Started Dapr with app id "order-processor-sdk"'
   - 'Started Dapr with app id "checkout-sdk"'
   - '== APP - checkout-sdk == Published data: {"orderId":1}'
   - '== APP - order-processor == Subscriber received: {"orderId":1}'
@@ -59,25 +59,25 @@ The terminal console output should look similar to this:
 
 ```text
 == APP - checkout-sdk == Published data: {"orderId":1}
-== APP - order-processor == Subscriber received: {"orderId":1}
+== APP - order-processor-sdk == Subscriber received: {"orderId":1}
 == APP - checkout-sdk == Published data: {"orderId":2}
-== APP - order-processor == Subscriber received: {"orderId":2}
+== APP - order-processor-sdk == Subscriber received: {"orderId":2}
 == APP - checkout-sdk == Published data: {"orderId":3}
-== APP - order-processor == Subscriber received: {"orderId":3}
+== APP - order-processor-sdk == Subscriber received: {"orderId":3}
 == APP - checkout-sdk == Published data: {"orderId":4}
-== APP - order-processor == Subscriber received: {"orderId":4}
+== APP - order-processor-sdk == Subscriber received: {"orderId":4}
 == APP - checkout-sdk == Published data: {"orderId":5}
-== APP - order-processor == Subscriber received: {"orderId":5}
+== APP - order-processor-sdk == Subscriber received: {"orderId":5}
 == APP - checkout-sdk == Published data: {"orderId":6}
-== APP - order-processor == Subscriber received: {"orderId":6}
+== APP - order-processor-sdk == Subscriber received: {"orderId":6}
 == APP - checkout-sdk == Published data: {"orderId":7}
-== APP - order-processor == Subscriber received: {"orderId":7}
+== APP - order-processor-sdk == Subscriber received: {"orderId":7}
 == APP - checkout-sdk == Published data: {"orderId":8}
-== APP - order-processor == Subscriber received: {"orderId":8}
+== APP - order-processor-sdk == Subscriber received: {"orderId":8}
 == APP - checkout-sdk == Published data: {"orderId":9}
-== APP - order-processor == Subscriber received: {"orderId":9}
+== APP - order-processor-sdk == Subscriber received: {"orderId":9}
 == APP - checkout-sdk == Published data: {"orderId":10}
-== APP - order-processor == Subscriber received: {"orderId":10}
+== APP - order-processor-sdk == Subscriber received: {"orderId":10}
 ```
 
 3. Stop and clean up application processes
