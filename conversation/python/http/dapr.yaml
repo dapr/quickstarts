@@ -2,6 +2,6 @@ version: 1
 common:
   resourcesPath: ../../components/
 apps:
-  - appDirPath: ./conversation/
+  - appID: conversation
     appDirPath: ./conversation/
     command: ["python3", "app.py"]
