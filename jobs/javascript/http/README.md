@@ -53,7 +53,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: false
+background: true
 sleep: 60
 timeout_seconds: 120
 -->
@@ -87,6 +87,18 @@ After 20 seconds, the terminal output should present the `C-3PO` job being proce
 == APP - job-service == Received job request...
 == APP - job-service == Starting droid: C-3PO
 == APP - job-service == Executing maintenance job: Limb Calibration
+```
+
+<!-- END_STEP -->
+
+3. Stop and clean up application processes.
+
+<!-- STEP
+name: Stop multi-app run
+-->
+
+```bash
+dapr stop -f .
 ```
 
 <!-- END_STEP -->
