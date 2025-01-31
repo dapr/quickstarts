@@ -1,4 +1,5 @@
 Flask
-dapr
+dapr>=1.15.0rc2
 typing-extensions
 werkzeug>=3.0.3 # not directly required, pinned by Snyk to avoid a vulnerability
+
