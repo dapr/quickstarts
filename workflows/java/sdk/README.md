@@ -34,8 +34,8 @@ cd ..
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - WorkflowConsoleApp == there are now 90 cars left in stock'
-  - '== APP - WorkflowConsoleApp == workflow instance completed, out is: {"processed":true}'
+  - '== APP - order-processor == there are now 90 cars left in stock'
+  - '== APP - order-processor == workflow instance completed, out is: {"processed":true}'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -53,32 +53,32 @@ dapr run -f .
 
 
 ```
-== APP - WorkflowConsoleApp == *** Welcome to the Dapr Workflow console app sample!
-== APP - WorkflowConsoleApp == *** Using this app, you can place orders that start workflows.
-== APP - WorkflowConsoleApp == Start workflow runtime
-== APP - WorkflowConsoleApp == Oct 06, 2023 3:10:01 PM com.microsoft.durabletask.DurableTaskGrpcWorker startAndBlock
-== APP - WorkflowConsoleApp == INFO: Durable Task worker is connecting to sidecar at 127.0.0.1:50001.
-== APP - WorkflowConsoleApp == ==========Begin the purchase of item:==========
-== APP - WorkflowConsoleApp == Starting order workflow, purchasing 10 of cars
-== APP - WorkflowConsoleApp == scheduled new workflow instance of OrderProcessingWorkflow with instance ID: 397faa44-1374-4f9d-a7fe-c74160604064
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Starting Workflow: io.dapr.quickstarts.workflows.OrderProcessingWorkflow
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Instance ID(order ID): 397faa44-1374-4f9d-a7fe-c74160604064
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Current Orchestration Time: 2023-10-06T22:10:04.769Z
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Received Order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
-== APP - WorkflowConsoleApp == workflow instance 397faa44-1374-4f9d-a7fe-c74160604064 started
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - Reserving inventory for order '397faa44-1374-4f9d-a7fe-c74160604064' of 10 cars
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - There are 100 cars available for purchase
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - Reserved inventory for order '397faa44-1374-4f9d-a7fe-c74160604064' of 10 cars
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Requesting approval for order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Approved requesting approval for order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: 397faa44-1374-4f9d-a7fe-c74160604064 for 10 cars at $150000
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID '397faa44-1374-4f9d-a7fe-c74160604064' processed successfully
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order '397faa44-1374-4f9d-a7fe-c74160604064' of 10 cars
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order '397faa44-1374-4f9d-a7fe-c74160604064': there are now 90 cars left in stock
-== APP - WorkflowConsoleApp == there are now 90 cars left in stock
-== APP - WorkflowConsoleApp == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : 397faa44-1374-4f9d-a7fe-c74160604064
-== APP - WorkflowConsoleApp == workflow instance completed, out is: {"processed":true}
+== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+== APP - order-processor == *** Using this app, you can place orders that start workflows.
+== APP - order-processor == Start workflow runtime
+== APP - order-processor == Oct 06, 2023 3:10:01 PM com.microsoft.durabletask.DurableTaskGrpcWorker startAndBlock
+== APP - order-processor == INFO: Durable Task worker is connecting to sidecar at 127.0.0.1:50001.
+== APP - order-processor == ==========Begin the purchase of item:==========
+== APP - order-processor == Starting order workflow, purchasing 10 of cars
+== APP - order-processor == scheduled new workflow instance of OrderProcessingWorkflow with instance ID: 397faa44-1374-4f9d-a7fe-c74160604064
+== APP - order-processor == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Starting Workflow: io.dapr.quickstarts.workflows.OrderProcessingWorkflow
+== APP - order-processor == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Instance ID(order ID): 397faa44-1374-4f9d-a7fe-c74160604064
+== APP - order-processor == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Current Orchestration Time: 2023-10-06T22:10:04.769Z
+== APP - order-processor == [Thread-0] INFO io.dapr.workflows.WorkflowContext - Received Order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP - order-processor == workflow instance 397faa44-1374-4f9d-a7fe-c74160604064 started
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - Reserving inventory for order '397faa44-1374-4f9d-a7fe-c74160604064' of 10 cars
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - There are 100 cars available for purchase
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity - Reserved inventory for order '397faa44-1374-4f9d-a7fe-c74160604064' of 10 cars
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Requesting approval for order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Approved requesting approval for order: OrderPayload [itemName=cars, totalCost=150000, quantity=10]
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: 397faa44-1374-4f9d-a7fe-c74160604064 for 10 cars at $150000
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID '397faa44-1374-4f9d-a7fe-c74160604064' processed successfully
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order '397faa44-1374-4f9d-a7fe-c74160604064' of 10 cars
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order '397faa44-1374-4f9d-a7fe-c74160604064': there are now 90 cars left in stock
+== APP - order-processor == there are now 90 cars left in stock
+== APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : 397faa44-1374-4f9d-a7fe-c74160604064
+== APP - order-processor == workflow instance completed, out is: {"processed":true}
 ```
 
 ### View workflow output with Zipkin
@@ -97,7 +97,7 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 ### What happened? 
 
-When you ran `dapr run --app-id WorkflowConsoleApp --resources-path ../../../components/ --dapr-grpc-port 50001 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar io.dapr.quickstarts.workflows.WorkflowConsoleApp`
+When you ran `dapr run --app-id order-processor --resources-path ../../../components/ --dapr-grpc-port 50001 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar io.dapr.quickstarts.workflows.WorkflowConsoleApp`
 
 1. A unique order ID for the workflow is generated (in the above example, `95d33f7c-3af8-4960-ba11-4ecea83b0509`) and the workflow is scheduled.
 2. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
