@@ -20,11 +20,11 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-service == Received job request...'
-  - '== APP - job-service == Executing maintenance job: Oil Change'
-  - '== APP - job-scheduler == Job Scheduled: C-3PO'
-  - '== APP - job-service == Received job request...'
-  - '== APP - job-service == Executing maintenance job: Limb Calibration'
+  - '== APP - job-service-http == Received job request...'
+  - '== APP - job-service-http == Executing maintenance job: Oil Change'
+  - '== APP - job-scheduler-http == Job Scheduled: C-3PO'
+  - '== APP - job-service-http == Received job request...'
+  - '== APP - job-service-http == Executing maintenance job: Limb Calibration'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -45,20 +45,20 @@ The terminal console output should look similar to this, where:
 - The `C-3PO` job is being retrieved.
 
 ```text
-== APP - job-scheduler == Job Scheduled: R2-D2
-== APP - job-service == Received job request...
-== APP - job-service == Starting droid: R2-D2
-== APP - job-service == Executing maintenance job: Oil Change
-== APP - job-scheduler == Job Scheduled: C-3PO
-== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"ttype.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
+== APP - job-scheduler-http == Job Scheduled: R2-D2
+== APP - job-service-http == Received job request...
+== APP - job-service-http == Starting droid: R2-D2
+== APP - job-service-http == Executing maintenance job: Oil Change
+== APP - job-scheduler-http == Job Scheduled: C-3PO
+== APP - job-scheduler-http == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"ttype.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
 ```
 
 After 30 seconds, the terminal output should present the `C-3PO` job being processed:
 
 ```text
-== APP - job-service == Received job request...
-== APP - job-service == Starting droid: C-3PO
-== APP - job-service == Executing maintenance job: Limb Calibration
+== APP - job-service-http == Received job request...
+== APP - job-service-http == Starting droid: C-3PO
+== APP - job-service-http == Executing maintenance job: Limb Calibration
 ```
 
 <!-- END_STEP -->
@@ -83,7 +83,7 @@ dapr stop -f .
 1. Open a terminal and run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- go run .
+dapr run --app-id job-service-http --app-port 6200 --dapr-http-port 6280 -- go run .
 ```
 
 2. On a new terminal window, schedule the `R2-D2` Job using the Jobs API.
@@ -104,9 +104,9 @@ curl -X POST \
 Back at the `job-service` app terminal window, the output should be:
 
 ```text
-== APP - job-app == Received job request...
-== APP - job-app == Starting droid: R2-D2
-== APP - job-app == Executing maintenance job: Oil Change
+== APP - job-service-http == Received job request...
+== APP - job-service-http == Starting droid: R2-D2
+== APP - job-service-http == Executing maintenance job: Oil Change
 ```
 
 3. On the same terminal window, schedule the `C-3PO` Job using the Jobs API.
@@ -155,5 +155,5 @@ curl -X GET http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: appli
 Back at the `job-service` app terminal window, the output should be:
 
 ```text
-ERRO[0249] Error getting job c-3po due to: rpc error: code = Unknown desc = job not found: app||default||job-service||c-3po  instance=diagrid.local scope=dapr.api type=log ver=1.14.0-rc.2
+ERRO[0249] Error getting job c-3po due to: rpc error: code = Unknown desc = job not found: app||default||job-service-http||c-3po  instance=diagrid.local scope=dapr.api type=log ver=1.14.0-rc.2
 ```
