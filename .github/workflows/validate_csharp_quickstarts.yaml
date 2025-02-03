@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 
-name: Validate java quickstart
+name: Validate csharp quickstart
 
 on:
   workflow_dispatch:
@@ -29,17 +29,9 @@ on:
       - release-*
 jobs:
   validate:
-    name: Validate Java quickstart on ${{ matrix.os }}
+    name: Validate C# quickstart on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 130
-    env:
-      DAPR_DEFAULT_IMAGE_REGISTRY: GHCR
-      DAPR_INSTALL_URL: https://raw.githubusercontent.com/dapr/cli/master/install
-      GOVER: 1.19
-      KUBERNETES_VERSION: v1.25.3
-      KIND_VERSION: v0.17.0
-      KIND_IMAGE_SHA: sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
-      PODMAN_VERSION: 4.4.4
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -75,11 +67,12 @@ jobs:
         run: |
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
-      - name: Set up OpenJDK 17
-        uses: actions/setup-java@v3
+      - name: Install .NET Core 
+        uses: actions/setup-dotnet@v3
         with:
-          distribution: 'adopt'
-          java-version: 17
+          dotnet-version: |
+            6.0.x
+            8.0.x
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
@@ -90,25 +83,25 @@ jobs:
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
-          dapr --version
+          dapr --version 
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
-      - name: Validate building blocks with Java
+      - name: Validate building blocks with C#
         run: |
           variants=("http" "sdk")
           building_blocks=$(find . -maxdepth 1 -mindepth 1 -type d)
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
             do
-              if [ ! -d "$building_block/java/$variant" ]; 
+              if [ ! -d "$building_block/csharp/$variant" ]; 
               then
-                echo "$building_block/java/$variant does not exist."
+                echo "$building_block/csharp/$variant does not exist."
               else
-                pushd $building_block/java/$variant
-                echo "Validating $building_block/java/$variant quickstart"
+                pushd $building_block/csharp/$variant
+                echo "Validating $building_block/csharp/$variant quickstart"
                 make validate 
                 popd
               fi

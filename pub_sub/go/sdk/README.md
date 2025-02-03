@@ -19,10 +19,10 @@ This section shows how to run both applications at once using [multi-app run tem
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - 'Started Dapr with app id "order-processor"'
+  - 'Started Dapr with app id "order-processor-sdk"'
   - 'Started Dapr with app id "checkout-sdk"'
   - '== APP - checkout-sdk == Published data: {"orderId":1}'
-  - '== APP - order-processor == Subscriber received: map[orderId:1]'
+  - '== APP - order-processor-sdk == Subscriber received: map[orderId:1]'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -39,25 +39,25 @@ The terminal console output should look similar to this:
 
 ```text
 == APP - checkout-sdk == Published data: {"orderId":1}
-== APP - order-processor == Subscriber received: map[orderId:1]
+== APP - order-processor-sdk == Subscriber received: map[orderId:1]
 == APP - checkout-sdk == Published data: {"orderId":2}
-== APP - order-processor == Subscriber received: map[orderId:2]
+== APP - order-processor-sdk == Subscriber received: map[orderId:2]
 == APP - checkout-sdk == Published data: {"orderId":3}
-== APP - order-processor == Subscriber received: map[orderId:3]
+== APP - order-processor-sdk == Subscriber received: map[orderId:3]
 == APP - checkout-sdk == Published data: {"orderId":4}
-== APP - order-processor == Subscriber received: map[orderId:4]
+== APP - order-processor-sdk == Subscriber received: map[orderId:4]
 == APP - checkout-sdk == Published data: {"orderId":5}
-== APP - order-processor == Subscriber received: map[orderId:5]
+== APP - order-processor-sdk == Subscriber received: map[orderId:5]
 == APP - checkout-sdk == Published data: {"orderId":6}
-== APP - order-processor == Subscriber received: map[orderId:6]
+== APP - order-processor-sdk == Subscriber received: map[orderId:6]
 == APP - checkout-sdk == Published data: {"orderId":7}
-== APP - order-processor == Subscriber received: map[orderId:7]
+== APP - order-processor-sdk == Subscriber received: map[orderId:7]
 == APP - checkout-sdk == Published data: {"orderId":8}
-== APP - order-processor == Subscriber received: map[orderId:8]
+== APP - order-processor-sdk == Subscriber received: map[orderId:8]
 == APP - checkout-sdk == Published data: {"orderId":9}
-== APP - order-processor == Subscriber received: map[orderId:9]
+== APP - order-processor-sdk == Subscriber received: map[orderId:9]
 == APP - checkout-sdk == Published data: {"orderId":10}
-== APP - order-processor == Subscriber received: map[orderId:10]
+== APP - order-processor-sdk == Subscriber received: map[orderId:10]
 ```
 <!-- END_STEP -->
 

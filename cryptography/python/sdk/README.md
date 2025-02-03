@@ -60,7 +60,7 @@ expected_stdout_lines:
   - '== APP == Encrypted the message, got 856 bytes'
   - '== APP == Decrypted the message, got 24 bytes'
   - '== APP == The secret is "passw0rd"'
-  - '== APP == Wrote decrypted data to encrypted.out'
+  - '== APP == Wrote encrypted data to encrypted.out'
   - '== APP == Wrote decrypted data to decrypted.out.jpg'
   - "Exited App successfully"
 expected_stderr_lines:

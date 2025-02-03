@@ -28,12 +28,13 @@ dotnet build
 ```
 
 <!-- END_STEP -->
-2. Run the console app with Dapr: 
+2. Run the console app with Dapr. Note that you may need to run `cd ..` to move the working directory up one to 
+'/workflows/csharp/sdk': 
 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP - order-processor ==       There are now: 90 Cars left in stock"
+  - "== APP - order-processor ==       There are: 10 Cars available for purchase"
   - "== APP - order-processor == Workflow Status: Completed"
 expected_stderr_lines:
 output_match_mode: substring
@@ -50,33 +51,41 @@ dapr run -f .
 
 3. Expected output
 
-
 ```
-== APP == Starting workflow 6d2abcc9 purchasing 10 Cars
+== APP - order-processor == Starting workflow 898fd553 purchasing 10 Cars
 
-== APP == info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[40]
-== APP ==       Scheduling new OrderProcessingWorkflow orchestration with instance ID '6d2abcc9' and 47 bytes of input data.
-== APP == info: WorkflowConsoleApp.Activities.NotifyActivity[0]
-== APP ==       Received order 6d2abcc9 for 10 Cars at $15000
-== APP == info: WorkflowConsoleApp.Activities.ReserveInventoryActivity[0]
-== APP ==       Reserving inventory for order 6d2abcc9 of 10 Cars
-== APP == info: WorkflowConsoleApp.Activities.ReserveInventoryActivity[0]
-== APP ==       There are: 100, Cars available for purchase
-
-== APP == Your workflow has started. Here is the status of the workflow: Dapr.Workflow.WorkflowState
-
-== APP == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[0]
-== APP ==       Processing payment: 6d2abcc9 for 10 Cars at $15000
-== APP == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[0]
-== APP ==       Payment for request ID '6d2abcc9' processed successfully
-== APP == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[0]
-== APP ==       Checking Inventory for: Order# 6d2abcc9 for 10 Cars
-== APP == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[0]
-== APP ==       There are now: 90 Cars left in stock
-== APP == info: WorkflowConsoleApp.Activities.NotifyActivity[0]
-== APP ==       Order 6d2abcc9 has completed!
-
-== APP == Workflow Status: Completed
+== APP - order-processor == info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[42]
+== APP - order-processor == Your workflow has started. Here is the status of the workflow: Running
+== APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
+== APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
+== APP - order-processor ==       Presenting notification Notification { Message = Received order 898fd553 for 10 Cars at $15000 }
+== APP - order-processor == info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[43]
+== APP - order-processor ==       Waiting for instance '898fd553' to complete, fail, or terminate.
+== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[2013970020]
+== APP - order-processor ==       Received request ID '898fd553' for 10 Cars at $15000
+== APP - order-processor == info: WorkflowConsoleApp.Activities.ReserveInventoryActivity[1988035937]
+== APP - order-processor ==       Reserving inventory for order request ID '898fd553' of 10 Cars
+== APP - order-processor == info: WorkflowConsoleApp.Activities.ReserveInventoryActivity[1130866279]
+== APP - order-processor ==       There are: 10 Cars available for purchase
+== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[1162731597]
+== APP - order-processor ==       Checked inventory for request ID 'InventoryRequest { RequestId = 898fd553, ItemName = Cars, Quantity = 10 }'
+== APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[340284070]
+== APP - order-processor ==       Processing payment: request ID '898fd553' for 10 Cars at $15000
+== APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[1851315765]
+== APP - order-processor ==       Payment for request ID '898fd553' processed successfully
+== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[340284070]
+== APP - order-processor ==       Processed payment request as there's sufficient inventory to proceed: PaymentRequest { RequestId = 898fd553, ItemBeingPurchased = Cars, Amount = 10, Currency = 15000 }
+== APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[2144991393]
+== APP - order-processor ==       Checking inventory for request ID '898fd553' for 10 Cars
+== APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[1901852920]
+== APP - order-processor ==       There are now 90 Cars left in stock
+== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[96138418]
+== APP - order-processor ==       Updating available inventory for PaymentRequest { RequestId = 898fd553, ItemBeingPurchased = Cars, Amount = 10, Currency = 15000 }
+== APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
+== APP - order-processor ==       Presenting notification Notification { Message = Order 898fd553 has completed! }
+== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[510392223]
+== APP - order-processor ==       Order 898fd553 has completed
+== APP - order-processor == Workflow Status: Completed
 ```
 
 
@@ -99,12 +108,12 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 When you ran `dapr run --app-id order-processor dotnet run`
 
-1. A unique order ID for the workflow is generated (in the above example, `6d2abcc9`) and the workflow is scheduled.
+1. A unique order ID for the workflow is generated (in the above example, `898fd553`) and the workflow is scheduled.
 2. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
 3. The `ReserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 4. Your workflow starts and notifies you of its status.
-5. The `ProcessPaymentActivity` workflow activity begins processing payment for order `6d2abcc9` and confirms if successful.
+5. The `ProcessPaymentActivity` workflow activity begins processing payment for order `898fd553` and confirms if successful.
 6. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-7. The `NotifyActivity` workflow activity sends a notification saying that order `6d2abcc9` has completed.
+7. The `NotifyActivity` workflow activity sends a notification saying that order `898fd553` has completed.
 8. The workflow terminates as completed.
 

@@ -2,7 +2,7 @@ version: 1
 common:
   resourcesPath: ../../components
 apps:
-  - appID: workflowApp
+  - appID: order-processor
     appDirPath: ./order-processor/
     appPort: 3000
     daprHTTPPort: 3500

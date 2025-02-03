@@ -112,7 +112,7 @@ func schedule(droidJob DroidJob) error {
 	}
 
 	// Schedule Job
-	_, err = app.daprClient.InvokeMethodWithContent(context.Background(), "job-service", "scheduleJob", "POST", content)
+	_, err = app.daprClient.InvokeMethodWithContent(context.Background(), "job-service-sdk", "scheduleJob", "POST", content)
 	if err != nil {
 		fmt.Println("Error invoking method: ", err)
 		return err
