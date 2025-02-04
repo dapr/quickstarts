@@ -8,7 +8,7 @@ Visit [this](https://v1-15.docs.dapr.io/developing-applications/building-blocks/
 
 This quickstart includes one app:
 
-- `conversation.js`, responsible for sending an input to the underlying LLM and retrieving an output.
+- `index.js`, responsible for sending an input to the underlying LLM and retrieving an output.
 
 ## Run the app with the template file
 
@@ -75,7 +75,7 @@ dapr stop -f .
 
 ## Run the app individually
 
-1. Open a terminal and run the `conversation` app. Build the dependencies if you haven't already.
+1. Open a terminal and navigate to the `conversation` app. Install the dependencies if you haven't already.
 
 ```bash
 cd ./conversation
