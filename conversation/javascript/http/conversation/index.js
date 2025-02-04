@@ -22,10 +22,6 @@ async function main() {
       body: JSON.stringify(inputBody),
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
     console.log("Input sent: What is dapr?");
 
     const data = await response.json();
