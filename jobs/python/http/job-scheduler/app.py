@@ -5,16 +5,14 @@ import json
 
 C3PO_JOB_BODY = {
     "data": {
-        "@type": "type.googleapis.com/google.protobuf.StringValue",
-        "value": "C-3PO:Limb Calibration"
+        "Value": "C-3PO:Limb Calibration"
     },
     "dueTime": "30s"
 }
 
 R2D2_JOB_BODY = {
     "data": {
-        "@type": "type.googleapis.com/google.protobuf.StringValue",
-        "value": "R2-D2:Oil Change"
+        "Value": "R2-D2:Oil Change"
     },
     "dueTime": "2s"
 }
@@ -48,16 +46,18 @@ def main():
     job_name = "C-3PO"
     req_url = f"{dapr_host}:{scheduler_dapr_http_port}/v1.0-alpha1/jobs/{job_name}"
     
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+
     response = requests.post(
         req_url,
         json=C3PO_JOB_BODY,
-        headers={"Content-Type": "application/json"},
-        timeout=15
+        headers=headers
     )
     
     if response.status_code != 204:
         raise Exception(f"Failed to register job event handler. Status code: {response.status_code}")
     
+    print("Response json: ", response.text)
     print(f"Job Scheduled: {job_name}")
     
     time.sleep(5)
@@ -68,7 +68,7 @@ def main():
     
     response = requests.get(req_url)
     if response.status_code == 200:
-        print(f"Job details: {response.text}")
+        print(f"Get job details: {response.text}")
     else:
         print(f"Failed to get job details. Status code: {response.status_code}")
     
