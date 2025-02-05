@@ -29,6 +29,22 @@ This section shows how to run both applications at once using [multi-app run tem
 
 Open a new terminal window and run the multi app run template:
 
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - '== APP - job-service == Received job request...'
+  - '== APP - job-service == Executing maintenance job: Oil Change'
+  - '== APP - job-scheduler == Job Scheduled: C-3PO'
+  - '== APP - job-service == Received job request...'
+  - '== APP - job-service == Executing maintenance job: Limb Calibration'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: false
+sleep: 60
+timeout_seconds: 120
+-->
+
 ```bash
 dapr run -f .
 ```
@@ -46,7 +62,7 @@ The terminal console output should look similar to this, where:
 == APP - job-service == Starting droid: R2-D2
 == APP - job-service == Executing maintenance job: Oil Change
 == APP - job-scheduler == Job Scheduled: C-3PO
-== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
+== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"30s", "data":{"@type":"ttype.googleapis.com/google.protobuf.StringValue", "expression":"C-3PO:Limb Calibration"}}
 ```
 
 After 30 seconds, the terminal output should present the `C-3PO` job being processed:
@@ -57,11 +73,20 @@ After 30 seconds, the terminal output should present the `C-3PO` job being proce
 == APP - job-service == Executing maintenance job: Limb Calibration
 ```
 
-To stop and clean up application processes:
+<!-- END_STEP -->
+
+2. Stop and clean up application processes
+
+<!-- STEP
+name: Stop multi-app run 
+sleep: 5
+-->
 
 ```bash
 dapr stop -f .
 ```
+
+<!-- END_STEP -->
 
 ## Run apps individually
 
