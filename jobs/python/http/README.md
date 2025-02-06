@@ -39,7 +39,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: false
+background: true
 sleep: 60
 timeout_seconds: 120
 -->
