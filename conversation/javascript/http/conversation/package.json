@@ -1,0 +1,14 @@
+{
+  "name": "conversation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "start:dapr": "dapr run --app-id conversation --resources-path ../../../components/ -- npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
