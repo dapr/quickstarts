@@ -29,12 +29,12 @@ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out keys/rsa-priva
 name: Run crypto service
 expected-stdout_lines:
   - 'Starting Dapr with id crypto. HTTP Port:'
-  - '== APP ==       Encrypting string with key rsa-private-key.pem with plaintext value 'P@assw0rd''
-  - '== APP ==       Decrypted string with key rsa-private-key.pem with plaintext value 'P@assw0rd''
-  - '== APP ==       Encrypted string from plaintext value 'P@assw0rd' and decrypted to 'P@assw0rd''
-  - '== APP ==       Encrypted file ''
-  - '== APP ==       Decrypting in-memory bytes to file ''
-  - 'and the validation check returns 'True''
+  - '== APP ==       Encrypting string with key rsa-private-key.pem with plaintext value ''P@assw0rd'''
+  - '== APP ==       Decrypted string with key rsa-private-key.pem with plaintext value ''P@assw0rd'''
+  - '== APP ==       Encrypted string from plaintext value ''P@assw0rd'' and decrypted to ''P@assw0rd'''
+  - '== APP ==       Encrypted file '
+  - '== APP ==       Decrypting in-memory bytes to file '
+  - '== APP ==       and the validation check returns ''True'
 output_match_mode: substring
 match_order: none
 background: true
