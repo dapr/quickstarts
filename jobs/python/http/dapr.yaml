@@ -4,7 +4,6 @@ apps:
     appID: job-service
     appPort: 6200
     daprHTTPPort: 6280
-    schedulerHostAddress: localhost
     command: ["python3", "app.py"]
   - appDirPath: ./job-scheduler/
     appID: job-scheduler
