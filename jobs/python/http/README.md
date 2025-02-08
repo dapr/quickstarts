@@ -98,7 +98,7 @@ cd job-service
 dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 -- python app.py
 ```
 
-### Schedule Jobs
+### Schedule jobs
 
 1. On a new terminal window, schedule the `R2-D2` Job using the Jobs API:
 
