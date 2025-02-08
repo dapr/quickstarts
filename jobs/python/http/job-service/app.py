@@ -37,13 +37,7 @@ class JobHandler(BaseHTTPRequestHandler):
             raw_data = self.rfile.read(content_length).decode('utf-8')
 
             # Parse outer JSON data
-            outer_data = json.loads(raw_data)
-
-            # The payload might be double-encoded, so try parsing again if it's a string
-            if isinstance(outer_data, str):
-                job_data = json.loads(outer_data)
-            else:
-                job_data = outer_data
+            job_data = json.loads(raw_data)
 
             # Extract value directly from the job data
             value = job_data.get('value', '')
