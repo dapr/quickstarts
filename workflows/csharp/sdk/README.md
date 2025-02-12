@@ -206,8 +206,6 @@ dapr run -f .
 == APP - order-processor == Workflow Status: Completed
 ```
 
-
-
 ### View workflow output with Zipkin
 
 For a more detailed view of the workflow activities (duration, progress etc.), try using Zipkin.
@@ -224,14 +222,14 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 ### What happened? 
 
-When you ran `dapr run -f .`
+When you ran `dapr run -f .`:
 
 1. A unique order ID for the workflow is generated (in the above example, `898fd553`) and the workflow is scheduled.
-2. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
-3. The `CheckInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. If the inventory is sufficient the workflow continues.
+2. The `NotifyActivity` workflow activity sends a notification saying an order for 1 car has been received.
+3. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. If the inventory is sufficient the workflow continues.
 4. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
 5. The `ProcessPaymentActivity` workflow activity begins processing payment for order `898fd553` and confirms if successful.
 6. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
 7. The `NotifyActivity` workflow activity sends a notification saying that order `898fd553` has completed.
-8. The workflow terminates as completed.
+8. The workflow terminates as completed and the OrderResult is set to processed.
 

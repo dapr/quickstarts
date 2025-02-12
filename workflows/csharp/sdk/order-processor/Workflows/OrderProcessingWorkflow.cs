@@ -41,7 +41,7 @@ internal sealed partial class OrderProcessingWorkflow : Workflow<OrderPayload, O
                 new ApprovalRequest(orderId, order.Name, order.Quantity, order.TotalCost));
 
             var approvalResponse = await context.WaitForExternalEventAsync<ApprovalResponse>(
-                eventName: "ApprovalResponse",
+                eventName: "ApprovalEvent",
                 timeout: TimeSpan.FromSeconds(30));
             if (!approvalResponse.IsApproved)
             {

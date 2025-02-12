@@ -11,7 +11,7 @@ internal sealed partial class RequestApprovalActivity(ILogger<RequestApprovalAct
     {
         LogRequestApproval(logger, approvalRequest);
 
-        // Simulate slow processing
+        // Simulate slow processing & sending the approval to the recipient
         await Task.Delay(TimeSpan.FromSeconds(2));
 
         return Task.FromResult<object?>(null);
