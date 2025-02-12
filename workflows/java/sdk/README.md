@@ -106,11 +106,12 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 When you ran `dapr run -f .`:
 
-1. A unique order ID for the workflow is generated (in the above example, `d1bf548b-c854-44af-978e-90c61ed88e3c`) and the workflow is scheduled.
-2. The `NotifyActivity` workflow activity sends a notification saying an order for 1 car has been received.
-3. The `VertifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. If the inventory is sufficient the workflow continues.
-4. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-5. The `ProcessPaymentActivity` workflow activity begins processing payment for order `d1bf548b-c854-44af-978e-90c61ed88e3c` and confirms if successful.
-6. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-7. The `NotifyActivity` workflow activity sends a notification saying that order `d1bf548b-c854-44af-978e-90c61ed88e3c` has completed.
-8. The workflow terminates as completed and the orderResult is set to processed.
+1. An OrderPayload is made containing one car.
+2. A unique order ID for the workflow is generated (in the above example, `d1bf548b-c854-44af-978e-90c61ed88e3c`) and the workflow is scheduled.
+3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
+4. The `VertifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
+5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
+6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `d1bf548b-c854-44af-978e-90c61ed88e3c` and confirms if successful.
+7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+8. The `NotifyActivity` workflow activity sends a notification saying that order `d1bf548b-c854-44af-978e-90c61ed88e3c` has completed.
+9. The workflow terminates as completed and the orderResult is set to processed.

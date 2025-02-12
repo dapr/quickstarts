@@ -26,7 +26,7 @@ class WorkflowConsoleApp:
 
         baseInventory = {
             "paperclip": InventoryItem("Paperclip", 5, 100),
-            "cars": InventoryItem("Cars", 15000, 100),
+            "cars": InventoryItem("Cars", 5000, 10),
             "computers": InventoryItem("Computers", 500, 100),
         }
 
@@ -36,7 +36,7 @@ class WorkflowConsoleApp:
 
         print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
-        order_quantity = 10
+        order_quantity = 1
         total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
         order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
 
@@ -89,7 +89,7 @@ class WorkflowConsoleApp:
 
             if time_delta.total_seconds() >= 10:
                 state = wfClient.get_workflow_state(instance_id=_id)
-                if total_cost > 50000 and state not in {WorkflowStatus.COMPLETED, WorkflowStatus.FAILED, WorkflowStatus.TERMINATED} and not approval_seeked:
+                if total_cost > 5000 and state not in {WorkflowStatus.COMPLETED, WorkflowStatus.FAILED, WorkflowStatus.TERMINATED} and not approval_seeked:
                     approval_seeked = True
                     threading.Thread(target=prompt_for_approval(wfClient), daemon=True).start()
 

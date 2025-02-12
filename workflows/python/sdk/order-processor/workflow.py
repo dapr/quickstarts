@@ -22,7 +22,7 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
     When the order is received, the inventory is checked to see if there is enough inventory to
     fulfill the order. If there is enough inventory, the payment is processed and the inventory is
     updated. If there is not enough inventory, the order is rejected.
-    If the total order is greater than $50,000, the order is sent to a manager for approval.
+    If the total order is greater than $5,000, the order is sent to a manager for approval.
     """
     order_id = ctx.instance_id
     order_payload=json.loads(order_payload_str)
@@ -40,23 +40,20 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
                                                    +f'{order_payload["item_name"]}'+'!'))
         return OrderResult(processed=False)
     
-    if order_payload["total_cost"] > 50000:
+    if order_payload["total_cost"] > 5000:
         yield ctx.call_activity(request_approval_activity, input=order_payload)
-        approval_task = ctx.wait_for_external_event("manager_approval")
-        timeout_event = ctx.create_timer(timedelta(seconds=200))
+        approval_task = ctx.wait_for_external_event("approval_event")
+        timeout_event = ctx.create_timer(timedelta(seconds=30))
         winner = yield when_any([approval_task, timeout_event])
         if winner == timeout_event:
             yield ctx.call_activity(notify_activity, 
-                                    input=Notification(message='Payment for order '+order_id
-                                                       +' has been cancelled due to timeout!'))
+                                    input=Notification(message='Order '+order_id
+                                                       +' has been cancelled due to approval timeout!'))
             return OrderResult(processed=False)
         approval_result = yield approval_task
-        if approval_result["approval"]:
+        if approval_result == False:
             yield ctx.call_activity(notify_activity, input=Notification(
-                message=f'Payment for order {order_id} has been approved!'))
-        else:
-            yield ctx.call_activity(notify_activity, input=Notification(
-                message=f'Payment for order {order_id} has been rejected!'))
+                message=f'Order {order_id} was not approved'))
             return OrderResult(processed=False)    
     
     yield ctx.call_activity(process_payment_activity, input=PaymentRequest(
@@ -137,7 +134,7 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
         new_quantity = res_json['quantity'] - input.quantity
         per_item_cost = res_json['per_item_cost']
         if new_quantity < 0:
-            raise ValueError('Payment for request ID '+f'{input.item_being_purchased}'
+            raise ValueError('Inventory update for request ID '+f'{input.item_being_purchased}'
                              +' could not be processed. Insufficient inventory.')
         new_val = f'{{"name": "{input.item_being_purchased}", "quantity": {str(new_quantity)}, "per_item_cost": {str(per_item_cost)}}}'
         client.save_state(store_name, input.item_being_purchased, new_val)
@@ -150,7 +147,7 @@ def request_approval_activity(ctx: WorkflowActivityContext,
                              input: OrderPayload):
     """Defines Request Approval Activity. This is used by the workflow to request approval
     for payment of an order. This activity is used only if the order total cost is greater than
-    a particular threshold, currently 50000 USD"""
+    a particular threshold"""
     logger = logging.getLogger('RequestApprovalActivity')
 
     logger.info('Requesting approval for payment of '+f'{input["total_cost"]}'+' USD for '
