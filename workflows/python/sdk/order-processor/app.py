@@ -59,9 +59,9 @@ class WorkflowConsoleApp:
                 if state.runtime_status.name == "COMPLETED":
                     return
                 if approved.lower() == "y":
-                    wfClient.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
+                    wfClient.raise_workflow_event(instance_id=_id, event_name="approval_event", data={'approval': True})
                 else:
-                    wfClient.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': False})
+                    wfClient.raise_workflow_event(instance_id=_id, event_name="approval_event", data={'approval': False})
 
                 ## Additionally, you would need to import signal and define timeout_error:
                 # import signal
@@ -70,7 +70,7 @@ class WorkflowConsoleApp:
 
                 # signal.signal(signal.SIGALRM, timeout_error)
             """
-            wfClient.raise_workflow_event(instance_id=_id, event_name="manager_approval", data={'approval': True})
+            wfClient.raise_workflow_event(instance_id=_id, event_name="approval_event", data={'approval': True})
 
         approval_seeked = False
         start_time = datetime.now()
