@@ -22,7 +22,7 @@ internal sealed partial class OrderProcessingWorkflow : Workflow<OrderPayload, O
         // Determine if there is enough of the item available for purchase by checking the inventory
         var inventoryRequest = new InventoryRequest(RequestId: orderId, order.Name, order.Quantity);
         var result = await context.CallActivityAsync<InventoryResult>(
-            nameof(ReserveInventoryActivity), inventoryRequest);
+            nameof(VerifyInventoryActivity), inventoryRequest);
         LogCheckInventory(logger, inventoryRequest);
             
         // If there is insufficient inventory, fail and let the user know 
@@ -33,6 +33,23 @@ internal sealed partial class OrderProcessingWorkflow : Workflow<OrderPayload, O
                 new Notification($"Insufficient inventory for {order.Name}"));
             LogInsufficientInventory(logger, order.Name);
             return new OrderResult(Processed: false);
+        }
+
+        if (order.TotalCost > 5000)
+        {
+            await context.CallActivityAsync(nameof(RequestApprovalActivity),
+                new ApprovalRequest(orderId, order.Name, order.Quantity, order.TotalCost));
+
+            var approvalResponse = await context.WaitForExternalEventAsync<ApprovalResponse>(
+                eventName: "ApprovalResponse",
+                timeout: TimeSpan.FromSeconds(30));
+            if (!approvalResponse.IsApproved)
+            {
+                await context.CallActivityAsync(nameof(NotifyActivity),
+                    new Notification($"Order {orderId} was not approved"));
+                LogOrderNotApproved(logger, orderId);
+                return new OrderResult(Processed: false);
+            }
         }
 
         // There is enough inventory available so the user can purchase the item(s). Process their payment
@@ -73,6 +90,9 @@ internal sealed partial class OrderProcessingWorkflow : Workflow<OrderPayload, O
     [LoggerMessage(LogLevel.Information, "Insufficient inventory for order {orderName}")]
     static partial void LogInsufficientInventory(ILogger logger, string orderName);
     
+    [LoggerMessage(LogLevel.Information, "Order {orderName} was not approved")]
+    static partial void LogOrderNotApproved(ILogger logger, string orderName);
+
     [LoggerMessage(LogLevel.Information, "Processed payment request as there's sufficient inventory to proceed: {request}")]
     static partial void LogPaymentProcessing(ILogger logger, PaymentRequest request);
 
