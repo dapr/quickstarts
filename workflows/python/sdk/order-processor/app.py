@@ -43,59 +43,19 @@ class WorkflowConsoleApp:
         print(f'Starting order workflow, purchasing {order_quantity} of {item_name}', flush=True)
         instance_id = wfClient.schedule_new_workflow(
             workflow=order_processing_workflow, input=order.to_json())
-        _id = instance_id
 
-        def prompt_for_approval(wfClient: DaprWorkflowClient):
-            """This is a helper function to prompt for approval.
-            Not using the prompt here ACTUALLY, as quickstart validation is required to be automated.
-            
-            But, in case you may want to run this sample manually, you can uncomment the following lines:
-                try:
-                    signal.alarm(15)
-                    approved = input(f'(ID = {_id}) requires approval. Approve? [Y/N] ')
-                    signal.alarm(0) # cancel the alarm
-                except TimeoutError:
-                    approved = "y"
-                if state.runtime_status.name == "COMPLETED":
-                    return
-                if approved.lower() == "y":
-                    wfClient.raise_workflow_event(instance_id=_id, event_name="approval_event", data={'approval': True})
-                else:
-                    wfClient.raise_workflow_event(instance_id=_id, event_name="approval_event", data={'approval': False})
-
-                ## Additionally, you would need to import signal and define timeout_error:
-                # import signal
-                # def timeout_error(*_):
-                #     raise TimeoutError
-
-                # signal.signal(signal.SIGALRM, timeout_error)
-            """
-            wfClient.raise_workflow_event(instance_id=_id, event_name="approval_event", data={'approval': True})
-
-        approval_seeked = False
-        start_time = datetime.now()
-        while True:
-            time_delta = datetime.now() - start_time
-            state = wfClient.get_workflow_state(instance_id=_id)
-
+        try:
+            state = wfClient.wait_for_workflow_completion(instance_id=instance_id, timeout_in_seconds=30)
             if not state:
-                print("Workflow not found!")  # not expected
-                break
-
-            if state.runtime_status in {WorkflowStatus.COMPLETED, WorkflowStatus.FAILED, WorkflowStatus.TERMINATED}:
-                print(f'Workflow completed! Result: {state.runtime_status}', flush=True)
-                break
-
-
-            if time_delta.total_seconds() >= 10:
-                state = wfClient.get_workflow_state(instance_id=_id)
-                if total_cost > 5000 and state not in {WorkflowStatus.COMPLETED, WorkflowStatus.FAILED, WorkflowStatus.TERMINATED} and not approval_seeked:
-                    approval_seeked = True
-                    threading.Thread(target=prompt_for_approval(wfClient), daemon=True).start()
+                print("Workflow not found!")
+            elif state.runtime_status.name == 'COMPLETED':
+                print(f'Workflow completed! Result: {state.serialized_output}')
+            else:
+                print(f'Workflow failed! Status: {state.runtime_status.name}')  # not expected
+        except TimeoutError:
+            print('*** Workflow timed out!')
 
         wfr.shutdown()
-
-            
 
     def restock_inventory(self, daprClient: DaprClient, baseInventory):
         for key, item in baseInventory.items():
