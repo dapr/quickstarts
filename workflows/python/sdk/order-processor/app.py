@@ -1,5 +1,4 @@
 from datetime import datetime
-import threading
 from time import sleep
 
 from dapr.clients import DaprClient

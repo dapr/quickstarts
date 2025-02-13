@@ -48,7 +48,6 @@ dapr run -f .
 3. Expected output
 
 ```
-==========Begin the purchase of item:==========
 == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
 == APP - order-processor == *** Using this app, you can place orders that start workflows.
 == APP - order-processor == 2025-02-13 11:44:11.357 durabletask-worker INFO: Starting gRPC worker that connects to dns:127.0.0.1:38891
@@ -117,10 +116,10 @@ When you ran `dapr run -f .`
 
 1. An OrderPayload is made containing one car.
 2. A unique order ID for the workflow is generated (in the above example, `fc8a507e4a2246d2917d3ad4e3111240`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
-4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
-5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `fc8a507e4a2246d2917d3ad4e3111240` and confirms if successful.
-7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `fc8a507e4a2246d2917d3ad4e3111240` has completed.
+3. The `notify_activity` workflow activity sends a notification saying an order for one car has been received.
+4. The `verify_inventory_activity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
+5. The total cost of the order is 5000, so the workflow will not call the `request_approval_activity` activity.
+6. The `process_payment_activity` workflow activity begins processing payment for order `fc8a507e4a2246d2917d3ad4e3111240` and confirms if successful.
+7. The `update_inventory_activity` workflow activity updates the inventory with the current available cars after the order has been processed.
+8. The `notify_activity` workflow activity sends a notification saying that order `fc8a507e4a2246d2917d3ad4e3111240` has completed.
 9. The workflow terminates as completed and the OrderResult is set to processed.
