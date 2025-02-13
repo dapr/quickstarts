@@ -34,7 +34,7 @@ cd ..
 name: Running this example
 expected_stdout_lines:
   - "== APP - order-processor == INFO:UpdateInventoryActivity:There are now 9 cars left in stock"
-  - "== APP - order-processor == Workflow completed! Result: WorkflowStatus.COMPLETED"
+  - "== APP - order-processor == Workflow completed! Result: {\"processed\": true"
 output_match_mode: substring
 background: true
 timeout_seconds: 120
@@ -44,6 +44,8 @@ sleep: 15
 ```sh
 dapr run -f .
 ```
+
+<!-- END_STEP -->
 
 3. Expected output
 
@@ -95,12 +97,10 @@ dapr run -f .
 ```
 
 4. Stop Dapr workflow with CTRL-C or:
-<!-- END_STEP -->
 
 ```sh
 dapr stop -f .
 ```
-
 
 ### View workflow output with Zipkin
 

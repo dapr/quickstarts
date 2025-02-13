@@ -88,6 +88,12 @@ dapr run -f .
 == APP - order-processor == workflow instance completed, out is: {"processed":true}
 ```
 
+4. Stop Dapr workflow with CTRL-C or:
+
+```sh
+dapr stop -f .
+```
+
 ### View workflow output with Zipkin
 
 For a more detailed view of the workflow activities (duration, progress etc.), try using Zipkin.

@@ -36,9 +36,10 @@ sleep: 30
 -->
 
 ```sh
-
 dapr run -f .
 ```
+
+<!-- END_STEP -->
 
 3. Expected output
 
@@ -65,20 +66,10 @@ dapr run -f .
 ```
 
 4. Stop Dapr workflow with CTRL-C or:
-<!-- END_STEP -->
-
-<!-- STEP
-name: Stop multi-app run 
-sleep: 5
--->
 
 ```sh
 dapr stop -f .
 ```
-
-<!-- END_STEP -->
-
-
 
 ### View workflow output with Zipkin
 

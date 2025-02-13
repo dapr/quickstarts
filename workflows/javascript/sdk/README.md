@@ -140,6 +140,12 @@ curl --request POST \
 == APP - order-processor == Orchestration completed! Result: {"processed":true}
 ```
 
+4. Stop Dapr workflow with CTRL-C or:
+
+```sh
+dapr stop -f .
+```
+
 ### View workflow output with Zipkin
 
 For a more detailed view of the workflow activities (duration, progress etc.), try using Zipkin.
