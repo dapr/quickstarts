@@ -168,3 +168,4 @@ When you ran `dapr run -f .`
 8. The `notifyActivity` workflow activity sends a notification saying that order `f5087775-779c-4e73-ac77-08edfcb375f4` has completed and processed.
 9. The workflow terminates as completed and processed.
 
+> **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `RequestApprovalActivity` activity nor wait for an approval event. The dapr.yaml multi-app run file starts a console application and can't accept incoming events easily. The dapr-AppWithDaprServer.yaml and dapr-AppWithExpressServer.yaml files start service that can accept incoming events. Use the `DaprWorkflowClient` in the server apps to send an event to the workflow.

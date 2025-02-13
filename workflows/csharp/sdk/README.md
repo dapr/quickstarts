@@ -233,3 +233,5 @@ When you ran `dapr run -f .`:
 7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
 8. The `NotifyActivity` workflow activity sends a notification saying that order `571a6e25` has completed.
 9. The workflow terminates as completed and the OrderResult is set to processed.
+
+> **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `RequestApprovalActivity` activity nor wait for an approval event. Since the quickstart is a console application, it can't accept incoming events easily. If you want to test this scenario, convert the console app to a service and use the `DaprWorkflowClient` to send an event to the workflow.
