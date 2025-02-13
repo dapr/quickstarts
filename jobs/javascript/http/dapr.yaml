@@ -1,12 +1,13 @@
 version: 1
 apps:
-  - appID: job-service-http
+  - appID: job-service
     appDirPath: ./job-service/
     appPort: 6200
     daprHTTPPort: 6280
-    command: ["go", "run", "."]
-  - appID: job-scheduler-http
+    schedulerHostAddress: localhost
+    command: ["npm", "run", "start"]
+  - appID: job-scheduler
     appDirPath: ./job-scheduler/
     appPort: 6300
     daprHTTPPort: 6380
-    command: ["go", "run", "."]
+    command: ["npm", "run", "start"]
