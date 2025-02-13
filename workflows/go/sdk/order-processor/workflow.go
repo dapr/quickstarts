@@ -40,7 +40,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		return OrderResult{Processed: false}, err
 	}
 
-	if orderPayload.TotalCost > 50000 {
+	if orderPayload.TotalCost > 5000 {
 		var approvalRequired ApprovalRequired
 		if err := ctx.CallActivity(RequestApprovalActivity, workflow.ActivityInput(orderPayload)).Await(&approvalRequired); err != nil {
 			return OrderResult{Processed: false}, err

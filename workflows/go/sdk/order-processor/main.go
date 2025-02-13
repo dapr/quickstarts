@@ -61,7 +61,7 @@ func main() {
 
 	inventory := []InventoryItem{
 		{ItemName: "paperclip", PerItemCost: 5, Quantity: 100},
-		{ItemName: "cars", PerItemCost: 15000, Quantity: 100},
+		{ItemName: "cars", PerItemCost: 5000, Quantity: 10},
 		{ItemName: "computers", PerItemCost: 500, Quantity: 100},
 	}
 	if err := restockInventory(daprClient, inventory); err != nil {
@@ -71,7 +71,7 @@ func main() {
 	fmt.Println("==========Begin the purchase of item:==========")
 
 	itemName := defaultItemName
-	orderQuantity := 10
+	orderQuantity := 1
 
 	totalCost := inventory[1].PerItemCost * orderQuantity
 
@@ -86,47 +86,21 @@ func main() {
 		log.Fatalf("failed to start workflow: %v", err)
 	}
 
-	approvalSought := false
-
-	startTime := time.Now()
-
-	for {
-		timeDelta := time.Since(startTime)
-		metadata, err := wfClient.FetchWorkflowMetadata(context.Background(), id)
-		if err != nil {
-			log.Fatalf("failed to fetch workflow: %v", err)
-		}
-		if (metadata.RuntimeStatus == workflow.StatusCompleted) || (metadata.RuntimeStatus == workflow.StatusFailed) || (metadata.RuntimeStatus == workflow.StatusTerminated) {
-			fmt.Printf("Workflow completed - result: %v\n", metadata.RuntimeStatus.String())
-			break
-		}
-		if timeDelta.Seconds() >= 10 {
-			metadata, err := wfClient.FetchWorkflowMetadata(context.Background(), id)
-			if err != nil {
-				log.Fatalf("failed to fetch workflow: %v", err)
-			}
-			if totalCost > 50000 && !approvalSought && ((metadata.RuntimeStatus != workflow.StatusCompleted) || (metadata.RuntimeStatus != workflow.StatusFailed) || (metadata.RuntimeStatus != workflow.StatusTerminated)) {
-				approvalSought = true
-				promptForApproval(id)
-			}
-		}
-		// Sleep before the next iteration
-		time.Sleep(time.Second)
+	waitCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	_, err = wfClient.WaitForWorkflowCompletion(waitCtx, id)
+	cancel()
+	if err != nil {
+		log.Fatalf("failed to wait for workflow: %v", err)
 	}
+
+	respFetch, err := wfClient.FetchWorkflowMetadata(context.Background(), id, workflow.WithFetchPayloads(true))
+	if err != nil {
+		log.Fatalf("failed to get workflow: %v", err)
+	}
+
+	fmt.Printf("workflow status: %v\n", respFetch.RuntimeStatus)
 
 	fmt.Println("Purchase of item is complete")
-}
-
-// promptForApproval is an example case. There is no user input required here due to this being for testing purposes only.
-// It would be perfectly valid to add a wait here or display a prompt to continue the process.
-func promptForApproval(id string) {
-	wfClient, err := workflow.NewClient()
-	if err != nil {
-		log.Fatalf("failed to initialise wfClient: %v", err)
-	}
-	if err := wfClient.RaiseEvent(context.Background(), id, "manager_approval"); err != nil {
-		log.Fatal(err)
-	}
 }
 
 func restockInventory(daprClient client.Client, inventory []InventoryItem) error {

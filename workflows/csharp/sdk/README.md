@@ -225,11 +225,11 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 When you ran `dapr run -f .`:
 
 1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `898fd553`) and the workflow is scheduled.
+2. A unique order ID for the workflow is generated (in the above example, `571a6e25`) and the workflow is scheduled.
 3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
 4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
 5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `898fd553` and confirms if successful.
+6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `571a6e25` and confirms if successful.
 7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `898fd553` has completed.
+8. The `NotifyActivity` workflow activity sends a notification saying that order `571a6e25` has completed.
 9. The workflow terminates as completed and the OrderResult is set to processed.
