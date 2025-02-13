@@ -1,6 +1,6 @@
 # Dapr workflows
 
-In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a state store.
+In this quickstart, you'll run a console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a state store.
 
 This quickstart includes 3 entry points demonstrating different ways to host a workflow:
 
@@ -11,8 +11,8 @@ This quickstart includes 3 entry points demonstrating different ways to host a w
 The quickstart contains 1 workflow to simulate purchasing items from a store, and 5 unique activities within the workflow. These 5 activities are as follows:
 
 - notifyActivity: This activity utilizes a logger to print out messages throughout the workflow. These messages notify the user when there is insufficient inventory, their payment couldn't be processed, and more.
-- reserveInventoryActivity: This activity checks the state store to ensure that there is enough inventory present for purchase.
-- requestApprovalActivity: This activity requests approval for orders over a certain threshold
+- verifyInventoryActivity: This activity checks the state store to ensure that there is enough inventory present for purchase.
+- requestApprovalActivity: This activity requests approval for orders over a certain threshold.
 - processPaymentActivity: This activity is responsible for processing and authorizing the payment.
 - updateInventoryActivity: This activity updates the state store with the new remaining inventory value.
 
@@ -37,8 +37,8 @@ npm run build
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - order-processor == Payment of 100 for 10 item1 processed successfully'
-  - 'there are now 90 item1 in stock'
+  - '== APP - order-processor == Payment of 5000 for 1 car processed successfully'
+  - 'there are now 9 car in stock'
   - 'processed successfully!'
 expected_stderr_lines:
 output_match_mode: substring
@@ -77,66 +77,67 @@ curl --request POST \
 
 
 ```
-== APP - order-processor == == APP == Orchestration scheduled with ID: 0c332155-1e02-453a-a333-28cfc7777642
-== APP - order-processor == == APP == Waiting 30 seconds for instance 0c332155-1e02-453a-a333-28cfc7777642 to complete...
-== APP - order-processor == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 0 history event...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, EXECUTIONSTARTED=1]
-== APP - order-processor == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
-== APP - order-processor == == APP == Received "Activity Request" work item
-== APP - order-processor == == APP == Received order 0c332155-1e02-453a-a333-28cfc7777642 for 10 item1 at a total cost of 100
-== APP - order-processor == == APP == Activity notifyActivity completed with output undefined (0 chars)
-== APP - order-processor == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 3 history event...
-== APP - order-processor == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
-== APP - order-processor == == APP == Received "Activity Request" work item
-== APP - order-processor == == APP == Reserving inventory for 0c332155-1e02-453a-a333-28cfc7777642 of 10 item1
-== APP - order-processor == == APP == 2024-02-16T03:15:59.498Z INFO [HTTPClient, HTTPClient] Sidecar Started
-== APP - order-processor == == APP == There are 100 item1 in stock
-== APP - order-processor == == APP == Activity reserveInventoryActivity completed with output {"success":true,"inventoryItem":{"perItemCost":100,"quantity":100,"itemName":"item1"}} (86 chars)
-== APP - order-processor == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 6 history event...
-== APP - order-processor == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
-== APP - order-processor == == APP == Received "Activity Request" work item
-== APP - order-processor == == APP == Processing payment for order item1
-== APP - order-processor == == APP == Payment of 100 for 10 item1 processed successfully
-== APP - order-processor == == APP == Activity processPaymentActivity completed with output true (4 chars)
-== APP - order-processor == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 9 history event...
-== APP - order-processor == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
-== APP - order-processor == == APP == Received "Activity Request" work item
-== APP - order-processor == == APP == Updating inventory for 0c332155-1e02-453a-a333-28cfc7777642 of 10 item1
-== APP - order-processor == == APP == Inventory updated for 0c332155-1e02-453a-a333-28cfc7777642, there are now 90 item1 in stock
-== APP - order-processor == == APP == Activity updateInventoryActivity completed with output {"success":true,"inventoryItem":{"perItemCost":100,"quantity":90,"itemName":"item1"}} (85 chars)
-== APP - order-processor == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 12 history event...
-== APP - order-processor == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Waiting for 1 task(s) and 0 event(s) to complete...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
-== APP - order-processor == == APP == Received "Activity Request" work item
-== APP - order-processor == == APP == order 0c332155-1e02-453a-a333-28cfc7777642 processed successfully!
-== APP - order-processor == == APP == Activity notifyActivity completed with output undefined (0 chars)
-== APP - order-processor == == APP == Received "Orchestrator Request" work item with instance id '0c332155-1e02-453a-a333-28cfc7777642'
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Rebuilding local state with 15 history event...
-== APP - order-processor == == APP == Processing order 0c332155-1e02-453a-a333-28cfc7777642...
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-== APP - order-processor == == APP == Order 0c332155-1e02-453a-a333-28cfc7777642 processed successfully!
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Orchestration completed with status COMPLETED
-== APP - order-processor == == APP == 0c332155-1e02-453a-a333-28cfc7777642: Returning 1 action(s)
-== APP - order-processor == time="2024-02-15T21:15:59.5589687-06:00" level=info msg="0c332155-1e02-453a-a333-28cfc7777642: 'orderProcessingWorkflow' completed with a COMPLETED status." app_id=activity-sequence-workflow instance=kaibocai-devbox scope=wfengine.backend type=log ver=1.12.4
-== APP - order-processor == == APP == Instance 0c332155-1e02-453a-a333-28cfc7777642 completed
+== APP - order-processor == Starting new orderProcessingWorkflow instance with ID = f5087775-779c-4e73-ac77-08edfcb375f4
+== APP - order-processor == Orchestration scheduled with ID: f5087775-779c-4e73-ac77-08edfcb375f4
+== APP - order-processor == Waiting 30 seconds for instance f5087775-779c-4e73-ac77-08edfcb375f4 to complete...
+== APP - order-processor == Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 0 history event...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, EXECUTIONSTARTED=1]
+== APP - order-processor == Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
+== APP - order-processor == Received "Activity Request" work item
+== APP - order-processor == Received order f5087775-779c-4e73-ac77-08edfcb375f4 for 1 car at a total cost of 5000
+== APP - order-processor == Activity notifyActivity completed with output undefined (0 chars)
+== APP - order-processor == Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 3 history event...
+== APP - order-processor == Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
+== APP - order-processor == Received "Activity Request" work item
+== APP - order-processor == Verifying inventory for f5087775-779c-4e73-ac77-08edfcb375f4 of 1 car
+== APP - order-processor == 2025-02-13T10:33:21.622Z INFO [HTTPClient, HTTPClient] Sidecar Started
+== APP - order-processor == There are 10 car in stock
+== APP - order-processor == Activity verifyInventoryActivity completed with output {"success":true,"inventoryItem":{"itemName":"car","perItemCost":5000,"quantity":10}} (84 chars)
+== APP - order-processor == Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 6 history event...
+== APP - order-processor == Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
+== APP - order-processor == Received "Activity Request" work item
+== APP - order-processor == Processing payment for order car
+== APP - order-processor == Payment of 5000 for 1 car processed successfully
+== APP - order-processor == Activity processPaymentActivity completed with output true (4 chars)
+== APP - order-processor == Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 9 history event...
+== APP - order-processor == Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
+== APP - order-processor == Received "Activity Request" work item
+== APP - order-processor == Updating inventory for f5087775-779c-4e73-ac77-08edfcb375f4 of 1 car
+== APP - order-processor == Inventory updated for f5087775-779c-4e73-ac77-08edfcb375f4, there are now 9 car in stock
+== APP - order-processor == Activity updateInventoryActivity completed with output {"success":true,"inventoryItem":{"itemName":"car","perItemCost":5000,"quantity":9}} (83 chars)
+== APP - order-processor == Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 12 history event...
+== APP - order-processor == Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
+== APP - order-processor == Received "Activity Request" work item
+== APP - order-processor == order f5087775-779c-4e73-ac77-08edfcb375f4 processed successfully!
+== APP - order-processor == Activity notifyActivity completed with output undefined (0 chars)
+== APP - order-processor == Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 15 history event...
+== APP - order-processor == Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
+== APP - order-processor == Order f5087775-779c-4e73-ac77-08edfcb375f4 processed successfully!
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Orchestration completed with status COMPLETED
+== APP - order-processor == f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
+== APP - order-processor == Instance f5087775-779c-4e73-ac77-08edfcb375f4 completed
+== APP - order-processor == Orchestration completed! Result: {"processed":true}
 ```
 
 ### View workflow output with Zipkin
@@ -155,15 +156,15 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 ### What happened? 
 
-When you ran `dapr run --app-id activity-sequence-workflow --app-protocol grpc --dapr-grpc-port 50001 --components-path ../../components npm run start:order-process`
+When you ran `dapr run -f .`
 
-1. A unique order ID for the workflow is generated (in the above example, `0c332155-1e02-453a-a333-28cfc7777642`) and the workflow is scheduled.
-2. The `notifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
-3. The `reserveInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
+1. A unique order ID for the workflow is generated (in the above example, `f5087775-779c-4e73-ac77-08edfcb375f4`) and the workflow is scheduled.
+2. The `notifyActivity` workflow activity sends a notification saying an order for 1 car has been received.
+3. The `verifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 4. Your workflow starts and notifies you of its status.
-5. The `requestApprovalActivity` workflow activity requests approval for order `0c332155-1e02-453a-a333-28cfc7777642`
-6. The `processPaymentActivity` workflow activity begins processing payment for order `0c332155-1e02-453a-a333-28cfc7777642` and confirms if successful.
+5. The `requestApprovalActivity` workflow activity requests approval for order `f5087775-779c-4e73-ac77-08edfcb375f4`
+6. The `processPaymentActivity` workflow activity begins processing payment for order `f5087775-779c-4e73-ac77-08edfcb375f4` and confirms if successful.
 7. The `updateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `notifyActivity` workflow activity sends a notification saying that order `0c332155-1e02-453a-a333-28cfc7777642` has completed and processed.
+8. The `notifyActivity` workflow activity sends a notification saying that order `f5087775-779c-4e73-ac77-08edfcb375f4` has completed and processed.
 9. The workflow terminates as completed and processed.
 

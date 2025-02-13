@@ -48,7 +48,7 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
         if winner == timeout_event:
             yield ctx.call_activity(notify_activity, 
                                     input=Notification(message='Order '+order_id
-                                                       +' has been cancelled due to approval timeout!'))
+                                                       +' has been cancelled due to approval timeout.'))
             return OrderResult(processed=False)
         approval_result = yield approval_task
         if approval_result == False:

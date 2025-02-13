@@ -10,7 +10,7 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 
 - NotifyActivity: This activity utilizes a logger to print out messages throughout the workflow. These messages notify the user when there is insufficient inventory, their payment couldn't be processed, and more.
 - VerifyInventoryActivity: This activity checks the state store to ensure that there is enough inventory present for purchase.
-- RequestApprovalActivity: This activity requests approval for orders over a certain threshold
+- RequestApprovalActivity: This activity requests approval for orders over a certain threshold.
 - ProcessPaymentActivity: This activity is responsible for processing and authorizing the payment.
 - UpdateInventoryActivity: This activity updates the state store with the new remaining inventory value.
 
