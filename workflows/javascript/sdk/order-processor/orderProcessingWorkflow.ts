@@ -1,5 +1,5 @@
-import { WorkflowActivityContext, WorkflowContext, TWorkflow, DaprClient } from "@dapr/dapr";
-import { InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest } from "./model";
+import { Task, WorkflowActivityContext, WorkflowContext, TWorkflow, DaprClient } from "@dapr/dapr";
+import { InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest, OrderResult } from "./model";
 
 const daprClient = new DaprClient();
 const storeName = "statestore";
@@ -10,9 +10,9 @@ export const notifyActivity = async (_: WorkflowActivityContext, orderNotificati
   return;
 };
 
-//Defines Reserve Inventory Activity. This is used by the workflow to verify if inventory is available for the order
-export const reserveInventoryActivity = async (_: WorkflowActivityContext, inventoryRequest: InventoryRequest) => {
-  console.log(`Reserving inventory for ${inventoryRequest.requestId} of ${inventoryRequest.quantity} ${inventoryRequest.itemName}`);
+//Defines Verify Inventory Activity. This is used by the workflow to verify if inventory is available for the order
+export const verifyInventoryActivity = async (_: WorkflowActivityContext, inventoryRequest: InventoryRequest) => {
+  console.log(`Verifying inventory for ${inventoryRequest.requestId} of ${inventoryRequest.quantity} ${inventoryRequest.itemName}`);
   const result = await daprClient.state.get(storeName, inventoryRequest.itemName);
   if (result == undefined || result == null) {
     return new InventoryResult(false, undefined);
@@ -69,24 +69,40 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
   yield ctx.callActivity(notifyActivity, orderNotification);
 
   const inventoryRequest = new InventoryRequest(orderId, orderPayLoad.itemName, orderPayLoad.quantity);
-  const inventoryResult = yield ctx.callActivity(reserveInventoryActivity, inventoryRequest);
+  const inventoryResult = yield ctx.callActivity(verifyInventoryActivity, inventoryRequest);
 
   if (!inventoryResult.success) {
     const orderNotification: OrderNotification = {
       message: `Insufficient inventory for order ${orderId}`,
     };
     yield ctx.callActivity(notifyActivity, orderNotification);
-    return;
+    return new OrderResult(false);
   }
 
   if (orderPayLoad.totalCost > 5000) {
-    const approvalResult = yield ctx.callActivity(requestApprovalActivity, orderPayLoad);
-    if (!approvalResult) {
+    yield ctx.callActivity(requestApprovalActivity, orderPayLoad);
+    
+    const tasks: Task<any>[] = [];
+    const approvalEvent = ctx.waitForExternalEvent("approval_event");
+    tasks.push(approvalEvent);
+    const timeOutEvent = ctx.createTimer(30);
+    tasks.push(timeOutEvent);
+    const winner = ctx.whenAny(tasks);
+
+    if (winner == timeOutEvent) {
       const orderNotification: OrderNotification = {
-        message: `Order ${orderId} approval denied`,
+        message: `Order ${orderId} has been cancelled due to approval timeout.`,
       };
       yield ctx.callActivity(notifyActivity, orderNotification);
-      return;
+      return new OrderResult(false);
+    }
+    const approvalResult = approvalEvent.getResult();
+    if (!approvalResult) {
+      const orderNotification: OrderNotification = {
+        message: `Order ${orderId} was not approved.`,
+      };
+      yield ctx.callActivity(notifyActivity, orderNotification);
+      return new OrderResult(false);
     }
   }
 
@@ -98,7 +114,7 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
       message: `Payment for order ${orderId} failed`,
     };
     yield ctx.callActivity(notifyActivity, orderNotification);
-    return;
+    return new OrderResult(false);
   }
 
   const updatedResult = yield ctx.callActivity(updateInventoryActivity, inventoryRequest);
@@ -107,7 +123,7 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
       message: `Failed to update inventory for order ${orderId}`,
     };
     yield ctx.callActivity(notifyActivity, orderNotification);
-    return;
+    return new OrderResult(false);
   }
 
   const orderCompletedNotification: OrderNotification = {
@@ -116,4 +132,5 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
   yield ctx.callActivity(notifyActivity, orderCompletedNotification);
 
   console.log(`Order ${orderId} processed successfully!`);
+  return new OrderResult(true);
 }

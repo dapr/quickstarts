@@ -105,3 +105,15 @@ export class OrderNotification {
         return `Notification(message=${this.message})`;
     }
 }
+
+export class OrderResult {
+    processed: boolean;
+
+    constructor(processed: boolean) {
+        this.processed = processed;
+    }
+
+    toString(): string {
+        return `OrderResult(processed=${this.processed})`;
+    }
+}
