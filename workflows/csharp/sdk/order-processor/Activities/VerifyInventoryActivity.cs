@@ -7,13 +7,13 @@ using Microsoft.Extensions.Logging;
 using Models;
 using System;
 
-internal sealed partial class ReserveInventoryActivity(ILogger<ReserveInventoryActivity> logger, DaprClient daprClient) : WorkflowActivity<InventoryRequest, InventoryResult>
+internal sealed partial class VerifyInventoryActivity(ILogger<VerifyInventoryActivity> logger, DaprClient daprClient) : WorkflowActivity<InventoryRequest, InventoryResult>
 {
     private const string StoreName = "statestore";
 
     public override async Task<InventoryResult> RunAsync(WorkflowActivityContext context, InventoryRequest req)
     {
-        LogReserveInventory(logger, req.RequestId, req.Quantity, req.ItemName);
+        LogVerifyInventory(logger, req.RequestId, req.Quantity, req.ItemName);
 
         // Ensure that the store has items
         var (orderResult, _) = await daprClient.GetStateAndETagAsync<OrderPayload>(StoreName, req.ItemName);
@@ -32,7 +32,7 @@ internal sealed partial class ReserveInventoryActivity(ILogger<ReserveInventoryA
             // Simulate slow processing
             await Task.Delay(TimeSpan.FromSeconds(2));
 
-            LogSufficientInventory(logger, req.Quantity, req.ItemName);
+            LogSufficientInventory(logger, orderResult.Quantity, req.ItemName);
             return new InventoryResult(true, orderResult);
         }
 
@@ -42,7 +42,7 @@ internal sealed partial class ReserveInventoryActivity(ILogger<ReserveInventoryA
     }
 
     [LoggerMessage(LogLevel.Information, "Reserving inventory for order request ID '{requestId}' of {quantity} {name}")]
-    static partial void LogReserveInventory(ILogger logger, string requestId, int quantity, string name);
+    static partial void LogVerifyInventory(ILogger logger, string requestId, int quantity, string name);
 
     [LoggerMessage(LogLevel.Warning, "Unable to locate an order result for request ID '{requestId}' for the indicated item {itemName} in the state store")]
     static partial void LogStateNotFound(ILogger logger, string requestId, string itemName);

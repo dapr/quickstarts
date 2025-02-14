@@ -1,6 +1,6 @@
 import { DaprWorkflowClient, WorkflowRuntime, DaprClient } from "@dapr/dapr";
 import { InventoryItem, OrderPayload } from "./model";
-import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, requestApprovalActivity, reserveInventoryActivity, updateInventoryActivity } from "./orderProcessingWorkflow";
+import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, requestApprovalActivity, verifyInventoryActivity, updateInventoryActivity } from "./orderProcessingWorkflow";
 import express from "express";
 
 const app = express();
@@ -12,7 +12,7 @@ const workflowWorker = new WorkflowRuntime();
 app.post("/start-workflow", async (req, res) => {
 
   const storeName = "statestore";
-  const inventory = new InventoryItem("item1", 100, 100);
+  const inventory = new InventoryItem("car", 5000, 10);
   const key = inventory.itemName;
 
   await daprClient.state.save(storeName, [
@@ -22,7 +22,7 @@ app.post("/start-workflow", async (req, res) => {
     }
   ]);
 
-  const order = new OrderPayload("item1", 100, 10);
+  const order = new OrderPayload("car", 5000, 1);
 
   // Schedule a new orchestration
   try {
@@ -46,7 +46,7 @@ async function start() {
   workflowWorker
     .registerWorkflow(orderProcessingWorkflow)
     .registerActivity(notifyActivity)
-    .registerActivity(reserveInventoryActivity)
+    .registerActivity(verifyInventoryActivity)
     .registerActivity(requestApprovalActivity)
     .registerActivity(processPaymentActivity)
     .registerActivity(updateInventoryActivity);

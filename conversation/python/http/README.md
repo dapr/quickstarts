@@ -28,13 +28,15 @@ pip3 install -r requirements.txt
 cd ..
 ```
 
+<!-- END_STEP -->
+
 2. Open a new terminal window and run the multi app run template:
 
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP == INFO:root:Input sent: What is dapr?'
-  - '== APP == INFO:root:Output response: What is dapr?'
+  - '== APP - conversation == INFO:root:Input sent: What is dapr?'
+  - '== APP - conversation == INFO:root:Output response: What is dapr?'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none

@@ -20,7 +20,8 @@ var builder = Host.CreateDefaultBuilder(args).ConfigureServices(services =>
 
         // These are the activities that get invoked by the workflow(s).
         options.RegisterActivity<NotifyActivity>();
-        options.RegisterActivity<ReserveInventoryActivity>();
+        options.RegisterActivity<VerifyInventoryActivity>();
+        options.RegisterActivity<RequestApprovalActivity>();
         options.RegisterActivity<ProcessPaymentActivity>();
         options.RegisterActivity<UpdateInventoryActivity>();
     });
@@ -36,13 +37,13 @@ var workflowClient = host.Services.GetRequiredService<DaprWorkflowClient>();
 // Generate a unique ID for the workflow
 var orderId = Guid.NewGuid().ToString()[..8];
 const string itemToPurchase = "Cars";
-const int amountToPurchase = 10;
+const int amountToPurchase = 1;
 
 // Populate the store with items
 RestockInventory(itemToPurchase);
 
 // Construct the order
-var orderInfo = new OrderPayload(itemToPurchase, 15000, amountToPurchase);
+var orderInfo = new OrderPayload(itemToPurchase, 5000, amountToPurchase);
 
 // Start the workflow
 Console.WriteLine($"Starting workflow {orderId} purchasing {amountToPurchase} {itemToPurchase}");
@@ -67,5 +68,5 @@ return;
 
 void RestockInventory(string itemToPurchase)
 {
-    daprClient.SaveStateAsync(storeName, itemToPurchase, new OrderPayload(Name: itemToPurchase, TotalCost: 15000, Quantity: 100));
+    daprClient.SaveStateAsync(storeName, itemToPurchase, new OrderPayload(Name: itemToPurchase, TotalCost: 50000, Quantity: 10));
 }

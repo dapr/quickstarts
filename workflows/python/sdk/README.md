@@ -33,8 +33,8 @@ cd ..
 <!-- STEP
 name: Running this example
 expected_stdout_lines:
-  - "There are now 90 cars left in stock"
-  - "Workflow completed!"
+  - "== APP - order-processor == INFO:UpdateInventoryActivity:There are now 9 cars left in stock"
+  - "== APP - order-processor == Workflow completed! Result: {\"processed\": true"
 output_match_mode: substring
 background: true
 timeout_seconds: 120
@@ -45,33 +45,62 @@ sleep: 15
 dapr run -f .
 ```
 
+<!-- END_STEP -->
+
 3. Expected output
 
 ```
-==========Begin the purchase of item:==========
-Starting order workflow, purchasing 10 of cars
-INFO:NotifyActivity:Received order b903d749cd814e099f06ebf4a56a2f90 for 10 cars at $150000 !
-INFO:VerifyInventoryActivity:Verifying inventory for order b903d749cd814e099f06ebf4a56a2f90 of 10 cars
-INFO:VerifyInventoryActivity:There are 100 Cars available for purchase
-INFO:RequestApprovalActivity:Requesting approval for payment of 150000 USD for 10 cars
-INFO:NotifyActivity:Payment for order b903d749cd814e099f06ebf4a56a2f90 has been approved!
-INFO:ProcessPaymentActivity:Processing payment: b903d749cd814e099f06ebf4a56a2f90 for 10 cars at 150000 USD
-INFO:ProcessPaymentActivity:Payment for request ID b903d749cd814e099f06ebf4a56a2f90 processed successfully
-INFO:UpdateInventoryActivity:Checking inventory for order b903d749cd814e099f06ebf4a56a2f90 for 10 cars
-INFO:UpdateInventoryActivity:There are now 90 cars left in stock
-INFO:NotifyActivity:Order b903d749cd814e099f06ebf4a56a2f90 has completed!
-Workflow completed! Result: Completed
-  Purchase of item is  Completed
+== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
+== APP - order-processor == *** Using this app, you can place orders that start workflows.
+== APP - order-processor == 2025-02-13 11:44:11.357 durabletask-worker INFO: Starting gRPC worker that connects to dns:127.0.0.1:38891
+== APP - order-processor == 2025-02-13 11:44:11.361 durabletask-worker INFO: Successfully connected to dns:127.0.0.1:38891. Waiting for work items...
+== APP - order-processor == INFO:NotifyActivity:Received order 6830cb00174544a0b062ba818e14fddc for 1 cars at $5000 !
+== APP - order-processor == 2025-02-13 11:44:14.157 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:VerifyInventoryActivity:Verifying inventory for order 6830cb00174544a0b062ba818e14fddc of 1 cars
+== APP - order-processor == INFO:VerifyInventoryActivity:There are 10 Cars available for purchase
+== APP - order-processor == 2025-02-13 11:44:14.171 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:ProcessPaymentActivity:Processing payment: 6830cb00174544a0b062ba818e14fddc for 1 cars at 5000 USD
+== APP - order-processor == INFO:ProcessPaymentActivity:Payment for request ID 6830cb00174544a0b062ba818e14fddc processed successfully
+== APP - order-processor == 2025-02-13 11:44:14.177 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:UpdateInventoryActivity:Checking inventory for order 6830cb00174544a0b062ba818e14fddc for 1 cars
+== APP - order-processor == INFO:UpdateInventoryActivity:There are now 9 cars left in stock
+== APP - order-processor == 2025-02-13 11:44:14.189 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:NotifyActivity:Order 6830cb00174544a0b062ba818e14fddc has completed!
+== APP - order-processor == 2025-02-13 11:44:14.195 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestration completed with status: COMPLETED
+== APP - order-processor == item: InventoryItem(item_name=Paperclip, per_item_cost=5, quantity=100)
+== APP - order-processor == item: InventoryItem(item_name=Cars, per_item_cost=5000, quantity=10)
+== APP - order-processor == item: InventoryItem(item_name=Computers, per_item_cost=500, quantity=100)
+== APP - order-processor == ==========Begin the purchase of item:==========
+== APP - order-processor == Starting order workflow, purchasing 1 of cars
+== APP - order-processor == 2025-02-13 11:44:16.363 durabletask-client INFO: Starting new 'order_processing_workflow' instance with ID = 'fc8a507e4a2246d2917d3ad4e3111240'.
+== APP - order-processor == 2025-02-13 11:44:16.366 durabletask-client INFO: Waiting 30s for instance 'fc8a507e4a2246d2917d3ad4e3111240' to complete.
+== APP - order-processor == 2025-02-13 11:44:16.366 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:NotifyActivity:Received order fc8a507e4a2246d2917d3ad4e3111240 for 1 cars at $5000 !
+== APP - order-processor == 2025-02-13 11:44:16.373 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:VerifyInventoryActivity:Verifying inventory for order fc8a507e4a2246d2917d3ad4e3111240 of 1 cars
+== APP - order-processor == INFO:VerifyInventoryActivity:There are 10 Cars available for purchase
+== APP - order-processor == 2025-02-13 11:44:16.383 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:ProcessPaymentActivity:Processing payment: fc8a507e4a2246d2917d3ad4e3111240 for 1 cars at 5000 USD
+== APP - order-processor == INFO:ProcessPaymentActivity:Payment for request ID fc8a507e4a2246d2917d3ad4e3111240 processed successfully
+== APP - order-processor == 2025-02-13 11:44:16.390 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:UpdateInventoryActivity:Checking inventory for order fc8a507e4a2246d2917d3ad4e3111240 for 1 cars
+== APP - order-processor == INFO:UpdateInventoryActivity:There are now 9 cars left in stock
+== APP - order-processor == 2025-02-13 11:44:16.403 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+== APP - order-processor == INFO:NotifyActivity:Order fc8a507e4a2246d2917d3ad4e3111240 has completed!
+== APP - order-processor == 2025-02-13 11:44:16.411 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestration completed with status: COMPLETED
+== APP - order-processor == 2025-02-13 11:44:16.425 durabletask-client INFO: Instance 'fc8a507e4a2246d2917d3ad4e3111240' completed.
+== APP - order-processor == 2025-02-13 11:44:16.425 durabletask-worker INFO: Stopping gRPC worker...
+== APP - order-processor == 2025-02-13 11:44:16.426 durabletask-worker INFO: Disconnected from dns:127.0.0.1:38891
+== APP - order-processor == 2025-02-13 11:44:16.426 durabletask-worker INFO: No longer listening for work items
+== APP - order-processor == 2025-02-13 11:44:16.426 durabletask-worker INFO: Worker shutdown completed
+== APP - order-processor == Workflow completed! Result: {"processed": true, "__durabletask_autoobject__": true}
 ```
 
 4. Stop Dapr workflow with CTRL-C or:
-<!-- END_STEP -->
 
 ```sh
 dapr stop -f .
 ```
-
-
 
 ### View workflow output with Zipkin
 
@@ -83,21 +112,16 @@ For a more detailed view of the workflow activities (duration, progress etc.), t
 
 ### What happened? 
 
-When you ran `dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py`
+When you ran `dapr run -f .`
 
-1. First the user inputs an order for 10 cars into the concole app.
-2. A unique order ID for the workflow is generated (in the above example, `b903d749cd814e099f06ebf4a56a2f90`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
-4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
-5. The `RequestApprovalActivity` workflow activity is triggered due to buisness logic for orders exceeding $50k and user is prompted to manually approve the purchase before continuing order. 
-6. The workflow starts and notifies you of its status.
-7. The `ProcessPaymentActivity` workflow activity begins processing payment for order `b903d749cd814e099f06ebf4a56a2f90` and confirms if successful.
-8. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-9. The `NotifyActivity` workflow activity sends a notification saying that order `b903d749cd814e099f06ebf4a56a2f90` has completed.
-10. The workflow terminates as completed.
+1. An OrderPayload is made containing one car.
+2. A unique order ID for the workflow is generated (in the above example, `fc8a507e4a2246d2917d3ad4e3111240`) and the workflow is scheduled.
+3. The `notify_activity` workflow activity sends a notification saying an order for one car has been received.
+4. The `verify_inventory_activity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
+5. The total cost of the order is 5000, so the workflow will not call the `request_approval_activity` activity.
+6. The `process_payment_activity` workflow activity begins processing payment for order `fc8a507e4a2246d2917d3ad4e3111240` and confirms if successful.
+7. The `update_inventory_activity` workflow activity updates the inventory with the current available cars after the order has been processed.
+8. The `notify_activity` workflow activity sends a notification saying that order `fc8a507e4a2246d2917d3ad4e3111240` has completed.
+9. The workflow terminates as completed and the OrderResult is set to processed.
 
-
-
-
-
-
+> **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `request_approval_activity` activity nor wait for an approval event. Since the quickstart is a console application, it can't accept incoming events easily. If you want to test this scenario, convert the console app to a service and use the [raise event API](https://v1-15.docs.dapr.io/reference/api/workflow_api/#raise-event-request) via HTTP/gRPC or via the Dapr Workflow client to send an event to the workflow instance.
