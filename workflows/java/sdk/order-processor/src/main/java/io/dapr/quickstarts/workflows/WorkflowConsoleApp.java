@@ -21,7 +21,7 @@ import io.dapr.client.DaprClientBuilder;
 import io.dapr.quickstarts.workflows.activities.NotifyActivity;
 import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
 import io.dapr.quickstarts.workflows.activities.RequestApprovalActivity;
-import io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity;
+import io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity;
 import io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity;
 import io.dapr.quickstarts.workflows.models.InventoryItem;
 import io.dapr.quickstarts.workflows.models.OrderPayload;
@@ -51,7 +51,7 @@ public class WorkflowConsoleApp {
     builder.registerActivity(NotifyActivity.class);
     builder.registerActivity(ProcessPaymentActivity.class);
     builder.registerActivity(RequestApprovalActivity.class);
-    builder.registerActivity(ReserveInventoryActivity.class);
+    builder.registerActivity(VerifyInventoryActivity.class);
     builder.registerActivity(UpdateInventoryActivity.class);
 
     // Build and then start the workflow runtime pulling and executing tasks
@@ -109,19 +109,19 @@ public class WorkflowConsoleApp {
   }
 
   private static InventoryItem prepareInventoryAndOrder() {
-    // prepare 100 cars in inventory
+    // prepare 10 cars in inventory
     InventoryItem inventory = new InventoryItem();
     inventory.setName("cars");
-    inventory.setPerItemCost(15000);
-    inventory.setQuantity(100);
+    inventory.setPerItemCost(50000);
+    inventory.setQuantity(10);
     DaprClient daprClient = new DaprClientBuilder().build();
     restockInventory(daprClient, inventory);
 
     // prepare order for 10 cars
     InventoryItem order = new InventoryItem();
     order.setName("cars");
-    order.setPerItemCost(15000);
-    order.setQuantity(10);
+    order.setPerItemCost(5000);
+    order.setQuantity(1);
     return order;
   }
 
