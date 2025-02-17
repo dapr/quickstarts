@@ -1,0 +1,8 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: conversation
+    appDirPath: ./conversation/
+    daprHTTPPort: 3502
+    command: ["npm", "run", "start"]
