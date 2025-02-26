@@ -13,10 +13,10 @@ activities are as follows:
 
 - NotifyActivity: This activity utilizes a logger to print out messages throughout the workflow. These messages notify the user when there is insufficient 
 §inventory, their payment couldn't be processed, and more.
-- ProcessPaymentActivity: This activity is responsible for processing and authorizing the payment.
 - VerifyInventoryActivity: This activity checks the state store to ensure that there is enough inventory present for purchase.
+- RequestApprovalActivity: This activity seeks approval from a manager, if payment is greater than 5000 USD.
+- ProcessPaymentActivity: This activity is responsible for processing and authorizing the payment.
 - UpdateInventoryActivity: This activity removes the requested items from the state store and updates the store with the new remaining inventory value.
-- RequestApprovalActivity: This activity seeks approval from Manager, if payment is greater than 50000 USD.
 
 ### Run the order processor workflow
 
@@ -25,12 +25,10 @@ activities are as follows:
 <!-- STEP
 name: Running this example
 expected_stdout_lines:
-  - "for 10 cars - $150000"
-  - "There are 100 cars available for purchase"
-  - "Requesting approval for payment of 150000USD for 10 cars"
-  - "has been approved!"
-  - "There are now 90 cars left in stock"
-  - "Workflow completed - result: COMPLETED"
+  - "for 1 cars - $5000"
+  - "There are 10 cars available for purchase"
+  - "There are now 9 cars left in stock"
+  - "workflow status: COMPLETED"
 output_match_mode: substring
 background: false
 timeout_seconds: 120
@@ -38,50 +36,40 @@ sleep: 30
 -->
 
 ```sh
-
 dapr run -f .
 ```
+
+<!-- END_STEP -->
 
 3. Expected output
 
 ```
 == APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
 == APP - order-processor == *** Using this app, you can place orders that start workflows.
-== APP - order-processor == dapr client initializing for: 127.0.0.1:50056
+== APP - order-processor == dapr client initializing for: 127.0.0.1:46533
+== APP - order-processor == INFO: 2025/02/13 13:18:33 connecting work item listener stream
+== APP - order-processor == 2025/02/13 13:18:33 work item listener started
+== APP - order-processor == INFO: 2025/02/13 13:18:33 starting background processor
 == APP - order-processor == adding base stock item: paperclip
-== APP - order-processor == 2024/02/01 12:59:52 work item listener started
-== APP - order-processor == INFO: 2024/02/01 12:59:52 starting background processor
 == APP - order-processor == adding base stock item: cars
 == APP - order-processor == adding base stock item: computers
 == APP - order-processor == ==========Begin the purchase of item:==========
-== APP - order-processor == NotifyActivity: Received order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 cars - $150000
-== APP - order-processor == VerifyInventoryActivity: Verifying inventory for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 of 10 cars
-== APP - order-processor == VerifyInventoryActivity: There are 100 cars available for purchase
-== APP - order-processor == RequestApprovalActivity: Requesting approval for payment of 150000USD for 10 cars
-== APP - order-processor == NotifyActivity: Payment for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 has been approved!
-== APP - order-processor == ProcessPaymentActivity: 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 - cars (150000USD)
-== APP - order-processor == UpdateInventoryActivity: Checking Inventory for order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 for 10 * cars
-== APP - order-processor == UpdateInventoryActivity: There are now 90 cars left in stock
-== APP - order-processor == NotifyActivity: Order 48ee83b7-5d80-48d5-97f9-6b372f5480a5 has completed!
-== APP - order-processor == Workflow completed - result: COMPLETED
+== APP - order-processor == NotifyActivity: Received order b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 cars - $5000
+== APP - order-processor == VerifyInventoryActivity: Verifying inventory for order b4cb2687-1af0-4f8d-9659-eb6389c07ade of 1 cars
+== APP - order-processor == VerifyInventoryActivity: There are 10 cars available for purchase
+== APP - order-processor == ProcessPaymentActivity: b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 - cars (5000USD)
+== APP - order-processor == UpdateInventoryActivity: Checking Inventory for order b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 * cars
+== APP - order-processor == UpdateInventoryActivity: There are now 9 cars left in stock
+== APP - order-processor == NotifyActivity: Order b4cb2687-1af0-4f8d-9659-eb6389c07ade has completed!
+== APP - order-processor == workflow status: COMPLETED
 == APP - order-processor == Purchase of item is complete
 ```
 
 4. Stop Dapr workflow with CTRL-C or:
-<!-- END_STEP -->
-
-<!-- STEP
-name: Stop multi-app run 
-sleep: 5
--->
 
 ```sh
 dapr stop -f .
 ```
-
-<!-- END_STEP -->
-
-
 
 ### View workflow output with Zipkin
 
@@ -97,21 +85,14 @@ launched on running `dapr init`.
 
 When you ran the above comands:
 
-1. First the "user" inputs an order for 10 cars into the concole app.
-2. A unique order ID for the workflow is generated (in the above example, `b903d749cd814e099f06ebf4a56a2f90`) and the workflow is scheduled.
+1. An OrderPayload is made containing one car.
+2. A unique order ID for the workflow is generated (in the above example, `b4cb2687-1af0-4f8d-9659-eb6389c07ade`) and the workflow is scheduled.
 3. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
-4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars 
-in stock.
-5. The `RequestApprovalActivity` workflow activity is triggered due to buisness logic for orders exceeding $50k and user is prompted to manually approve the 
-purchase before continuing the order. 
-6. The workflow starts and notifies you of its status.
-7. The `ProcessPaymentActivity` workflow activity begins processing payment for order `b903d749cd814e099f06ebf4a56a2f90` and confirms if successful.
-8. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-9. The `NotifyActivity` workflow activity sends a notification saying that order `b903d749cd814e099f06ebf4a56a2f90` has completed.
-10. The workflow terminates as completed.
+4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
+5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
+6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `b4cb2687-1af0-4f8d-9659-eb6389c07ade` and confirms if successful.
+7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
+8. The `NotifyActivity` workflow activity sends a notification saying that order `b4cb2687-1af0-4f8d-9659-eb6389c07ade` has completed.
+9. The workflow terminates as completed and the OrderResult is set to processed.
 
-
-
-
-
-
+> **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `RequestApprovalActivity` activity nor wait for an approval event. Since the quickstart is a console application, it can't accept incoming events easily. If you want to test this scenario, convert the console app to a service and use the [raise event API](https://v1-15.docs.dapr.io/reference/api/workflow_api/#raise-event-request) via HTTP/gRPC or via the Dapr Workflow client to send an event to the workflow instance.

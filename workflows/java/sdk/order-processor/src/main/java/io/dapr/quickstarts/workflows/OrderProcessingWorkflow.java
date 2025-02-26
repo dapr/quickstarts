@@ -1,13 +1,14 @@
 package io.dapr.quickstarts.workflows;
 
+import java.time.Duration;
 import org.slf4j.Logger;
 
 import io.dapr.quickstarts.workflows.activities.NotifyActivity;
 import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
 import io.dapr.quickstarts.workflows.activities.RequestApprovalActivity;
-import io.dapr.quickstarts.workflows.activities.ReserveInventoryActivity;
+import io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity;
 import io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity;
-import io.dapr.quickstarts.workflows.models.ApprovalResult;
+import io.dapr.quickstarts.workflows.models.ApprovalResponse;
 import io.dapr.quickstarts.workflows.models.InventoryRequest;
 import io.dapr.quickstarts.workflows.models.InventoryResult;
 import io.dapr.quickstarts.workflows.models.Notification;
@@ -44,7 +45,7 @@ public class OrderProcessingWorkflow extends Workflow {
       inventoryRequest.setRequestId(orderId);
       inventoryRequest.setItemName(order.getItemName());
       inventoryRequest.setQuantity(order.getQuantity());
-      InventoryResult inventoryResult = ctx.callActivity(ReserveInventoryActivity.class.getName(),
+      InventoryResult inventoryResult = ctx.callActivity(VerifyInventoryActivity.class.getName(),
           inventoryRequest, InventoryResult.class).await();
 
       // If there is insufficient inventory, fail and let the user know
@@ -57,9 +58,11 @@ public class OrderProcessingWorkflow extends Workflow {
 
       // Require orders over a certain threshold to be approved
       if (order.getTotalCost() > 5000) {
-        ApprovalResult approvalResult = ctx.callActivity(RequestApprovalActivity.class.getName(),
-            order, ApprovalResult.class).await();
-        if (approvalResult != ApprovalResult.Approved) {
+        ctx.callActivity(RequestApprovalActivity.class.getName(), order).await();
+
+        ApprovalResponse approvalResponse = ctx.waitForExternalEvent("approvalEvent",
+          Duration.ofSeconds(30), ApprovalResponse.class).await();
+        if (!approvalResponse.isApproved()) {
           notification.setMessage("Order " + order.getItemName() + " was not approved.");
           ctx.callActivity(NotifyActivity.class.getName(), notification).await();
           ctx.complete(orderResult);

@@ -20,10 +20,10 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
  name: Run multi app run template
  expected_stdout_lines:
-   - '== APP - job-service == Starting droid: R2-D2'
-   - '== APP - job-service == Executing maintenance job: Oil Change'
-   - '== APP - job-service == Starting droid: C-3PO'
-   - '== APP - job-service == Executing maintenance job: Memory Wipe'
+   - '== APP - job-service-sdk == Starting droid: R2-D2'
+   - '== APP - job-service-sdk == Executing maintenance job: Oil Change'
+   - '== APP - job-service-sdk == Starting droid: C-3PO'
+   - '== APP - job-service-sdk == Executing maintenance job: Memory Wipe'
  expected_stderr_lines:
  output_match_mode: substring
  match_order: none
@@ -49,33 +49,33 @@ The terminal console output should look similar to this, where:
 
 
 ```text
-== APP - job-service == dapr client initializing for: 127.0.0.1:6481
-== APP - job-service == Registered job handler for:  R2-D2
-== APP - job-service == Registered job handler for:  C-3PO
-== APP - job-service == Registered job handler for:  BB-8
-== APP - job-service == Starting server on port: 6400
-== APP - job-service == Job scheduled:  R2-D2
-== APP - job-service == Job scheduled:  C-3PO
-== APP - job-service == 2024/07/17 18:09:59 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
-== APP - job-scheduler == Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}
-== APP - job-service == Job scheduled:  BB-8
-== APP - job-service == 2024/07/17 18:09:59 job:{name:"BB-8"  due_time:"15s"  data:{value:"{\"droid\":\"BB-8\",\"Task\":\"Internal Gyroscope Check\"}"}}
-== APP - job-scheduler == Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}
-== APP - job-scheduler == Deleted job:  BB-8
+== APP - job-service-sdk == dapr client initializing for: 127.0.0.1:6481
+== APP - job-service-sdk == Registered job handler for:  R2-D2
+== APP - job-service-sdk == Registered job handler for:  C-3PO
+== APP - job-service-sdk == Registered job handler for:  BB-8
+== APP - job-service-sdk == Starting server on port: 6400
+== APP - job-service-sdk == Job scheduled:  R2-D2
+== APP - job-service-sdk == Job scheduled:  C-3PO
+== APP - job-service-sdk == 2024/07/17 18:09:59 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
+== APP - job-scheduler-sdk == Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}
+== APP - job-service-sdk == Job scheduled:  BB-8
+== APP - job-service-sdk == 2024/07/17 18:09:59 job:{name:"BB-8"  due_time:"15s"  data:{value:"{\"droid\":\"BB-8\",\"Task\":\"Internal Gyroscope Check\"}"}}
+== APP - job-scheduler-sdk == Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}
+== APP - job-scheduler-sdk == Deleted job:  BB-8
 ```
 
 After 5 seconds, the terminal output should present the `R2-D2` job being processed:
 
 ```text
-== APP - job-service == Starting droid: R2-D2
-== APP - job-service == Executing maintenance job: Oil Change
+== APP - job-service-sdk == Starting droid: R2-D2
+== APP - job-service-sdk == Executing maintenance job: Oil Change
 ```
 
 After 10 seconds, the terminal output should present the `C3-PO` job being processed:
 
 ```text
-== APP - job-service == Starting droid: C-3PO
-== APP - job-service == Executing maintenance job: Memory Wipe
+== APP - job-service-sdk == Starting droid: C-3PO
+== APP - job-service-sdk == Executing maintenance job: Memory Wipe
 ```
 
 <!-- END_STEP -->
@@ -99,7 +99,7 @@ dapr stop -f .
 1. Open a terminal and run the `job-service` app:
 
 ```bash
-dapr run --app-id job-service --app-port 6400 --dapr-grpc-port 6481 --app-protocol grpc -- go run .
+dapr run --app-id job-service-sdk --app-port 6400 --dapr-grpc-port 6481 --app-protocol grpc -- go run .
 ```
 
 The output should be:
@@ -115,7 +115,7 @@ The output should be:
 2. On a new terminal window, run the `job-scheduler` app:
 
 ```bash
-dapr run --app-id job-scheduler --app-port 6500 -- go run .
+dapr run --app-id job-scheduler-sdk --app-port 6500 -- go run .
 ```
 
 The output should be:

@@ -1,7 +1,7 @@
 version: 1
 apps:
-  - appDirPath: ./order-processor/
-    appID: order-processor
+  - appID: order-processor
+    appDirPath: ./order-processor/
     appPort: 8001
     command: ["python3", "app.py"]
   - appID: checkout
