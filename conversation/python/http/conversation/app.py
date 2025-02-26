@@ -11,7 +11,7 @@ CONVERSATION_COMPONENT_NAME = 'echo'
 
 input = {
 		'name': 'echo',
-		'inputs': [{'content':'What is Dapr?'}],
+		'inputs': [{'content':'What is dapr?'}],
 		'parameters': {},
 		'metadata': {}
     }
@@ -22,7 +22,7 @@ result = requests.post(
 	json=input
 )
 
-logging.info('Input sent: What is Dapr?')
+logging.info('Input sent: What is dapr?')
 
 # Parse conversation output
 data = result.json()

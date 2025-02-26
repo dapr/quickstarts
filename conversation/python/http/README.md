@@ -35,8 +35,8 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == INFO:root:Input sent: What is Dapr?'
-  - '== APP - conversation == INFO:root:Output response: What is Dapr?'
+  - '== APP - conversation == INFO:root:Input sent: What is dapr?'
+  - '== APP - conversation == INFO:root:Output response: What is dapr?'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -51,12 +51,12 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is Dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is Dapr?`.
+- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is dapr?`.
 
 ```text
-== APP - conversation == Input sent: What is Dapr?
-== APP - conversation == Output response: What is Dapr?
+== APP - conversation == Input sent: What is dapr?
+== APP - conversation == Output response: What is dapr?
 ```
 
 <!-- END_STEP -->
@@ -94,6 +94,6 @@ dapr run --app-id conversation --resources-path ../../../components -- python3 a
 You should see the output:
 
 ```bash
-== APP == INFO:root:Input sent: What is Dapr?
-== APP == INFO:root:Output response: What is Dapr?
+== APP == INFO:root:Input sent: What is dapr?
+== APP == INFO:root:Output response: What is dapr?
 ```
