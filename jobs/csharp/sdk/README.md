@@ -46,8 +46,8 @@ dotnet build
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-scheduler-sdk == Job Scheduled: R2-D2'
-  - '== APP - job-scheduler-sdk == Job Scheduled: C-3PO'
+  - '== APP - job-service-sdk == Job Scheduled: R2-D2'
+  - '== APP - job-service-sdk == Job Scheduled: C-3PO'
   - '== APP - job-service-sdk == Received job request...'
   - '== APP - job-service-sdk == Starting droid: R2-D2'
   - '== APP - job-service-sdk == Executing maintenance job: Oil Change'
@@ -76,9 +76,9 @@ The terminal console output should look similar to this, where:
 - The `C-3PO` job is being executed after 20 seconds.
 
 ```text
-== APP - job-scheduler-sdk == Job Scheduled: R2-D2
+== APP - job-service-sdk == Job Scheduled: R2-D2
 == APP - job-scheduler-sdk == Job details: {"name":"R2-D2", "dueTime":"15s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"R2-D2:Oil Change"}}}
-== APP - job-scheduler-sdk == Job Scheduled: C-3PO
+== APP - job-service-sdk == Job Scheduled: C-3PO
 == APP - job-scheduler-sdk == Job details: {"name":"C-3PO", "dueTime":"20s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"C-3PO:Limb Calibration"}}}
 == APP - job-service-sdk == Received job request...
 == APP - job-service-sdk == Starting droid: R2-D2
