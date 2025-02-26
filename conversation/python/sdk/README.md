@@ -4,8 +4,6 @@ In this quickstart, you'll send an input to a mock Large Language Model (LLM) us
 
 Visit [this](https://v1-15.docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
 
-> **Note:** This example leverages HTTP `requests` only.
-
 This quickstart includes one app:
 
 - `app.py`, responsible for sending an input to the underlying LLM and retrieving an output.
@@ -35,8 +33,8 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == INFO:root:Input sent: What is Dapr?'
-  - '== APP - conversation == INFO:root:Output response: What is Dapr?'
+  - '== APP - conversation == Input sent: What is Dapr?'
+  - '== APP - conversation == Output response: What is Dapr?'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -94,6 +92,6 @@ dapr run --app-id conversation --resources-path ../../../components -- python3 a
 You should see the output:
 
 ```bash
-== APP == INFO:root:Input sent: What is Dapr?
-== APP == INFO:root:Output response: What is Dapr?
+== APP == Input sent: What is Dapr?
+== APP == Output response: What is Dapr?
 ```
