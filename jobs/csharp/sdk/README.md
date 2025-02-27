@@ -48,10 +48,10 @@ name: Run multi app run template
 expected_stdout_lines:
   - '== APP - job-service-sdk == Job Scheduled: R2-D2'
   - '== APP - job-service-sdk == Job Scheduled: C-3PO'
-  - '== APP - job-service-sdk == Received job request...'
+  - '== APP - job-service-sdk == Received invocation for the job R2-D2 with job data droid R2-D2'
   - '== APP - job-service-sdk == Starting droid: R2-D2'
   - '== APP - job-service-sdk == Executing maintenance job: Oil Change'
-  - '== APP - job-service-sdk == Received job request...'
+  - '== APP - job-service-sdk == Received trigger invocation for job name: C-3PO'
   - '== APP - job-service-sdk == Starting droid: C-3PO'
   - '== APP - job-service-sdk == Executing maintenance job: Limb Calibration'
 expected_stderr_lines:
@@ -77,9 +77,9 @@ The terminal console output should look similar to this, where:
 
 ```text
 == APP - job-service-sdk == Job Scheduled: R2-D2
-== APP - job-scheduler-sdk == Job details: {"name":"R2-D2", "dueTime":"15s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"R2-D2:Oil Change"}}}
+== APP - job-scheduler-sdk == Job details: {"schedule":"@every 15s","repeatCount":1,"dueTime":null,"ttl":null,"payload":"ChtkYXByLmlvL3NjaGVkdWxlL2pvYnBheWxvYWQSJXsiZHJvaWQiOiJSMi1EMiIsInRhc2siOiJPaWwgQ2hhbmdlIn0="}
 == APP - job-service-sdk == Job Scheduled: C-3PO
-== APP - job-scheduler-sdk == Job details: {"name":"C-3PO", "dueTime":"20s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"C-3PO:Limb Calibration"}}}
+== APP - job-scheduler-sdk == Job details: {"schedule":"@every 20s","repeatCount":1,"dueTime":null,"ttl":null,"payload":"ChtkYXByLmlvL3NjaGVkdWxlL2pvYnBheWxvYWQSK3siZHJvaWQiOiJDLTNQTyIsInRhc2siOiJMaW1iIENhbGlicmF0aW9uIn0="}
 == APP - job-service-sdk == Received job request...
 == APP - job-service-sdk == Starting droid: R2-D2
 == APP - job-service-sdk == Executing maintenance job: Oil Change

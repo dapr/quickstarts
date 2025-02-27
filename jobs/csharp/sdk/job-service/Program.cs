@@ -26,17 +26,12 @@ app.MapPost("/scheduleJob", async (HttpContext context) =>
   }
 
   try {
-    //Create a Cron expression to run once after schedule defined seconds
-    var cronBuilder = new CronExpressionBuilder().On(OnCronPeriod.Second, droidJob.DueTime);
-    Console.WriteLine($"Scheduling job with cron expression: " + cronBuilder);
-
     var jobData = new JobData {
       Droid = droidJob.Name,
       Task = droidJob.Job
     };
 
-    //await jobsClient.ScheduleJobAsync(droidJob.Name, DaprJobSchedule.FromDateTime(DateTime.UtcNow.AddSeconds(droidJob.DueTime)), JsonSerializer.SerializeToUtf8Bytes(jobData), DateTime.UtcNow, 1);
-    await jobsClient.ScheduleJobWithPayloadAsync(droidJob.Name, DaprJobSchedule.FromCronExpression(cronBuilder), jobData, DateTime.UtcNow, 1); //Schedule cron job that repeats once
+    await jobsClient.ScheduleJobWithPayloadAsync(droidJob.Name, DaprJobSchedule.FromDuration(TimeSpan.FromSeconds(droidJob.DueTime)), payload: jobData, repeats: 1); //Schedule cron job that repeats once
     Console.WriteLine($"Job Scheduled: {droidJob.Name}");
 
     context.Response.StatusCode = 200;

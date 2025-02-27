@@ -6,6 +6,8 @@ using Dapr.Client;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
+await Task.Delay(5000); // Allow time for the job-service-sdk to start
+
 // Instantiate an HTTP client for invoking the job-service-sdk application
 var httpClient = DaprClient.CreateInvokeHttpClient(appId: "job-service-sdk");
 
