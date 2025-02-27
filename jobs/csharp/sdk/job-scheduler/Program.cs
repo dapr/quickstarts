@@ -52,7 +52,7 @@ catch (Exception ex)
 
 async Task ScheduleJob(DroidJob job)
 {
-  Console.WriteLine($"Scheduling job: " + job.Name);
+  Console.WriteLine($"Scheduling job...");
 
   try
   {
@@ -60,7 +60,7 @@ async Task ScheduleJob(DroidJob job)
     var result = await response.Content.ReadAsStringAsync();
 
     response.EnsureSuccessStatusCode();
-    Console.WriteLine($"Job scheduled successfully: {job.Name}, {result}");
+    Console.WriteLine($"Job scheduled: {result}");
   }
   catch (Exception e)
   {
@@ -70,7 +70,7 @@ async Task ScheduleJob(DroidJob job)
 
 async Task GetJobDetails(DroidJob job)
 {
-  Console.WriteLine($"Getting job details: " + job.Name);
+  Console.WriteLine($"Getting job: " + job.Name);
 
   try
   {
