@@ -19,7 +19,7 @@ with DaprClient() as d:
     ]
 
     metadata = {
-        'model': 'foo',
+        'model': 'modelname',
         'key': 'authKey',
         'cacheTTL': '10m',
     }
