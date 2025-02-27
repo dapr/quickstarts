@@ -11,7 +11,7 @@ CONVERSATION_COMPONENT_NAME = 'echo'
 
 input = {
 		'name': 'echo',
-		'inputs': [{'message':'What is dapr?'}],
+		'inputs': [{'content':'What is dapr?'}],
 		'parameters': {},
 		'metadata': {}
     }

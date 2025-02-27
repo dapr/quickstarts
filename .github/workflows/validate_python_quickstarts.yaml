@@ -105,7 +105,15 @@ jobs:
               else
                 pushd $building_block/python/$variant
                 echo "Validating $building_block/python/$variant quickstart"
+
+                python3 -m venv .venv
+                source .venv/bin/activate
+
                 make validate 
+                
+                deactivate
+                rm -rf .venv
+                
                 popd
               fi
             done
