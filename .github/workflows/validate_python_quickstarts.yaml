@@ -110,6 +110,7 @@ jobs:
                 source .venv/bin/activate
 
                 make validate 
+                
                 deactivate
                 rm -rf .venv
                 
