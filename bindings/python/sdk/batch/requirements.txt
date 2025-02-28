@@ -1,4 +1,4 @@
-dapr>=1.15.0rc3
+dapr>=1.15.0
 Flask
 uvicorn
 typing-extensions
