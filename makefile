@@ -44,10 +44,10 @@ update_gosdk_version:
 		fi; \
 	done
 	@echo "go-sdk update complete! Please verify changes and run tests before committing."
-	
+
 # Target to update Python dependencies in all quickstarts
-# Usage: make update_python_deps [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]
-update_python_deps:
+# Usage: make update_python_sdk_version [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]
+update_python_sdk_version:
 	@echo "Updating Python dependencies in all quickstarts..."
 	@find . -path '*/python/*' -name "requirements.txt" | while read -r REQ_FILE; do \
 		echo "Processing: $$REQ_FILE"; \
@@ -157,4 +157,4 @@ test_javascript_quickstarts:
 test_all_quickstarts: test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts
 	@echo "All quickstart tests complete!"
 
-.PHONY: all update_gosdk_version update_python_deps test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts test_all_quickstarts
+.PHONY: all update_gosdk_version update_python_sdk_version test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts test_all_quickstarts
