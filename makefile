@@ -71,6 +71,78 @@ update_python_sdk_version:
 	@echo "Python dependency update complete! Please verify changes and run tests before committing."
 
 
+
+# Target to update Dapr package versions in all C# quickstarts (SDK variant only)
+# Usage: make update_dotnet_sdk_version VERSION=1.15.0
+update_dotnet_sdk_version:
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: VERSION parameter is required. Usage: make update_csharp_dapr VERSION=1.16.0-rc01"; \
+		exit 1; \
+	fi
+	@echo "Updating Dapr packages to version $(VERSION) in all C# projects..."
+	
+	@# Process standard SDK quickstarts
+	@echo "Processing SDK quickstarts..."
+	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
+	for building_block in $$building_blocks; do \
+		if [ -d "$$building_block/csharp/sdk" ]; then \
+			echo "Checking $$building_block/csharp/sdk for .csproj files"; \
+			CSPROJ_FILES=$$(find "$$building_block/csharp/sdk" -name "*.csproj"); \
+			if [ -n "$$CSPROJ_FILES" ]; then \
+				for CSPROJ in $$CSPROJ_FILES; do \
+					echo "Processing: $$CSPROJ"; \
+					PROJ_DIR=$$(dirname "$$CSPROJ"); \
+					DAPR_LINES=$$(grep -A1 "PackageReference Include=\"Dapr." "$$CSPROJ" || echo ""); \
+					if [ -n "$$DAPR_LINES" ]; then \
+						echo "$$DAPR_LINES" | grep "Include=\"Dapr." | while read -r LINE; do \
+							PACKAGE=$$(echo $$LINE | sed 's/.*Include="\([^"]*\)".*/\1/'); \
+							echo "  Updating $$PACKAGE to version $(VERSION)"; \
+							(cd "$$PROJ_DIR" && dotnet add "$$(basename $$CSPROJ)" package "$$PACKAGE" --version $(VERSION)) || \
+							echo "  Failed to update $$PACKAGE in $$CSPROJ"; \
+						done; \
+					else \
+						echo "  No Dapr package references found in $$CSPROJ"; \
+					fi; \
+				done; \
+			else \
+				echo "No .csproj files found in $$building_block/csharp/sdk"; \
+			fi; \
+		fi; \
+	done
+	
+	@# Process tutorials directory separately
+	@echo "Processing tutorials directory..."
+	@if [ -d "./tutorials" ]; then \
+		echo "Searching tutorials for .csproj files with Dapr references..."; \
+		TUTORIAL_CSPROJ_FILES=$$(find "./tutorials" -name "*.csproj"); \
+		if [ -n "$$TUTORIAL_CSPROJ_FILES" ]; then \
+			for CSPROJ in $$TUTORIAL_CSPROJ_FILES; do \
+				echo "Processing tutorial: $$CSPROJ"; \
+				PROJ_DIR=$$(dirname "$$CSPROJ"); \
+				DAPR_LINES=$$(grep -A1 "PackageReference Include=\"Dapr." "$$CSPROJ" || echo ""); \
+				if [ -n "$$DAPR_LINES" ]; then \
+					echo "$$DAPR_LINES" | grep "Include=\"Dapr." | while read -r LINE; do \
+						PACKAGE=$$(echo $$LINE | sed 's/.*Include="\([^"]*\)".*/\1/'); \
+						echo "  Updating $$PACKAGE to version $(VERSION)"; \
+						(cd "$$PROJ_DIR" && dotnet add "$$(basename $$CSPROJ)" package "$$PACKAGE" --version $(VERSION)) || \
+						echo "  Failed to update $$PACKAGE in $$CSPROJ"; \
+					done; \
+				else \
+					echo "  No Dapr package references found in $$CSPROJ"; \
+				fi; \
+			done; \
+		else \
+			echo "No .csproj files found in tutorials directory"; \
+		fi; \
+	else \
+		echo "No tutorials directory found"; \
+	fi
+	
+	@echo "C# Dapr package update complete! Please verify changes and run tests before committing."
+
+.PHONY: update_dotnet_sdk_version
+
+
 test_go_quickstarts:
 	@echo "Testing all Go quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
