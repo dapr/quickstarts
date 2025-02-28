@@ -10,22 +10,41 @@ update_gosdk_version:
 		echo "Error: VERSION parameter is required. Usage: make update_gosdk_version VERSION=v1.13.0-rc.1"; \
 		exit 1; \
 	fi
-	@echo "Updating go-sdk to version $(VERSION) in all quickstarts..."
+	@echo "Updating go-sdk to version $(VERSION) in all SDK variant quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
 	for building_block in $$building_blocks; do \
-		for variant in "http" "sdk"; do \
-			if [ -d "$$building_block/go/$$variant" ]; then \
-				echo "Updating $$building_block/go/$$variant to go-sdk $(VERSION)"; \
-				(cd "$$building_block/go/$$variant" && \
+		if [ -d "$$building_block/go/sdk" ]; then \
+			echo "Checking $$building_block/go/sdk for go.mod"; \
+			if [ -f "$$building_block/go/sdk/go.mod" ]; then \
+				echo "Updating $$building_block/go/sdk to go-sdk $(VERSION)"; \
+				(cd "$$building_block/go/sdk" && \
 				grep -q "github.com/dapr/go-sdk" go.mod && \
 				go get github.com/dapr/go-sdk@$(VERSION) && \
 				go mod tidy) || \
-				echo "Failed to update go-sdk in $$building_block/go/$$variant"; \
+				echo "Failed to update go-sdk in $$building_block/go/sdk"; \
+			else \
+				echo "No go.mod file found in $$building_block/go/sdk"; \
+				echo "Looking for nested Go projects..."; \
+				NESTED_GO_MODS=$$(find "$$building_block/go/sdk" -name "go.mod" -type f); \
+				if [ -n "$$NESTED_GO_MODS" ]; then \
+					for GO_MOD in $$NESTED_GO_MODS; do \
+						NESTED_DIR=$$(dirname "$$GO_MOD"); \
+						echo "Found Go project at $$NESTED_DIR"; \
+						echo "Updating to go-sdk $(VERSION)"; \
+						(cd "$$NESTED_DIR" && \
+						grep -q "github.com/dapr/go-sdk" go.mod && \
+						go get github.com/dapr/go-sdk@$(VERSION) && \
+						go mod tidy) || \
+						echo "Failed to update go-sdk in $$NESTED_DIR"; \
+					done; \
+				else \
+					echo "No Go projects found in $$building_block/go/sdk"; \
+				fi; \
 			fi; \
-		done; \
+		fi; \
 	done
 	@echo "go-sdk update complete! Please verify changes and run tests before committing."
-
+	
 # Target to update Python dependencies in all quickstarts
 # Usage: make update_python_deps [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]
 update_python_deps:
