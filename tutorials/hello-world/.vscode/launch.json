@@ -13,7 +13,8 @@
             ],
             "program": "${workspaceFolder}/node/app.js",
             "preLaunchTask": "daprd-debug-node",
-            "postDebugTask": "daprd-down-node"
+            "postDebugTask": "daprd-down-node",
+            "console": "integratedTerminal"
         },
         {
             "type": "python",
