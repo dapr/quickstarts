@@ -142,6 +142,40 @@ update_dotnet_sdk_version:
 
 .PHONY: update_dotnet_sdk_version
 
+# Target to update Dapr package versions in all JavaScript quickstarts (SDK variant only)
+# Usage: make update_javascript_sdk_version VERSION=3.4.0
+update_javascript_sdk_version:
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: VERSION parameter is required. Usage: make update_javascript_sdk_version VERSION=3.4.0"; \
+		exit 1; \
+	fi
+	@echo "Updating @dapr/dapr to version $(VERSION) in all JavaScript SDK quickstarts..."
+	@for dir in $$(find . -path "*/javascript/sdk" -type d); do \
+		echo "Checking $$dir for package.json files"; \
+		if [ -f "$$dir/package.json" ]; then \
+			if grep -q "@dapr/dapr" "$$dir/package.json"; then \
+				echo "  Updating @dapr/dapr to version $(VERSION) in $$dir"; \
+				(cd "$$dir" && npm install @dapr/dapr@$(VERSION) --save) || \
+				echo "  Failed to update @dapr/dapr in $$dir/package.json"; \
+			else \
+				echo "  No @dapr/dapr package found in $$dir/package.json"; \
+			fi; \
+		else \
+			echo "  No package.json found in $$dir"; \
+			for subdir in $$(find "$$dir" -maxdepth 2 -type d | grep -v node_modules); do \
+				if [ -f "$$subdir/package.json" ]; then \
+					if grep -q "@dapr/dapr" "$$subdir/package.json"; then \
+						echo "  Updating @dapr/dapr to version $(VERSION) in $$subdir"; \
+						(cd "$$subdir" && npm install @dapr/dapr@$(VERSION) --save) || \
+						echo "  Failed to update @dapr/dapr in $$subdir/package.json"; \
+					fi; \
+				fi; \
+			done; \
+		fi; \
+	done
+	@echo "JavaScript Dapr package update complete! Please verify changes and run tests before committing."
+
+.PHONY: update_javascript_sdk_version
 
 test_go_quickstarts:
 	@echo "Testing all Go quickstarts..."
