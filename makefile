@@ -10,6 +10,10 @@ update_gosdk_version:
 		echo "Error: VERSION parameter is required. Usage: make update_gosdk_version VERSION=v1.13.0-rc.1"; \
 		exit 1; \
 	fi
+	@if ! [[ "$(VERSION)" == v* ]]; then \
+		echo "Error: Go SDK VERSION must start with 'v' (e.g., v1.13.0)"; \
+		exit 1; \
+	fi
 	@echo "Updating go-sdk to version $(VERSION) in all SDK variant quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
 	for building_block in $$building_blocks; do \
@@ -69,8 +73,6 @@ update_python_sdk_version:
 		fi; \
 	done
 	@echo "Python dependency update complete! Please verify changes and run tests before committing."
-
-
 
 # Target to update Dapr package versions in all C# quickstarts (SDK variant only)
 # Usage: make update_dotnet_sdk_version VERSION=1.15.0
@@ -140,8 +142,6 @@ update_dotnet_sdk_version:
 	
 	@echo "C# Dapr package update complete! Please verify changes and run tests before committing."
 
-.PHONY: update_dotnet_sdk_version
-
 # Target to update Dapr package versions in all JavaScript quickstarts (SDK variant only)
 # Usage: make update_javascript_sdk_version VERSION=3.4.0
 update_javascript_sdk_version:
@@ -175,7 +175,44 @@ update_javascript_sdk_version:
 	done
 	@echo "JavaScript Dapr package update complete! Please verify changes and run tests before committing."
 
-.PHONY: update_javascript_sdk_version
+# Target to update Dapr SDK version in all Java quickstarts (SDK variant only)
+# Usage: make update_java_sdk_version VERSION=1.12.0
+# Target to update Dapr SDK version in all Java quickstarts (SDK variant only)
+# Usage: make update_java_sdk_version VERSION=1.12.0
+update_java_sdk_version:
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: VERSION parameter is required. Usage: make update_java_sdk_version VERSION=1.12.0"; \
+		exit 1; \
+	fi
+	@echo "Updating Dapr packages to version $(VERSION) in all Java projects..."
+	@# Process standard SDK quickstarts
+	@echo "Processing SDK quickstarts..."
+	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
+	for building_block in $$building_blocks; do \
+		if [ -d "$$building_block/java/sdk" ]; then \
+			echo "Checking $$building_block/java/sdk for pom.xml files"; \
+			POM_FILES=$$(find "$$building_block/java/sdk" -name "pom.xml"); \
+			if [ -n "$$POM_FILES" ]; then \
+				for POM in $$POM_FILES; do \
+					POM_DIR=$$(dirname "$$POM"); \
+					echo "Processing: $$POM"; \
+					if grep -q "<groupId>io.dapr</groupId>" "$$POM"; then \
+						echo "  Found io.dapr dependency in $$POM"; \
+						echo "  Updating to version $(VERSION)"; \
+						(cd "$$POM_DIR" && mvn versions:use-dep-version -Dincludes=io.dapr:dapr-sdk -DdepVersion=$(VERSION) -DgenerateBackupPoms=false -q) || \
+						echo "  Failed to update io.dapr:dapr-sdk in $$POM"; \
+						echo "  Updated dependency: "; \
+						grep -A2 "<groupId>io.dapr</groupId>" "$$POM"; \
+					else \
+						echo "  No io.dapr dependency found in $$POM"; \
+					fi; \
+				done; \
+			else \
+				echo "No pom.xml files found in $$building_block/java/sdk"; \
+			fi; \
+		fi; \
+	done
+	@echo "Java SDK update complete! Please verify changes and run tests before committing."
 
 test_go_quickstarts:
 	@echo "Testing all Go quickstarts..."
@@ -191,7 +228,6 @@ test_go_quickstarts:
 		done; \
 	done
 	@echo "Go quickstart testing complete!"
-
 
 test_python_quickstarts:
 	@echo "Testing all Python quickstarts..."
@@ -263,4 +299,4 @@ test_javascript_quickstarts:
 test_all_quickstarts: test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts
 	@echo "All quickstart tests complete!"
 
-.PHONY: all update_gosdk_version update_python_sdk_version test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts test_all_quickstarts
+.PHONY: all update_gosdk_version update_python_sdk_version update_dotnet_sdk_version update_javascript_sdk_version update_java_sdk_version test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts test_all_quickstarts
