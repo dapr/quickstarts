@@ -101,6 +101,18 @@ After 20 seconds, the terminal output should present the `C-3PO` job being proce
 
 <!-- END_STEP -->
 
+3. Stop and clean up application processes.
+
+<!-- STEP
+name: Stop multi-app run
+-->
+
+```bash
+dapr stop -f .
+```
+
+<!-- END_STEP -->
+
 ## Run apps individually
 
 ### Schedule Jobs

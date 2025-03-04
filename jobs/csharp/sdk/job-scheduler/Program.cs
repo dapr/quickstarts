@@ -26,8 +26,6 @@ var c3poJob = new DroidJob
   DueTime = 20
 };
 
-await Task.Delay(50);
-
 try
 {
   // Schedule R2-D2 job

@@ -55,18 +55,18 @@ def main():
     time.sleep(5)
     
     dapr_host = os.getenv('DAPR_HOST', 'http://localhost')
-    scheduler_dapr_http_port = os.getenv('SCHEDULER_DAPR_HTTP_PORT', '6280')
+    job_service_dapr_http_port = os.getenv('JOB_SERVICE_DAPR_HTTP_PORT', '6280')
     
     # Schedule R2-D2 job
-    schedule_job(dapr_host, scheduler_dapr_http_port, "R2-D2", R2D2_JOB_BODY)
+    schedule_job(dapr_host, job_service_dapr_http_port, "R2-D2", R2D2_JOB_BODY)
     time.sleep(5)
     
     # Schedule C-3PO job
-    schedule_job(dapr_host, scheduler_dapr_http_port, "C-3PO", C3PO_JOB_BODY)
+    schedule_job(dapr_host, job_service_dapr_http_port, "C-3PO", C3PO_JOB_BODY)
     time.sleep(5)
     
     # Get C-3PO job details
-    get_job_details(dapr_host, scheduler_dapr_http_port, "C-3PO")
+    get_job_details(dapr_host, job_service_dapr_http_port, "C-3PO")
     time.sleep(5)
 
 if __name__ == "__main__":
