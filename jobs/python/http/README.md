@@ -16,6 +16,11 @@ This quickstart includes two apps:
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost/)
 
+## Environment Variables
+
+- `JOB_SERVICE_DAPR_HTTP_PORT`: The Dapr HTTP port of the job-service (default: 6280)
+- `DAPR_HOST`: The Dapr host address (default: http://localhost)
+
 ## Install dependencies
 
 <!-- STEP

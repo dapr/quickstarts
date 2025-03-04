@@ -13,7 +13,7 @@ const r2d2JobBody = {
   dueTime: "15s",
 };
 const daprHost = process.env.DAPR_HOST || "http://localhost";
-const schedulerDaprHttpPort = "6280";
+const jobServiceDaprHttpPort = "6280";
 
 async function main() {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -45,7 +45,7 @@ async function main() {
 }
 
 async function scheduleJob(jobName, jobBody) {
-  const reqURL = `${daprHost}:${schedulerDaprHttpPort}/v1.0-alpha1/jobs/${jobName}`;
+  const reqURL = `${daprHost}:${jobServiceDaprHttpPort}/v1.0-alpha1/jobs/${jobName}`;
   const response = await fetch(reqURL, {
     method: "POST",
     headers: {
@@ -64,7 +64,7 @@ async function scheduleJob(jobName, jobBody) {
 }
 
 async function getJobDetails(jobName) {
-  const reqURL = `${daprHost}:${schedulerDaprHttpPort}/v1.0-alpha1/jobs/${jobName}`;
+  const reqURL = `${daprHost}:${jobServiceDaprHttpPort}/v1.0-alpha1/jobs/${jobName}`;
   const response = await fetch(reqURL, {
     method: "GET",
   });
