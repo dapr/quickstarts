@@ -1,0 +1,16 @@
+version: 1
+apps:
+  - appDirPath: ./job-service/
+    appID: job-service-sdk
+    appPort: 6200
+    daprHTTPPort: 6280
+    command: ["dotnet", "run"]
+    appLogDestination: console
+    daprdLogDestination: console
+  - appDirPath: ./job-scheduler/
+    appID: job-scheduler-sdk
+    appPort: 6300
+    daprHTTPPort: 6380
+    command: ["dotnet", "run"]
+    appLogDestination: console
+    daprdLogDestination: console
