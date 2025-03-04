@@ -1,19 +1,22 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using System.Net;
+using System.Text;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+{
+  serverOptions.Listen(IPAddress.Any, 6200);
+});
 builder.Services.Configure<JsonOptions>(options =>
 {
   options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
+builder.Services.AddHostedService<DroidWorkService>();
 
 var app = builder.Build();
-var appPort = Environment.GetEnvironmentVariable("APP_PORT") ?? "6200";
+app.UseRouting();
 
 //Job handler route
 app.MapPost("/job/{*path}", async (HttpRequest request, HttpResponse response) =>
@@ -45,7 +48,8 @@ app.MapPost("/job/{*path}", async (HttpRequest request, HttpResponse response) =
 });
 
 // Start the server
-app.Run($"http://localhost:{appPort}");
+app.Run();
+return;
 
 static DroidJob SetDroidJob(string droidStr)
 {
@@ -55,21 +59,89 @@ static DroidJob SetDroidJob(string droidStr)
     throw new Exception("Invalid droid job format. Expected format: 'Droid:Task'");
   }
 
-  return new DroidJob
+  return new DroidJob(parts[0], parts[1]);
+}
+
+internal sealed class DroidWorkService : IHostedService
+{
+  private readonly string _daprHost = Environment.GetEnvironmentVariable("DAPR_HOST") ?? "http://localhost";
+  private readonly string _appPort = Environment.GetEnvironmentVariable("APP_PORT") ?? "6280";
+  
+  /// <summary>
+  /// Triggered when the application host is ready to start the service.
+  /// </summary>
+  /// <param name="cancellationToken">Indicates that the start process has been aborted.</param>
+  /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous Start operation.</returns>
+  public async Task StartAsync(CancellationToken cancellationToken)
+  {   
+    // Job request bodies
+    var c3poJobBody = new
+    {
+      data = new { Value = "C-3PO:Limb Calibration" },
+      dueTime = "20s"
+    };
+
+    var r2d2JobBody = new
+    {
+      data = new { Value = "R2-D2:Oil Change" },
+      dueTime = "15s"
+    };
+    
+    // Schedule the R2-D2 job
+    await ScheduleJob("R2-D2", r2d2JobBody);
+    await Task.Delay(5000, cancellationToken);
+    // Get the R2-D2 job details
+    await GetJobDetails("R2-D2");
+
+    // Schedule C-3PC job
+    await ScheduleJob("C-3PO", c3poJobBody);
+    await Task.Delay(5000, cancellationToken);
+    // Get C-3PO job details
+    await GetJobDetails("C-3PO");
+    await Task.Delay(30000, cancellationToken);
+  }
+
+  private async Task ScheduleJob(string jobName, object jobBody)
   {
-    Droid = parts[0],
-    Task = parts[1]
-  };
+    var reqUrl = $"{_daprHost}:{_appPort}/v1.0-alpha1/jobs/{jobName}";
+    var jsonBody = JsonSerializer.Serialize(jobBody);
+    var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+    var httpClient = new HttpClient();
+    var response = await httpClient.PostAsync(reqUrl, content);
+
+    if (response.StatusCode != System.Net.HttpStatusCode.NoContent)
+    {
+      throw new Exception($"Failed to register job event handler. Status code: {response.StatusCode}");
+    }
+
+    Console.WriteLine($"Job Scheduled: {jobName}");
+  }
+
+  private async Task GetJobDetails(string jobName)
+  {
+    var reqUrl = $"{_daprHost}:{_appPort}/v1.0-alpha1/jobs/{jobName}";
+    var httpClient = new HttpClient();
+    var response = await httpClient.GetAsync(reqUrl);
+
+    if (!response.IsSuccessStatusCode)
+    {
+      throw new Exception($"HTTP error! Status: {response.StatusCode}");
+    }
+
+    var jobDetails = await response.Content.ReadAsStringAsync();
+    Console.WriteLine($"Job details: {jobDetails}");
+  }
+
+  /// <summary>
+  /// Triggered when the application host is performing a graceful shutdown.
+  /// </summary>
+  /// <param name="cancellationToken">Indicates that the shutdown process should no longer be graceful.</param>
+  /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous Stop operation.</returns>
+  public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }
 
 // Classes for request and response models
-public class JobData
-{
-  public string? Value { get; set; }
-}
+internal sealed record JobData(string? Value = null);
 
-public class DroidJob
-{
-  public string? Droid { get; set; }
-  public string? Task { get; set; }
-}
+internal sealed record DroidJob(string Droid, string Task);

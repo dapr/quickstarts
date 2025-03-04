@@ -29,25 +29,13 @@ dotnet build
 
 <!-- END_STEP -->
 
-<!-- STEP
-name: Build dependencies for job-scheduler
-sleep: 1
--->
-
-```bash
-cd ./job-scheduler
-dotnet build
-```
-
-<!-- END_STEP -->
-
 2. Run the multi app run template:
 
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-scheduler == Job Scheduled: R2-D2'
-  - '== APP - job-scheduler == Job Scheduled: C-3PO'
+  - '== APP - job-service == Job Scheduled: R2-D2'
+  - '== APP - job-service == Job Scheduled: C-3PO'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
@@ -76,10 +64,10 @@ The terminal console output should look similar to this, where:
 - The `C-3PO` job is being executed after 20 seconds.
 
 ```text
-== APP - job-scheduler == Job Scheduled: R2-D2
-== APP - job-scheduler == Job details: {"name":"R2-D2", "dueTime":"15s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"R2-D2:Oil Change"}}}
-== APP - job-scheduler == Job Scheduled: C-3PO
-== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"20s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"C-3PO:Limb Calibration"}}}
+== APP - job-service == Job Scheduled: R2-D2
+== APP - job-service == Job details: {"name":"R2-D2", "dueTime":"15s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"R2-D2:Oil Change"}}}
+== APP - job-service == Job Scheduled: C-3PO
+== APP - job-service == Job details: {"name":"C-3PO", "dueTime":"20s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"Value":"C-3PO:Limb Calibration"}}}
 == APP - job-service == Received job request...
 == APP - job-service == Starting droid: R2-D2
 == APP - job-service == Executing maintenance job: Oil Change

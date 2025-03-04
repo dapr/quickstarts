@@ -6,8 +6,3 @@ apps:
     daprHTTPPort: 6280
     schedulerHostAddress: localhost
     command: ["dotnet", "run"]
-  - appDirPath: ./job-scheduler/
-    appID: job-scheduler
-    appPort: 6300
-    daprHTTPPort: 6380
-    command: ["dotnet", "run"]
