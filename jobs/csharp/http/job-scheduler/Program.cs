@@ -19,7 +19,6 @@ var r2d2JobBody = new
 
 var daprHost = Environment.GetEnvironmentVariable("DAPR_HOST") ?? "http://localhost";
 var jobServiceDaprHttpPort = "6280";
-
 var httpClient = new HttpClient();
 
 await Task.Delay(5000); // Wait for job-service to start
@@ -65,7 +64,6 @@ async Task ScheduleJob(string jobName, object jobBody)
 async Task GetJobDetails(string jobName)
 {
   var reqURL = $"{daprHost}:{jobServiceDaprHttpPort}/v1.0-alpha1/jobs/{jobName}";
-
   var response = await httpClient.GetAsync(reqURL);
 
   if (!response.IsSuccessStatusCode)
