@@ -18,8 +18,7 @@ var r2d2JobBody = new
 };
 
 var daprHost = Environment.GetEnvironmentVariable("DAPR_HOST") ?? "http://localhost";
-var schedulerDaprHttpPort = "6280";
-
+var jobServiceDaprHttpPort = "6280";
 var httpClient = new HttpClient();
 
 await Task.Delay(5000); // Wait for job-service to start
@@ -48,7 +47,7 @@ catch (Exception ex)
 
 async Task ScheduleJob(string jobName, object jobBody)
 {
-  var reqURL = $"{daprHost}:{schedulerDaprHttpPort}/v1.0-alpha1/jobs/{jobName}";
+  var reqURL = $"{daprHost}:{jobServiceDaprHttpPort}/v1.0-alpha1/jobs/{jobName}";
   var jsonBody = JsonSerializer.Serialize(jobBody);
   var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
@@ -64,8 +63,7 @@ async Task ScheduleJob(string jobName, object jobBody)
 
 async Task GetJobDetails(string jobName)
 {
-  var reqURL = $"{daprHost}:{schedulerDaprHttpPort}/v1.0-alpha1/jobs/{jobName}";
-
+  var reqURL = $"{daprHost}:{jobServiceDaprHttpPort}/v1.0-alpha1/jobs/{jobName}";
   var response = await httpClient.GetAsync(reqURL);
 
   if (!response.IsSuccessStatusCode)
