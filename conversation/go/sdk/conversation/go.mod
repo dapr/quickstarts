@@ -2,12 +2,11 @@ module conversation
 
 go 1.23.6
 
-require github.com/dapr/go-sdk v1.12.0-rc.2
+require github.com/dapr/go-sdk v1.12.0
 
 require (
 	github.com/dapr/dapr v1.15.0-rc.18 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/kr/pretty v0.3.1 // indirect
 	go.opentelemetry.io/otel v1.34.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
