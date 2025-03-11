@@ -1,10 +1,21 @@
-include validate.mk
-
+##################################################
+# Main targets
+##################################################
 MM_SHELL ?= bash -c
+.PHONY: all test_all_quickstarts
 all: install_mm validat
 
-# Update go-sdk dependencies in this project and all subprojects
+# Run all tests at once
+test_all_quickstarts: test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts
+	@echo "All quickstart tests complete!"
+
+##################################################
+# Version update targets
+##################################################
+
+# Update Go SDK version in all quickstarts
 # Usage: make update_gosdk_version VERSION=v1.13.0-rc.1
+.PHONY: update_gosdk_version
 update_gosdk_version:
 	@if [ -z "$(VERSION)" ]; then \
 		echo "Error: VERSION parameter is required. Usage: make update_gosdk_version VERSION=v1.13.0-rc.1"; \
@@ -49,8 +60,9 @@ update_gosdk_version:
 	done
 	@echo "go-sdk update complete! Please verify changes and run tests before committing."
 
-# Target to update Python dependencies in all quickstarts
+# Update Python SDK version in all quickstarts
 # Usage: make update_python_sdk_version [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]
+.PHONY: update_python_sdk_version
 update_python_sdk_version:
 	@echo "Updating Python dependencies in all quickstarts..."
 	@find . -path '*/python/*' -name "requirements.txt" | while read -r REQ_FILE; do \
@@ -74,15 +86,16 @@ update_python_sdk_version:
 	done
 	@echo "Python dependency update complete! Please verify changes and run tests before committing."
 
-# Target to update Dapr package versions in all C# quickstarts (SDK variant only)
+# Update .NET SDK version in all C# quickstarts
 # Usage: make update_dotnet_sdk_version VERSION=1.15.0
+.PHONY: update_dotnet_sdk_version
 update_dotnet_sdk_version:
 	@if [ -z "$(VERSION)" ]; then \
-		echo "Error: VERSION parameter is required. Usage: make update_csharp_dapr VERSION=1.16.0-rc01"; \
+		echo "Error: VERSION parameter is required. Usage: make update_dotnet_sdk_version VERSION=1.16.0-rc01"; \
 		exit 1; \
 	fi
 	@echo "Updating Dapr packages to version $(VERSION) in all C# projects..."
-	
+
 	@# Process standard SDK quickstarts
 	@echo "Processing SDK quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
@@ -111,7 +124,7 @@ update_dotnet_sdk_version:
 			fi; \
 		fi; \
 	done
-	
+
 	@# Process tutorials directory separately
 	@echo "Processing tutorials directory..."
 	@if [ -d "./tutorials" ]; then \
@@ -139,11 +152,12 @@ update_dotnet_sdk_version:
 	else \
 		echo "No tutorials directory found"; \
 	fi
-	
+
 	@echo "C# Dapr package update complete! Please verify changes and run tests before committing."
 
-# Target to update Dapr package versions in all JavaScript quickstarts (SDK variant only)
+# Update JavaScript SDK version in all quickstarts
 # Usage: make update_javascript_sdk_version VERSION=3.4.0
+.PHONY: update_javascript_sdk_version
 update_javascript_sdk_version:
 	@if [ -z "$(VERSION)" ]; then \
 		echo "Error: VERSION parameter is required. Usage: make update_javascript_sdk_version VERSION=3.4.0"; \
@@ -175,10 +189,9 @@ update_javascript_sdk_version:
 	done
 	@echo "JavaScript Dapr package update complete! Please verify changes and run tests before committing."
 
-# Target to update Dapr SDK version in all Java quickstarts (SDK variant only)
+# Update Java SDK version in all quickstarts
 # Usage: make update_java_sdk_version VERSION=1.12.0
-# Target to update Dapr SDK version in all Java quickstarts (SDK variant only)
-# Usage: make update_java_sdk_version VERSION=1.12.0
+.PHONY: update_java_sdk_version
 update_java_sdk_version:
 	@if [ -z "$(VERSION)" ]; then \
 		echo "Error: VERSION parameter is required. Usage: make update_java_sdk_version VERSION=1.12.0"; \
@@ -214,6 +227,13 @@ update_java_sdk_version:
 	done
 	@echo "Java SDK update complete! Please verify changes and run tests before committing."
 
+
+##################################################
+# Testing targets
+##################################################
+
+# Test Go quickstarts
+.PHONY: test_go_quickstarts
 test_go_quickstarts:
 	@echo "Testing all Go quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
@@ -229,6 +249,8 @@ test_go_quickstarts:
 	done
 	@echo "Go quickstart testing complete!"
 
+# Test Python quickstarts
+.PHONY: test_python_quickstarts
 test_python_quickstarts:
 	@echo "Testing all Python quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
@@ -249,6 +271,8 @@ test_python_quickstarts:
 	done
 	@echo "Python quickstart testing complete!"
 
+# Test C# quickstarts
+.PHONY: test_csharp_quickstarts
 test_csharp_quickstarts:
 	@echo "Testing all C# quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
@@ -264,7 +288,8 @@ test_csharp_quickstarts:
 	done
 	@echo "C# quickstart testing complete!"
 
-# Target to test all Java quickstarts
+# Test Java quickstarts
+.PHONY: test_java_quickstarts
 test_java_quickstarts:
 	@echo "Testing all Java quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
@@ -280,7 +305,8 @@ test_java_quickstarts:
 	done
 	@echo "Java quickstart testing complete!"
 
-# Target to test all JavaScript quickstarts
+# Test JavaScript quickstarts
+.PHONY: test_javascript_quickstarts
 test_javascript_quickstarts:
 	@echo "Testing all JavaScript quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
@@ -295,8 +321,3 @@ test_javascript_quickstarts:
 		done; \
 	done
 	@echo "JavaScript quickstart testing complete!"
-
-test_all_quickstarts: test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts
-	@echo "All quickstart tests complete!"
-
-.PHONY: all update_gosdk_version update_python_sdk_version update_dotnet_sdk_version update_javascript_sdk_version update_java_sdk_version test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts test_all_quickstarts

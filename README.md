@@ -43,6 +43,9 @@ Go deeper into a topic or scenario, oftentimes using building block APIs togethe
 ### Updating sdk versions
 - Python: `make update_python_sdk_version [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]`
 - Go: `make update_gosdk_version VERSION=v1.16.0`
+- C#: `make update_dotnet_sdk_version VERSION=1.15.0`
+- Java: `make update_java_sdk_version VERSION=1.12.0`
+- Javascript: `make update_javascript_sdk_version VERSION=3.4.0`
 
 ### Validating all the quickstarts
 To run the samples, you need to have Dapr installed. Follow the [Getting Started](https://docs.dapr.io/getting-started/install-dapr-cli/) guide to install Dapr.
