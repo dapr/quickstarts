@@ -1,6 +1,6 @@
 @apphost=http://localhost:5255
 
-### Start the workflow
+### Start the TaskChaining workflow
 # @name startWorkflowRequest
 POST {{ apphost }}/start
 
