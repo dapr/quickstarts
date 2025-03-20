@@ -68,7 +68,7 @@ dapr run -f .
 4. Stop Dapr workflow with CTRL-C or:
 
 ```sh
-dapr stop -f .
+    dapr stop -f .
 ```
 
 ### View workflow output with Zipkin
@@ -83,11 +83,11 @@ launched on running `dapr init`.
 
 ### What happened? 
 
-When you ran the above comands:
+When you ran the above commands:
 
 1. An OrderPayload is made containing one car.
 2. A unique order ID for the workflow is generated (in the above example, `b4cb2687-1af0-4f8d-9659-eb6389c07ade`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for 10 cars has been received.
+3. The `NotifyActivity` workflow activity sends a notification saying an order for 1 car has been received.
 4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
 5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
 6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `b4cb2687-1af0-4f8d-9659-eb6389c07ade` and confirms if successful.
