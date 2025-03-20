@@ -1,0 +1,8 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: inventory
+spec:
+  type: state.in-memory
+  version: v1
+  metadata: 
