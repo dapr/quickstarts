@@ -8,7 +8,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
-limitations under the License.
+ * limitations under the License.
 */
 
 package io.dapr.quickstarts.workflows;
@@ -73,22 +73,22 @@ public class WorkflowConsoleApp {
     System.out.println("==========Begin the purchase of item:==========");
     String itemName = inventory.getName();
     int orderQuantity = inventory.getQuantity();
-    int totalcost = orderQuantity * inventory.getPerItemCost();
+    int totalCost = orderQuantity * inventory.getPerItemCost();
     OrderPayload order = new OrderPayload();
     order.setItemName(itemName);
     order.setQuantity(orderQuantity);
-    order.setTotalCost(totalcost);
+    order.setTotalCost(totalCost);
     System.out.println("Starting order workflow, purchasing " + orderQuantity + " of " + itemName);
 
     String instanceId = workflowClient.scheduleNewWorkflow(OrderProcessingWorkflow.class, order);
-    System.out.printf("scheduled new workflow instance of OrderProcessingWorkflow with instance ID: %s%n",
+    System.out.printf("Scheduled new workflow instance of OrderProcessingWorkflow with instance ID: %s%n",
         instanceId);
 
     try {
       workflowClient.waitForInstanceStart(instanceId, Duration.ofSeconds(10), false);
-      System.out.printf("workflow instance %s started%n", instanceId);
+      System.out.printf("Workflow instance %s started%n", instanceId);
     } catch (TimeoutException e) {
-      System.out.printf("workflow instance %s did not start within 10 seconds%n", instanceId);
+      System.out.printf("Workflow instance %s did not start within 10 seconds%n", instanceId);
       return;
     }
 
@@ -97,13 +97,13 @@ public class WorkflowConsoleApp {
           Duration.ofSeconds(30),
           true);
       if (workflowStatus != null) {
-        System.out.printf("workflow instance completed, out is: %s%n",
+        System.out.printf("Workflow instance completed, out is: %s%n",
             workflowStatus.getSerializedOutput());
       } else {
-        System.out.printf("workflow instance %s not found%n", instanceId);
+        System.out.printf("Workflow instance %s not found%n", instanceId);
       }
     } catch (TimeoutException e) {
-      System.out.printf("workflow instance %s did not complete within 30 seconds%n", instanceId);
+      System.out.printf("Workflow instance %s did not complete within 30 seconds%n", instanceId);
     }
 
   }
@@ -112,12 +112,12 @@ public class WorkflowConsoleApp {
     // prepare 10 cars in inventory
     InventoryItem inventory = new InventoryItem();
     inventory.setName("cars");
-    inventory.setPerItemCost(50000);
+    inventory.setPerItemCost(5000);
     inventory.setQuantity(10);
     DaprClient daprClient = new DaprClientBuilder().build();
     restockInventory(daprClient, inventory);
 
-    // prepare order for 10 cars
+    // prepare order for 1 car
     InventoryItem order = new InventoryItem();
     order.setName("cars");
     order.setPerItemCost(5000);

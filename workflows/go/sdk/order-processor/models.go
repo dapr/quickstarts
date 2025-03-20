@@ -3,7 +3,7 @@ package main
 type OrderPayload struct {
 	ItemName  string `json:"item_name"`
 	TotalCost int    `json:"total_cost"`
-	Quantity  int    `json:"quanity"`
+	Quantity  int    `json:"quantity"`
 }
 
 type OrderResult struct {
@@ -13,13 +13,13 @@ type OrderResult struct {
 type InventoryItem struct {
 	ItemName    string `json:"item_name"`
 	PerItemCost int    `json:"per_item_cost"`
-	Quantity    int    `json:"quanity"`
+	Quantity    int    `json:"quantity"`
 }
 
 type InventoryRequest struct {
 	RequestID string `json:"request_id"`
 	ItemName  string `json:"item_name"`
-	Quantity  int    `json:"quanity"`
+	Quantity  int    `json:"quantity"`
 }
 
 type InventoryResult struct {

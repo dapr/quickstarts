@@ -127,7 +127,7 @@ export const orderProcessingWorkflow: TWorkflow = async function* (ctx: Workflow
   }
 
   const orderCompletedNotification: OrderNotification = {
-    message: `order ${orderId} processed successfully!`,
+    message: `Order ${orderId} processed successfully!`,
   };
   yield ctx.callActivity(notifyActivity, orderCompletedNotification);
 
