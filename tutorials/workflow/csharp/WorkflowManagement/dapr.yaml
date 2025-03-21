@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: neverendingworkflow
+    appDirPath: .
+    appPort: 5262
+    daprHTTPPort: 3562
+    command: ["dotnet", "run"]
+    appLogDestination: console
+    daprdLogDestination: console
