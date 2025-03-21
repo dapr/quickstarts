@@ -1,5 +1,7 @@
 # Combined Workflow Patterns
 
+This tutorial demonstrates how several workflow patterns can be combined in a single, more realistic, workflow. Some of the workflow activities are using other Dapr APIs, such as state management, service invocation, and Pub/Sub.
+
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/CombinedPatterns` folder.

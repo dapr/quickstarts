@@ -2,6 +2,8 @@
 
 This folder contains tutorials of using the Dapr Workflow API with C#. All examples can be run locally on your machine.
 
+Before you start, it's recommended to read though the Dapr docs to get familiar with the many [Workflow features, concepts, and patterns](https://docs.dapr.io/developing-applications/building-blocks/workflow/).
+
 ## Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)

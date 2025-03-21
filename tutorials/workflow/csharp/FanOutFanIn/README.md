@@ -1,5 +1,7 @@
 # Fan-out/Fan-in
 
+This tutorial demonstrates how to author a workflow where multiple independent tasks can be scheduled and executed simultaneously. The workflow can either wait until all tasks are completed, or when the fastest task is completed. For more information about the fan-out/fan-in pattern see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-patterns/#fan-outfan-in).
+
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/FanOutFanIn` folder.

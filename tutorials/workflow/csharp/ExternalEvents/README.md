@@ -1,5 +1,7 @@
 # External Events
 
+This tutorial demonstrates how to author a workflow where the workflow will wait until it receives an external event. This pattern is often applied in workflows that require an approval step. For more information about the external system interaction pattern see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-patterns/#external-system-interaction).
+
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/ExternalEvents` folder.

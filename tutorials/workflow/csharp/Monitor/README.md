@@ -1,4 +1,6 @@
-# Monitor
+# Monitor Pattern
+
+This tutorial demonstrates how to run a workflow in a loop. This can be used for recurring tasks that need to be executed on a certain frequency (e.g. a clean-up job that runs every hour). For more information on the monitor pattern see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-patterns/#monitor).
 
 ## Run the tutorial
 
