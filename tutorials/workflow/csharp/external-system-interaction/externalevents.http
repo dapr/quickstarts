@@ -1,0 +1,40 @@
+@apphost=http://localhost:5258
+
+### Start the Monitor workflow
+# @name startWorkflowRequest
+@orderId={{$guid}}
+POST {{ apphost }}/start
+Content-Type: application/json
+
+{
+    "id": "{{orderId}}",
+    "description": "Rubber ducks",
+    "quantity": 100,
+    "totalPrice": 500
+}
+
+
+### Get the workflow status
+@instanceId={{startWorkflowRequest.response.headers.Location}}
+@daprHost=http://localhost:3558
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
+
+### Send an approval event
+@eventName=approval-event
+POST {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}/raiseEvent/{{ eventName }}
+Content-Type: application/json
+
+{
+    "OrderId": "{{instanceId}}",
+    "IsApproved": true
+}
+
+### Send a rejection event
+@eventName=approval-event
+POST {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}/raiseEvent/{{ eventName }}
+Content-Type: application/json
+
+{
+    "OrderId": "{{instanceId}}",
+    "IsApproved": false
+}

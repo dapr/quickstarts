@@ -1,0 +1,11 @@
+apiVersion: dapr.io/v2alpha1
+kind: Subscription
+metadata:
+  name: shipment-registration
+spec:
+  topic: shipment-registration-events
+  routes:
+    default: /registerShipment
+  pubsubname: shippingpubsub
+scopes:
+- shipping

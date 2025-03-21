@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: monitor
+    appDirPath: .
+    appPort: 5257
+    daprHTTPPort: 3557
+    command: ["dotnet", "run"]
+    appLogDestination: console
+    daprdLogDestination: console
