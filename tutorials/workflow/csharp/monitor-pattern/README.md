@@ -4,11 +4,11 @@ This tutorial demonstrates how to run a workflow in a loop. This can be used for
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/Monitor` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/csharp/monitor-pattern` folder.
 2. Build the project using the .NET CLI.
 
     ```bash
-    dotnet build
+    dotnet build ./Monitor/
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file

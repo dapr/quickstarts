@@ -4,11 +4,11 @@ This tutorial demonstrates how to author a workflow where the workflow will wait
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/ExternalEvents` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/csharp/external-system-interaction` folder.
 2. Build the project using the .NET CLI.
 
     ```bash
-    dotnet build
+    dotnet build ./ExternalEvents/
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file

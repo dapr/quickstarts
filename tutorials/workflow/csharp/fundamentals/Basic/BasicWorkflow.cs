@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapr.Workflow;
-using Basics.Activities;
+using Basic.Activities;
 
-namespace Basics;
+namespace Basic;
 
 public class BasicWorkflow : Workflow<string, string>
 {

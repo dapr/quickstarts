@@ -13,11 +13,11 @@ For more information on workflow management, see the [Dapr docs](https://docs.da
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/WorkflowManagement` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/csharp/workflow-management` folder.
 2. Build the project using the .NET CLI.
 
     ```bash
-    dotnet build
+    dotnet build ./WorkflowManagement/
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file

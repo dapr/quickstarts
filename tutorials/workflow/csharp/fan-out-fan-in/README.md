@@ -4,11 +4,11 @@ This tutorial demonstrates how to author a workflow where multiple independent t
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/FanOutFanIn` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/csharp/fan-out-fan-in` folder.
 2. Build the project using the .NET CLI.
 
     ```bash
-    dotnet build
+    dotnet build ./FanOutFanIn/
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file

@@ -12,11 +12,11 @@ Before you start, it's recommended to read though the Dapr docs to get familiar 
 
 ## Tutorials
 
-- [Workflow Basics](./Basics/README.md)
-- [Task Chaining](./TaskChaining/README.md)
-- [Fan-out/Fan-in](./FanOutFanIn/README.md)
-- [Monitor](./Monitor/README.md)
-- [External Events](./ExternalEvents/README.md)
-- [Child Workflows](./ChildWorkflows/README.md)
-- [WorkflowManagement](./WorkflowManagement/README.md)
+- [Workflow Basics](./fundamentals/README.md)
+- [Task Chaining](./task-chaining/README.md)
+- [Fan-out/Fan-in](./fan-out-fan-in/README.md)
+- [Monitor](./monitor-pattern/README.md)
+- [External Events](./external-system-interaction/README.md)
+- [Child Workflows](./child-workflows/README.md)
+- [WorkflowManagement](./workflow-management/README.md)
 - [Challenges & Tips](./ChallengesTips/README.md)

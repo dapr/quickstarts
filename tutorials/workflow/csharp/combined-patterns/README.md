@@ -4,12 +4,12 @@ This tutorial demonstrates how several workflow patterns can be combined in a si
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/CombinedPatterns` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/csharp/combined-patterns` folder.
 2. Build the projects using the .NET CLI.
 
     ```bash
-    dotnet build /WorkflowApp
-    dotnet build /ShippingApp
+    dotnet build ./WorkflowApp/
+    dotnet build ./ShippingApp/
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file

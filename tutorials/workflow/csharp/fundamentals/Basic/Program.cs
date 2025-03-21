@@ -1,6 +1,6 @@
 using Dapr.Workflow;
-using TaskChaining;
-using TaskChaining.Activities;
+using Basic;
+using Basic.Activities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprWorkflow(options => {

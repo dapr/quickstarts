@@ -4,11 +4,11 @@ This tutorial demonstrates how to chain multiple tasks together as a sequence in
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/TaskChaining` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/csharp/task-chaining` folder.
 2. Build the project using the .NET CLI.
 
     ```bash
-    dotnet build
+    dotnet build ./TaskChaining/
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file

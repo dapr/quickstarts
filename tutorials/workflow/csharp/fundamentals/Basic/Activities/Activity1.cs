@@ -1,6 +1,6 @@
 using Dapr.Workflow;
 
-namespace TaskChaining.Activities;
+namespace Basic.Activities;
 
 public class Activity1 : WorkflowActivity<string, string>
 {

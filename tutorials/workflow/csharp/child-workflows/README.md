@@ -2,11 +2,11 @@
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/ChildWorkflows` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/csharp/child-workflows` folder.
 2. Build the project using the .NET CLI.
 
     ```bash
-    dotnet build
+    dotnet build ./ChildWorkflows/
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file
