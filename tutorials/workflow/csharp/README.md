@@ -19,4 +19,4 @@ Before you start, it's recommended to read though the Dapr docs to get familiar 
 - [External Events](./external-system-interaction/README.md)
 - [Child Workflows](./child-workflows/README.md)
 - [WorkflowManagement](./workflow-management/README.md)
-- [Challenges & Tips](./ChallengesTips/README.md)
+- [Challenges & Tips](./challenges-tips/README.md)

@@ -2,7 +2,7 @@ version: 1
 common:
   resourcesPath: ../../resources
 apps:
-  - appID: fanoutfanin
+  - appID: basic
     appDirPath: .
     appPort: 5254
     daprHTTPPort: 3554
