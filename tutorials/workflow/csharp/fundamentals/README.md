@@ -2,6 +2,12 @@
 
 This tutorial covers the fundamentals of authoring Dapr Workflows. For more information about the fundamentals of Dapr Workflows, see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-features-concepts/).
 
+## Inspect the code
+
+Open the `BasicWorkflow.cs` file in the `tutorials/workflow/csharp/fundamentals/Basic` folder. This file contains the definition for the workflow.
+
+The workflow consists of two activities: `Activity1` and `Activity2`, which are called in sequence. You can find the Activity definitions in the `Activities` folder.
+
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/fundamentals` folder.

@@ -10,6 +10,8 @@ namespace Basic;
 /// <summary>
 /// Workflows inherit from the abstract Workflow class from the Dapr.Workflow namespace.
 /// The first generic parameter is the input type of the workflow, and the second parameter is the output type.
+/// Workflows orchestrate activities and other (child)workflows, and include business logic (if/else or switch statements).
+/// Workflow code must be be deterministic. Any non-deterministic behavior should be written inside activities.
 /// </summary>
 public class BasicWorkflow : Workflow<string, string>
 {
