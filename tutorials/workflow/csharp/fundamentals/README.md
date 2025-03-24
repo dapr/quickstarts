@@ -8,6 +8,19 @@ Open the `BasicWorkflow.cs` file in the `tutorials/workflow/csharp/fundamentals/
 
 The workflow consists of two activities: `Activity1` and `Activity2`, which are called in sequence. You can find the Activity definitions in the `Activities` folder.
 
+```mermaid
+graph LR
+   SW((Start
+   Workflow))
+   A1[Activity1]
+   A2[Activity2]
+   EW((End
+   Workflow))
+   SW --> A1
+   A1 --> A2
+   A2 --> EW
+```
+
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/fundamentals` folder.

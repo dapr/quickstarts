@@ -1,5 +1,46 @@
 # Child Workflows
 
+This tutorial demonstrates how a workflow can call child workflows that are part of the same application. Child workflow can be used to break up large workflows into smaller, re-usable parts. For more information about child workflows see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-patterns/#external-system-interaction).
+
+## Inspect the code
+
+Open the `ParentWorkflow.cs` file in the `tutorials/workflow/csharp/child-workflows/ChildWorkflows` folder. This file contains the definition for the workflow.
+
+The workflow iterates over the input array and schedules the `ChildWorkflow` for each of the input elements. The `ChildWorkflow` contains a sequence of two activities.
+
+### Parent workflow
+
+```mermaid
+graph LR
+   SW((Start
+   Workflow))
+   subgraph for each word in the input
+    GWL[Call child workflow]
+   end
+   ALL[Wait until all tasks
+   are completed]
+   EW((End
+   Workflow))
+   SW --> GWL
+   GWL --> ALL
+   ALL --> EW
+```
+
+### Child workflow
+
+```mermaid
+graph LR
+   SW((Start
+   Workflow))
+   A1[Activity1]
+   A2[Activity2]
+   EW((End
+   Workflow))
+   SW --> A1
+   A1 --> A2
+   A2 --> EW
+```
+
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/child-workflows` folder.

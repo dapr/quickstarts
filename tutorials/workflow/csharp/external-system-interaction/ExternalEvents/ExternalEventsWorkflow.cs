@@ -17,8 +17,6 @@ public class ExternalEventsWorkflow : Workflow<Order, string>
                 approvalStatus = await context.WaitForExternalEventAsync<ApprovalStatus>(
                     eventName: "approval-event",
                     timeout: TimeSpan.FromSeconds(120));
-                var logger = context.CreateReplaySafeLogger<ExternalEventsWorkflow>();
-                logger.LogWarning("Approval Status: {ApprovalStatus}", approvalStatus);
             }
             catch (TaskCanceledException)
             {
