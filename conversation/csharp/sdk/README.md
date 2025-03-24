@@ -47,7 +47,7 @@ The terminal console output should look similar to this, where:
 
 <!-- END_STEP -->
 
-2. Stop and clean up application processes.
+Stop and clean up application processes.
 
 <!-- STEP
 name: Stop multi-app run
