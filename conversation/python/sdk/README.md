@@ -1,4 +1,4 @@
-# Dapr Conversation API (Python HTTP)
+# Dapr Conversation API (Python SDK)
 
 In this quickstart, you'll send an input to a mock Large Language Model (LLM) using Dapr's Conversation API. This API is responsible for providing one consistent API entry point to talk to underlying LLM providers.
 
@@ -59,7 +59,7 @@ The terminal console output should look similar to this, where:
 
 <!-- END_STEP -->
 
-2. Stop and clean up application processes.
+3. Stop and clean up application processes.
 
 <!-- STEP
 name: Stop multi-app run 
