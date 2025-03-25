@@ -12,7 +12,7 @@ The quickstart contains 1 workflow (OrderProcessingWorkflow) which simulates pur
 activities are as follows:
 
 - NotifyActivity: This activity utilizes a logger to print out messages throughout the workflow. These messages notify the user when there is insufficient 
-§inventory, their payment couldn't be processed, and more.
+inventory, their payment couldn't be processed, and more.
 - VerifyInventoryActivity: This activity checks the state store to ensure that there is enough inventory present for purchase.
 - RequestApprovalActivity: This activity seeks approval from a manager, if payment is greater than 5000 USD.
 - ProcessPaymentActivity: This activity is responsible for processing and authorizing the payment.
