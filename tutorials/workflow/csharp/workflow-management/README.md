@@ -11,6 +11,10 @@ This tutorial demonstrates the various APIs to manage a workflow instance, these
 
 For more information on workflow management, see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/howto-manage-workflow/).
 
+## Inspect the code
+
+Open the `Program.cs` file in the `tutorials/workflow/csharp/child-workflows/WorkflowManagement` folder. This file contains the endpoint definitions that use the workflow management API. The workflow that is being managed is named `NeverEndingWorkflow` and will keep running once it's started.
+
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/workflow-management` folder.
