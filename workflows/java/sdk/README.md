@@ -35,7 +35,7 @@ cd ..
 name: Run order-processor service
 expected_stdout_lines:
   - '== APP - order-processor == there are now 9 cars left in stock'
-  - '== APP - order-processor == workflow instance completed, out is: {"processed":true}'
+  - '== APP - order-processor == Workflow instance completed, out is: {"processed":true}'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -85,7 +85,7 @@ dapr run -f .
 == APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order 'd1bf548b-c854-44af-978e-90c61ed88e3c': there are now 9 cars left in stock
 == APP - order-processor == there are now 9 cars left in stock
 == APP - order-processor == [Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : d1bf548b-c854-44af-978e-90c61ed88e3c
-== APP - order-processor == workflow instance completed, out is: {"processed":true}
+== APP - order-processor == Workflow instance completed, out is: {"processed":true}
 ```
 
 4. Stop Dapr workflow with CTRL-C or:
