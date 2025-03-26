@@ -19,7 +19,7 @@ public class OrderWorkflow : Workflow<Order, OrderStatus>
        if (taskResult.Any(r => !r.IsSuccess))
        {
            var message = $"Order processing failed. Reason: {taskResult.First(r => !r.IsSuccess).Message}";
-           return new OrderStatus(IsSucces: false, message);
+           return new OrderStatus(IsSuccess: false, message);
        }
 
        var paymentResult = await context.CallActivityAsync<PaymentResult>(
@@ -46,20 +46,20 @@ public class OrderWorkflow : Workflow<Order, OrderStatus>
        {
            // Timeout occurred
            var message = $"ShipmentRegistrationStatus for {order.Id} timed out.";
-           return new OrderStatus(IsSucces: false, message);
+           return new OrderStatus(IsSuccess: false, message);
        }
 
-       if (!shipmentRegistrationStatus.IsSucces)
+       if (!shipmentRegistrationStatus.IsSuccess)
        {
            await context.CallActivityAsync(
                nameof(ReimburseCustomer),
                order);
            var message = $"ShipmentRegistrationStatus for {order.Id} failed. Customer is reimbursed.";
-           return new OrderStatus(IsSucces: false, message);
+           return new OrderStatus(IsSuccess: false, message);
        }
 
-       return new OrderStatus(IsSucces: true, "Order {order.Id} processed successfully.");
+       return new OrderStatus(IsSuccess: true, "Order {order.Id} processed successfully.");
    }
 }
 
-public record OrderStatus(bool IsSucces, string Message);
+public record OrderStatus(bool IsSuccess, string Message);

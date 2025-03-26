@@ -1,3 +1,4 @@
+using Dapr;
 using Dapr.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,7 @@ app.MapPost("/registerShipment", async (
     Order order,
     DaprClient daprClient) => {
     Console.WriteLine($"registerShipment: Received input: {order}.");
-    var status = new ShipmentRegistrationStatus(OrderId: order.Id, IsSucces: true);
+    var status = new ShipmentRegistrationStatus(OrderId: order.Id, IsSuccess: true);
 
     if (order.Id == string.Empty)
     {
@@ -26,7 +27,7 @@ app.MapPost("/registerShipment", async (
     {
         await daprClient.PublishEventAsync(
             Constants.DAPR_PUBSUB_COMPONENT,
-            Constants.DAPR_PUBSUB_TOPIC,
+            Constants.DAPR_PUBSUB_CONFIRMED_TOPIC,
             status);
     }
 
@@ -38,5 +39,5 @@ app.Run();
 public record Order(string Id, OrderItem OrderItem, CustomerInfo CustomerInfo);
 public record OrderItem(string ProductId, string ProductName, int Quantity, decimal TotalPrice);
 public record CustomerInfo(string Id, string Country);
-public record ShipmentRegistrationStatus(string OrderId, bool IsSucces, string Message = "");
+public record ShipmentRegistrationStatus(string OrderId, bool IsSuccess, string Message = "");
 public record ShippingDestinationResult(bool IsSuccess, string Message = "");

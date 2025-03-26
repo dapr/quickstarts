@@ -18,7 +18,7 @@ public class RegisterShipment : WorkflowActivity<Order, RegisterShipmentResult>
 
         await _daprClient.PublishEventAsync(
             Constants.DAPR_PUBSUB_COMPONENT,
-            Constants.DAPR_PUBSUB_TOPIC,
+            Constants.DAPR_PUBSUB_REGISTRATION_TOPIC,
             order);
 
         return new RegisterShipmentResult(IsSucces: true);

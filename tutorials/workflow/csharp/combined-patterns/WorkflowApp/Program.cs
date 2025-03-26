@@ -84,4 +84,4 @@ public record ProductInventory(string ProductId, int Quantity);
 public record Order(string Id, OrderItem OrderItem, CustomerInfo CustomerInfo);
 public record OrderItem(string ProductId, string ProductName, int Quantity, decimal TotalPrice);
 public record CustomerInfo(string Id, string Country);
-public record ShipmentRegistrationStatus(string OrderId, bool IsSucces, string Message = "");
+public record ShipmentRegistrationStatus(string OrderId, bool IsSuccess, string Message = "");

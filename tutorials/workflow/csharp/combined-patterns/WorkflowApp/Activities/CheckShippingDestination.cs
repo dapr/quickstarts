@@ -19,6 +19,7 @@ public class CheckShippingDestination : WorkflowActivity<Order, ActivityResult>
         var response = await _httpClient.PostAsJsonAsync("/checkDestination", order);
         if (response.StatusCode != HttpStatusCode.OK)
         {
+            Console.WriteLine($"Failed to register shipment. Reason: {response.ReasonPhrase}.");
             throw new Exception($"Failed to register shipment. Reason: {response.ReasonPhrase}.");
         }
 
