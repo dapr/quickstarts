@@ -24,7 +24,7 @@ while True:
     message = {"data": {"orderId": n}}
 
     try:
-        response = requests.post(dapr_url, json=message, timeout=5, headers = {"dapr-app-id": "nodeapp"})
+        response = requests.post(dapr_url, json=message, timeout=5, headers={"dapr-app-id": "nodeapp"})
         if not response.ok:
             print("HTTP %d => %s" % (response.status_code,
                                      response.content.decode("utf-8")), flush=True)

@@ -1,7 +1,7 @@
 # Dapr Actors (Dapr SDK)
 
 Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/). In this Quickstart, you will run a SmartDevice.Service microservice and a simple console client to demonstrate the stateful object patterns in Dapr Actors.  
-1. Using a SmartDevice.Service microservice, developers can host two SmartDectectorActor smoke alarm objects, and a third ControllerActor object that command and controls the smart devices.  
+1. Using a SmartDevice.Service microservice, developers can host two SmartDetectorActor smoke alarm objects, and a third ControllerActor object that command and controls the smart devices.  
 2. Using a SmartDevice.Client console app, developers have a client app to interact with each actor, or the controller to perform actions in aggregate. 
 3. The SmartDevice.Interfaces contains the shared interfaces and data types used by both service and client apps
 
@@ -18,7 +18,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/actors).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -122,7 +122,7 @@ name: Shutdown dapr
 -->
 
 ```bash
-dapr stop --app-id  actorservice
+dapr stop --app-id actorservice
 (lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs  kill
 ```
 
