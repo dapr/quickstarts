@@ -47,4 +47,4 @@ public class ExternalEventsWorkflow : Workflow<Order, string>
     }
 }
 
-record ApprovalStatus(string OrderId, bool IsApproved);
+public record ApprovalStatus(string OrderId, bool IsApproved);
