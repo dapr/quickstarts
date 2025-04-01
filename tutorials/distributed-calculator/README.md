@@ -8,7 +8,7 @@ This quickstart shows method invocation and state persistent capabilities of Dap
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/).
-Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator)
+Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator) was used as a starting point for the frontend implementation.
 
 The following architecture diagram illustrates the components that make up this quickstart:
 
@@ -160,7 +160,7 @@ sleep: 2
 4. Multiply App - Open a terminal window and navigate to the python directory and follow the steps below:
 
 <!-- STEP
-name: "Build ptyhon app"
+name: "Build python app"
 working_dir: "./python"
 -->
 
@@ -227,7 +227,7 @@ expected_stdout_lines:
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
-name: "Run frontent app"
+name: "Run frontend app"
 working_dir: "./react-calculator"
 background: true
 sleep: 15
@@ -393,7 +393,7 @@ kubectl apply -f .
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for the front-end, which allows us to connect to it externally.
 
-4. Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following commands:
+4. Kubernetes deployments are asynchronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following commands:
 
 <!-- STEP
 name: "Deploy Kubernetes"
