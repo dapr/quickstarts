@@ -3,7 +3,7 @@ using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-public class CheckInventory : WorkflowActivity<OrderItem, ActivityResult>
+internal sealed class CheckInventory : WorkflowActivity<OrderItem, ActivityResult>
 {
     DaprClient _daprClient;
 
@@ -30,4 +30,4 @@ public class CheckInventory : WorkflowActivity<OrderItem, ActivityResult>
     }
 }
 
-public record ActivityResult(bool IsSuccess, string Message = "");
+internal sealed record ActivityResult(bool IsSuccess, string Message = "");

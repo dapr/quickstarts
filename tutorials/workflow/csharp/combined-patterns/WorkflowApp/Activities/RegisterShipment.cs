@@ -3,7 +3,7 @@ using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-public class RegisterShipment : WorkflowActivity<Order, RegisterShipmentResult>
+internal sealed class RegisterShipment : WorkflowActivity<Order, RegisterShipmentResult>
 {
     private readonly DaprClient _daprClient;
 
@@ -25,4 +25,4 @@ public class RegisterShipment : WorkflowActivity<Order, RegisterShipmentResult>
     }
 }
 
-public record RegisterShipmentResult(bool IsSucces);
+internal sealed record RegisterShipmentResult(bool IsSucces);

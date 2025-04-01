@@ -3,7 +3,7 @@ using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-public class CheckShippingDestination : WorkflowActivity<Order, ActivityResult>
+internal sealed class CheckShippingDestination : WorkflowActivity<Order, ActivityResult>
 {
     private readonly HttpClient _httpClient;
 
@@ -28,4 +28,4 @@ public class CheckShippingDestination : WorkflowActivity<Order, ActivityResult>
     }
 }
 
-public record ShippingDestinationResult(bool IsSuccess);
+internal sealed record ShippingDestinationResult(bool IsSuccess);

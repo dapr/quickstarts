@@ -3,7 +3,7 @@ using WorkflowApp.Activities;
 
 namespace WorkflowApp;
 
-public class OrderWorkflow : Workflow<Order, OrderStatus>
+internal sealed class OrderWorkflow : Workflow<Order, OrderStatus>
 {
    public override async Task<OrderStatus> RunAsync(WorkflowContext context, Order order)
    {
@@ -62,4 +62,4 @@ public class OrderWorkflow : Workflow<Order, OrderStatus>
    }
 }
 
-public record OrderStatus(bool IsSuccess, string Message);
+internal sealed record OrderStatus(bool IsSuccess, string Message);

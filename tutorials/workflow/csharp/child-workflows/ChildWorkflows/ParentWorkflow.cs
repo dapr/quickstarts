@@ -7,7 +7,7 @@ using ChildWorkflows.Activities;
 
 namespace ChildWorkflows;
 
-public class ParentWorkflow : Workflow<string[], string[]>
+internal sealed class ParentWorkflow : Workflow<string[], string[]>
 {
     public override async Task<string[]> RunAsync(WorkflowContext context, string[] input)
     {

@@ -2,7 +2,7 @@ using Dapr.Workflow;
 
 namespace Monitor.Activities;
 
-public class CheckStatus : WorkflowActivity<int, Status>
+internal sealed class CheckStatus : WorkflowActivity<int, Status>
 {
     public override Task<Status> RunAsync(WorkflowActivityContext context, int input)
     {
@@ -13,4 +13,4 @@ public class CheckStatus : WorkflowActivity<int, Status>
     }
 }
 
-public record Status(bool IsReady);
+internal sealed record Status(bool IsReady);

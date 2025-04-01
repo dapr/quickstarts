@@ -2,7 +2,7 @@ using Dapr.Workflow;
 
 namespace ExternalEvents.Activities;
 
-public class SendNotification : WorkflowActivity<string, bool>
+internal sealed class SendNotification : WorkflowActivity<string, bool>
 {
     public override Task<bool> RunAsync(WorkflowActivityContext context, string message)
     {

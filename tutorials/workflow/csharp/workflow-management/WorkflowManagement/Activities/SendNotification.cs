@@ -2,7 +2,7 @@ using Dapr.Workflow;
 
 namespace WorkflowManagement.Activities;
 
-public class SendNotification : WorkflowActivity<int, bool>
+internal sealed class SendNotification : WorkflowActivity<int, bool>
 {
     public override Task<bool> RunAsync(WorkflowActivityContext context, int counter)
     {
@@ -12,4 +12,4 @@ public class SendNotification : WorkflowActivity<int, bool>
     }
 }
 
-public record Notification(string UserId, string Message);
+internal sealed record Notification(string UserId, string Message);

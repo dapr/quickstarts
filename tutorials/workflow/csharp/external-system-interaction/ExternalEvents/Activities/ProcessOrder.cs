@@ -3,7 +3,7 @@ using ExternalEvents;
 
 namespace ExternalEvents.Activities;
 
-public class ProcessOrder : WorkflowActivity<Order, bool>
+internal sealed class ProcessOrder : WorkflowActivity<Order, bool>
 {
     public override Task<bool> RunAsync(WorkflowActivityContext context, Order order)
     {

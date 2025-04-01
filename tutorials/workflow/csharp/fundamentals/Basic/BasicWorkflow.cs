@@ -13,7 +13,7 @@ namespace Basic;
 /// Workflows orchestrate activities and other (child)workflows, and include business logic (if/else or switch statements).
 /// Workflow code must be be deterministic. Any non-deterministic behavior should be written inside activities.
 /// </summary>
-public class BasicWorkflow : Workflow<string, string>
+internal sealed class BasicWorkflow : Workflow<string, string>
 {
     /// <summary>
     /// The RunAsync method is an abstract method in the abstract Workflow class that needs to be implemented.

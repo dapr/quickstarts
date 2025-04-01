@@ -3,7 +3,7 @@ using WorkflowManagement.Activities;
 
 namespace WorkflowManagement;
 
-public class NeverEndingWorkflow : Workflow<int, bool>
+internal sealed class NeverEndingWorkflow : Workflow<int, bool>
 {
     public override async Task<bool> RunAsync(WorkflowContext context, int counter)
     {

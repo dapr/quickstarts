@@ -2,7 +2,7 @@ using Dapr.Workflow;
 
 namespace FanOutFanIn.Activities;
 
-public class GetWordLength : WorkflowActivity<string, WordLength>
+internal sealed class GetWordLength : WorkflowActivity<string, WordLength>
 {
     public override Task<WordLength> RunAsync(WorkflowActivityContext context, string input)
     {

@@ -7,7 +7,7 @@ using FanOutFanIn.Activities;
 
 namespace FanOutFanIn;
 
-public class FanOutFanInWorkflow : Workflow<string[], string>
+internal sealed class FanOutFanInWorkflow : Workflow<string[], string>
 {
     public override async Task<string> RunAsync(WorkflowContext context, string[] input)
     {

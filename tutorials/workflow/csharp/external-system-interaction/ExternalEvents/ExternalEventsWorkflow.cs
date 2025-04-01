@@ -3,7 +3,7 @@ using ExternalEvents.Activities;
 
 namespace ExternalEvents;
 
-public class ExternalEventsWorkflow : Workflow<Order, string>
+internal sealed class ExternalEventsWorkflow : Workflow<Order, string>
 {
     public override async Task<string> RunAsync(WorkflowContext context, Order order)
     {
@@ -47,4 +47,4 @@ public class ExternalEventsWorkflow : Workflow<Order, string>
     }
 }
 
-public record ApprovalStatus(string OrderId, bool IsApproved);
+internal sealed record ApprovalStatus(string OrderId, bool IsApproved);

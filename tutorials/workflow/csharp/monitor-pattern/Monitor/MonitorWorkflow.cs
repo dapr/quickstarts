@@ -3,7 +3,7 @@ using Monitor.Activities;
 
 namespace Monitor;
 
-public class MonitorWorkflow : Workflow<int, string>
+internal sealed class MonitorWorkflow : Workflow<int, string>
 {
     public override async Task<string> RunAsync(WorkflowContext context, int counter)
     {

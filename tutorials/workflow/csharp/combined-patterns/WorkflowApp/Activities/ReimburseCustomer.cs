@@ -2,7 +2,7 @@ using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-public class ReimburseCustomer : WorkflowActivity<Order, ReimburseCustomerResult>
+internal sealed class ReimburseCustomer : WorkflowActivity<Order, ReimburseCustomerResult>
 {
     public override Task<ReimburseCustomerResult> RunAsync(WorkflowActivityContext context, Order order)
     {
@@ -11,4 +11,4 @@ public class ReimburseCustomer : WorkflowActivity<Order, ReimburseCustomerResult
     }
 }
 
-public record ReimburseCustomerResult(bool IsSuccess);
+internal sealed record ReimburseCustomerResult(bool IsSuccess);

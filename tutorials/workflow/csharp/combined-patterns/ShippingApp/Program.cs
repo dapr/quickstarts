@@ -36,8 +36,8 @@ app.MapPost("/registerShipment", async (
 
 app.Run();
 
-public record Order(string Id, OrderItem OrderItem, CustomerInfo CustomerInfo);
-public record OrderItem(string ProductId, string ProductName, int Quantity, decimal TotalPrice);
-public record CustomerInfo(string Id, string Country);
-public record ShipmentRegistrationStatus(string OrderId, bool IsSuccess, string Message = "");
-public record ShippingDestinationResult(bool IsSuccess, string Message = "");
+internal sealed record Order(string Id, OrderItem OrderItem, CustomerInfo CustomerInfo);
+internal sealed record OrderItem(string ProductId, string ProductName, int Quantity, decimal TotalPrice);
+internal sealed record CustomerInfo(string Id, string Country);
+internal sealed record ShipmentRegistrationStatus(string OrderId, bool IsSuccess, string Message = "");
+internal sealed record ShippingDestinationResult(bool IsSuccess, string Message = "");

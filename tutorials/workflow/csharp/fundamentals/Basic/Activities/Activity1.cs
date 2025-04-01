@@ -8,7 +8,7 @@ namespace Basic.Activities;
 /// Activity code typically performs a one specific task, like calling an API to store retrieve data.
 /// You can use other Dapr APIs inside an activity.
 /// </summary>
-public class Activity1 : WorkflowActivity<string, string>
+internal sealed class Activity1 : WorkflowActivity<string, string>
 {
     /// <summary>
     /// The RunAsync method is an abstract method in the abstract WorkflowActivity class that needs to be implemented.

@@ -3,7 +3,7 @@ using ExternalEvents;
 
 namespace ExternalEvents.Activities;
 
-public class RequestApproval : WorkflowActivity<Order, bool>
+internal sealed class RequestApproval : WorkflowActivity<Order, bool>
 {
     public override Task<bool> RunAsync(WorkflowActivityContext context, Order order)
     {

@@ -2,23 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapr.Workflow;
 using ChildWorkflows.Activities;
+using Dapr.Workflow;
 
-namespace ChildWorkflows
+namespace ChildWorkflows;
+internal sealed class ChildWorkflow : Workflow<string, string>
 {
-    public class ChildWorkflow : Workflow<string, string>
+    public override async Task<string> RunAsync(WorkflowContext context, string input)
     {
-        public override async Task<string> RunAsync(WorkflowContext context, string input)
-        {
-            var result1 = await context.CallActivityAsync<string>(
-                nameof(Activity1),
-                input);
-            var childWorkflowResult = await context.CallActivityAsync<string>(
-                nameof(Activity2),
-                result1);
+        var result1 = await context.CallActivityAsync<string>(
+            nameof(Activity1),
+            input);
+        var childWorkflowResult = await context.CallActivityAsync<string>(
+            nameof(Activity2),
+            result1);
 
-            return childWorkflowResult;
-        }
+        return childWorkflowResult;
     }
 }

@@ -26,4 +26,4 @@ app.MapPost("/start", async (Order order) => {
 
 app.Run();
 
-public record Order(string Id, string Description, int Quantity, double TotalPrice);
+internal sealed record Order(string Id, string Description, int Quantity, double TotalPrice);

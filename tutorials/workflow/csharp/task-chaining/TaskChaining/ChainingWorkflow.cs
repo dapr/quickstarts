@@ -7,7 +7,7 @@ using TaskChaining.Activities;
 
 namespace TaskChaining;
 
-public class ChainingWorkflow : Workflow<string, string>
+internal sealed class ChainingWorkflow : Workflow<string, string>
 {
     public override async Task<string> RunAsync(WorkflowContext context, string input)
     {

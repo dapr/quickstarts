@@ -2,7 +2,7 @@ using Dapr.Workflow;
 
 namespace ChildWorkflows.Activities;
 
-public class Activity1 : WorkflowActivity<string, string>
+internal sealed class Activity1 : WorkflowActivity<string, string>
 {
     public override Task<string> RunAsync(WorkflowActivityContext context, string input)
     {

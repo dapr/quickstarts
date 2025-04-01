@@ -2,7 +2,7 @@ using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-public class ProcessPayment : WorkflowActivity<Order, PaymentResult>
+internal sealed class ProcessPayment : WorkflowActivity<Order, PaymentResult>
 {
     public override Task<PaymentResult> RunAsync(WorkflowActivityContext context, Order order)
     {
@@ -11,4 +11,4 @@ public class ProcessPayment : WorkflowActivity<Order, PaymentResult>
     }
 }
 
-public record PaymentResult(bool IsSuccess);
+internal sealed record PaymentResult(bool IsSuccess);
