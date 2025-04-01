@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: fanoutfanin
+    appDirPath: FanOutFanIn
+    appPort: 5256
+    daprHTTPPort: 3556
+    command: ["dotnet", "run"]
+    appLogDestination: console
+    daprdLogDestination: console

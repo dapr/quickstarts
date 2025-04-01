@@ -1,0 +1,26 @@
+@apphost=http://localhost:5262
+
+### Start the NeverEndingWorkflow
+# @name startWorkflowRequest
+@counter=0
+POST {{ apphost }}/start/{{counter}}
+
+### Get the workflow status via the Dapr API
+@instanceId={{startWorkflowRequest.response.headers.Location}}
+@daprHost=http://localhost:3562
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
+
+### Get the workflow status via the application
+GET {{ apphost }}/status/{{ instanceId }}
+
+### Suspend the workflow
+POST {{ apphost }}/suspend/{{ instanceId }}
+
+### Resume the workflow
+POST {{ apphost }}/resume/{{ instanceId }}
+
+### Terminate the workflow
+POST {{ apphost }}/terminate/{{ instanceId }}
+
+### Purge the workflow
+DELETE {{ apphost }}/purge/{{ instanceId }}
