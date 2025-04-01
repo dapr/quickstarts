@@ -3,7 +3,7 @@ common:
   resourcesPath: ../../resources
 apps:
   - appID: childworkflows
-    appDirPath: .
+    appDirPath: ChildWorkflows
     appPort: 5259
     daprHTTPPort: 3559
     command: ["dotnet", "run"]

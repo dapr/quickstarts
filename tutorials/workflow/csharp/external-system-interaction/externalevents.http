@@ -28,13 +28,3 @@ Content-Type: application/json
     "OrderId": "{{instanceId}}",
     "IsApproved": true
 }
-
-### Send a rejection event
-@eventName=approval-event
-POST {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}/raiseEvent/{{ eventName }}
-Content-Type: application/json
-
-{
-    "OrderId": "{{instanceId}}",
-    "IsApproved": false
-}

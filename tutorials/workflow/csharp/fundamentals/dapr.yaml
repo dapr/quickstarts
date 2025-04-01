@@ -3,7 +3,7 @@ common:
   resourcesPath: ../../resources
 apps:
   - appID: basic
-    appDirPath: .
+    appDirPath: Basic
     appPort: 5254
     daprHTTPPort: 3554
     command: ["dotnet", "run"]

@@ -3,7 +3,7 @@ common:
   resourcesPath: ../../resources
 apps:
   - appID: chaining
-    appDirPath: .
+    appDirPath: TaskChaining
     appPort: 5255
     daprHTTPPort: 3555
     command: ["dotnet", "run"]

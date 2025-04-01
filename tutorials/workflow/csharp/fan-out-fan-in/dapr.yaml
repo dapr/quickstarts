@@ -3,7 +3,7 @@ common:
   resourcesPath: ../../resources
 apps:
   - appID: fanoutfanin
-    appDirPath: .
+    appDirPath: FanOutFanIn
     appPort: 5256
     daprHTTPPort: 3556
     command: ["dotnet", "run"]

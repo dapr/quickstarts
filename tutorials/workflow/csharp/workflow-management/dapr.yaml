@@ -3,7 +3,7 @@ common:
   resourcesPath: ../../resources
 apps:
   - appID: neverendingworkflow
-    appDirPath: .
+    appDirPath: WorkflowManagement
     appPort: 5262
     daprHTTPPort: 3562
     command: ["dotnet", "run"]
