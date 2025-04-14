@@ -18,6 +18,7 @@ Before you start, it's recommended to read though the Dapr docs to get familiar 
 - [Monitor](./monitor-pattern/README.md)
 - [External Events](./external-system-interaction/README.md)
 - [Child Workflows](./child-workflows/README.md)
+- [Resiliency & Compensation](./resiliency-and-compensation/README.md)
 - [Combined Patterns](./combined-patterns/README.md)
 - [WorkflowManagement](./workflow-management/README.md)
 - [Challenges & Tips](./challenges-tips/README.md)
