@@ -40,5 +40,17 @@ graph LR
     ```
 
 4. Use the POST request in the [`monitor.http`](./monitor.http) file to start the workflow.
+
+    The input for the workflow is an integer with the value `0`.
+
 5. Use the GET request in the [`monitor.http`](./monitor.http) file to get the status of the workflow.
+
+    The expected serialized output of the workflow is:
+
+    ```txt
+    "\"Status is healthy after checking 3 times.\""
+    ```
+
+    *The actual number of checks can vary since some randomization is used in the `CheckStatus` activity.*
+
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

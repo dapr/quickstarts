@@ -57,5 +57,22 @@ graph LR
     ```
 
 4. Use the POST request in the [`childworkflows.http`](./childworkflows.http) file to start the workflow.
+
+    The input of the workflow is an array with two strings:
+
+    ```json
+    [
+        "Item 1",
+        "Item 2"
+    ]
+    ```
+
 5. Use the GET request in the [`childworkflows.http`](./childworkflows.http) file to get the status of the workflow.
+
+    The expected serialized output of the workflow is an array with two strings:
+
+    ```txt
+    "[\"Item 1 is processed as a child workflow.\",\"Item 2 is processed as a child workflow.\"]"
+    ```
+
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

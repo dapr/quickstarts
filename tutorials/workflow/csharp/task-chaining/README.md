@@ -38,5 +38,15 @@ graph LR
     ```
 
 4. Use the POST request in the [`chaining.http`](./chaining.http) file to start the workflow.
+
+    The input for the workflow is a string with the value `This`.
+
 5. Use the GET request in the [`chaining.http`](./chaining.http) file to get the status of the workflow.
+
+    The expected serialized output of the workflow is:
+
+    ```txt
+    "\"This is task chaining\""
+    ```
+
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

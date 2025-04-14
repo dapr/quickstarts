@@ -1,6 +1,6 @@
 @apphost=http://localhost:5258
 
-### Start the Monitor workflow
+### Start the ExternalEventsWorkflow workflow
 # @name startWorkflowRequest
 @orderId={{$guid}}
 POST {{ apphost }}/start

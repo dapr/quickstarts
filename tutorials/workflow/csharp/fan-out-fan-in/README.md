@@ -41,5 +41,25 @@ graph LR
     ```
 
 4. Use the POST request in the [`fanoutfanin.http`](./fanoutfanin.http) file to start the workflow.
+
+    The input for the workflow is an array of strings:
+
+    ```json
+    [
+        "which",
+        "word",
+        "is",
+        "the",
+        "shortest"
+    ]
+    ```
+
 5. Use the GET request in the [`fanoutfanin.http`](./fanoutfanin.http) file to get the status of the workflow.
+
+    The expected serialized output of the workflow is:
+
+    ```txt
+    "\"is\""
+    ```
+
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

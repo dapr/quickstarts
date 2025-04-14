@@ -37,5 +37,15 @@ graph LR
     ```
 
 4. Use the POST request in the [`basics.http`](./basics.http) file to start the workflow.
+
+    The input for the workflow is a string with the value `One`.
+
 5. Use the GET request in the [`basics.http`](./basics.http) file to get the status of the workflow.
+
+    The expected serialized output of the workflow is:
+
+    ```txt
+    "\"One Two Three\""
+    ```
+
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

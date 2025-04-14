@@ -58,7 +58,7 @@ internal sealed class OrderWorkflow : Workflow<Order, OrderStatus>
            return new OrderStatus(IsSuccess: false, message);
        }
 
-       return new OrderStatus(IsSuccess: true, "Order {order.Id} processed successfully.");
+       return new OrderStatus(IsSuccess: true, $"Order {order.Id} processed successfully.");
    }
 }
 

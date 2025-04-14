@@ -72,5 +72,33 @@ graph LR
     ```
 
 4. Use the POST request in the [`order-workflow.http`](./order-workflow.http) file to start the workflow.
+
+    The input for the workflow is an `Order` object:
+
+    ```json
+    {
+        "id": "{{orderId}}",
+        "orderItem" : {
+            "productId": "RBD001",
+            "productName": "Rubber Duck",
+            "quantity": 10,
+            "totalPrice": 15.00
+        },
+        "customerInfo" : {
+            "id" : "Customer1",
+            "country" : "The Netherlands"
+        }
+    }
+    ```
+
 5. Use the GET request in the [`order-workflow.http`](./order-workflow.http) file to get the status of the workflow.
+
+    The expected serialized output of the workflow is:
+
+    ```txt
+    {\"IsSuccess\":true,\"Message\":\"Order 2a28fd28-15c1-4594-93ec-eb088c6be4a3 processed successfully.\"}"
+    ```
+
+    *The Order ID is generated when making the request and is different each time.*
+
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

@@ -50,5 +50,41 @@ graph LR
     ```
 
 4. Use the POST request in the [`externalevents.http`](./externalevents.http) file to start the workflow.
+
+    The input for the workflow is an `Order` object:
+
+    ```json
+    {
+        "id": "{{orderId}}",
+        "description": "Rubber ducks",
+        "quantity": 100,
+        "totalPrice": 500
+    }
+    ```
+
 5. Use the GET request in the [`externalevents.http`](./externalevents.http) file to get the status of the workflow.
-6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
+
+    The workflow should still be running since it it waiting for an external event.
+
+6. Use the POST request in the [`externalevents.http`](./externalevents.http) file to send an `approval-event` to the workflow.
+
+    The payload for the event is an `ApprovalStatus` object:
+
+    ```json
+    {
+        "OrderId": "{{instanceId}}",
+        "IsApproved": true
+    }
+    ```
+
+7. Again use the GET request in the [`externalevents.http`](./externalevents.http) file to get the status of the workflow. The workflow should now be completed.
+
+    The expected serialized output of the workflow is:
+
+    ```txt
+    "\"Order 15b18587-86d6-4cb2-8496-8d60ab350a43 has been approved.\""
+    ```
+
+    *The Order ID is generated when making the request and is different each time.*
+
+8. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
