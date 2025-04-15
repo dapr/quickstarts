@@ -8,7 +8,7 @@ Before you start, it's recommended to read though the Dapr docs to get familiar 
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/) & [Initialization](https://docs.dapr.io/getting-started/install-dapr-selfhost/)
-- [.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0)
 
 ## Tutorials
 
