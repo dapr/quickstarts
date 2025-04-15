@@ -26,9 +26,21 @@ Open the `Program.cs` file in the `tutorials/workflow/csharp/child-workflows/Wor
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file
 
+    <!-- STEP
+    name: Run multi app run template
+    expected_stdout_lines:
+    - 'Started Dapr with app id "neverendingworkflow"'
+    expected_stderr_lines:
+    working_dir: .
+    output_match_mode: substring
+    background: true
+    sleep: 15
+    timeout_seconds: 30
+    -->
     ```bash
     dapr run -f .
     ```
+    <!-- END_STEP -->
 
 4. Use the first POST request in the [`workflowmanagement.http`](./workflowmanagement.http) file to start the workflow.
 5. Use other requests in the [`workflowmanagement.http`](./workflowmanagement.http) file to perform other actions on the workflow, such as:

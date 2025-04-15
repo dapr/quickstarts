@@ -12,7 +12,8 @@ graph LR
    Workflow))
    A1[MinusOne]
    A2[Division]
-   EX{Exception?}
+   EX{Division
+   Exception?}
    A3[PlusOne]
    EW((End
    Workflow))
@@ -35,9 +36,21 @@ graph LR
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file
 
+    <!-- STEP
+    name: Run multi app run template
+    expected_stdout_lines:
+    - 'Started Dapr with app id "resiliency"'
+    expected_stderr_lines:
+    working_dir: .
+    output_match_mode: substring
+    background: true
+    sleep: 15
+    timeout_seconds: 30
+    -->
     ```bash
     dapr run -f .
     ```
+    <!-- END_STEP -->
 
 4. Use the POST request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to start the workflow with a workflow input value of `1`.
 
