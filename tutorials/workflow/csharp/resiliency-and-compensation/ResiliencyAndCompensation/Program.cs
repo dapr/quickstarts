@@ -3,7 +3,8 @@ using ResiliencyAndCompensation;
 using ResiliencyAndCompensation.Activities;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprWorkflow(options => {
+builder.Services.AddDaprWorkflow(options =>
+{
     options.RegisterWorkflow<ResiliencyAndCompensationWorkflow>();
     options.RegisterActivity<MinusOne>();
     options.RegisterActivity<Division>();
@@ -11,10 +12,10 @@ builder.Services.AddDaprWorkflow(options => {
 });
 var app = builder.Build();
 
-app.MapPost("/start/{input}", async (int input) => {
-    await using var scope  = app.Services.CreateAsyncScope();
-    var workflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
-
+app.MapPost("/start/{input}", async (
+    int input,
+    DaprWorkflowClient workflowClient) =>
+{
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(ResiliencyAndCompensationWorkflow),
         input: input);

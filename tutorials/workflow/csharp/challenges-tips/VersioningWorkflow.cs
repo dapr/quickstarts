@@ -10,11 +10,11 @@ internal sealed class VersioningWorkflow1 : Workflow<string, int>
 {
     public override async Task<int> RunAsync(WorkflowContext context, string orderItem)
     {
-        int resultA = await context.CallActivityAsync<int>(
+        var resultA = await context.CallActivityAsync<int>(
             "ActivityA",
             orderItem);
 
-        int resultB = await context.CallActivityAsync<int>(
+        var resultB = await context.CallActivityAsync<int>(
             "ActivityB",
             orderItem);
 
@@ -30,16 +30,18 @@ internal sealed class VersioningWorkflow1 : Workflow<string, int>
 /// and the workflow name remains the same, since the runtime parameters do not match with the persisted state.
 /// It is recommended to version workflows by creating a new workflow class with a new name:
 /// {workflowname}1 -> {workflowname}2
+/// Try to avoid making breaking changes in perpetual workflows (that use the `ContinueAsNew` method) 
+/// since these are difficult to replace with a new version.
 /// </summary>
 internal sealed class VersioningWorkflow2 : Workflow<string, int>
 {
     public override async Task<int> RunAsync(WorkflowContext context, string orderItem)
     {
-        int resultA = await context.CallActivityAsync<int>(
+        var resultA = await context.CallActivityAsync<int>(
             "ActivityA",
             orderItem);
 
-        int resultB = await context.CallActivityAsync<int>(
+        var resultB = await context.CallActivityAsync<int>(
             "ActivityB",
             resultA);
 

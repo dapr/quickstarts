@@ -11,4 +11,4 @@ internal sealed class GetWordLength : WorkflowActivity<string, WordLength>
     }
 }
 
-public record WordLength(string Word, int Length);
+internal sealed record WordLength(string Word, int Length);

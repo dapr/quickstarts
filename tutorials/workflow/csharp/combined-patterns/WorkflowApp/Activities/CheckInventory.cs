@@ -3,20 +3,13 @@ using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-internal sealed class CheckInventory : WorkflowActivity<OrderItem, ActivityResult>
+internal sealed class CheckInventory(DaprClient daprClient) : WorkflowActivity<OrderItem, ActivityResult>
 {
-    DaprClient _daprClient;
-
-    public CheckInventory(DaprClient daprClient)
-    {
-        _daprClient = daprClient;
-    }
-
     public override async Task<ActivityResult> RunAsync(WorkflowActivityContext context, OrderItem orderItem)
     {
         Console.WriteLine($"{nameof(CheckInventory)}: Received input: {orderItem}.");
 
-        var productInventory = await _daprClient.GetStateAsync<ProductInventory>(
+        var productInventory = await daprClient.GetStateAsync<ProductInventory>(
                 Constants.DAPR_INVENTORY_COMPONENT,
                 orderItem.ProductId);
 

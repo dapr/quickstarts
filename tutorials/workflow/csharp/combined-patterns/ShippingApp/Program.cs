@@ -7,7 +7,8 @@ var app = builder.Build();
 app.UseCloudEvents();
 
 app.MapPost("/checkDestination", (
-    Order order) => {
+    Order order) =>
+{
     Console.WriteLine($"checkDestination: Received input: {order}.");
     var result = new ShippingDestinationResult(IsSuccess: true);
     return Results.Ok(result);
@@ -15,7 +16,8 @@ app.MapPost("/checkDestination", (
 
 app.MapPost("/registerShipment", async (
     Order order,
-    DaprClient daprClient) => {
+    DaprClient daprClient) =>
+{
     Console.WriteLine($"registerShipment: Received input: {order}.");
     var status = new ShipmentRegistrationStatus(OrderId: order.Id, IsSuccess: true);
 

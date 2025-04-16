@@ -1,4 +1,4 @@
-internal sealed class Constants
+internal static class Constants
 {
     public const string DAPR_PUBSUB_COMPONENT = "shippingpubsub";
     public const string DAPR_PUBSUB_REGISTRATION_TOPIC = "shipment-registration-events";

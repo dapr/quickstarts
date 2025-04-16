@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<HttpClient>(DaprClient.CreateInvokeHttpClient(appId: "shipping"));
 builder.Services.AddSingleton<InventoryManagement>();
 builder.Services.AddDaprClient();
-builder.Services.AddDaprWorkflow(options => {
+builder.Services.AddDaprWorkflow(options =>
+{
     options.RegisterWorkflow<OrderWorkflow>();
     options.RegisterActivity<CheckInventory>();
     options.RegisterActivity<CheckShippingDestination>();
@@ -21,13 +22,12 @@ app.UseCloudEvents();
 
 app.MapPost("/start", async (
     Order order,
-    InventoryManagement inventory) => {
+    InventoryManagement inventory,
+    DaprWorkflowClient workflowClient) =>
+{
 
     // This is to ensure to have enough inventory for the order.
     await inventory.CreateDefaultInventoryAsync();
-
-    await using var scope  = app.Services.CreateAsyncScope();
-    var workflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
 
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(OrderWorkflow),
@@ -37,9 +37,10 @@ app.MapPost("/start", async (
     return Results.Accepted(instanceId);
 });
 
-app.MapPost("/shipmentRegistered", async (ShipmentRegistrationStatus status) => {
-    await using var scope  = app.Services.CreateAsyncScope();
-    var workflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
+app.MapPost("/shipmentRegistered", async (
+    ShipmentRegistrationStatus status,
+    DaprWorkflowClient workflowClient) =>
+{
     Console.WriteLine($"Shipment registered for order {status}");
 
     await workflowClient.RaiseEventAsync(
@@ -53,29 +54,31 @@ app.MapPost("/shipmentRegistered", async (ShipmentRegistrationStatus status) => 
 app.MapPost("/inventory/restock", async (
     ProductInventory productInventory,
     DaprClient daprClient
-    ) => {
-        await daprClient.SaveStateAsync(
-                Constants.DAPR_INVENTORY_COMPONENT,
-                productInventory.ProductId,
-                productInventory);
+    ) =>
+{
+    await daprClient.SaveStateAsync(
+            Constants.DAPR_INVENTORY_COMPONENT,
+            productInventory.ProductId,
+            productInventory);
 
-        return Results.Accepted();
+    return Results.Accepted();
 });
 
 app.MapGet("/inventory/{productId}", async (
     string productId,
     DaprClient daprClient
-    ) => {
-        var productInventory = await daprClient.GetStateAsync<ProductInventory>(
-                Constants.DAPR_INVENTORY_COMPONENT,
-                productId);
+    ) =>
+{
+    var productInventory = await daprClient.GetStateAsync<ProductInventory>(
+            Constants.DAPR_INVENTORY_COMPONENT,
+            productId);
 
-        if (productInventory == null)
-        {
-            return Results.NotFound();
-        }
+    if (productInventory == null)
+    {
+        return Results.NotFound();
+    }
 
-        return Results.Ok(productInventory);
+    return Results.Ok(productInventory);
 });
 
 app.Run();

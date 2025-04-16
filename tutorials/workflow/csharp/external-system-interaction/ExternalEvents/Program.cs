@@ -3,7 +3,8 @@ using ExternalEvents;
 using ExternalEvents.Activities;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprWorkflow(options => {
+builder.Services.AddDaprWorkflow(options =>
+{
     options.RegisterWorkflow<ExternalEventsWorkflow>();
     options.RegisterActivity<RequestApproval>();
     options.RegisterActivity<ProcessOrder>();
@@ -11,10 +12,11 @@ builder.Services.AddDaprWorkflow(options => {
 });
 var app = builder.Build();
 
-app.MapPost("/start", async (Order order) => {
+app.MapPost("/start", async (
+    Order order,
+    DaprWorkflowClient workflowClient) =>
+{
     Console.WriteLine($"Received order: {order}.");
-    await using var scope  = app.Services.CreateAsyncScope();
-    var workflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
 
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(ExternalEventsWorkflow),

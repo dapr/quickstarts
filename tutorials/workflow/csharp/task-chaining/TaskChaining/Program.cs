@@ -3,7 +3,8 @@ using TaskChaining;
 using TaskChaining.Activities;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprWorkflow(options => {
+builder.Services.AddDaprWorkflow(options =>
+{
     options.RegisterWorkflow<ChainingWorkflow>();
     options.RegisterActivity<Activity1>();
     options.RegisterActivity<Activity2>();
@@ -11,10 +12,8 @@ builder.Services.AddDaprWorkflow(options => {
 });
 var app = builder.Build();
 
-app.MapPost("/start", async () => {
-    await using var scope  = app.Services.CreateAsyncScope();
-    var workflowClient = scope.ServiceProvider.GetRequiredService<DaprWorkflowClient>();
-
+app.MapPost("/start", async (DaprWorkflowClient workflowClient) =>
+{
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(ChainingWorkflow),
         input: "This");

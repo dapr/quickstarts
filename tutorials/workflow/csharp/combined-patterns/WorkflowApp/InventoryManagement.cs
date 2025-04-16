@@ -1,19 +1,12 @@
 using Dapr.Client;
 namespace WorkflowApp;
-public class InventoryManagement
+internal sealed class InventoryManagement(DaprClient daprClient)
 {
-    private readonly DaprClient _daprClient;
-
-    public InventoryManagement(DaprClient daprClient)
-    {
-        _daprClient = daprClient;
-    }
-
     public async Task CreateDefaultInventoryAsync()
     {
         var productInventoryItem = new ProductInventoryItem("RBD001", "Rubber Duck", 50);
 
-        await _daprClient.SaveStateAsync(
+        await daprClient.SaveStateAsync(
             Constants.DAPR_INVENTORY_COMPONENT,
             productInventoryItem.ProductId,
             productInventoryItem);

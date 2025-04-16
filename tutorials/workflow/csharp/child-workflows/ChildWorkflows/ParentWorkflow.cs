@@ -11,7 +11,7 @@ internal sealed class ParentWorkflow : Workflow<string[], string[]>
 {
     public override async Task<string[]> RunAsync(WorkflowContext context, string[] input)
     {
-         List<Task<string>> childWorkflowTasks = new();
+         List<Task<string>> childWorkflowTasks = [];
 
          foreach (string item in input)
          {

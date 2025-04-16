@@ -3,21 +3,14 @@ using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-internal sealed class CheckShippingDestination : WorkflowActivity<Order, ActivityResult>
+internal sealed class CheckShippingDestination(HttpClient httpClient) : WorkflowActivity<Order, ActivityResult>
 {
-    private readonly HttpClient _httpClient;
-
-    public CheckShippingDestination(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
-
     public override async Task<ActivityResult> RunAsync(WorkflowActivityContext context, Order order)
     {
         Console.WriteLine($"{nameof(CheckShippingDestination)}: Received input: {order}.");
 
-        var response = await _httpClient.PostAsJsonAsync("/checkDestination", order);
-        if (response.StatusCode != HttpStatusCode.OK)
+        var response = await httpClient.PostAsJsonAsync("/checkDestination", order);
+        if (!response.IsSuccessStatusCode)
         {
             Console.WriteLine($"Failed to register shipment. Reason: {response.ReasonPhrase}.");
             throw new Exception($"Failed to register shipment. Reason: {response.ReasonPhrase}.");

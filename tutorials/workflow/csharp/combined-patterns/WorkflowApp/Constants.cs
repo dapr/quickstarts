@@ -1,5 +1,5 @@
 namespace WorkflowApp;
-internal sealed class Constants
+internal static class Constants
 {
     public const string DAPR_INVENTORY_COMPONENT = "inventory";
     public const string DAPR_PUBSUB_COMPONENT = "shippingpubsub";
