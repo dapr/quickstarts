@@ -52,7 +52,14 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`fanoutfanin.http`](./fanoutfanin.http) file to start the workflow.
+4. Use the POST request in the [`fanoutfanin.http`](./fanoutfanin.http) file to start the workflow, or use this cURL command:
+
+    ```bash
+    curl -i --request POST \
+    --url http://localhost:5256/start \
+    --header 'content-type: application/json' \
+    --data '["which","word","is","the","shortest"]'
+    ```
 
     The input for the workflow is an array of strings:
 
@@ -65,8 +72,10 @@ graph LR
         "shortest"
     ]
     ```
-The app logs should print as follows:
-    ```
+
+    The expected app logs are as follows:
+
+    ```text
     == APP - fanoutfanin == GetWordLength: Received input: word.
     == APP - fanoutfanin == GetWordLength: Received input: is.
     == APP - fanoutfanin == GetWordLength: Received input: the.
@@ -74,7 +83,15 @@ The app logs should print as follows:
     == APP - fanoutfanin == GetWordLength: Received input: which.
     ```
 
-5. Use the GET request in the [`fanoutfanin.http`](./fanoutfanin.http) file to get the status of the workflow.
+    > Note that the order of the logs may vary.
+
+5. Use the GET request in the [`fanoutfanin.http`](./fanoutfanin.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3556/v1.0/workflows/dapr/<INSTANCEID>
+    ```
+
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
 
     The expected serialized output of the workflow is:
 
