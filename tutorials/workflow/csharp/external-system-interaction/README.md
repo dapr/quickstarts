@@ -88,10 +88,10 @@ graph LR
     ```
 
     The workflow should still be running since it is waiting for an external event.
-    
+
     The app logs should look similar to the following:
-    
-    ```
+
+    ```text
    == APP - externalevents == Received order: Order { Id = b7dd836b-e913-4446-9912-d400befebec5, Description = Rubber ducks, Quantity = 100, TotalPrice = 500 }.
     ```
 

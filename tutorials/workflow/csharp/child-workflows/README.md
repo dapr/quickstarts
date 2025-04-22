@@ -68,7 +68,14 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`childworkflows.http`](./childworkflows.http) file to start the workflow.
+4. Use the POST request in the [`childworkflows.http`](./childworkflows.http) file to start the workflow, or use this cURL command:
+
+    ```bash
+    curl -i --request POST \
+    --url http://localhost:5259/start \
+    --header 'content-type: application/json' \
+    --data '["Item 1","Item 2"]'
+    ```
 
     The input of the workflow is an array with two strings:
 
@@ -81,13 +88,20 @@ graph LR
 
     The app logs should show both the items in the input values array being processed by each activity in the child workflow as follows:
 
+    ```text
+    == APP - childworkflows == Activity1: Received input: Item 1.
+    == APP - childworkflows == Activity2: Received input: Item 1 is processed.
+    == APP - childworkflows == Activity1: Received input: Item 2.
+    == APP - childworkflows == Activity2: Received input: Item 2 is processed.
     ```
-== APP - childworkflows == Activity1: Received input: Item 1.
-== APP - childworkflows == Activity2: Received input: Item 1 is processed.
-== APP - childworkflows == Activity1: Received input: Item 2.
-== APP - childworkflows == Activity2: Received input: Item 2 is processed.
 
-5. Use the GET request in the [`childworkflows.http`](./childworkflows.http) file to get the status of the workflow.
+5. Use the GET request in the [`childworkflows.http`](./childworkflows.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3559/v1.0/workflows/dapr/<INSTANCEID>
+    ```
+
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
 
     The expected serialized output of the workflow is an array with two strings:
 
