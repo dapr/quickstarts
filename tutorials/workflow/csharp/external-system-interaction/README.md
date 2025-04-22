@@ -4,7 +4,7 @@ This tutorial demonstrates how to author a workflow where the workflow will wait
 
 ## Inspect the code
 
-Open the `ExternalEventsWorkflow.cs` file in the `tutorials/workflow/csharp/external-system-interaction/ExternalEvents` folder. This file contains the definition for the workflow. It is an order workflow that requests an external approval if the order has a total price greater than 250 dollars. 
+Open the `ExternalEventsWorkflow.cs` file in the `tutorials/workflow/csharp/external-system-interaction/ExternalEvents` folder. This file contains the definition for the workflow. It is an order workflow that requests an external approval if the order has a total price greater than 250 dollars.
 
 ```mermaid
 graph LR
@@ -61,7 +61,14 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`externalevents.http`](./externalevents.http) file to start the workflow.
+4. Use the POST request in the [`externalevents.http`](./externalevents.http) file to start the workflow, or use this cURL command:
+
+    ```bash
+    curl --request POST \
+    --url http://localhost:5258/start \
+    --header 'content-type: application/json' \
+    --data '{"id": "b7dd836b-e913-4446-9912-d400befebec5","description": "Rubber ducks","quantity": 100,"totalPrice": 500}'
+    ```
 
     The input for the workflow is an `Order` object:
 
@@ -74,17 +81,28 @@ graph LR
     }
     ```
 
-5. Use the GET request in the [`externalevents.http`](./externalevents.http) file to get the status of the workflow.
+5. Use the GET request in the [`externalevents.http`](./externalevents.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3558/v1.0/workflows/dapr/b7dd836b-e913-4446-9912-d400befebec5
+    ```
 
     The workflow should still be running since it is waiting for an external event.
     
     The app logs should look similar to the following:
     
     ```
-   == APP - externalevents == Received order: Order { Id = ef4c1a3b-7eb5-4fc3-90e9-3bd606044b3a, Description = Rubber ducks, Quantity = 100, TotalPrice = 500 }.
+   == APP - externalevents == Received order: Order { Id = b7dd836b-e913-4446-9912-d400befebec5, Description = Rubber ducks, Quantity = 100, TotalPrice = 500 }.
     ```
 
-6. Use the POST request in the [`externalevents.http`](./externalevents.http) file to send an `approval-event` to the workflow.
+6. Use the POST request in the [`externalevents.http`](./externalevents.http) file to send an `approval-event` to the workflow, or use this cURL command:
+
+    ```bash
+    curl -i --request POST \
+    --url http://localhost:3558/v1.0/workflows/dapr/b7dd836b-e913-4446-9912-d400befebec5/raiseEvent/approval-event \
+    --header 'content-type: application/json' \
+    --data '{"OrderId": "b7dd836b-e913-4446-9912-d400befebec5","IsApproved": true}'
+    ```
 
     The payload for the event is an `ApprovalStatus` object:
 
@@ -94,16 +112,15 @@ graph LR
         "IsApproved": true
     }
     ```
-*The workflow will only wait for the external approval event for 2 minutes before timing out. In this case you will need to start a new order workflow instance.*
+
+    *The workflow will only wait for the external approval event for 2 minutes before timing out. In this case you will need to start a new order workflow instance.*
 
 7. Again use the GET request in the [`externalevents.http`](./externalevents.http) file to get the status of the workflow. The workflow should now be completed.
 
     The expected serialized output of the workflow is:
 
     ```txt
-    "\"Order 15b18587-86d6-4cb2-8496-8d60ab350a43 has been approved.\""
+    "\"Order b7dd836b-e913-4446-9912-d400befebec5 has been approved.\""
     ```
-
-    *The Order ID is generated when making the request and is different each time.*
 
 8. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
