@@ -37,6 +37,7 @@ Go deeper into a topic or scenario, oftentimes using building block APIs togethe
 | [Bindings](./tutorials/bindings) | Demonstrates how to use Dapr to create input and output bindings to other components. Uses bindings to Kafka.|
 | [Observability](./tutorials/observability) | Demonstrates Dapr tracing capabilities. Uses Zipkin as a tracing component. |
 | [Secret Store](./tutorials/secretstore) | Demonstrates the use of Dapr Secrets API to access secret stores. |
+| [Workflow](./tutorials/workflow) | Demonstrates how to author and manage Dapr workflows. Includes workflow patterns, resiliency, and common challenges & tips. |
 
 ## Development
 
