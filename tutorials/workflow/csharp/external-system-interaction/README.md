@@ -4,7 +4,7 @@ This tutorial demonstrates how to author a workflow where the workflow will wait
 
 ## Inspect the code
 
-Open the `ExternalEventsWorkflow.cs` file in the `tutorials/workflow/csharp/external-system-interaction/ExternalEvents` folder. This file contains the definition for the workflow.
+Open the `ExternalEventsWorkflow.cs` file in the `tutorials/workflow/csharp/external-system-interaction/ExternalEvents` folder. This file contains the definition for the workflow. It is an order workflow that requests an external approval if the order has a total price greater than 250 dollars. 
 
 ```mermaid
 graph LR
