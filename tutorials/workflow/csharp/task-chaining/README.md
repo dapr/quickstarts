@@ -49,11 +49,27 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`chaining.http`](./chaining.http) file to start the workflow.
+4. Use the POST request in the [`chaining.http`](./chaining.http) file to start the workflow, or use this cURL command:
 
-    The input for the workflow is a string with the value `This`.
+    ```bash
+    curl -i --request POST http://localhost:5255/start
+    ```
 
-5. Use the GET request in the [`chaining.http`](./chaining.http) file to get the status of the workflow.
+    The input for the workflow is a string with the value `This`. The expected app logs are as follows:
+
+    ```text
+    == APP - chaining == Activity1: Received input: This.
+    == APP - chaining == Activity2: Received input: This is.
+    == APP - chaining == Activity3: Received input: This is task.
+    ```
+
+5. Use the GET request in the [`chaining.http`](./chaining.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3555/v1.0/workflows/dapr/<INSTANCEID>
+    ```
+
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
 
     The expected serialized output of the workflow is:
 

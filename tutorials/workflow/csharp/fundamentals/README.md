@@ -54,6 +54,8 @@ graph LR
     curl -i --request POST http://localhost:5254/start/One
     ```
 
+    Note the `Location` header in the response. This header contains the workflow instance ID. You can use this ID to get the status of the workflow instance you just started.
+
     The input for the workflow is a string with the value `One`. The expected app logs are as follows:
 
     ```text
