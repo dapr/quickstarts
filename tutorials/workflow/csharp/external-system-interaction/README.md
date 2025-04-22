@@ -94,6 +94,7 @@ graph LR
         "IsApproved": true
     }
     ```
+*The workflow will only wait for the external approval event for 2 minutes before timing out. In this case you will need to start a new order workflow instance.*
 
 7. Again use the GET request in the [`externalevents.http`](./externalevents.http) file to get the status of the workflow. The workflow should now be completed.
 
