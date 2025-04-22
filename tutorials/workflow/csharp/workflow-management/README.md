@@ -13,7 +13,7 @@ For more information on workflow management, see the [Dapr docs](https://docs.da
 
 ## Inspect the code
 
-Open the `Program.cs` file in the `tutorials/workflow/csharp/child-workflows/WorkflowManagement` folder. This file contains the endpoint definitions that use the workflow management API. The workflow that is being managed is named `NeverEndingWorkflow` and will keep running once it's started.
+Open the `Program.cs` file in the `tutorials/workflow/csharp/child-workflows/WorkflowManagement` folder. This file contains the endpoint definitions that use the workflow management API. The workflow that is being managed is named `NeverEndingWorkflow` and is a counter that will keep running once it's started.
 
 ## Run the tutorial
 
