@@ -4,7 +4,7 @@ This tutorial demonstrates how to run a workflow in a loop. This can be used for
 
 ## Inspect the code
 
-Open the `MonitorWorkflow.cs` file in the `tutorials/workflow/csharp/monitor-pattern/Monitor` folder. This file contains the definition for the workflow that checks to see if a random number has been drawn above the number 1. Once that occurs, the workflow completes.
+Open the `MonitorWorkflow.cs` file in the `tutorials/workflow/csharp/monitor-pattern/Monitor` folder. This file contains the definition for the workflow that calls the `CheckStatus` activity to checks to see if a fictional resource is ready.  The `CheckStatus` activity uses a random number generator to simulate the status of the resource. If the status is not ready, the workflow will wait for one second and is continued as a new instance.
 
 ```mermaid
 graph LR
