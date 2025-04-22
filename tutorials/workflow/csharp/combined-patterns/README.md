@@ -84,7 +84,14 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`order-workflow.http`](./order-workflow.http) file to start the workflow.
+4. Use the POST request in the [`order-workflow.http`](./order-workflow.http) file to start the workflow, or use this cURL command:
+
+    ```bash
+    curl --request POST \
+    --url http://localhost:5260/start \
+    --header 'content-type: application/json' \
+    --data '{"id": "b0d38481-5547-411e-ae7b-255761cce17a","orderItem" : {"productId": "RBD001","productName": "Rubber Duck","quantity": 10,"totalPrice": 15.00},"customerInfo" : {"id" : "Customer1","country" : "The Netherlands"}}'
+    ```
 
     The input for the workflow is an `Order` object:
 
@@ -104,13 +111,29 @@ graph LR
     }
     ```
 
-The application logs should come from both services executing all activities as follows:
-5. Use the GET request in the [`order-workflow.http`](./order-workflow.http) file to get the status of the workflow.
+    The app logs should come from both services executing all activities as follows:
+
+    ```text
+    == APP - order-workflow == CheckInventory: Received input: OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }.
+    == APP - order-workflow == CheckShippingDestination: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
+    == APP - shipping == checkDestination: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
+    == APP - order-workflow == ProcessPayment: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
+    == APP - order-workflow == UpdateInventory: Received input: OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }.
+    == APP - order-workflow == RegisterShipment: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
+    == APP - shipping == registerShipment: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
+    == APP - order-workflow == Shipment registered for order ShipmentRegistrationStatus { OrderId = 06d49c54-bf65-427b-90d1-730987e96e61, IsSuccess = True, Message = }
+    ```
+
+5. Use the GET request in the [`order-workflow.http`](./order-workflow.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3560/v1.0/workflows/dapr/06d49c54-bf65-427b-90d1-730987e96e61
+    ```
 
     The expected serialized output of the workflow is:
 
     ```txt
-    {\"IsSuccess\":true,\"Message\":\"Order 2a28fd28-15c1-4594-93ec-eb088c6be4a3 processed successfully.\"}"
+    {\"IsSuccess\":true,\"Message\":\"Order 06d49c54-bf65-427b-90d1-730987e96e61 processed successfully.\"}"
     ```
 
     *The Order ID is generated when making the request and is different each time.*
