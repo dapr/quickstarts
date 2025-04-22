@@ -68,7 +68,7 @@ graph LR
 
 5. Use the GET request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to get the status of the workflow.
 
-    Then `1` is used as the input, the expected serialized output of the workflow is:
+    Since `1` is used as the input, the expected serialized output of the workflow is:
 
     ```txt
     "1"
