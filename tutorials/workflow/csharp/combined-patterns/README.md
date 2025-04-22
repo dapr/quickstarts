@@ -87,7 +87,7 @@ graph LR
 4. Use the POST request in the [`order-workflow.http`](./order-workflow.http) file to start the workflow, or use this cURL command:
 
     ```bash
-    curl --request POST \
+    curl -i --request POST \
     --url http://localhost:5260/start \
     --header 'content-type: application/json' \
     --data '{"id": "b0d38481-5547-411e-ae7b-255761cce17a","orderItem" : {"productId": "RBD001","productName": "Rubber Duck","quantity": 10,"totalPrice": 15.00},"customerInfo" : {"id" : "Customer1","country" : "The Netherlands"}}'

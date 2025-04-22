@@ -64,7 +64,7 @@ graph LR
 4. Use the POST request in the [`externalevents.http`](./externalevents.http) file to start the workflow, or use this cURL command:
 
     ```bash
-    curl --request POST \
+    curl -i --request POST \
     --url http://localhost:5258/start \
     --header 'content-type: application/json' \
     --data '{"id": "b7dd836b-e913-4446-9912-d400befebec5","description": "Rubber ducks","quantity": 100,"totalPrice": 500}'
