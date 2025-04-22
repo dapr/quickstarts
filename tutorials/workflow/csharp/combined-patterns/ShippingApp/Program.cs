@@ -6,6 +6,7 @@ builder.Services.AddDaprClient();
 var app = builder.Build();
 app.UseCloudEvents();
 
+/// This endpoint is called by the CheckShippingDestination activity in the WorkflowApp.
 app.MapPost("/checkDestination", (
     Order order) =>
 {
@@ -14,6 +15,9 @@ app.MapPost("/checkDestination", (
     return Results.Ok(result);
 });
 
+// This endpoint handles messages that are published to the shipment-registration-events topic.
+// The RegisterShipment activity in the WorkflowApp is publishing to this topic.
+// This method is publishing a message to the shipment-registration-confirmed-events topic.
 app.MapPost("/registerShipment", async (
     Order order,
     DaprClient daprClient) =>

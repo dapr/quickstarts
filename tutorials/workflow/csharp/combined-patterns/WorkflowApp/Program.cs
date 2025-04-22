@@ -27,6 +27,7 @@ app.MapPost("/start", async (
 {
 
     // This is to ensure to have enough inventory for the order.
+    // So the manual restock endpoint is not needed in this sample.
     await inventory.CreateDefaultInventoryAsync();
 
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
@@ -37,6 +38,9 @@ app.MapPost("/start", async (
     return Results.Accepted(instanceId);
 });
 
+// This endpoint handles messages that are published to the shipment-registration-confirmed-events topic.
+// It uses the workflow management API to raise an event to the workflow instance to indicate that the 
+// shipment has been registered by the ShippingApp.
 app.MapPost("/shipmentRegistered", async (
     ShipmentRegistrationStatus status,
     DaprWorkflowClient workflowClient) =>
@@ -51,6 +55,7 @@ app.MapPost("/shipmentRegistered", async (
     return Results.Accepted();
 });
 
+// This endpoint is a manual helper method to restock the inventory.
 app.MapPost("/inventory/restock", async (
     ProductInventory productInventory,
     DaprClient daprClient
@@ -64,6 +69,7 @@ app.MapPost("/inventory/restock", async (
     return Results.Accepted();
 });
 
+// This endpoint is a manual helper method to check the inventory.
 app.MapGet("/inventory/{productId}", async (
     string productId,
     DaprClient daprClient
