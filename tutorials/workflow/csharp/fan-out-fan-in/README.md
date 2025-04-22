@@ -65,6 +65,14 @@ graph LR
         "shortest"
     ]
     ```
+The app logs should print as follows:
+    ```
+    == APP - fanoutfanin == GetWordLength: Received input: word.
+    == APP - fanoutfanin == GetWordLength: Received input: is.
+    == APP - fanoutfanin == GetWordLength: Received input: the.
+    == APP - fanoutfanin == GetWordLength: Received input: shortest.
+    == APP - fanoutfanin == GetWordLength: Received input: which.
+    ```
 
 5. Use the GET request in the [`fanoutfanin.http`](./fanoutfanin.http) file to get the status of the workflow.
 
