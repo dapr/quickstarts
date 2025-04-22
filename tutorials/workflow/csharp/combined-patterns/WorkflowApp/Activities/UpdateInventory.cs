@@ -27,7 +27,7 @@ internal sealed class UpdateInventory(DaprClient daprClient) : WorkflowActivity<
             productInventory.ProductId,
             productInventory.Quantity - orderItem.Quantity);
 
-        await _daprClient.SaveStateAsync(
+        await daprClient.SaveStateAsync(
             Constants.DAPR_INVENTORY_COMPONENT,
             productInventory.ProductId,
             updatedInventory);
