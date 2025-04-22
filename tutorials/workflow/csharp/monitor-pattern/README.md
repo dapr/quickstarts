@@ -51,19 +51,32 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`monitor.http`](./monitor.http) file to start the workflow.
+4. Use the POST request in the [`monitor.http`](./monitor.http) file to start the workflow, or use this cURL command:
+
+    ```bash
+    curl -i --request POST http://localhost:5257/start/0
+    ```
 
     The input for the workflow is an integer with the value `0`.
-    
-    The app logs should show something similar to the following:
-    ```
+
+    The expected app logs are as follows:
+
+    ```text
     == APP - monitor == CheckStatus: Received input: 0.
     == APP - monitor == CheckStatus: Received input: 1.
     == APP - monitor == CheckStatus: Received input: 2.
     == APP - monitor == CheckStatus: Received input: 3.
     ```
 
-5. Use the GET request in the [`monitor.http`](./monitor.http) file to get the status of the workflow.
+    *Note that the number of app log statements can vary due to the randomization in the `CheckStatus` activity.*
+
+5. Use the GET request in the [`monitor.http`](./monitor.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3557/v1.0/workflows/dapr/<INSTANCEID>
+    ```
+
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
 
     The expected serialized output of the workflow is:
 
