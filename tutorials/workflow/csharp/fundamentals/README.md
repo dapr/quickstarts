@@ -50,7 +50,7 @@ graph LR
 
 4. Use the POST request in the [`basics.http`](./basics.http) file to start the workflow.
 
-    The input for the workflow is a string with the value `One`.
+The input for the workflow is a string with the value `One`. The expected app logs are as follows:
 
 5. Use the GET request in the [`basics.http`](./basics.http) file to get the status of the workflow.
 
