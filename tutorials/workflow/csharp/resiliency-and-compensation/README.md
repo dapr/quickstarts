@@ -1,6 +1,6 @@
 # Resiliency & Compensation
 
-This tutorial demonstrates how to improve resiliency when activities are executed and how to include compensation actions when activities return an error.
+This tutorial demonstrates how to improve resiliency when activities are executed and how to include compensation actions when activities return an error. For more on workflow resiliency read the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-features-concepts/#retry-policies).
 
 ## Inspect the code
 
