@@ -79,6 +79,14 @@ graph LR
     ]
     ```
 
+    The app logs should show both the items in the input values array being processed by each activity in the child workflow as follows:
+
+    ```
+== APP - childworkflows == Activity1: Received input: Item 1.
+== APP - childworkflows == Activity2: Received input: Item 1 is processed.
+== APP - childworkflows == Activity1: Received input: Item 2.
+== APP - childworkflows == Activity2: Received input: Item 2 is processed.
+
 5. Use the GET request in the [`childworkflows.http`](./childworkflows.http) file to get the status of the workflow.
 
     The expected serialized output of the workflow is an array with two strings:
