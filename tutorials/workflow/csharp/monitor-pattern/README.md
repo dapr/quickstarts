@@ -54,6 +54,14 @@ graph LR
 4. Use the POST request in the [`monitor.http`](./monitor.http) file to start the workflow.
 
     The input for the workflow is an integer with the value `0`.
+    
+    The app logs should show something similar to the following:
+    ```
+    == APP - monitor == CheckStatus: Received input: 0.
+    == APP - monitor == CheckStatus: Received input: 1.
+    == APP - monitor == CheckStatus: Received input: 2.
+    == APP - monitor == CheckStatus: Received input: 3.
+    ```
 
 5. Use the GET request in the [`monitor.http`](./monitor.http) file to get the status of the workflow.
 
