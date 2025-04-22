@@ -76,7 +76,13 @@ graph LR
 
 5. Use the GET request in the [`externalevents.http`](./externalevents.http) file to get the status of the workflow.
 
-    The workflow should still be running since it it waiting for an external event.
+    The workflow should still be running since it is waiting for an external event.
+    
+    The app logs should look similar to the following:
+    
+    ```
+   == APP - externalevents == Received order: Order { Id = ef4c1a3b-7eb5-4fc3-90e9-3bd606044b3a, Description = Rubber ducks, Quantity = 100, TotalPrice = 500 }.
+    ```
 
 6. Use the POST request in the [`externalevents.http`](./externalevents.http) file to send an `approval-event` to the workflow.
 
