@@ -184,60 +184,64 @@ jobs:
       #     pushd tutorials/observability
       #     make validate
       #     popd
-      - name: Validate workflow/csharp/child-workflows
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/child-workflows
-          make validate
-          popd
-      - name: Validate workflow/csharp/combined-patterns
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/combined-patterns
-          make validate
-          popd
-      - name: Validate workflow/csharp/external-system-interaction
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/external-system-interaction
-          make validate
-          popd
-      - name: Validate workflow/csharp/fan-out-fan-in
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/fan-out-fan-in
-          make validate
-          popd
-      - name: Validate workflow/csharp/fundamentals
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/fundamentals
-          make validate
-          popd
-      - name: Validate workflow/csharp/monitor-pattern
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/monitor-pattern
-          make validate
-          popd
-      - name: Validate workflow/csharp/resiliency-and-compensation
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/resiliency-and-compensation
-          make validate
-          popd
-      - name: Validate workflow/csharp/task-chaining
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/task-chaining
-          make validate
-          popd
-      - name: Validate workflow/csharp/workflow-management
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          pushd tutorials/workflow/csharp/workflow-management
-          make validate
-          popd
-      - name: Linkcheck README.md
-        run: |
-          make validate
+      # Validation for workflows is intentionally commented out.
+      # Mechanical markdown is not able to invoke the workflow services.
+      # Once this feature has been added to Mechanical Markdown the 
+      # workflow validations can be enabled.
+      #- name: Validate workflow/csharp/child-workflows
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/child-workflows
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/combined-patterns
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/combined-patterns
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/external-system-interaction
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/external-system-interaction
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/fan-out-fan-in
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/fan-out-fan-in
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/fundamentals
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/fundamentals
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/monitor-pattern
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/monitor-pattern
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/resiliency-and-compensation
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/resiliency-and-compensation
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/task-chaining
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/task-chaining
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/workflow-management
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/workflow-management
+      #    make validate
+      #    popd
+      #- name: Linkcheck README.md
+      #  run: |
+      #    make validate
