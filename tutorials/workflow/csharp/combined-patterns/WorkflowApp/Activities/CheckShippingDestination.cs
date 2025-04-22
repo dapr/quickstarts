@@ -17,7 +17,7 @@ internal sealed class CheckShippingDestination(HttpClient httpClient) : Workflow
         }
 
         var result = await response.Content.ReadFromJsonAsync<ShippingDestinationResult>();
-        return new ActivityResult(IsSuccess: result.IsSuccess);
+        return new ActivityResult(IsSuccess: result!.IsSuccess);
     }
 }
 
