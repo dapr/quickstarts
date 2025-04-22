@@ -6,7 +6,7 @@ This tutorial demonstrates how a workflow can call child workflows that are part
 
 Open the `ParentWorkflow.cs` file in the `tutorials/workflow/csharp/child-workflows/ChildWorkflows` folder. This file contains the definition for the workflow.
 
-The workflow iterates over the input array and schedules the `ChildWorkflow` for each of the input elements. The `ChildWorkflow` contains a sequence of two activities.
+The parent workflow iterates over the input array and schedules an instance of the `ChildWorkflow` for each of the input elements. The `ChildWorkflow` is a basic task-chaining workflow that contains a sequence of two activities. When all of the instances of the `ChildWorkflow` complete, then the parent workflow finishes.
 
 ### Parent workflow
 
