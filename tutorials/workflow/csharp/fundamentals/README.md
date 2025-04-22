@@ -48,11 +48,26 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`basics.http`](./basics.http) file to start the workflow.
+4. Use the POST request in the [`fundamentals.http`](./fundamentals.http) file to start the workflow, or use this cURL command:
 
-The input for the workflow is a string with the value `One`. The expected app logs are as follows:
+    ```bash
+    curl -i --request POST http://localhost:5254/start/One
+    ```
 
-5. Use the GET request in the [`basics.http`](./basics.http) file to get the status of the workflow.
+    The input for the workflow is a string with the value `One`. The expected app logs are as follows:
+
+    ```text
+    == APP - basic == Activity1: Received input: One.
+    == APP - basic == Activity2: Received input: One Two.
+    ```
+
+5. Use the GET request in the [`fundamentals.http`](./fundamentals.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3554/v1.0/workflows/dapr/<INSTANCEID>
+    ```
+
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
 
     The expected serialized output of the workflow is:
 
