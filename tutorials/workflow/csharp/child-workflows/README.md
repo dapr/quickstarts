@@ -1,6 +1,6 @@
 # Child Workflows
 
-This tutorial demonstrates how a workflow can call child workflows that are part of the same application. Child workflow can be used to break up large workflows into smaller, re-usable parts. For more information about child workflows see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-patterns/#external-system-interaction).
+This tutorial demonstrates how a workflow can call child workflows that are part of the same application. Child workflows can be used to break up large workflows into smaller, reusable parts. For more information about child workflows see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-features-concepts/#child-workflows).
 
 ## Inspect the code
 
