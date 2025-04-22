@@ -6,7 +6,7 @@ This tutorial covers the fundamentals of authoring Dapr Workflows. For more info
 
 Open the `BasicWorkflow.cs` file in the `tutorials/workflow/csharp/fundamentals/Basic` folder. This file contains the definition for the workflow.
 
-The workflow consists of two activities: `Activity1` and `Activity2`, which are called in sequence. You can find the Activity definitions in the `Activities` folder.
+The workflow consists of two activities: `Activity1` and `Activity2`, which are called in sequence, where the result of Activity1 is used as an input for Activity2. You can find the Activity definitions in the `Activities` folder.
 
 ```mermaid
 graph LR
