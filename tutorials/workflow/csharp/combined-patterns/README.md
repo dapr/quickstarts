@@ -9,7 +9,7 @@ The demo consist of two applications:
 - `WorkflowApp` is the main application that orchestrates an order process in the `OrderWorkflow`.
 - `ShippingApp` is a supporting service that is being called by the `OrderWorkflow`.
 
-The `OrderWorkflow` combines task chaining, fan-out/fan-in, and waiting for external patterns.
+The `OrderWorkflow` combines task chaining, fan-out/fan-in, and waiting for external event patterns. The workflow contains a number of activities for order processing including checking inventory, register shipment, process payment and more with a final order status being returned with the results of the order. It uses compensating logic in case the shipment fails to get registered and the customer needs to be reimbursed for the payment.
 
 ```mermaid
 graph LR
