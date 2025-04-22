@@ -65,7 +65,7 @@ graph LR
     dotnet build ./ShippingApp/
     ```
 
-3. Use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file. This starts both applications `order-workflow` and `shipping` with the Dapr components in the [resources](./resources) folder.
 
     <!-- STEP
     name: Run multi app run template
