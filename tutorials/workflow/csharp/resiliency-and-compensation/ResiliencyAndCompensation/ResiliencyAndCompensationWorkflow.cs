@@ -11,6 +11,7 @@ internal sealed class ResiliencyAndCompensationWorkflow : Workflow<int, int?>
 {
     public override async Task<int?> RunAsync(WorkflowContext context, int input)
     {
+         // This creates a retry policy that retries activities up to 3 times with an initial delay of 2 seconds.
          var defaultActivityRetryOptions = new WorkflowTaskOptions
          {
             RetryPolicy = new WorkflowRetryPolicy(
@@ -42,6 +43,10 @@ internal sealed class ResiliencyAndCompensationWorkflow : Workflow<int, int?>
                     nameof(PlusOne),
                     result1,
                     defaultActivityRetryOptions);
+
+                // A custom status message can be set on the workflow instance.
+                // This can be used to clarify anything that happened during the workflow execution.
+                context.SetCustomStatus("Compensated MinusOne activity with PlusOne activity.");
             }
         }
 

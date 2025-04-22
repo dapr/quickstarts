@@ -52,7 +52,12 @@ graph LR
     ```
     <!-- END_STEP -->
 
-4. Use the POST request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to start the workflow with a workflow input value of `1`.
+4. Use the POST request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to start the workflow with a workflow input value of `1`, or use this cURL command:
+
+    ```bash
+    curl -i --request POST \
+    --url http://localhost:5264/start/1
+    ```
 
     When the workflow input is `1`, the `MinusOne` activity will subtract `1` resulting in a `0`. This value is passed to the `Division` activity, which will throw an error because the divisor is `0`. The `Division` activity will be retried three times but all will fail the same way as the divisor has not changed. Finally the compensation action `PlusOne` will be executed, increasing the value back to `1` before returning the result.
     
@@ -66,12 +71,25 @@ graph LR
     == APP - resiliency == PlusOne: Received input: 0.
     ```
 
-5. Use the GET request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to get the status of the workflow.
+5. Use the GET request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to get the status of the workflow, or use this cURL command:
+
+    ```bash
+    curl --request GET --url http://localhost:3564/v1.0/workflows/dapr/<INSTANCEID>
+    ```
+
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
+    ```
 
     Since `1` is used as the input, the expected serialized output of the workflow is:
 
     ```txt
     "1"
+    ```
+
+    The expected serialized custom status field of the workflow output is:
+
+    ```txt
+    "\"Compensated MinusOne activity with PlusOne activity.\""
     ```
 
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
