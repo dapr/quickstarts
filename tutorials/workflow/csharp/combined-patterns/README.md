@@ -104,6 +104,7 @@ graph LR
     }
     ```
 
+The application logs should come from both services executing all activities as follows:
 5. Use the GET request in the [`order-workflow.http`](./order-workflow.http) file to get the status of the workflow.
 
     The expected serialized output of the workflow is:
