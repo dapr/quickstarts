@@ -23,6 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
+import io.dapr.exceptions.DaprException;
+import io.dapr.exceptions.DaprErrorDetails;
+import io.dapr.utils.TypeRef;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.io.InputStream;
+import reactor.core.publisher.Mono;
+import java.nio.charset.StandardCharsets;
 
 
 @RestController
@@ -41,64 +46,69 @@ public class BatchProcessingServiceController {
     private static final String sqlBindingName = "sqldb";
     
     @PostMapping(path = cronBindingPath, consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<String> processBatch() throws Exception {
+    public void processBatch() throws Exception {
         
         logger.info("Processing batch..");
 
-        Orders ordList = this.loadOrdersFromFile("orders.json");
+        //Orders ordList = this.loadOrdersFromFile("orders.json");
 
         try (DaprClient client = new DaprClientBuilder().build()) {
 
-            for (Order order : ordList.orders) {
-                String sqlText = String.format(
-                    "insert into orders (orderid, customer, price) " +
-                    "values (%s, '%s', %s);", 
-                    order.orderid, order.customer, order.price);
-                logger.info(sqlText);
+            // for (Order order : ordList.orders) {
+            //     String sqlText = String.format(
+            //         "insert into orders (orderid, customer, price) " +
+            //         "values (%s, '%s', %s);", 
+            //         order.orderid, order.customer, order.price);
+            //     logger.info(sqlText);
     
-                Map<String, String> metadata = new HashMap<String, String>();
-                metadata.put("sql", sqlText);
+            //     Map<String, String> metadata = new HashMap<String, String>();
+            //     metadata.put("sql", sqlText);
  
-                // Invoke sql output binding using Dapr SDK
-                client.invokeBinding(sqlBindingName, "exec", null, metadata).block();
-            } 
+            //     // Invoke sql output binding using Dapr SDK
+            //     client.invokeBinding(sqlBindingName, "exec", null, metadata).block();
+            // } 
 
-            logger.info("Finished processing batch");
+            // HttpBindingResponse response = new HttpBindingResponse();
+            // //Mono<HttpBindingResponse> responseMono = client.invokeBinding("http", "get", null, HttpBindingResponse.class).block();
+            // //HttpBindingResponse response = responseMono.block(); 
+            // response = client.invokeBinding("http", "get", null, HttpBindingResponse.class).block();
 
-            return ResponseEntity.ok("Finished processing batch");
+            // Raw request body
+            String rawBody = "Hello from Dapr using raw bytes!";
+            byte[] requestData = rawBody.getBytes(StandardCharsets.UTF_8);
 
-        } catch (Exception e) {
-            logger.error("Dapr client failed:", e);
-            throw e;
-        }
+            // Invoke the binding with byte[] input, expecting byte[] in response
+            Mono<HttpBindingResponse> responseMono = client.invokeBinding(
+                    "http",             // binding name
+                    "post",                      // operation
+                    requestData,                 // raw bytes in
+                    HttpBindingResponse.class    // response class with byte[] data
+            );
 
-    }
-
-    private Orders loadOrdersFromFile(String path) throws Exception {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
-            Orders obj = mapper.readValue(is, Orders.class);
-            return obj;
-        } catch (Exception e) {
-            logger.error(e.toString());
-            throw e;
-        }
-    }
-}
+            HttpBindingResponse response = responseMono.block();
             
-@Getter
-@Setter
-class Order {
-    public int orderid;
-    public String customer;
-    public float price;
+            
+            // Decode base64-encoded data string to byte[]
+            byte[] decodedBytes = response.getDecodedData();
+            String decodedText = new String(decodedBytes, StandardCharsets.UTF_8);
+
+            System.out.println("Decoded Response Body: " + decodedText);
+            System.out.println("Metadata: " + response.getMetadata());
+
+        } catch (DaprException exception) {
+            System.out.println("Dapr exception's error code: (DaprException.getErrorCode()): " + exception.getErrorCode());
+            System.out.println("Dapr exception's message: (DaprError.getMessage()) " + exception.getMessage());
+            System.out.println("Dapr exception's error details (DaprException.getErrorDetails())): " + exception.getErrorDetails().get(
+                DaprErrorDetails.ErrorDetailType.ERROR_INFO,
+                "reason",
+                TypeRef.STRING));
+            System.out.println("Dapr exception's getHttpStatusCode: (DaprException.getHttpStatusCode()): " + exception.getHttpStatusCode());
+            System.out.println("Error's payload: (DaprException.getPayload()): " + exception.getPayload());
+            if (exception.getPayload() != null){
+                System.out.println("Error's payload size: (DaprException.getPayload().length): " + exception.getPayload().length);
+            }
+          }
+
+    }
 }
 
-@Getter
-@Setter
-class Orders {
-    public List<Order> orders;
-}

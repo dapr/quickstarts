@@ -1,0 +1,10 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: http
+spec:
+  type: bindings.http
+  version: v1
+  metadata:
+    - name: url
+      value: "https://reqres.in/api/{resource}"
