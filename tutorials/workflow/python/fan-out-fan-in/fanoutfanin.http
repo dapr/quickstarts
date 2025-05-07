@@ -1,0 +1,19 @@
+@apphost=http://localhost:5256
+
+### Start the FanOutFanIn workflow
+# @name startWorkflowRequest
+POST {{ apphost }}/start
+Content-Type: application/json
+
+[
+    "which",
+    "word",
+    "is",
+    "the",
+    "shortest"
+]
+
+### Get the workflow status
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@daprHost=http://localhost:3556
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}

@@ -69,7 +69,7 @@ graph LR
     curl --request GET --url http://localhost:3554/v1.0/workflows/dapr/<INSTANCEID>
     ```
 
-    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `instance_id` property in the previous step.
 
     The expected serialized output of the workflow is:
 

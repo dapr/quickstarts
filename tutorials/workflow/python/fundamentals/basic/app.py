@@ -1,6 +1,6 @@
 from fastapi import FastAPI, status
-from dapr.ext.workflow import DaprWorkflowClient
 from basic_workflow import wf_runtime, basic_workflow
+import dapr.ext.workflow as wf
 import uvicorn
 
 app = FastAPI()
@@ -11,7 +11,7 @@ async def start_workflow(input: str):
     The DaprWorkflowClient is the API to manage workflows.
     Here it is used to schedule a new workflow instance.
     """
-    wf_client = DaprWorkflowClient()
+    wf_client = wf.DaprWorkflowClient()
     instance_id = wf_client.schedule_new_workflow(
             workflow=basic_workflow,
             input=input
