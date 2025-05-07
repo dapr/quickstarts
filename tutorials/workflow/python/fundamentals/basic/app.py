@@ -1,9 +1,16 @@
 from fastapi import FastAPI, status
+from contextlib import asynccontextmanager
 from basic_workflow import wf_runtime, basic_workflow
 import dapr.ext.workflow as wf
 import uvicorn
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    wf_runtime.start()
+    yield
+    wf_runtime.shutdown()
+
+app = FastAPI(lifespan=lifespan)
 
 @app.post("/start/{input}", status_code=status.HTTP_202_ACCEPTED)
 async def start_workflow(input: str):
@@ -19,5 +26,4 @@ async def start_workflow(input: str):
     return {"instance_id": instance_id}
 
 if __name__ == "__main__":
-    wf_runtime.start()
-    uvicorn.run(app, host="0.0.0.0", port=5254)
+    uvicorn.run(app, host="0.0.0.0", port=5254, log_level="debug")
