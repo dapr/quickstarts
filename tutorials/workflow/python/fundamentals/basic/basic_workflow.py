@@ -1,8 +1,6 @@
 
-import logging
 import dapr.ext.workflow as wf
 
-logger = logging.getLogger(__name__)
 wf_runtime = wf.WorkflowRuntime()
 
 """
@@ -32,12 +30,10 @@ There can only be one input parameter. Use a class if multiple input values are 
 """
 @wf_runtime.activity(name='activity1')
 def activity1(ctx: wf.WorkflowActivityContext, act_input: str) -> str:
-    logger.info(f'activity1: Received input: {act_input}.')
-    #print(f'activity1: Received input: {act_input}.')
+    print(f'activity1: Received input: {act_input}.')
     return f"{act_input} Two"
 
 @wf_runtime.activity(name='activity2')
 def activity2(ctx: wf.WorkflowActivityContext, act_input: str) -> str:
-    logger.info(f'activity2: Received input: {act_input}.')
-    #print(f'activity2: Received input: {act_input}.')
+    print(f'activity2: Received input: {act_input}.')
     return f"{act_input} Three"
