@@ -3,9 +3,9 @@ common:
   resourcesPath: ../../resources
 apps:
   - appID: monitor
-    appDirPath: monitor
+    appDirPath: Monitor
     appPort: 5257
     daprHTTPPort: 3557
-    command: ["python3", "app.py"]
+    command: ["dotnet", "run"]
     appLogDestination: console
     daprdLogDestination: console
