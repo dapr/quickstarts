@@ -22,4 +22,4 @@ async def start_workflow(counter: int):
     return {"instance_id": instance_id}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5257, log_level="debug")
+    uvicorn.run(app, host="0.0.0.0", port=5257)
