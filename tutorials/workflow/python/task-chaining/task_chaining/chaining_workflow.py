@@ -1,4 +1,3 @@
-
 import dapr.ext.workflow as wf
 
 wf_runtime = wf.WorkflowRuntime()
@@ -12,15 +11,15 @@ def chaining_workflow(ctx: wf.DaprWorkflowContext, wf_input: str):
 
 @wf_runtime.activity(name='activity1')
 def activity1(ctx: wf.WorkflowActivityContext, act_input: str) -> str:
-    print(f'activity1: Received input: {act_input}.')
+    print(f'activity1: Received input: {act_input}.', flush=True)
     return f"{act_input} is"
 
 @wf_runtime.activity(name='activity2')
 def activity2(ctx: wf.WorkflowActivityContext, act_input: str) -> str:
-    print(f'activity2: Received input: {act_input}.')
+    print(f'activity2: Received input: {act_input}.', flush=True)
     return f"{act_input} task"
 
 @wf_runtime.activity(name='activity3')
 def activity3(ctx: wf.WorkflowActivityContext, act_input: str) -> str:
-    print(f'activity3: Received input: {act_input}.')
+    print(f'activity3: Received input: {act_input}.', flush=True)
     return f"{act_input} chaining"
