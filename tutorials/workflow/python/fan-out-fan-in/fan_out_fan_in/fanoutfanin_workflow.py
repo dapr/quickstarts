@@ -22,5 +22,5 @@ def fanoutfanin_workflow(ctx: wf.DaprWorkflowContext, words: List[str]):
 
 @wf_runtime.activity(name='get_word_length')
 def get_word_length(ctx: wf.WorkflowActivityContext, word: str) -> WordLength:
-    print(f'get_word_length: Received input: {word}.')
+    print(f'get_word_length: Received input: {word}.', flush=True)
     return WordLength(word=word, length=len(word))
