@@ -1,0 +1,16 @@
+@apphost=http://localhost:5259
+
+### Start the ParentWorkflow workflow
+# @name startWorkflowRequest
+POST {{ apphost }}/start
+Content-Type: application/json
+
+[
+    "Item 1",
+    "Item 2"
+]
+
+### Get the workflow status
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@daprHost=http://localhost:3559
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}

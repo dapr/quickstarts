@@ -1,0 +1,30 @@
+@apphost=http://localhost:5258
+
+### Start the external_events_workflow
+# @name startWorkflowRequest
+@orderId={{$guid}}
+POST {{ apphost }}/start
+Content-Type: application/json
+
+{
+    "id": "{{orderId}}",
+    "description": "Rubber ducks",
+    "quantity": 100,
+    "total_price": 500
+}
+
+
+### Get the workflow status
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@daprHost=http://localhost:3558
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
+
+### Send an approval event
+@eventName=approval-event
+POST {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}/raiseEvent/{{ eventName }}
+Content-Type: application/json
+
+{
+    "order_id": "{{instanceId}}",
+    "is_approved": true
+}

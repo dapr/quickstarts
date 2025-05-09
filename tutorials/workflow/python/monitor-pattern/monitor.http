@@ -1,0 +1,12 @@
+@apphost=http://localhost:5257
+
+### Start the Monitor workflow
+# @name startWorkflowRequest
+@counter=0
+POST {{ apphost }}/start/{{counter}}
+
+
+### Get the workflow status
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@daprHost=http://localhost:3557
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}

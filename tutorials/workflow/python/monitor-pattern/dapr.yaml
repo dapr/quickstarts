@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: monitor
+    appDirPath: monitor
+    appPort: 5257
+    daprHTTPPort: 3557
+    command: ["python3", "app.py"]
+    appLogDestination: console
+    daprdLogDestination: console

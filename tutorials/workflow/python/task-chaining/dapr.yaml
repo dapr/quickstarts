@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: chaining
+    appDirPath: task_chaining
+    appPort: 5255
+    daprHTTPPort: 3555
+    command: ["python3", "app.py"]
+    appLogDestination: console
+    daprdLogDestination: console
