@@ -26,6 +26,10 @@ class ShipmentRegistrationStatus:
     is_success: bool
     message: str = None
 
+    @staticmethod
+    def from_dict(dict):
+        return ShipmentRegistrationStatus(**dict)
+
 @dataclass
 class CustomerInfo:
     id: str
@@ -43,6 +47,15 @@ class Order:
     id: str
     order_item: OrderItem
     customer_info: CustomerInfo
+
+    @staticmethod
+    def from_dict(dict):
+        return Order(**dict)
+
+@dataclass
+class OrderStatus:
+    is_success: bool
+    message: str
 
 @dataclass
 class ActivityResult:
@@ -62,6 +75,6 @@ class ReimburseCustomerResult:
     is_success: bool
 
 @dataclass
-class UpateInventoryResult:
+class UpdateInventoryResult:
     is_success: bool
     message: str = None
