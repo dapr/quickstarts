@@ -15,29 +15,32 @@ def create_default_inventory() -> None:
         dapr_client.save_state(
             store_name=DAPR_INVENTORY_COMPONENT,
             key=product_inventory_item.product_id,
-            value=product_inventory_item
+            value=pickle.dumps(product_inventory_item)
         )
 
-def get_inventory_item(product_id: str) -> ProductInventoryItem:
-    print(f'get_inventory_item: {product_id}.', flush=True)
+def get_inventory_item(product_id: str) -> ProductInventoryItem | None:
+    print(f'im get_inventory_item: {product_id}.', flush=True)
     with DaprClient() as dapr_client:
         state_response = dapr_client.get_state(
             store_name=DAPR_INVENTORY_COMPONENT,
             key=product_id
         )
-
-        if state_response.data is None:
-            print(f'get_inventory_item: no state response', flush=True)
-            return None
         
+        if not state_response.data:
+            print(f'im get_inventory_item: no state response', flush=True)
+            return None
         product_inventory_item = pickle.loads(state_response.data)
+        print(f'im get_inventory_item: {product_inventory_item}', flush=True)
         return product_inventory_item
 
 def check_inventory(order_item: OrderItem) -> bool:
-    print(f'check_inventory: {order_item.product_id}.', flush=True)
+    print(f'im check_inventory: {order_item.product_id}.', flush=True)
     product_inventory_item = get_inventory_item(order_item.product_id)
-    is_available = product_inventory_item.quantity > order_item.quantity
-    return is_available
+    if product_inventory_item is None:
+        return False
+    else:
+        is_available = product_inventory_item.quantity >= order_item.quantity
+        return is_available
 
 def update_inventory(order_item: OrderItem) -> UpdateInventoryResult:
     print(f'update_inventory: {order_item.product_id}.', flush=True)
@@ -54,8 +57,9 @@ def update_inventory(order_item: OrderItem) -> UpdateInventoryResult:
         quantity=product_inventory_item.quantity - order_item.quantity
     )
     with DaprClient() as dapr_client:
-        state_response = dapr_client.save_state(
+        dapr_client.save_state(
             store_name=DAPR_INVENTORY_COMPONENT,
-            key=updated_inventory.product_id
+            key=updated_inventory.product_id,
+            value=pickle.dumps(updated_inventory)
         )
-        product_inventory_item = pickle.loads(state_response.data)
+    return UpdateInventoryResult(is_success=True, message=f"Inventory updated for {order_item.product_name}")

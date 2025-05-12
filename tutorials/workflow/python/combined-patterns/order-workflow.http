@@ -8,19 +8,19 @@ Content-Type: application/json
 
 {
     "id": "{{orderId}}",
-    "orderItem" : {
-        "productId": "RBD001",
-        "productName": "Rubber Duck",
+    "order_item" : {
+        "product_id": "RBD001",
+        "product_name": "Rubber Duck",
         "quantity": 10,
-        "totalPrice": 15.00
+        "total_price": 15.00
     },
-    "customerInfo" : {
+    "customer_info" : {
         "id" : "Customer1",
         "country" : "The Netherlands"
     }
 }
 
 ### Get the workflow status
-@instanceId={{startWorkflowRequest.response.headers.Location}}
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
 @daprHost=http://localhost:3560
 GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}

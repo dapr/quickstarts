@@ -10,7 +10,7 @@ apps:
     appLogDestination: fileAndConsole
     daprdLogDestination: fileAndConsole
   - appID: shipping
-    appDirPath: shipping-app
+    appDirPath: shipping_app
     appPort: 5261
     daprHTTPPort: 3561
     command: ["python3", "app.py"]
