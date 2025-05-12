@@ -48,10 +48,6 @@ class Order:
     order_item: OrderItem
     customer_info: CustomerInfo
 
-    @staticmethod
-    def from_dict(dict):
-        return Order(**dict)
-
 @dataclass
 class OrderStatus:
     is_success: bool

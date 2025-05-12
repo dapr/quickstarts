@@ -1,8 +1,10 @@
 from dapr.clients import DaprClient
 from datetime import timedelta
 from models import Order, OrderItem,OrderStatus, ActivityResult, ShippingDestinationResult, ShipmentRegistrationStatus, PaymentResult, RegisterShipmentResult, ReimburseCustomerResult, UpdateInventoryResult
+import type_conversion
 import dapr.ext.workflow as wf
 import inventory_management as im
+import pickle
 
 SHIPMENT_REGISTERED_EVENT = "shipment-registered-events"
 DAPR_PUBSUB_COMPONENT = "shippingpubsub"
@@ -12,15 +14,15 @@ wf_runtime = wf.WorkflowRuntime()
 
 @wf_runtime.workflow(name='order_workflow')
 def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
-    # First, two independent activities are called in parallel (fan-out/fan-in pattern):
-    if not ctx.is_replaying:
-        newOrder = Order.from_dict(order);
-        print(f'order_workflow: Received input: {newOrder}.', flush=True)
-        print(f'order_workflow: Received order_item: {newOrder.order_item}.', flush=True)
-        print(f'order_workflow: Received product_id: {newOrder.order_item.product_id}.', flush=True)
+    
+    # Convert the SimpleNamespace type to the Order dataclass to preserve the nested structure.
+    order = type_conversion.convert_to_dataclass(order, Order);
+    if not ctx.is_replay:
+        print(f'order_workflow: order id: {order.order_item.product_id}.', flush=True)
 
+    # First, two independent activities are called in parallel (fan-out/fan-in pattern):
     tasks = [
-        #ctx.call_activity(check_inventory, input=order.order_item),
+        ctx.call_activity(check_inventory, input=order.order_item),
         ctx.call_activity(check_shipping_destination, input=order)
         ]
     task_results = yield wf.when_all(tasks);
