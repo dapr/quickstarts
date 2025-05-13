@@ -1,30 +1,26 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
+from typing import Optional
 
-@dataclass
-class ShipmentRegistrationStatus:
+class ShipmentRegistrationStatus(BaseModel):
     order_id: str
     is_success: bool
-    message: str = None
+    message: Optional[str] = None
 
-@dataclass
-class ShippingDestinationResult:
+class ShippingDestinationResult(BaseModel):
     is_success: bool
-    message: str = None
+    message: Optional[str] = None
 
-@dataclass
-class CustomerInfo:
+class CustomerInfo(BaseModel):
     id: str
     country: str
 
-@dataclass
-class OrderItem:
+class OrderItem(BaseModel):
     product_id: str
     product_name: str
     quantity: int
     total_price: float
 
-@dataclass
-class Order:
+class Order(BaseModel):
     id: str
     order_item: OrderItem
     customer_info: CustomerInfo

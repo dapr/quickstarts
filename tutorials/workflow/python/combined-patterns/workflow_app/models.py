@@ -1,76 +1,72 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
+from typing import Optional
 
-@dataclass
-class ProductInventory:
+class ProductInventory(BaseModel):
     product_id: str
     quantity: int
 
-@dataclass
-class ProductInventoryItem:
+class ProductInventoryItem(BaseModel):
     product_id: str
     product_name: str
     quantity: int
 
-@dataclass
-class ShippingDestinationResult:
+class ShippingDestinationResult(BaseModel):
     is_success: bool
-    message: str = None
+    message: Optional[str] = None
 
     @staticmethod
     def from_dict(dict):
         return ShippingDestinationResult(**dict)
 
-@dataclass
-class ShipmentRegistrationStatus:
+class ShipmentRegistrationStatus(BaseModel):
     order_id: str
     is_success: bool
-    message: str = None
+    message: Optional[str] = None
 
     @staticmethod
     def from_dict(dict):
         return ShipmentRegistrationStatus(**dict)
 
-@dataclass
-class CustomerInfo:
+class CustomerInfo(BaseModel):
     id: str
     country: str
 
-@dataclass
-class OrderItem:
+    @staticmethod
+    def from_dict(dict):
+        return CustomerInfo(**dict)
+
+class OrderItem(BaseModel):
     product_id: str
     product_name: str
     quantity: int
     total_price: float
 
-@dataclass
-class Order:
+    @staticmethod
+    def from_dict(dict):
+        return OrderItem(**dict)
+
+class Order(BaseModel):
     id: str
     order_item: OrderItem
     customer_info: CustomerInfo
 
-@dataclass
-class OrderStatus:
+class OrderStatus(BaseModel):
     is_success: bool
-    message: str
+    message: Optional[str] = None
 
-@dataclass
-class ActivityResult:
+class ActivityResult(BaseModel):
     is_success: bool
-    message: str = None
+    message: Optional[str] = None
 
-@dataclass
-class PaymentResult:
+class PaymentResult(BaseModel):
     is_success: bool
 
-@dataclass
-class RegisterShipmentResult:
+class RegisterShipmentResult(BaseModel):
     is_success: bool
 
-@dataclass
-class ReimburseCustomerResult:
+class ReimburseCustomerResult(BaseModel):
     is_success: bool
 
-@dataclass
-class UpdateInventoryResult:
+class UpdateInventoryResult(BaseModel):
     is_success: bool
-    message: str = None
+    message: Optional[str] = None
