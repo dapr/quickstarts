@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import static io.dapr.springboot.examples.StringMatchesUUIDPattern.matchesThePatternOfAUUID;
 import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = {TestExternalEventsApplication.class, DaprTestContainersConfig.class,

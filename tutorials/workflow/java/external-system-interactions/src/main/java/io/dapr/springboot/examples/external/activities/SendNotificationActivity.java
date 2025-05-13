@@ -20,13 +20,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /*
+ * SendNotificationActivity simulates sending a notification
  */
 @Component
 public class SendNotificationActivity implements WorkflowActivity {
-
-  /*
-
-   */
 
   @Override
   public Object run(WorkflowActivityContext ctx) {
