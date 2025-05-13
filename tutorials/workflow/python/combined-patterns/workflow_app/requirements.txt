@@ -1,3 +1,6 @@
 dapr>=1.15.0
 dapr-ext-workflow>=1.15.0
 fastapi>=0.115.0
+fastapi-cloudevents>=2.0.2
+pydantic>=2.11.4
+uvicorn>=0.34.2

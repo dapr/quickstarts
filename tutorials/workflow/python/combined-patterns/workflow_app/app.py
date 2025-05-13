@@ -1,7 +1,8 @@
 from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
 from order_workflow import wf_runtime, order_workflow, SHIPMENT_REGISTERED_EVENT
-from models import Order, ShipmentRegistrationStatus, ProductInventory
+from models import Order, ShipmentRegistrationStatus
+from fastapi_cloudevents import CloudEvent
 import inventory_management as im
 import dapr.ext.workflow as wf
 import uvicorn
@@ -15,17 +16,19 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 @app.post("/start", status_code=status.HTTP_202_ACCEPTED)
-async def start_workflow(order: Order):
+async def start_workflow(order: Order) -> None:
     """ 
     This is to ensure to have enough inventory for the order.
     So the manual restock endpoint is not needed in this sample.
     """
     im.create_default_inventory();
+    print(f"start: Received input: {order}.", flush=True)
 
     wf_client = wf.DaprWorkflowClient()
     instance_id = wf_client.schedule_new_workflow(
             workflow=order_workflow,
-            input=order
+            input=order.model_dump(),
+            instance_id=order.id
         )
     return {"instance_id": instance_id}
 
@@ -35,14 +38,20 @@ It uses the workflow management API to raise an event to the workflow instance t
 shipment has been registered by the ShippingApp.
 """
 @app.post("/shipmentRegistered", status_code=status.HTTP_202_ACCEPTED)
-async def start_workflow(status: ShipmentRegistrationStatus):
-    print(f"Shipment registered for order {status.order_id}.", flush=True)
+async def shipment_registered(cloud_event: CloudEvent) -> None:
+    print(f"shipmentRegistered: Received input: {cloud_event}.", flush=True)
+
+    print(f"shipmentRegistered: cloud_event data {cloud_event.data}.", flush=True)
+    
+    status = ShipmentRegistrationStatus.model_validate(cloud_event.data)
+    print(f"shipmentRegistered: converted status {status}.", flush=True)
+    print(f"shipmentRegistered: order {status.order_id}.", flush=True)
 
     wf_client = wf.DaprWorkflowClient()
     wf_client.raise_workflow_event(
             instance_id=status.order_id,
             event_name=SHIPMENT_REGISTERED_EVENT,
-            data=status
+            data=status.model_dump_json()
         )
 
 if __name__ == "__main__":
