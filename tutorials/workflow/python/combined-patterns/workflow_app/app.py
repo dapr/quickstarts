@@ -51,7 +51,7 @@ async def shipment_registered(cloud_event: CloudEvent) -> None:
     wf_client.raise_workflow_event(
             instance_id=status.order_id,
             event_name=SHIPMENT_REGISTERED_EVENT,
-            data=status.model_dump_json()
+            data=status.model_dump()
         )
 
 if __name__ == "__main__":
