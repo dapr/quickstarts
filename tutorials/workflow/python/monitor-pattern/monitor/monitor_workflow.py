@@ -24,4 +24,4 @@ def monitor_workflow(ctx: wf.DaprWorkflowContext, counter: int):
 def check_status(ctx: wf.WorkflowActivityContext, act_input: int) -> Status:
     print(f'check_status: Received input: {act_input}.', flush=True)
     is_ready = True if random.randint(0, act_input) > 1 else False
-    return Status(isReady=isReady)
+    return Status(is_ready = is_ready)
