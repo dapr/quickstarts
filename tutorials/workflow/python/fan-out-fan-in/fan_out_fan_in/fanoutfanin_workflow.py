@@ -16,8 +16,7 @@ def fanoutfanin_workflow(ctx: wf.DaprWorkflowContext, words: List[str]):
         ctx.call_activity(get_word_length, input=word) for word in words
     ]
     all_word_lengths = yield wf.when_all(tasks)
-    sorted_word_lengths = sorted(all_word_lengths, key=lambda x: x.length)
-    shortest_word = sorted_word_lengths[0]
+    shortest_word = min(all_word_lengths, key=lambda x: x.length)
     return shortest_word.word
 
 @wf_runtime.activity(name='get_word_length')
