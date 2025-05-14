@@ -18,10 +18,10 @@ app = FastAPI(lifespan=lifespan)
 @app.post("/start", status_code=status.HTTP_202_ACCEPTED)
 async def start_workflow(order: Order) -> None:
     """ 
-    This is to ensure to have enough inventory for the order.
-    So the manual restock endpoint is not needed in this sample.
+    create_default_inventory is used to ensure to have enough inventory for the order.
     """
     im.create_default_inventory();
+
     print(f"start: Received input: {order}.", flush=True)
 
     wf_client = wf.DaprWorkflowClient()
@@ -39,13 +39,8 @@ shipment has been registered by the ShippingApp.
 """
 @app.post("/shipmentRegistered", status_code=status.HTTP_202_ACCEPTED)
 async def shipment_registered(cloud_event: CloudEvent) -> None:
-    print(f"shipmentRegistered: Received input: {cloud_event}.", flush=True)
-
-    print(f"shipmentRegistered: cloud_event data {cloud_event.data}.", flush=True)
-    
     status = ShipmentRegistrationStatus.model_validate(cloud_event.data)
-    print(f"shipmentRegistered: converted status {status}.", flush=True)
-    print(f"shipmentRegistered: order {status.order_id}.", flush=True)
+    print(f"shipmentRegistered: Received input: {status}.", flush=True)
 
     wf_client = wf.DaprWorkflowClient()
     wf_client.raise_workflow_event(
@@ -53,6 +48,7 @@ async def shipment_registered(cloud_event: CloudEvent) -> None:
             event_name=SHIPMENT_REGISTERED_EVENT,
             data=status.model_dump()
         )
+    return
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5260, log_level="debug")

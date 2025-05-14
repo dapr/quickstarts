@@ -19,7 +19,6 @@ def create_default_inventory() -> None:
         )
 
 def get_inventory_item(product_id: str) -> ProductInventoryItem | None:
-    print(f'im get_inventory_item: {product_id}.', flush=True)
     with DaprClient() as dapr_client:
         state_response = dapr_client.get_state(
             store_name=DAPR_INVENTORY_COMPONENT,
@@ -34,7 +33,6 @@ def get_inventory_item(product_id: str) -> ProductInventoryItem | None:
         return product_inventory_item
 
 def check_inventory(order_item: OrderItem) -> bool:
-    print(f'im check_inventory: {order_item.product_id}.', flush=True)
     product_inventory_item = get_inventory_item(order_item.product_id)
     if product_inventory_item is None:
         return False
@@ -43,9 +41,8 @@ def check_inventory(order_item: OrderItem) -> bool:
         return is_available
 
 def update_inventory(order_item: OrderItem) -> UpdateInventoryResult:
-    print(f'update_inventory: {order_item.product_id}.', flush=True)
     product_inventory_item = get_inventory_item(order_item.product_id)
-    
+
     if product_inventory_item is None:
         return UpdateInventoryResult(is_success=False, message=f"Product not in inventory: {order_item.ProductName}")
 
