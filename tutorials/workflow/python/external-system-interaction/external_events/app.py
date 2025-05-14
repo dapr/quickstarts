@@ -21,7 +21,8 @@ async def start_workflow(order: Order):
     wf_client = wf.DaprWorkflowClient()
     instance_id = wf_client.schedule_new_workflow(
             workflow=external_events_workflow,
-            input=order
+            input=order,
+            instance_id=order.id
         )
     return {"instance_id": instance_id}
 
