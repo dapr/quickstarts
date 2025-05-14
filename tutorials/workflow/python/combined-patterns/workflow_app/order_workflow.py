@@ -1,11 +1,8 @@
 from dapr.clients import DaprClient
 from datetime import timedelta
-from models import Order, OrderItem, CustomerInfo, OrderStatus, ActivityResult, ShippingDestinationResult, ShipmentRegistrationStatus, PaymentResult, RegisterShipmentResult, ReimburseCustomerResult, UpdateInventoryResult
-from dataclasses import asdict
+from models import Order, OrderItem, CustomerInfo, OrderStatus, ActivityResult, ShippingDestinationResult, ShipmentRegistrationStatus, PaymentResult, RegisterShipmentResult, ReimburseCustomerResult
 import dapr.ext.workflow as wf
 import inventory_management as im
-import jsonpickle
-from pydantic import BaseModel
 
 SHIPMENT_REGISTERED_EVENT = "shipment-registered-events"
 DAPR_PUBSUB_COMPONENT = "shippingpubsub"
@@ -40,10 +37,10 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
     if payment_result.is_success:
         yield ctx.call_activity(update_inventory, input=order.order_item.model_dump())
 
-    # The register_shipment activity is using pub/sub messaging to communicate with the ShippingApp.
+    # The register_shipment activity is using pub/sub messaging to communicate with the shipping_app.
     yield ctx.call_activity(register_shipment, input=order.model_dump())
 
-    # The shipping_app will also use pub/sub messaging back to the WorkflowApp and raise an event.
+    # The shipping_app will also use pub/sub messaging back to the workflow_app and raise an event.
     # The workflow will wait for the event to be received or until the timeout occurs.
     shipment_registered_task = ctx.wait_for_external_event(name=SHIPMENT_REGISTERED_EVENT)
     timeout_task = ctx.create_timer(fire_at=timedelta(seconds=300))
@@ -52,16 +49,13 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
         # Timeout occurred, the shipment-registered-event was not received.
         message = f"Shipment registration status for {order.id} timed out."
         return OrderStatus(is_success=False, message=message)
-    
-    if not ctx.is_replaying:
-        print(f'order_workflow: Shipment registration status: {shipment_registered_task.get_result()}.', flush=True)
+
     shipment_registration_status = ShipmentRegistrationStatus.model_validate(shipment_registered_task.get_result())
     if not shipment_registration_status.is_success:
         # This is the compensation step in case the shipment registration event was not successful.
         yield ctx.call_activity(reimburse_customer, input=order.model_dump())
         message = f"Shipment registration status for {order.id} failed. Customer is reimbursed."
         return OrderStatus(is_success = False, message = message);
-    
     return OrderStatus(is_success=True, message=f"Order {order.id} processed successfully.")
 
 @wf_runtime.activity(name='check_inventory')
@@ -85,7 +79,7 @@ def check_shipping_destination(ctx: wf.WorkflowActivityContext, customer_info: C
             print(f'Failed to register shipment. Reason: {response.text}.', flush=True)
             raise Exception(f"Failed to register shipment. Reason: {response.text}.")
         result = ShippingDestinationResult.model_validate(response.json())
-        return ActivityResult(is_success=result.is_success).model_dump()
+    return ActivityResult(is_success=result.is_success).model_dump()
 
 @wf_runtime.activity(name='process_payment')
 def process_payment(ctx: wf.WorkflowActivityContext, order: Order) -> PaymentResult:
@@ -117,5 +111,4 @@ def register_shipment(ctx: wf.WorkflowActivityContext, order: Order) -> Register
             data=order.model_dump_json(),
             data_content_type='application/json'
         )
-        print(f'register_shipment: response: {response}.', flush=True)
-        return RegisterShipmentResult(is_success=True).model_dump()
+    return RegisterShipmentResult(is_success=True).model_dump()

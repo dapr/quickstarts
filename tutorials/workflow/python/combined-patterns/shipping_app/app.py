@@ -15,12 +15,11 @@ async def check_destination(customer_info: CustomerInfo):
     print(f"checkDestination: Received input: {customer_info}.", flush=True)
     return ShippingDestinationResult(is_success=True)
 
-@app.post("/registerShipment", status_code=status.HTTP_201_CREATED, response_model=None)
+@app.post("/registerShipment", status_code=status.HTTP_201_CREATED)
 async def register_shipment(cloud_event: CloudEvent) -> None:
     order = Order.model_validate(cloud_event.data)
-    print(f"registerShipment: Received input: {cloud_event}.", flush=True)
+    print(f"registerShipment: Received input: {order}.", flush=True)
 
-    print(f"registerShipment: Converted to order: {order}.", flush=True)
     status = ShipmentRegistrationStatus(order_id=order.id, is_success=True)
 
     with DaprClient() as dapr_client:
