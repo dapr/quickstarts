@@ -77,7 +77,7 @@ graph LR
         "id": "{{orderId}}",
         "description": "Rubber ducks",
         "quantity": 100,
-        "totalPrice": 500
+        "total_price": 500
     }
     ```
 
