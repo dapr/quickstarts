@@ -67,7 +67,7 @@ graph LR
     curl -i --request POST \
     --url http://localhost:5258/start \
     --header 'content-type: application/json' \
-    --data '{"id": "b7dd836b-e913-4446-9912-d400befebec5","description": "Rubber ducks","quantity": 100,"totalPrice": 500}'
+    --data '{"id": "b7dd836b-e913-4446-9912-d400befebec5","description": "Rubber ducks","quantity": 100,"total_price": 500}'
     ```
 
     The input for the workflow is an `Order` object:
