@@ -15,8 +15,7 @@ def monitor_workflow(ctx: wf.DaprWorkflowContext, counter: int):
 
     if not status. is_ready:
         yield ctx.create_timer(fire_at=timedelta(seconds=2))
-        counter += 1
-        yield ctx.continue_as_new(counter)
+        yield ctx.continue_as_new(counter + 1)
 
     return f"Status is healthy after {counter} times."
 
