@@ -13,7 +13,7 @@ class Status:
 def monitor_workflow(ctx: wf.DaprWorkflowContext, counter: int):
     status = yield ctx.call_activity(check_status, input=counter)
 
-    if not status.isReady:
+    if not status. is_ready:
         yield ctx.create_timer(fire_at=timedelta(seconds=2))
         counter += 1
         yield ctx.continue_as_new(counter)
