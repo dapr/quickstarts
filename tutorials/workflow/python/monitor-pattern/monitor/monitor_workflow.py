@@ -7,7 +7,7 @@ wf_runtime = wf.WorkflowRuntime()
 
 @dataclass
 class Status:
-    isReady: bool
+    is_ready: bool
 
 @wf_runtime.workflow(name='monitor_workflow')
 def monitor_workflow(ctx: wf.DaprWorkflowContext, counter: int):
