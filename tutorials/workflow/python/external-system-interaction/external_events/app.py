@@ -14,6 +14,8 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/start", status_code=status.HTTP_202_ACCEPTED)
 async def start_workflow(order: Order):
+    print(f"Received order: {order}")
+
     """
     The DaprWorkflowClient is the API to manage workflows.
     Here it is used to schedule a new workflow instance.

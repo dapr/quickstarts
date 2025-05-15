@@ -59,7 +59,7 @@ graph LR
     --url http://localhost:5264/start/1
     ```
 
-    When the workflow input is `1`, the `MinusOne` activity will subtract `1` resulting in a `0`. This value is passed to the `Division` activity, which will throw an error because the divisor is `0`. The `Division` activity will be retried three times but all will fail the same way as the divisor has not changed. Finally the compensation action `PlusOne` will be executed, increasing the value back to `1` before returning the result.
+    When the workflow input is `1`, the `minus_one` activity will subtract `1` resulting in a `0`. This value is passed to the `division` activity, which will throw an error because the divisor is `0`. The `division` activity will be retried three times but all will fail the same way as the divisor has not changed. Finally the compensation action `plus_one` will be executed, increasing the value back to `1` before returning the result.
 
     The app logs should output the following:
 

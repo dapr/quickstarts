@@ -4,7 +4,7 @@ This tutorial demonstrates how a workflow can call child workflows that are part
 
 ## Inspect the code
 
-Open the `ParentWorkflow.cs` file in the `tutorials/workflow/python/child-workflows/child_workflows` folder. This file contains the definition for the workflows and activities.
+Open the `parent_child_workflow.py` file in the `tutorials/workflow/python/child-workflows/child_workflows` folder. This file contains the definition for the workflows and activities.
 
 The parent workflow iterates over the input array and schedules an instance of the `child_workflow` for each of the input elements. The `child_workflow` is a basic task-chaining workflow that contains a sequence of two activities. When all of the instances of the `child_workflow` complete, then the `parent_workflow` finishes.
 

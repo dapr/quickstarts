@@ -12,12 +12,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@app.post("/start/{input}", status_code=status.HTTP_202_ACCEPTED)
-async def start_workflow(input: int):
+@app.post("/start/{wf_input}", status_code=status.HTTP_202_ACCEPTED)
+async def start_workflow(wf_input: int):
     wf_client = wf.DaprWorkflowClient()
     instance_id = wf_client.schedule_new_workflow(
             workflow=resiliency_and_compensation_workflow,
-            input=input
+            input=wf_input
         )
     return {"instance_id": instance_id}
 

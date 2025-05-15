@@ -74,7 +74,7 @@ graph LR
 
     ```json
     {
-        "id": "{{orderId}}",
+        "id": "b7dd836b-e913-4446-9912-d400befebec5",
         "description": "Rubber ducks",
         "quantity": 100,
         "total_price": 500
@@ -92,7 +92,7 @@ graph LR
     The app logs should look similar to the following:
 
     ```text
-   == APP - externalevents == Received order: Order { Id = b7dd836b-e913-4446-9912-d400befebec5, Description = Rubber ducks, Quantity = 100, TotalPrice = 500 }.
+   == APP - externalevents == Received order: Order { id = b7dd836b-e913-4446-9912-d400befebec5, description = Rubber ducks, quantity = 100, total_price = 500.0 }.
     ```
 
 6. Use the POST request in the [`externalevents.http`](./externalevents.http) file to send an `approval-event` to the workflow, or use this cURL command:
@@ -108,7 +108,7 @@ graph LR
 
     ```json
     {
-        "order_id": "{{instanceId}}",
+        "order_id": "b7dd836b-e913-4446-9912-d400befebec5",
         "is_approved": true
     }
     ```
