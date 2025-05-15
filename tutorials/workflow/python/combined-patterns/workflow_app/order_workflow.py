@@ -14,7 +14,7 @@ wf_runtime = wf.WorkflowRuntime()
 def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
     order = Order.model_validate(order);
     if not ctx.is_replaying:
-        print(f'order_workflow: Received order id: {order.order_item.product_id}.', flush=True)
+        print(f'order_workflow: Received order id: {order.id}.', flush=True)
     
     # First, two independent activities are called in parallel (fan-out/fan-in pattern):
     tasks = [

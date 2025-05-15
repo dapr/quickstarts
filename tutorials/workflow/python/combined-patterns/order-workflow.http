@@ -1,6 +1,6 @@
 @apphost=http://localhost:5260
 
-### Start the OrderWorkflow workflow
+### Start the order_workflow
 # @name startWorkflowRequest
 @orderId={{$guid}}
 POST {{ apphost }}/start
