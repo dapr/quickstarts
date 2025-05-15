@@ -62,13 +62,13 @@ graph LR
     The expected app logs are as follows:
 
     ```text
-    == APP - monitor == CheckStatus: Received input: 0.
-    == APP - monitor == CheckStatus: Received input: 1.
-    == APP - monitor == CheckStatus: Received input: 2.
-    == APP - monitor == CheckStatus: Received input: 3.
+    == APP - monitor == check_status: Received input: 0.
+    == APP - monitor == check_status: Received input: 1.
+    == APP - monitor == check_status: Received input: 2.
+    == APP - monitor == check_status: Received input: 3.
     ```
 
-    *Note that the number of app log statements can vary due to the randomization in the `CheckStatus` activity.*
+    *Note that the number of app log statements can vary due to the randomization in the `check_status` activity.*
 
 5. Use the GET request in the [`monitor.http`](./monitor.http) file to get the status of the workflow, or use this cURL command:
 
@@ -84,6 +84,6 @@ graph LR
     "\"Status is healthy after checking 3 times.\""
     ```
 
-    *The actual number of checks can vary since some randomization is used in the `CheckStatus` activity.*
+    *The actual number of checks can vary since some randomization is used in the `check_status` activity.*
 
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

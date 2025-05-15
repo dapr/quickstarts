@@ -76,11 +76,11 @@ graph LR
     The expected app logs are as follows:
 
     ```text
-    == APP - fanoutfanin == GetWordLength: Received input: word.
-    == APP - fanoutfanin == GetWordLength: Received input: is.
-    == APP - fanoutfanin == GetWordLength: Received input: the.
-    == APP - fanoutfanin == GetWordLength: Received input: shortest.
-    == APP - fanoutfanin == GetWordLength: Received input: which.
+    == APP - fanoutfanin == get_word_length: Received input: word.
+    == APP - fanoutfanin == get_word_length: Received input: is.
+    == APP - fanoutfanin == get_word_length: Received input: the.
+    == APP - fanoutfanin == get_word_length: Received input: shortest.
+    == APP - fanoutfanin == get_word_length: Received input: which.
     ```
 
     > Note that the order of the logs may vary.
