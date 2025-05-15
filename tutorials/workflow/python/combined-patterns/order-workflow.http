@@ -1,0 +1,26 @@
+@apphost=http://localhost:5260
+
+### Start the order_workflow
+# @name startWorkflowRequest
+@orderId={{$guid}}
+POST {{ apphost }}/start
+Content-Type: application/json
+
+{
+    "id": "{{orderId}}",
+    "order_item" : {
+        "product_id": "RBD001",
+        "product_name": "Rubber Duck",
+        "quantity": 10,
+        "total_price": 15.00
+    },
+    "customer_info" : {
+        "id" : "Customer1",
+        "country" : "The Netherlands"
+    }
+}
+
+### Get the workflow status
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@daprHost=http://localhost:3560
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
