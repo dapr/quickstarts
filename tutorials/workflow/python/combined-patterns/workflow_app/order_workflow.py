@@ -26,7 +26,7 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
 
     if any(not task_result.is_success for task_result in task_results):
         message = f"Order processing failed. Reason: {next(task_result for task_result in task_results if not task_result.is_success).message}"
-        return OrderStatus(is_success=False, message=message)
+        return OrderStatus(is_success=False, message=message).model_dump()
 
     # Two activities are called in sequence (chaining pattern) where the update_inventory
     # activity is dependent on the result of the process_payment activity:
@@ -48,15 +48,15 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
     if winner == timeout_task:
         # Timeout occurred, the shipment-registered-event was not received.
         message = f"Shipment registration status for {order.id} timed out."
-        return OrderStatus(is_success=False, message=message)
+        return OrderStatus(is_success=False, message=message).model_dump()
 
     shipment_registration_status = ShipmentRegistrationStatus.model_validate(shipment_registered_task.get_result())
     if not shipment_registration_status.is_success:
         # This is the compensation step in case the shipment registration event was not successful.
         yield ctx.call_activity(reimburse_customer, input=order.model_dump())
         message = f"Shipment registration status for {order.id} failed. Customer is reimbursed."
-        return OrderStatus(is_success = False, message = message);
-    return OrderStatus(is_success=True, message=f"Order {order.id} processed successfully.")
+        return OrderStatus(is_success = False, message = message).model_dump()
+    return OrderStatus(is_success=True, message=f"Order {order.id} processed successfully.").model_dump()
 
 @wf_runtime.activity(name='check_inventory')
 def check_inventory(ctx: wf.WorkflowActivityContext, order_item: OrderItem) -> ActivityResult:
