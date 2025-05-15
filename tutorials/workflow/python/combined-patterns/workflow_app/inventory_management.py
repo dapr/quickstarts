@@ -26,10 +26,10 @@ def get_inventory_item(product_id: str) -> ProductInventoryItem | None:
         )
         
         if not state_response.data:
-            print(f'im get_inventory_item: no state response', flush=True)
+            print(f'get_inventory_item: no state response', flush=True)
             return None
         product_inventory_item = pickle.loads(state_response.data)
-        print(f'im get_inventory_item: {product_inventory_item}', flush=True)
+        print(f'get_inventory_item: {product_inventory_item}', flush=True)
         return product_inventory_item
 
 def check_inventory(order_item: OrderItem) -> bool:
