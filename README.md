@@ -1,5 +1,5 @@
 # Dapr Quickstarts and Tutorials
-
+<!-- IGNORE_LINKS -->
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/dapr/quickstarts/.github%2Fworkflows%2Fbuild.yml?branch=master&label=Build&logo=github&style=flat)](https://github.com/dapr/quickstarts/actions/workflows/build.yml)
 [![Discord](https://img.shields.io/discord/778680217417809931?label=Discord&style=flat&logo=discord)](https://discord.com/channels/778680217417809931/778680217417809934)
 [![GitHub License](https://img.shields.io/github/license/dapr/quickstarts?style=flat&label=License&logo=github)](https://github.com/dapr/quickstarts/blob/master/LICENSE)
