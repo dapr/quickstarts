@@ -1,8 +1,12 @@
 # Dapr Quickstarts and Tutorials
-
-[![Build Status](https://github.com/dapr/quickstarts/workflows/samples/badge.svg?event=push&branch=master)](https://github.com/dapr/quickstarts/actions?workflow=samples)
-[![Discord](https://img.shields.io/discord/778680217417809931)](https://discord.com/channels/778680217417809931/778680217417809934)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache-yellow.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+<!-- IGNORE_LINKS -->
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/dapr/quickstarts/.github%2Fworkflows%2Fbuild.yml?branch=master&label=Build&logo=github&style=flat)](https://github.com/dapr/quickstarts/actions/workflows/build.yml)
+[![Discord](https://img.shields.io/discord/778680217417809931?label=Discord&style=flat&logo=discord)](https://discord.com/channels/778680217417809931/778680217417809934)
+[![GitHub License](https://img.shields.io/github/license/dapr/quickstarts?style=flat&label=License&logo=github)](https://github.com/dapr/quickstarts/blob/master/LICENSE)
+[![GitHub issue custom search in repo](https://img.shields.io/github/issues-search/dapr/quickstarts?query=type%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22&label=Good%20first%20issues&style=flat&logo=github)](https://github.com/dapr/quickstarts/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 
+[![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCtpSQ9BLB_3EXdWAUQYwnRA?style=flat&label=YouTube%20views&logo=youtube)](https://youtube.com/@daprdev) 
+[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/daprdev?logo=x&style=flat)](https://x.com/daprdev)
+<!-- END_IGNORE -->
 
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr-cli/) instructions.
 
