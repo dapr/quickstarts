@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: externalevents
+    appDirPath: external_events
+    appPort: 5258
+    daprHTTPPort: 3558
+    command: ["python3", "app.py"]
+    appLogDestination: console
+    daprdLogDestination: console
