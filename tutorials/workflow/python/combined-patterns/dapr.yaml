@@ -15,4 +15,4 @@ apps:
     daprHTTPPort: 3561
     command: ["python3", "app.py"]
     appLogDestination: console
-    daprdLogDestination: fileAndConsole
+    daprdLogDestination: console
