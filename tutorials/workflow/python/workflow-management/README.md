@@ -5,7 +5,7 @@ This tutorial demonstrates the various APIs to manage a workflow instance, these
 - Scheduling a workflow instance
 - Getting a workflow instance state
 - Suspending a workflow instance
-- Resuming the workflow instance
+- Resuming a workflow instance
 - Terminating the workflow instance
 - Purging the workflow instance
 
