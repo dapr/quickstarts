@@ -7,7 +7,7 @@ This tutorial demonstrates the various APIs to manage a workflow instance, these
 - Suspending a workflow instance
 - Resuming a workflow instance
 - Terminating the workflow instance
-- Purging the workflow instance
+- Purging a workflow instance
 
 For more information on workflow management, see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/howto-manage-workflow/).
 
