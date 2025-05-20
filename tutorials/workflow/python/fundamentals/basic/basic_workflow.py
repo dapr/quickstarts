@@ -4,7 +4,7 @@ import dapr.ext.workflow as wf
 wf_runtime = wf.WorkflowRuntime()
 
 """
-Workflows orchestrate activities and other (child)workflows, and include business logic (if/else or switch statements).
+Workflows orchestrate activities and other (child) workflows, and include business logic (if/else or switch statements).
 Workflow code must be be deterministic. Any non-deterministic behavior should be written inside activities.
 
 Workflow definitions use the `workflow` decorator to define a workflow.
