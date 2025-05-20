@@ -1,6 +1,6 @@
 # Task Chaining Pattern
 
-This tutorial demonstrates how to chain multiple tasks together as a sequence in a workflow. For more information about the task chaining pattern see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-patterns/#task-chaining).
+This tutorial demonstrates how to chain multiple tasks together as a sequence in a workflow, where the output of one task is used as the input for the next one. For more information about the task chaining pattern see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-patterns/#task-chaining).
 
 ## Inspect the code
 
