@@ -21,7 +21,7 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
- - '== APP - conversation-component == Sending the following input to LLM: Hello How are you? This is the my number 672-123-4567'
+  - '== APP - conversation-component == Sending the following input to LLM: Hello How are you? This is the my number 672-123-4567'
   - '== APP - conversation-component == Conversation output: Hello How are you? This is the my number <ISBN>'
 expected_stderr_lines:
 output_match_mode: substring
