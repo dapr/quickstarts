@@ -18,6 +18,22 @@ This example uses the default LLM Component provided by Dapr which simply echoes
 
 Open a new terminal window and run the multi app run template:
 
+1. Open a new terminal window and navigate to `order-processor` directory:
+
+<!-- STEP
+name: Install Java dependencies
+-->
+
+```bash
+cd ./conversation
+mvn clean install
+cd ..
+```
+
+<!-- END_STEP -->
+
+2. Run the console app with Dapr:
+
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
