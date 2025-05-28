@@ -6,28 +6,16 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/)
 
 > **Note:** This example leverages the Java SDK.
 
-This quickstart includes one app:
+This quickstart includes two apps:
 
 - Job Scheduler, responsible for scheduling, retrieving and deleting jobs.
+- Job Service, receives the triggers for the scheduled jobs.
 
 ## Run all apps with multi-app run template file
 
-This section shows how to run the applications using a [multi-app run template file](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
+This section shows how to run both applications at once using a [multi-app run template file](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
 
 1. Build the apps:
-
-<!-- STEP
-name: Build dependencies for job-scheduler
-sleep: 1
--->
-
-```bash
-cd ./job-scheduler
-mvn clean install
-cd ..
-```
-
-<!-- END_STEP -->
 
 <!-- STEP
 name: Build dependencies for job-service
@@ -36,6 +24,19 @@ sleep: 1
 
 ```bash
 cd ./job-service
+mvn clean install
+cd ..
+```
+
+<!-- END_STEP -->
+
+<!-- STEP
+name: Build dependencies for job-scheduler
+sleep: 1
+-->
+
+```bash
+cd ./job-scheduler
 mvn clean install
 cd ..
 ```
@@ -114,8 +115,6 @@ dapr stop -f .
 
 ## Run apps individually
 
-### Schedule Jobs
-
 1. Open a terminal and run the `job-service` app. Build the dependencies if you haven't already.
 
 ```bash
@@ -126,6 +125,8 @@ mvn clean install
 ```bash
 dapr run --app-id job-scheduler-sdk --app-port 8080 --dapr-grpc-port 6200 --dapr-http-port 6390 --log-level debug -- java -jar  target/JobService-0.0.1-SNAPSHOT.jar com.service.JobServiceStartup
 ```
+
+This makes sure we receive triggers as part of the scheduled jobs.
 
 2. Open another terminal and run the `job-scheduler` app. Build the dependencies if you haven't already.
 
@@ -138,8 +139,9 @@ mvn clean install
 java -jar "target/JobsScheduler-0.0.1-SNAPSHOT.jar"
 ```
 
-3. Here is how the outputs will look like
+This step is responsible for scheduling, getting and deleting jobs.
 
+3. Here is how the outputs will look like
 
 In the `job-scheduler` terminal window, the output should be:
 
