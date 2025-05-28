@@ -2,7 +2,6 @@ version: 1
 apps:
   - appDirPath: ./job-scheduler/
     appID: job-scheduler-sdk
-    appPort: 8080
     daprGRPCPort: 6200
     daprHTTPPort: 6380
     command: ["java", "-jar", "target/JobsSchedulerService-0.0.1-SNAPSHOT.jar"]
