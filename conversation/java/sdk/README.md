@@ -89,7 +89,7 @@ java -jar ConversationAIService-0.0.1-SNAPSHOT.jar com.service.ConversationAIApp
 dapr run --app-id conversation --resources-path ../../../components/
 ```
 
-The terminal console output should look similar to this, where:
+The terminal console output should look similar to below, where:
 
 - The app sends an input `What is Dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is Dapr?`.
