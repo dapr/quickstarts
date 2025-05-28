@@ -59,11 +59,13 @@ dapr run -f .
 The terminal console output should look similar to this, where:
 
 - The `R2-D2` job is being scheduled.
+- The `R2-D2` job is completed.
 - The `R2-D2` job is being retrieved.
 - The `C-3PO` job is being scheduled.
+- The `C-3PO` job is completed.
 - The `C-3PO` job is being retrieved.
-- The `R2-D2` job is being executed after 15 seconds.
-- The `C-3PO` job is being executed after 20 seconds.
+- The `C-3PO` job is being deleted.
+- The `C-3PO` job is deleted.
 
 ```text
 == APP - job-scheduler-sdk == **** Scheduling a Job with name R2-D2 *****
