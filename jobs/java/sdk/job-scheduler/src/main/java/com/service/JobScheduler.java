@@ -1,5 +1,7 @@
 package com.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.DeleteJobRequest;
@@ -26,14 +28,20 @@ public class JobScheduler {
 
         try (DaprPreviewClient client = new DaprClientBuilder().withPropertyOverrides(overrides).buildPreviewClient()) {
 
-            // Schedule and Retrieve R2-D2 Job.
+            // Schedule R2-D2 Job.
             String r2D2JobName = "R2-D2";
-            scheduleJob(client, r2D2JobName, "* * * * * *", "Hello from R2-D2!");
+            scheduleJob(client, r2D2JobName, "* * * * * *", "Oil Change");
+            Thread.sleep(5000);
+
+            // Retrieve the R2-D2 Job details.
             retrieveJob(client, r2D2JobName);
 
-            // Schedule and Retrieve C3PO Job.
+            // Schedule C3PO Job.
             String c3POJobName = "C-3PO";
-            scheduleJob(client, c3POJobName, "*/5 * * * * *", "Hello from C-3PO!");
+            scheduleJob(client, c3POJobName, "*/5 * * * * *", "Limb Calibration");
+            Thread.sleep(5000);
+
+            // Retrieve C3PO Job details.
             retrieveJob(client, c3POJobName);
 
             // Delete the C-3PO Job
@@ -41,23 +49,28 @@ public class JobScheduler {
         }
     }
 
-    private static void scheduleJob(DaprPreviewClient client, String jobName, String cron, String data) {
-        System.out.println("**** Scheduling a Job with name " + jobName + " *****");
+    private static void scheduleJob(DaprPreviewClient client, String jobName, String cron, String data)
+            throws JsonProcessingException {
+        System.out.println("Scheduling a Job with name " + jobName );
         ScheduleJobRequest request = new ScheduleJobRequest(jobName,
                 JobSchedule.fromString(cron)).setData(data.getBytes());
         client.scheduleJob(request).block();
-        System.out.println("**** Scheduling job " + jobName + " completed *****");
+
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println("Job Scheduled: " + mapper.writeValueAsString(request));
     }
 
-    private static void retrieveJob(DaprPreviewClient client, String jobName) {
-        System.out.println("**** Retrieving a Job with name " + jobName + " *****");
+    private static void retrieveJob(DaprPreviewClient client, String jobName) throws JsonProcessingException {
+        System.out.println("Getting Job: " + jobName);
         GetJobResponse response = client.getJob(new GetJobRequest(jobName)).block();
-        System.out.println("Job Name: " + response.getName());
+
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println("Job Details: " + mapper.writeValueAsString(response));
     }
 
     private static void deleteJob(DaprPreviewClient client, String jobName) {
-        System.out.println("**** Deleting a Job with name " + jobName + " *****");
+        System.out.println("Deleting Job: " + jobName);
         client.deleteJob(new DeleteJobRequest(jobName)).block();
-        System.out.println("**** Deleted a Job with name " + jobName + " *****");
+        System.out.println("Deleted Job: " + jobName);
     }
 }

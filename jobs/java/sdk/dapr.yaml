@@ -1,9 +1,17 @@
 version: 1
 apps:
+  - appDirPath: ./job-service/
+    appID: job-service-sdk
+    appPort: 8080
+    command: [ "java", "-jar", "target/JobService-0.0.1-SNAPSHOT.jar" ]
+    appLogDestination: console
+    daprdLogDestination: console
   - appDirPath: ./job-scheduler/
     appID: job-scheduler-sdk
     daprGRPCPort: 6200
-    daprHTTPPort: 6380
+    daprHTTPPort: 6390
+    appPort: 8080
     command: ["java", "-jar", "target/JobSchedulerService-0.0.1-SNAPSHOT.jar"]
     appLogDestination: console
     daprdLogDestination: console
+
