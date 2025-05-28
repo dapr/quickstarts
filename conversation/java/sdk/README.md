@@ -91,7 +91,7 @@ java -jar ConversationAIService-0.0.1-SNAPSHOT.jar com.service.ConversationAIApp
 dapr run --app-id conversation --resources-path ../../../components/
 ```
 
-The terminal console output should look similar to this, where:
+The terminal console output should look similar to below, where:
 
 - The app sends an input `Hello How are you? This is the my number 672-123-4567` to the `echo` Component mock LLM.
 - The mock LLM echoes `Hello How are you? This is the my number <ISBN>`.
