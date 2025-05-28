@@ -12,6 +12,7 @@ limitations under the License.
 */
 
 package main
+
 /*
 dapr run --app-id job-service --app-port 6400 --dapr-grpc-port 6481 --app-protocol grpc -- go run .
 */
