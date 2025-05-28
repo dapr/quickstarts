@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.service</groupId>
-    <artifactId>JobSchedulerService</artifactId>
+    <artifactId>JobScheduler</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>JobsService</name>
     <description>Demo for Dapr Jobs component</description>

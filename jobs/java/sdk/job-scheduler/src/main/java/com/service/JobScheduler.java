@@ -30,7 +30,7 @@ public class JobScheduler {
 
             // Schedule R2-D2 Job.
             String r2D2JobName = "R2-D2";
-            scheduleJob(client, r2D2JobName, "* * * * * *", "Oil Change");
+            scheduleJob(client, r2D2JobName, "0/5 * * * * *", "Oil Change");
             Thread.sleep(5000);
 
             // Retrieve the R2-D2 Job details.
@@ -38,11 +38,14 @@ public class JobScheduler {
 
             // Schedule C3PO Job.
             String c3POJobName = "C-3PO";
-            scheduleJob(client, c3POJobName, "*/5 * * * * *", "Limb Calibration");
+            scheduleJob(client, c3POJobName, "0/5 * * * * *", "Limb Calibration");
             Thread.sleep(5000);
 
             // Retrieve C3PO Job details.
             retrieveJob(client, c3POJobName);
+
+            // Wait for all the jobs to execute
+            Thread.sleep(5000);
 
             // Delete the C-3PO Job
             deleteJob(client, c3POJobName);
