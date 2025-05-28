@@ -6,7 +6,6 @@ include validate.mk
 MM_SHELL ?= bash -c
 .PHONY: all test_all_quickstarts
 all: install_mm validat
-
 # Run all tests at once
 test_all_quickstarts: test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts
 	@echo "All quickstart tests complete!"
