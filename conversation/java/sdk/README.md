@@ -4,8 +4,6 @@ In this quickstart, you'll send an input to a mock Large Language Model (LLM) us
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
 
-> **Note:** This example leverages SDK `requests` only.
-
 This quickstart includes one app:
 
 - Conversation, responsible for sending an input to the underlying LLM and retrieving an output.
@@ -18,7 +16,7 @@ This example uses the default LLM Component provided by Dapr which simply echoes
 
 Open a new terminal window and run the multi app run template:
 
-1. Open a new terminal window and navigate to `order-processor` directory:
+1. Open a new terminal window and navigate to `conversation` directory:
 
 <!-- STEP
 name: Install Java dependencies
@@ -37,8 +35,8 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation-component == Sending the following input to LLM: Hello How are you? This is the my number 672-123-4567'
-  - '== APP - conversation-component == Conversation output: Hello How are you? This is the my number <ISBN>'
+  - '== APP - conversation-component == Sending the following input to LLM: What is Dapr?'
+  - '== APP - conversation-component == Conversation output: What is Dapr?'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -53,12 +51,12 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `Hello How are you? This is the my number 672-123-4567` to the `echo` Component mock LLM.
-- The mock LLM echoes `Hello How are you? This is the my number <ISBN>`.
+- The app sends an input `What is Dapr?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is Dapr?`.
 
 ```text
-== APP - conversation-component == Sending the following input to LLM: Hello How are you? This is the my number 672-123-4567
-== APP - conversation-component == Conversation output: Hello How are you? This is the my number <ISBN>
+== APP - conversation-component == Sending the following input to LLM: What is Dapr?
+== APP - conversation-component == Conversation output: What is Dapr?
 ```
 
 <!-- END_STEP -->
@@ -93,8 +91,8 @@ dapr run --app-id conversation --resources-path ../../../components/
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `Hello How are you? This is the my number 672-123-4567` to the `echo` Component mock LLM.
-- The mock LLM echoes `Hello How are you? This is the my number <ISBN>`.
+- The app sends an input `What is Dapr?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is Dapr?`.
 
 ```text
 == APP - conversation-component == Sending the following input to LLM: Hello How are you? This is the my number 672-123-4567

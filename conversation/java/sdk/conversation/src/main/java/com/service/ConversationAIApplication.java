@@ -12,11 +12,12 @@ import java.util.List;
 public class ConversationAIApplication {
 
     public static void main(String[] args) {
-        try (DaprPreviewClient client = new DaprClientBuilder().buildPreviewClient()) {
-            System.out.println("Sending the following input to LLM: Hello How are you? This is the my number 672-123-4567");
+        String prompt = "What is Dapr?";
 
-            ConversationInput daprConversationInput = new ConversationInput("Hello How are you? "
-                    + "This is the my number 672-123-4567");
+        try (DaprPreviewClient client = new DaprClientBuilder().buildPreviewClient()) {
+            System.out.println("Input: " + prompt);
+
+            ConversationInput daprConversationInput = new ConversationInput(prompt);
 
             // Component name is the name provided in the metadata block of the conversation.yaml file.
             Mono<ConversationResponse> responseMono = client.converse(new ConversationRequest("echo",
