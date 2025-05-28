@@ -34,12 +34,16 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-service-sdk == Job Scheduled: R2-D2'
-  - '== APP - job-service-sdk == Job Scheduled: C-3PO'
-  - '== APP - job-service-sdk == Starting droid: R2-D2'
-  - '== APP - job-service-sdk == Executing maintenance job: Oil Change'
-  - '== APP - job-service-sdk == Starting droid: C-3PO'
-  - '== APP - job-service-sdk == Executing maintenance job: Limb Calibration'
+  - '== APP - job-scheduler-sdk == **** Scheduling a Job with name R2-D2 *****'
+  - '== APP - job-scheduler-sdk == **** Scheduling job R2-D2 completed *****'
+  - '== APP - job-scheduler-sdk == **** Retrieving a Job with name R2-D2 *****'
+  - '== APP - job-scheduler-sdk == Job Name: R2-D2'
+  - '== APP - job-scheduler-sdk == **** Scheduling a Job with name C-3PO *****'
+  - '== APP - job-scheduler-sdk == **** Scheduling job C-3PO completed *****'
+  - '== APP - job-scheduler-sdk == **** Retrieving a Job with name C-3PO *****'
+  - '== APP - job-scheduler-sdk == Job Name: C-3PO'
+  - '== APP - job-scheduler-sdk == **** Deleting a Job with name C-3PO *****'
+  - '== APP - job-scheduler-sdk == **** Deleted a Job with name C-3PO *****'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -62,31 +66,17 @@ The terminal console output should look similar to this, where:
 - The `C-3PO` job is being executed after 20 seconds.
 
 ```text
-== APP - job-scheduler-sdk == Scheduling job...
-== APP - job-service-sdk == Job Scheduled: R2-D2
-== APP - job-scheduler-sdk == Job scheduled: {"name":"R2-D2","job":"Oil Change","dueTime":15}
-== APP - job-scheduler-sdk == Getting job: R2-D2
-== APP - job-service-sdk == Getting job...
-== APP - job-scheduler-sdk == Job details: {"schedule":"@every 15s","repeatCount":1,"dueTime":null,"ttl":null,"payload":"ChtkYXByLmlvL3NjaGVkdWxlL2pvYnBheWxvYWQSJXsiZHJvaWQiOiJSMi1EMiIsInRhc2siOiJPaWwgQ2hhbmdlIn0="}
-== APP - job-scheduler-sdk == Scheduling job...
-== APP - job-service-sdk == Job Scheduled: C-3PO
-== APP - job-scheduler-sdk == Job scheduled: {"name":"C-3PO","job":"Limb Calibration","dueTime":20}
-== APP - job-scheduler-sdk == Getting job: C-3PO
-== APP - job-service-sdk == Getting job...
-== APP - job-scheduler-sdk == Job details: {"schedule":"@every 20s","repeatCount":1,"dueTime":null,"ttl":null,"payload":"ChtkYXByLmlvL3NjaGVkdWxlL2pvYnBheWxvYWQSK3siZHJvaWQiOiJDLTNQTyIsInRhc2siOiJMaW1iIENhbGlicmF0aW9uIn0="}
-== APP - job-service-sdk == Handling job...
-== APP - job-service-sdk == Starting droid: R2-D2
-== APP - job-service-sdk == Executing maintenance job: Oil Change
+== APP - job-scheduler-sdk == **** Scheduling a Job with name R2-D2 *****
+== APP - job-scheduler-sdk == **** Scheduling job R2-D2 completed *****
+== APP - job-scheduler-sdk == **** Retrieving a Job with name R2-D2 *****
+== APP - job-scheduler-sdk == Job Name: R2-D2
+== APP - job-scheduler-sdk == **** Scheduling a Job with name C-3PO *****
+== APP - job-scheduler-sdk == **** Scheduling job C-3PO completed *****
+== APP - job-scheduler-sdk == **** Retrieving a Job with name C-3PO *****
+== APP - job-scheduler-sdk == Job Name: C-3PO
+== APP - job-scheduler-sdk == **** Deleting a Job with name C-3PO *****
+== APP - job-scheduler-sdk == **** Deleted a Job with name C-3PO *****
 ```
-
-After 20 seconds, the terminal output should present the `C-3PO` job being processed:
-
-```text
-== APP - job-service-sdk == Handling job...
-== APP - job-service-sdk == Starting droid: C-3PO
-== APP - job-service-sdk == Executing maintenance job: Limb Calibration
-```
-
 <!-- END_STEP -->
 
 3. Stop and clean up application processes.
@@ -105,28 +95,34 @@ dapr stop -f .
 
 ### Schedule Jobs
 
-1. Open a terminal and run the `job-service` app. Build the dependencies if you haven't already.
+1. Open a terminal and run the `job-scheduler` app. Build the dependencies if you haven't already.
 
 ```bash
 cd ./job-schediler
 mvn clean install
-cd ..
 ```
 
 ```bash
-dapr run --app-id job-service-sdk --app-port 6200 --dapr-http-port 6280
+dapr run --app-id job-service-sdk --app-port 8080 --dapr-grpc-port 6200 --dapr-http-port 6280
 ```
 
 2. In a new terminal window, run the Job jar.
 
 ```bash
-java -jar "JobsSchedulerService-0.0.1-SNAPSHOT.jar"
+java -jar "target/JobsSchedulerService-0.0.1-SNAPSHOT.jar"
 ```
 
-In the `job-service` terminal window, the output should be:
+In the `job-scheduler` terminal window, the output should be:
 
 ```text
-== APP - job-app == Received job request...
-== APP - job-app == Starting droid: R2-D2
-== APP - job-app == Executing maintenance job: Oil Change
+== APP - job-scheduler-sdk == **** Scheduling a Job with name R2-D2 *****
+== APP - job-scheduler-sdk == **** Scheduling job R2-D2 completed *****
+== APP - job-scheduler-sdk == **** Retrieving a Job with name R2-D2 *****
+== APP - job-scheduler-sdk == Job Name: R2-D2
+== APP - job-scheduler-sdk == **** Scheduling a Job with name C-3PO *****
+== APP - job-scheduler-sdk == **** Scheduling job C-3PO completed *****
+== APP - job-scheduler-sdk == **** Retrieving a Job with name C-3PO *****
+== APP - job-scheduler-sdk == Job Name: C-3PO
+== APP - job-scheduler-sdk == **** Deleting a Job with name C-3PO *****
+== APP - job-scheduler-sdk == **** Deleted a Job with name C-3PO *****
 ```

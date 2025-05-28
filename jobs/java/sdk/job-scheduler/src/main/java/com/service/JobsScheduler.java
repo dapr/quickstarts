@@ -30,7 +30,9 @@ public class JobsScheduler {
             // Delete the C-3PO Job
             DeleteJobRequest deleteJobRequest = new DeleteJobRequest("C-3PO");
 
+            System.out.println("**** Deleting a Job with name C-3PO *****");
             client.deleteJob(deleteJobRequest).block();
+            System.out.println("**** Deleted a Job with name C-3PO *****");
         }
     }
 

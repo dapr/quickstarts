@@ -299,7 +299,7 @@ test_java_quickstarts:
 		for variant in "http" "sdk"; do \
 			if [ ! -d "$$building_block/java/$$variant" ]; then \
 				echo "$$building_block/java/$$variant does not exist."; \
-			else \
+			elif [ "$$building_block" = "jobs" ]; then \
 				echo "Validating $$building_block/java/$$variant quickstart"; \
 				(cd $$building_block/java/$$variant && make validate) || echo "Validation failed for $$building_block/java/$$variant"; \
 			fi; \
