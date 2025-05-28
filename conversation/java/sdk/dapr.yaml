@@ -2,6 +2,6 @@ version: 1
 common:
   resourcesPath: ../../components
 apps:
-  - appID: conversation-component
+  - appID: conversation
     appDirPath: ./conversation/target
     command: ["java", "-jar", "ConversationAIService-0.0.1-SNAPSHOT.jar"]
