@@ -41,7 +41,7 @@
                         </goals>
                         <configuration>
                             <mainClass>
-                                com.service.ConversationAIApplication
+                                com.service.Conversation
                             </mainClass>
                         </configuration>
                     </execution>

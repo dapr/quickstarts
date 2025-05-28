@@ -35,8 +35,8 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation-component == Sending the following input to LLM: What is Dapr?'
-  - '== APP - conversation-component == Conversation output: What is Dapr?'
+  - '== APP - conversation == Input: What is Dapr?'
+  - '== APP - conversation == Output response: What is Dapr?'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -55,8 +55,8 @@ The terminal console output should look similar to this, where:
 - The mock LLM echoes `What is Dapr?`.
 
 ```text
-== APP - conversation-component == Sending the following input to LLM: What is Dapr?
-== APP - conversation-component == Conversation output: What is Dapr?
+== APP - conversation == Input: What is Dapr?
+== APP - conversation == Output response: What is Dapr?
 ```
 
 <!-- END_STEP -->
@@ -80,7 +80,7 @@ dapr stop -f .
 ```bash
 cd ./conversation
 mvn clean install
-java -jar ConversationAIService-0.0.1-SNAPSHOT.jar com.service.ConversationAIApplication
+java -jar ConversationAIService-0.0.1-SNAPSHOT.jar com.service.Conversation
 ```
 
 2. Run the Dapr process alongside the application.
@@ -95,6 +95,6 @@ The terminal console output should look similar to below, where:
 - The mock LLM echoes `What is Dapr?`.
 
 ```text
-== APP - conversation-component == Sending the following input to LLM: Hello How are you? This is the my number 672-123-4567
-== APP - conversation-component == Conversation output: Hello How are you? This is the my number <ISBN>
+== APP - conversation == Input: What is Dapr?
+== APP - conversation == Output response: What is Dapr?
 ```

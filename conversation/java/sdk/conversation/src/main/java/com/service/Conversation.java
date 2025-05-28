@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public class ConversationAIApplication {
+public class Conversation {
 
     public static void main(String[] args) {
         String prompt = "What is Dapr?";
@@ -25,7 +25,7 @@ public class ConversationAIApplication {
                     .setContextId("contextId")
                     .setScrubPii(true).setTemperature(1.1d));
             ConversationResponse response = responseMono.block();
-            System.out.printf("Conversation output: %s", response.getConversationOutputs().get(0).getResult());
+            System.out.printf("Output response: %s", response.getConversationOutputs().get(0).getResult());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
