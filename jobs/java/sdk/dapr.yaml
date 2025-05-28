@@ -4,6 +4,6 @@ apps:
     appID: job-scheduler-sdk
     daprGRPCPort: 6200
     daprHTTPPort: 6380
-    command: ["java", "-jar", "target/JobsSchedulerService-0.0.1-SNAPSHOT.jar"]
+    command: ["java", "-jar", "target/JobSchedulerService-0.0.1-SNAPSHOT.jar"]
     appLogDestination: console
     daprdLogDestination: console

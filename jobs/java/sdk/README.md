@@ -4,15 +4,15 @@ In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Jobs API.
 
-> **Note:** This example leverages the Dotnet SDK.  If you are looking for the example using only HTTP requests, [click here](../http/).
+> **Note:** This example leverages the Java SDK.
 
-This quickstart includes two apps:
+This quickstart includes one app:
 
-- Jobs Scheduler, responsible for scheduling, retrieving and deleting jobs.
+- Job Scheduler, responsible for scheduling, retrieving and deleting jobs.
 
 ## Run all apps with multi-app run template file
 
-This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
+This section shows how to run the applications using a [multi-app run template file](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
 
 1. Build the apps:
 
@@ -100,12 +100,12 @@ dapr stop -f .
 1. Open a terminal and run the `job-scheduler` app. Build the dependencies if you haven't already.
 
 ```bash
-cd ./job-schediler
+cd ./job-scheduler
 mvn clean install
 ```
 
 ```bash
-dapr run --app-id job-service-sdk --app-port 8080 --dapr-grpc-port 6200 --dapr-http-port 6280
+dapr run --app-id job-scheduler-sdk --app-port 8080 --dapr-grpc-port 6200 --dapr-http-port 6280
 ```
 
 2. In a new terminal window, run the Job jar.

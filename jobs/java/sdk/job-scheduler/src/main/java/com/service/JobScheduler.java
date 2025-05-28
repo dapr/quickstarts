@@ -9,10 +9,11 @@ import io.dapr.client.domain.JobSchedule;
 import io.dapr.client.domain.ScheduleJobRequest;
 import io.dapr.config.Properties;
 import io.dapr.config.Property;
+import io.dapr.v1.DaprProtos;
 
 import java.util.Map;
 
-public class JobsScheduler {
+public class JobScheduler {
 
     /**
      * The main method of this app to register and fetch jobs.
@@ -24,21 +25,20 @@ public class JobsScheduler {
         );
 
         try (DaprPreviewClient client = new DaprClientBuilder().withPropertyOverrides(overrides).buildPreviewClient()) {
-            scheduleAndRetrieveJob(client, "R2-D2", "* * * * * *", "Hello from R2-D2!");
-            scheduleAndRetrieveJob(client, "C-3PO", "*/5 * * * * *", "Hello from C-3PO!");
+
+            // Schedule and Retrieve R2-D2 Job.
+            String r2D2JobName = "R2-D2";
+            scheduleJob(client, r2D2JobName, "* * * * * *", "Hello from R2-D2!");
+            retrieveJob(client, r2D2JobName);
+
+            // Schedule and Retrieve C3PO Job.
+            String c3POJobName = "C-3PO";
+            scheduleJob(client, c3POJobName, "*/5 * * * * *", "Hello from C-3PO!");
+            retrieveJob(client, c3POJobName);
 
             // Delete the C-3PO Job
-            DeleteJobRequest deleteJobRequest = new DeleteJobRequest("C-3PO");
-
-            System.out.println("**** Deleting a Job with name C-3PO *****");
-            client.deleteJob(deleteJobRequest).block();
-            System.out.println("**** Deleted a Job with name C-3PO *****");
+            deleteJob(client, c3POJobName);
         }
-    }
-
-    private static void scheduleAndRetrieveJob(DaprPreviewClient client, String jobName, String cron, String data) {
-        scheduleJob(client, jobName, cron, data);
-        retrieveJob(client, jobName);
     }
 
     private static void scheduleJob(DaprPreviewClient client, String jobName, String cron, String data) {
@@ -53,5 +53,11 @@ public class JobsScheduler {
         System.out.println("**** Retrieving a Job with name " + jobName + " *****");
         GetJobResponse response = client.getJob(new GetJobRequest(jobName)).block();
         System.out.println("Job Name: " + response.getName());
+    }
+
+    private static void deleteJob(DaprPreviewClient client, String jobName) {
+        System.out.println("**** Deleting a Job with name " + jobName + " *****");
+        client.deleteJob(new DeleteJobRequest(jobName)).block();
+        System.out.println("**** Deleted a Job with name " + jobName + " *****");
     }
 }

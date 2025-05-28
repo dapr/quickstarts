@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.service</groupId>
-    <artifactId>JobsSchedulerService</artifactId>
+    <artifactId>JobSchedulerService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>JobsService</name>
     <description>Demo for Dapr Jobs component</description>
@@ -41,7 +41,7 @@
                         </goals>
                         <configuration>
                             <mainClass>
-                                com.service.JobsScheduler
+                                com.service.JobScheduler
                             </mainClass>
                         </configuration>
                     </execution>
