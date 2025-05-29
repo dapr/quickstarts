@@ -9,8 +9,8 @@ import io.dapr.client.domain.State;
 import io.dapr.quickstarts.workflows.models.InventoryItem;
 import io.dapr.quickstarts.workflows.models.InventoryRequest;
 import io.dapr.quickstarts.workflows.models.InventoryResult;
-import io.dapr.workflows.runtime.WorkflowActivity;
-import io.dapr.workflows.runtime.WorkflowActivityContext;
+import io.dapr.workflows.WorkflowActivity;
+import io.dapr.workflows.WorkflowActivityContext;
 
 public class VerifyInventoryActivity implements WorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(VerifyInventoryActivity.class);
