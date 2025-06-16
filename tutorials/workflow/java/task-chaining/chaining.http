@@ -1,11 +1,8 @@
-@apphost=http://localhost:5255
+@apphost=http://localhost:8080
 
 ### Start the TaskChaining workflow
 # @name startWorkflowRequest
 POST {{ apphost }}/start
 
-
-@instanceId={{startWorkflowRequest.response.headers.Location}}
-@daprHost=http://localhost:3555
 ### Get the workflow status
-GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
+GET {{ apphost }}/output

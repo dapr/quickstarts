@@ -18,7 +18,7 @@ import io.dapr.workflows.WorkflowStub;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ChainWorkflow implements Workflow {
+public class ChainingWorkflow implements Workflow {
   @Override
   public WorkflowStub create() {
     return ctx -> {

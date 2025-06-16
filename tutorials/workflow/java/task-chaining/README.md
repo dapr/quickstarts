@@ -4,7 +4,7 @@ This tutorial demonstrates how to chain multiple tasks together as a sequence in
 
 ## Inspect the code
 
-Open the `ChainingWorkflow.java` file in the `tutorials/workflow/java/task-chaining/src/main/java/io/dapr/springboot/examples/wfp/chain` folder. This file contains the definition for the workflow.
+Open the [`ChainingWorkflow.java`](src/main/java/io/dapr/springboot/examples/chain/ChainingWorkflow.java) file in the `tutorials/workflow/java/task-chaining/src/main/java/io/dapr/springboot/examples/wfp/chain` folder. This file contains the definition for the workflow.
 
 ```mermaid
 graph LR

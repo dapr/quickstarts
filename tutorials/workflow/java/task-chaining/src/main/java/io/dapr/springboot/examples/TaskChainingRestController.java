@@ -15,7 +15,7 @@ package io.dapr.springboot.examples;
 
 
 import io.dapr.spring.workflows.config.EnableDaprWorkflows;
-import io.dapr.springboot.examples.chain.ChainWorkflow;
+import io.dapr.springboot.examples.chain.ChainingWorkflow;
 import io.dapr.workflows.client.DaprWorkflowClient;
 import io.dapr.workflows.client.WorkflowInstanceStatus;
 import org.slf4j.Logger;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 @RestController
@@ -46,7 +45,7 @@ public class TaskChainingRestController {
    */
   @PostMapping("start")
   public String chain() throws TimeoutException {
-    instanceId = daprWorkflowClient.scheduleNewWorkflow(ChainWorkflow.class, "This");
+    instanceId = daprWorkflowClient.scheduleNewWorkflow(ChainingWorkflow.class, "This");
     return instanceId;
   }
 
