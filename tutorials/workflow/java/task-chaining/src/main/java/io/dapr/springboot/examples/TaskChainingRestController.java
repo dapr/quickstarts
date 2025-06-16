@@ -17,12 +17,15 @@ package io.dapr.springboot.examples;
 import io.dapr.spring.workflows.config.EnableDaprWorkflows;
 import io.dapr.springboot.examples.chain.ChainWorkflow;
 import io.dapr.workflows.client.DaprWorkflowClient;
+import io.dapr.workflows.client.WorkflowInstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 @RestController
@@ -34,18 +37,32 @@ public class TaskChainingRestController {
   @Autowired
   private DaprWorkflowClient daprWorkflowClient;
 
+  private String instanceId;
 
   /**
    * Run Chain Demo Workflow
-   * @return the output of the ChainWorkflow execution
+   *
+   * @return the instanceId of the ChainWorkflow execution
    */
   @PostMapping("start")
   public String chain() throws TimeoutException {
-    String instanceId = daprWorkflowClient.scheduleNewWorkflow(ChainWorkflow.class, "This");
+    instanceId = daprWorkflowClient.scheduleNewWorkflow(ChainWorkflow.class, "This");
     return instanceId;
   }
 
-
+  /**
+   * Obtain the output of the workflow
+   *
+   * @return the output of the ChainWorkflow execution
+   */
+  @GetMapping("output")
+  public String output() throws TimeoutException {
+    WorkflowInstanceStatus instanceState = daprWorkflowClient.getInstanceState(instanceId, true);
+    if (instanceState != null) {
+      return instanceState.readOutputAs(String.class);
+    }
+    return "N/A";
+  }
 
 
 }

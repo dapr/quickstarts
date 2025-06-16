@@ -48,21 +48,13 @@ graph LR
 5. Use the GET request in the [`chaining.http`](./chaining.http) file to get the status of the workflow, or use this cURL command:
 
     ```bash
-    curl --request GET --url http://localhost:<DAPR_PORT>/v1.0/workflows/dapr/<INSTANCEID>
+    curl --request GET --url http://localhost:8080/output
     ```
-
-   Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
-   Where `<DAPR_PORT>` can be obtained by looking at the port mappings created by Testcontainers when running the application. 
-   You can find this by running `docker ps` and looking at the port-mappings 
-   ```bash
-   CONTAINER ID   IMAGE                               COMMAND                  CREATED          STATUS          PORTS                                                                     NAMES
-   bc19a46794e1   daprio/daprd:1.15.4                 "./daprd --app-id wo…"   48 seconds ago   Up 48 seconds   0.0.0.0:61693->3500/tcp, 0.0.0.0:61694->50001/tcp
-   ```
-   For this example: `61693` which was mapped to the Dapr port `3500` (`0.0.0.0:61693->3500/tcp`).
+   
 6. The expected serialized output of the workflow is:
 
     ```txt
-    "\"This is task chaining\""
+    This is task chaining
     ```
 
 6. Stop the application by pressing `Ctrl+C`.

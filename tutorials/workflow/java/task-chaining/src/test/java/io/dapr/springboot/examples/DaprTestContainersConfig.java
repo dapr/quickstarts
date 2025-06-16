@@ -29,7 +29,6 @@ public class DaprTestContainersConfig {
   @Bean
   @ServiceConnection
   public DaprContainer daprContainer() {
-
     return new DaprContainer(DAPR_RUNTIME_IMAGE_TAG)
             .withAppName("workflow-patterns-app")
             .withComponent(new Component("kvstore", "state.in-memory", "v1", Collections.singletonMap("actorStateStore", String.valueOf(true))))

@@ -29,7 +29,7 @@ import static io.dapr.springboot.examples.StringMatchesUUIDPattern.matchesThePat
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = {TaskChainingApplication.class, DaprTestContainersConfig.class,
+@SpringBootTest(classes = {TestTaskChainingApplication.class, DaprTestContainersConfig.class,
         DaprAutoConfiguration.class, },
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class TaskChainingAppTests {
@@ -52,11 +52,17 @@ class TaskChainingAppTests {
             .post("/start")
             .then()
             .statusCode(200).body(matchesThePatternOfAUUID());
+
+    String output = given().contentType(ContentType.JSON)
+            .when()
+            .get("/output")
+            .then()
+            .statusCode(200).extract().asString();
+
+    assertEquals("This is task chaining", output);
   }
 
-  
 }
-
 
 
 class StringMatchesUUIDPattern extends TypeSafeMatcher<String> {

@@ -18,7 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class TaskChainingApplication {
+public class TestTaskChainingApplication {
 
   public static void main(String[] args) {
 
