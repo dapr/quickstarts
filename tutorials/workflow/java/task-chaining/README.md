@@ -31,7 +31,7 @@ graph LR
     mvn spring-boot:test-run
     ```
 
-3Use the POST request in the [`chaining.http`](./chaining.http) file to start the workflow, or use this cURL command:
+3. Use the POST request in the [`chaining.http`](./chaining.http) file to start the workflow, or use this cURL command:
 
     ```bash
     curl -i --request POST http://localhost:8080/start
