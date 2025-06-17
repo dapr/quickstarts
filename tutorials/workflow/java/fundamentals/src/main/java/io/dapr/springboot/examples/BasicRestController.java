@@ -15,7 +15,7 @@ package io.dapr.springboot.examples;
 
 
 import io.dapr.spring.workflows.config.EnableDaprWorkflows;
-import io.dapr.springboot.examples.chain.ChainingWorkflow;
+import io.dapr.springboot.examples.basic.BasicWorkflow;
 import io.dapr.workflows.client.DaprWorkflowClient;
 import io.dapr.workflows.client.WorkflowInstanceStatus;
 import org.slf4j.Logger;
@@ -23,33 +23,37 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeoutException;
 
 @RestController
+/*
+ * Dapr Workflows and Activities need to be registered in the DI container otherwise
+ *  the Dapr runtime does not know this application contains workflows and activities.
+ *  In Spring Boot Applications, the `@EnableDaprWorkflow` annotation takes care of registering
+ *  all workflows and activities components found in the classpath.
+ */
 @EnableDaprWorkflows
-public class TaskChainingRestController {
+public class BasicRestController {
 
-  private final Logger logger = LoggerFactory.getLogger(TaskChainingRestController.class);
+  private final Logger logger = LoggerFactory.getLogger(BasicRestController.class);
 
   @Autowired
   private DaprWorkflowClient daprWorkflowClient;
 
-  /*
-   * **Note:** This local variable is used for examples purposes only.
-   * For production scenarios, you will need to map workflowInstanceIds to your business scenarios.
-   */
   private String instanceId;
 
   /**
-   * Run Chain Demo Workflow
+   * The DaprWorkflowClient is the API to manage workflows.
+   * Here it is used to schedule a new workflow instance.
    *
    * @return the instanceId of the ChainWorkflow execution
    */
   @PostMapping("start")
-  public String chain() throws TimeoutException {
-    instanceId = daprWorkflowClient.scheduleNewWorkflow(ChainingWorkflow.class, "This");
+  public String basic(@RequestParam("input") String input) throws TimeoutException {
+    instanceId = daprWorkflowClient.scheduleNewWorkflow(BasicWorkflow.class, input);
     return instanceId;
   }
 
