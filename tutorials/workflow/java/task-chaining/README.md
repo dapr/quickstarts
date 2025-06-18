@@ -4,7 +4,7 @@ This tutorial demonstrates how to chain multiple tasks together as a sequence in
 
 ## Inspect the code
 
-Open the [`ChainingWorkflow.java`](src/main/java/io/dapr/springboot/examples/chain/ChainingWorkflow.java) file in the `tutorials/workflow/java/task-chaining/src/main/java/io/dapr/springboot/examples/wfp/chain` folder. This file contains the definition for the workflow.
+Open the [`ChainingWorkflow.java`](src/main/java/io/dapr/springboot/examples/chain/ChainingWorkflow.java) file in the `tutorials/workflow/java/task-chaining/src/main/java/io/dapr/springboot/examples/chain` folder. This file contains the definition for the workflow.
 
 ```mermaid
 graph LR
@@ -45,13 +45,13 @@ graph LR
     == APP - chaining == Activity3: Received input: This is task.
     ```
 
-5. Use the GET request in the [`chaining.http`](./chaining.http) file to get the status of the workflow, or use this cURL command:
+4. Use the GET request in the [`chaining.http`](./chaining.http) file to get the status of the workflow, or use this cURL command:
 
     ```bash
     curl --request GET --url http://localhost:8080/output
     ```
    
-6. The expected serialized output of the workflow is:
+5. The expected serialized output of the workflow is:
 
     ```txt
     This is task chaining
