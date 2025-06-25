@@ -3,10 +3,52 @@ kind: Component
 metadata:
   name: orderpubsub
 spec:
-  type: pubsub.redis
+  type: pubsub.rabbitmq
   version: v1
   metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
+  - name: connectionString
+    value: "amqp://localhost:5672"
+  - name: protocol
+    value: amqp  
+  - name: hostname
+    value: localhost 
+  - name: username
+    value: username
+  - name: password
+    value: password  
+  - name: consumerID
+    value: channel1
+  - name: durable
+    value: false
+  - name: deletedWhenUnused
+    value: false
+  - name: autoAck
+    value: false
+  - name: deliveryMode
+    value: 0
+  - name: requeueInFailure
+    value: false
+  - name: prefetchCount
+    value: 0
+  - name: reconnectWait
+    value: 0
+  - name: concurrencyMode
+    value: parallel
+  - name: publisherConfirm
+    value: false
+  - name: enableDeadLetter # Optional enable dead Letter or not
+    value: true
+  - name: maxLen # Optional max message count in a queue
+    value: 3000
+  - name: maxLenBytes # Optional maximum length in bytes of a queue.
+    value: 10485760
+  - name: exchangeKind
+    value: fanout
+  - name: saslExternal
+    value: false
+  - name: ttlInSeconds
+    value: 60
+  - name: clientName
+    value: {podName}
+  - name: heartBeat
+    value: 10s

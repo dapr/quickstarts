@@ -6,7 +6,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 with DaprClient() as client:
-    for i in range(1, 10):
+    for i in range(1, 3):
         order = {'orderId': i}
         # Publish an event/message using Dapr PubSub
         result = client.publish_event(

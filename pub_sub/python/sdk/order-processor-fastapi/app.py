@@ -20,7 +20,7 @@ class CloudEvent(BaseModel):
 
 
 # Dapr subscription routes orders topic to this route
-@dapr_app.subscribe(pubsub='orderpubsub', topic='orders')
+@dapr_app.subscribe(pubsub='orderpubsub', topic='orders', route='/orders')
 def orders_subscriber(event: CloudEvent):
     print('Subscriber received : %s' % event.data['orderId'], flush=True)
     return {'success': True}
