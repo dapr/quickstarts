@@ -1,24 +1,10 @@
 @apphost=http://localhost:8080
 
-### Start the TaskChaining workflow
-# @name startWorkflowRequest
-POST {{ apphost }}/start
-
-### Get the workflow status
-GET {{ apphost }}/output
-
-
-### DELETE
-
-@apphost=http://localhost:5257
-
 ### Start the Monitor workflow
 # @name startWorkflowRequest
 @counter=0
 POST {{ apphost }}/start/{{counter}}
 
-
 ### Get the workflow status
-@instanceId={{startWorkflowRequest.response.headers.Location}}
-@daprHost=http://localhost:3557
-GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
+GET {{ apphost }}/output
+
