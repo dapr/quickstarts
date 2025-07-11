@@ -60,7 +60,7 @@ public class BasicRestController {
   /**
    * Obtain the output of the workflow
    *
-   * @return the output of the ChainWorkflow execution
+   * @return the output of the BasicWorkflow execution
    */
   @GetMapping("output")
   public String output() throws TimeoutException {
