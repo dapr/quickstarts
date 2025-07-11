@@ -1,0 +1,28 @@
+@apphost=http://localhost:8080
+
+### Start the ExternalEventsWorkflow workflow
+# @name startWorkflowRequest
+POST {{ apphost }}/start
+Content-Type: application/json
+
+{
+    "id": "{{orderId}}",
+    "description": "Rubber ducks",
+    "quantity": 100,
+    "totalPrice": 500
+}
+
+### Get the workflow status
+GET {{ apphost }}/status
+
+
+
+### Send an approval event
+@eventName=approval-event
+POST {{ apphost }}/event/{{ instanceId }}/{{ eventName }}
+Content-Type: application/json
+
+{
+    "OrderId": "{{instanceId}}",
+    "IsApproved": true
+}

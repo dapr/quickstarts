@@ -30,7 +30,7 @@ public class DaprTestContainersConfig {
   @ServiceConnection
   public DaprContainer daprContainer() {
     return new DaprContainer(DAPR_RUNTIME_IMAGE_TAG)
-            .withAppName("fundamentals")
+            .withAppName("external-system-interactions")
             .withComponent(new Component("kvstore", "state.in-memory", "v1", Collections.singletonMap("actorStateStore", String.valueOf(true))))
             .withAppPort(8080)
             .withAppHealthCheckPath("/actuator/health")

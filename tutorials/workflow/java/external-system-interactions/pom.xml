@@ -10,9 +10,9 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <artifactId>fundamentals</artifactId>
-  <name>fundamentals</name>
-  <description>Basic Workflow Example</description>
+  <artifactId>external-system-interactions</artifactId>
+  <name>external-system-interactions</name>
+  <description>External System Events Workflow Example</description>
 
   <properties>
     <dapr.spring.version>0.15.0-rc-7</dapr.spring.version>
