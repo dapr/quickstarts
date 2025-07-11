@@ -44,7 +44,7 @@ graph LR
     i.d.springboot.examples.basic.Activity2  : io.dapr.springboot.examples.basic.Activity2 : Received input: One Two
     ```
 
-5. Use the GET request in the [`fundamentals.http`](./chaining.http) file to get the status of the workflow, or use this cURL command:
+5. Use the GET request in the [`fundamentals.http`](./fundamentals.http) file to get the status of the workflow, or use this cURL command:
 
     ```bash
     curl --request GET --url http://localhost:8080/output
