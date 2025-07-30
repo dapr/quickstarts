@@ -22,21 +22,40 @@ base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
 CONVERSATION_COMPONENT_NAME = 'echo'
 
 input = {
-		'inputs': [{'content':'What is dapr?'}],
-		'parameters': {},
-		'metadata': {}
-    }
+    'inputs': [{
+        'messages': [{
+            'of_user': {
+                'content': [{
+                    'text': 'What is dapr?'
+                }]
+            }
+        }]
+    }],
+    'parameters': {},
+    'metadata': {}
+}
 
 # Send input to conversation endpoint
 result = requests.post(
-	url='%s/v1.0-alpha1/conversation/%s/converse' % (base_url, CONVERSATION_COMPONENT_NAME),
-	json=input
+    url='%s/v1.0-alpha2/conversation/%s/converse' % (base_url, CONVERSATION_COMPONENT_NAME),
+    json=input
 )
 
 logging.info('Input sent: What is dapr?')
 
 # Parse conversation output
 data = result.json()
-output = data["outputs"][0]["result"]
-
-logging.info('Output response: ' + output)
+try:
+    if 'outputs' in data and len(data['outputs']) > 0:
+        output = data["outputs"][0]["choices"][0]["message"]["content"]
+        logging.info('Output response: ' + output)
+    else:
+        logging.error('No outputs found in response')
+        logging.error('Response data: ' + str(data))
+        
+except (KeyError, IndexError) as e:
+    logging.error(f'Error parsing response: {e}')
+    if 'outputs' in data:
+        logging.info(f'Available outputs: {data["outputs"]}')
+    else:
+        logging.info(f'No outputs found in response')
