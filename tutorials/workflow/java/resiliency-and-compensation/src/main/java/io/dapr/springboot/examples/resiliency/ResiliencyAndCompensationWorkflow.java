@@ -42,19 +42,19 @@ public class ResiliencyAndCompensationWorkflow implements Workflow {
 
       Integer result1 = ctx.callActivity(MinusOneActivity.class.getName(), counter, defaultActivityRetryOptions, Integer.class).await();
 
-      Integer workflowResult;
+      Integer workflowResult = 0;
       try {
         workflowResult = ctx.callActivity(DivisionActivity.class.getName(), result1, defaultActivityRetryOptions, Integer.class).await();
       } catch (TaskFailedException wtfe) {
-        System.out.println("WTFE" + wtfe);
-        wtfe.printStackTrace();
 
-        //Check Exception
-
-        workflowResult = ctx.callActivity(PlusOneActivity.class.getName(), result1, defaultActivityRetryOptions, Integer.class).await();
-
-        //@TODO: not supported yet
-        //ctx.setCustomStatus()
+        // Something went wrong in the Division activity which is not recoverable.
+        // Perform a compensation action for the MinusOne activity to revert any
+        // changes made in that activity.
+        if( wtfe.getErrorDetails().isCausedBy(ArithmeticException.class)) {
+          workflowResult = ctx.callActivity(PlusOneActivity.class.getName(), result1, defaultActivityRetryOptions, Integer.class).await();
+          //@TODO: not supported yet
+          //ctx.setCustomStatus()
+        }
 
       }
 

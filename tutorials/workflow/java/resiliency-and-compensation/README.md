@@ -4,7 +4,7 @@ This tutorial demonstrates how to improve resiliency when activities are execute
 
 ## Inspect the code
 
-Open the `ResiliencyAndCompensationWorkflow.cs` file in the `tutorials/workflow/csharp/resiliency-and-compensation/ResiliencyAndCompensation` folder. This file contains the definition for the workflow. This workflow implements an activity retry policy on all the associated activities and compensating logic if an activity throws an exception.
+Open the [`ResiliencyAndCompensationWorkflow.java`](src/main/java/io/dapr/springboot/examples/resiliency/ResiliencyAndCompensationWorkflow.java) file in the `tutorials/workflow/java/resiliency-and-compensation/src/main/java/io/dapr/springboot/examples/resiliency/` folder. This file contains the definition for the workflow. This workflow implements an activity retry policy on all the associated activities and compensating logic if an activity throws an exception.
 
 ```mermaid
 graph LR
@@ -27,32 +27,15 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/resiliency-and-compensation` folder.
-2. Build the project using the .NET CLI.
+1. Use a terminal to navigate to the `tutorials/workflow/java/resiliency-and-compensation` folder.
+2. Build and run the project using Maven.
 
     ```bash
-    dotnet build ./ResiliencyAndCompensation/
+    mvn spring-boot:test-run
     ```
 
-3. Use the Dapr CLI to run the Dapr Multi-App run file
 
-    <!-- STEP
-    name: Run multi app run template
-    expected_stdout_lines:
-    - 'Started Dapr with app id "resiliency"'
-    expected_stderr_lines:
-    working_dir: .
-    output_match_mode: substring
-    background: true
-    sleep: 15
-    timeout_seconds: 30
-    -->
-    ```bash
-    dapr run -f .
-    ```
-    <!-- END_STEP -->
-
-4. Use the POST request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to start the workflow with a workflow input value of `1`, or use this cURL command:
+3. Use the POST request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to start the workflow with a workflow input value of `1`, or use this cURL command:
 
     ```bash
     curl -i --request POST \
@@ -64,32 +47,24 @@ graph LR
     The app logs should output the following:
 
     ```txt
-    == APP - resiliency == MinusOne: Received input: 1.
-    == APP - resiliency == Division: Received divisor: 0.
-    == APP - resiliency == Division: Received divisor: 0.
-    == APP - resiliency == Division: Received divisor: 0.
-    == APP - resiliency == PlusOne: Received input: 0.
+   i.d.s.e.resiliency.MinusOneActivity      : io.dapr.springboot.examples.resiliency.MinusOneActivity: Received input:  1
+   i.d.s.e.resiliency.DivisionActivity      : io.dapr.springboot.examples.resiliency.DivisionActivity : Received divisor: 0
+   i.d.s.e.resiliency.DivisionActivity      : io.dapr.springboot.examples.resiliency.DivisionActivity : Received divisor: 0
+   i.d.s.e.resiliency.DivisionActivity      : io.dapr.springboot.examples.resiliency.DivisionActivity : Received divisor: 0
+   i.d.s.e.resiliency.PlusOneActivity       : io.dapr.springboot.examples.resiliency.PlusOneActivity: Received input:  0
     ```
 
-5. Use the GET request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to get the status of the workflow, or use this cURL command:
+4. Use the GET request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to get the status of the workflow, or use this cURL command:
 
     ```bash
-    curl --request GET --url http://localhost:3564/v1.0/workflows/dapr/<INSTANCEID>
+    curl --request GET --url http://localhost:8080/output
     ```
 
-    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
-    ```
-
-    Since `1` is used as the input, the expected serialized output of the workflow is:
+    Since `1` is used as the input, the expected output of the workflow is:
 
     ```txt
     "1"
     ```
 
-    The expected serialized custom status field of the workflow output is:
 
-    ```txt
-    "\"Compensated MinusOne activity with PlusOne activity.\""
-    ```
-
-6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
+5. Stop the application by pressing `Ctrl+C`.

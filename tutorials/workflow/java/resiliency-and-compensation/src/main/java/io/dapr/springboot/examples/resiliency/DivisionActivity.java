@@ -35,7 +35,8 @@ public class DivisionActivity implements WorkflowActivity {
 
     logger.info("{} : Received divisor: {}", ctx.getName(), divisor);
 
-    var result = Math.round(100d / divisor);
+    int result = 100 / divisor;
+    System.out.println("RESULT = " + result);
     return result;
   }
 }

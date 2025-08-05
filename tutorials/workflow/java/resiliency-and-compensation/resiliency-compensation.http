@@ -5,6 +5,8 @@
 @input=1
 POST {{ apphost }}/start/{{input}}
 
+### Get the workflow output
+GET {{ apphost }}/output
 
 
 
