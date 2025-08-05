@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Collections;
 
+import static io.dapr.springboot.examples.ShippingAppRestController.DAPR_PUBSUB_COMPONENT;
 import static io.dapr.testcontainers.DaprContainerConstants.DAPR_RUNTIME_IMAGE_TAG;
 
 @TestConfiguration(proxyBeanMethods = false)
@@ -31,7 +32,7 @@ public class DaprTestContainersConfig {
   public DaprContainer daprContainer() {
     return new DaprContainer(DAPR_RUNTIME_IMAGE_TAG)
             .withAppName("external-system-interactions")
-            .withComponent(new Component("kvstore", "state.in-memory", "v1", Collections.singletonMap("actorStateStore", String.valueOf(true))))
+            .withComponent(new Component(DAPR_PUBSUB_COMPONENT, "pubsub.in-memory", "v1", Collections.emptyList()))
             .withAppPort(8080)
             .withAppHealthCheckPath("/actuator/health")
             .withAppChannelAddress("host.testcontainers.internal");

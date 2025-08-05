@@ -13,22 +13,15 @@ limitations under the License.
 
 package io.dapr.springboot.examples;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Configuration
-public class ExternalEventsConfiguration {
 
-  @Bean
-  public RestTemplate restTemplate() {
-    return new RestTemplateBuilder().build();
+@SpringBootApplication
+public class ShippingApplication {
+
+  public static void main(String[] args) {
+    SpringApplication.run(ShippingApplication.class, args);
   }
 
-  @Bean
-  public ObjectMapper mapper() {
-    return new ObjectMapper();
-  }
 }
