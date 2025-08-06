@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: openai
+spec:
+  type: conversation.openai
+  version: v1
+  metadata:
+  - name: key
+    value: "YOUR_OPENAI_API_KEY"
+  - name: model
+    value: gpt-4o-mini-2024-07-18

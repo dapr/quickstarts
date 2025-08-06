@@ -24,7 +24,34 @@ name: Install Python dependencies
 
 ```bash
 cd ./conversation
+```
+
+<details open="true">
+<summary>Option 1: Using venv (Python's built-in virtual environment)</summary>
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
 pip3 install -r requirements.txt
+```
+
+</details>
+
+<details>
+<summary>Option 2: Using uv (faster alternative to pip)</summary>
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
+# If you don't have uv installed yet, install it first:
+# pip install uv
+uv pip install -r requirements.txt
+```
+
+</details>
+
+```bash
+# Return to the parent directory
 cd ..
 ```
 
@@ -82,12 +109,39 @@ Open a terminal and run:
 
 ```bash
 cd ./conversation
+```
+
+<details open="true">
+<summary>Option 1: Using venv (Python's built-in virtual environment)</summary>
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
 pip3 install -r requirements.txt
 ```
+
+</details>
+
+<details>
+<summary>Option 2: Using uv (faster alternative to pip)</summary>
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
+# If you don't have uv installed yet, install it first:
+# pip install uv
+uv pip install -r requirements.txt
+```
+
+</details>
 
 2. Run the application:
 
 ```bash
+# Make sure your virtual environment is activated
+# If not already activated, run:
+# source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
+
 dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
 ```
 
