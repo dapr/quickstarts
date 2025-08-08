@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Actors" Version="1.15.0" />
-    <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.15.0" />
+    <PackageReference Include="Dapr.Actors" Version="1.16.0-rc05" />
+    <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.16.0-rc05" />
   </ItemGroup>
 
   <ItemGroup>
