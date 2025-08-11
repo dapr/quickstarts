@@ -11,24 +11,21 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples;
+package io.dapr.springboot.workflowapp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Configuration
-public class WorkflowAppConfiguration {
 
-  @Bean
-  public RestTemplate restTemplate() {
-    return new RestTemplateBuilder().build();
+@SpringBootApplication
+public class TestWorkflowAppApplication {
+
+  public static void main(String[] args) {
+
+    SpringApplication.from(WorkflowAppApplication::main)
+            .with(DaprTestContainersConfig.class)
+            .run(args);
+    org.testcontainers.Testcontainers.exposeHostPorts(8080);
   }
 
-  @Bean
-  public ObjectMapper mapper() {
-    return new ObjectMapper();
-  }
 }

@@ -11,11 +11,12 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples.workflowapp;
+package io.dapr.springboot.workflowapp.workflow;
 
 import io.dapr.durabletask.Task;
 import io.dapr.durabletask.TaskCanceledException;
-import io.dapr.springboot.examples.workflowapp.activities.*;
+import io.dapr.springboot.workflowapp.model.*;
+import io.dapr.springboot.workflowapp.workflow.activities.*;
 import io.dapr.workflows.Workflow;
 import io.dapr.workflows.WorkflowStub;
 import org.springframework.stereotype.Component;
@@ -43,16 +44,17 @@ public class OrderWorkflow implements Workflow {
 
       if( tasksResult.stream().anyMatch(r -> !r.isSuccess())){
         var message = "Order processing failed. Reason: " + tasksResult.get(0).message();
-        ctx.complete(new OrderStatus(false, message);
+        ctx.complete(new OrderStatus(false, message));
+        return;
       }
 
 
       // Two activities are called in sequence (chaining pattern) where the UpdateInventory
       // activity is dependent on the result of the ProcessPayment activity:
-      var paymentResult = ctx.callActivity(ProcessPaymentActivity.class.getName(), order.orderItem(), ActivityResult.class).await();
+      var paymentResult = ctx.callActivity(ProcessPaymentActivity.class.getName(), order.orderItem(), PaymentResult.class).await();
 
       if(paymentResult.isSuccess()){
-        var inventoryResult = ctx.callActivity(ProcessPaymentActivity.class.getName(), order.orderItem(), UpdateInventoryResult.class).await();
+        ctx.callActivity(UpdateInventoryActivity.class.getName(), order.orderItem(), UpdateInventoryResult.class).await();
       }
 
       ShipmentRegistrationStatus shipmentRegistrationStatus = null;

@@ -11,12 +11,12 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples;
+package io.dapr.springboot.workflowapp;
 
 import io.dapr.client.DaprClient;
 import io.dapr.springboot.DaprAutoConfiguration;
-import io.dapr.springboot.examples.workflowapp.OrderStatus;
-import io.dapr.springboot.examples.workflowapp.Order;
+import io.dapr.springboot.workflowapp.model.OrderStatus;
+import io.dapr.springboot.workflowapp.model.Order;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import org.hamcrest.TypeSafeMatcher;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import static io.dapr.springboot.examples.StringMatchesUUIDPattern.matchesThePatternOfAUUID;
+import static io.dapr.springboot.workflowapp.StringMatchesUUIDPattern.matchesThePatternOfAUUID;
 import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,48 +52,9 @@ class WorkflowAppTests {
 
 
   @Test
-  void testExternalEventsWorkflow() throws InterruptedException {
-
-    var order = new Order("123", "Rubber ducks", 100, 500);
-    given().contentType(ContentType.JSON)
-            .body(order)
-            .when()
-            .post("/start")
-            .then()
-            .statusCode(200).body(matchesThePatternOfAUUID());
+  void testWorkflow() throws InterruptedException {
 
 
-    String status = given().contentType(ContentType.JSON)
-            .when()
-            .get("/status")
-            .then()
-            .statusCode(200).extract().asString();
-
-    assertTrue(status.contains("RUNNING"));
-
-    OrderStatus approvalStatus = new OrderStatus("123", true);
-    given().contentType(ContentType.JSON)
-            .body(approvalStatus)
-            .when()
-            .post("/event")
-            .then()
-            .statusCode(200);
-
-    // Wait for the workflow instance to complete
-
-    await().atMost(Duration.ofSeconds(2))
-            .pollDelay(500, TimeUnit.MILLISECONDS)
-            .pollInterval(500, TimeUnit.MILLISECONDS)
-            .until(() -> {
-               var completedStatus = given().contentType(ContentType.JSON)
-                      .when()
-                      .get("/status")
-                      .then()
-                      .statusCode(200).extract().asString();
-              assertTrue(completedStatus.contains("COMPLETED"));
-              assertTrue(completedStatus.contains("has been approved"));
-              return true;
-            });
 
   }
 

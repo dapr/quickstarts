@@ -11,14 +11,12 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples.workflowapp.activities;
+package io.dapr.springboot.workflowapp.workflow.activities;
 
 import io.dapr.client.DaprClient;
-import io.dapr.client.domain.State;
-import io.dapr.springboot.examples.workflowapp.ActivityResult;
-import io.dapr.springboot.examples.workflowapp.Order;
-import io.dapr.springboot.examples.workflowapp.OrderItem;
-import io.dapr.springboot.examples.workflowapp.ProductInventory;
+import io.dapr.springboot.workflowapp.model.ActivityResult;
+import io.dapr.springboot.workflowapp.model.OrderItem;
+import io.dapr.springboot.workflowapp.model.ProductInventory;
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
 import org.slf4j.Logger;
@@ -38,14 +36,15 @@ public class CheckInventoryActivity implements WorkflowActivity {
     var orderItem = ctx.getInput(OrderItem.class);
     logger.info("{} : Received input: {}", ctx.getName(), orderItem);
 
-    var productInventory = daprClient.getState("inventory", orderItem.productId(), ProductInventory.class).block();
-
+    var productInventoryState = daprClient.getState("inventory", orderItem.productId(), ProductInventory.class).block();
+    assert productInventoryState != null;
+    ProductInventory productInventory = productInventoryState.getValue();
     if (productInventory == null)
     {
       return new ActivityResult(false, "");
     }
 
-    var isAvailable = productInventory.getValue().quantity() >= orderItem.quantity();
+    var isAvailable = productInventory.quantity() >= orderItem.quantity();
     return new ActivityResult(isAvailable, "");
   }
 }

@@ -11,9 +11,10 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples.workflowapp.activities;
+package io.dapr.springboot.workflowapp.workflow.activities;
 
-import io.dapr.springboot.examples.workflowapp.Order;
+import io.dapr.springboot.workflowapp.model.Order;
+import io.dapr.springboot.workflowapp.model.RegisterShipmentResult;
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
 import org.slf4j.Logger;
@@ -27,7 +28,7 @@ public class RegisterShipmentActivity implements WorkflowActivity {
   public Object run(WorkflowActivityContext ctx) {
     Logger logger = LoggerFactory.getLogger(RegisterShipmentActivity.class);
     var order = ctx.getInput(Order.class);
-    logger.info("{} : Request Approval for Order: {}", ctx.getName(), order.id());
-    return true;
+    logger.info("{} : RegisterShipmentActivity for Order: {}", ctx.getName(), order.id());
+    return new RegisterShipmentResult(true);
   }
 }

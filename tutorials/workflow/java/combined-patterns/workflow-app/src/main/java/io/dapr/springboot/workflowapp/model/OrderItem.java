@@ -1,4 +1,4 @@
-package io.dapr.springboot.examples.workflowapp;
+package io.dapr.springboot.workflowapp.model;
 
 import java.math.BigDecimal;
 

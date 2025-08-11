@@ -11,9 +11,10 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples.workflowapp.activities;
+package io.dapr.springboot.workflowapp.workflow.activities;
 
-import io.dapr.springboot.examples.workflowapp.Order;
+import io.dapr.springboot.workflowapp.model.Order;
+import io.dapr.springboot.workflowapp.model.ReimburseCustomerResult;
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
 import org.slf4j.Logger;
@@ -28,6 +29,6 @@ public class ReimburseCustomerActivity implements WorkflowActivity {
     Logger logger = LoggerFactory.getLogger(ReimburseCustomerActivity.class);
     var order = ctx.getInput(Order.class);
     logger.info("{} : Request Approval for Order: {}", ctx.getName(), order.id());
-    return true;
+    return new ReimburseCustomerResult(true);
   }
 }

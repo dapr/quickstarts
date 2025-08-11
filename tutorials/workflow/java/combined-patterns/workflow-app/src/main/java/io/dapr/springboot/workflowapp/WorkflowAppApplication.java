@@ -11,21 +11,17 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples;
+package io.dapr.springboot.workflowapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class TestWorkflowAppApplication {
+public class WorkflowAppApplication {
 
   public static void main(String[] args) {
-
-    SpringApplication.from(WorkflowAppApplication::main)
-            .with(DaprTestContainersConfig.class)
-            .run(args);
-    org.testcontainers.Testcontainers.exposeHostPorts(8080);
+    SpringApplication.run(WorkflowAppApplication.class, args);
   }
 
 }

@@ -11,8 +11,10 @@
 limitations under the License.
 */
 
-package io.dapr.springboot.examples.workflowapp.activities;
+package io.dapr.springboot.workflowapp.workflow.activities;
 
+import io.dapr.springboot.workflowapp.model.ActivityResult;
+import io.dapr.springboot.workflowapp.model.Order;
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
 import org.slf4j.Logger;
@@ -20,9 +22,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /*
+
  */
 @Component
-public class ProcessPaymentActivity implements WorkflowActivity {
+public class CheckShippingDestinationActivity implements WorkflowActivity {
 
   /*
 
@@ -30,11 +33,10 @@ public class ProcessPaymentActivity implements WorkflowActivity {
 
   @Override
   public Object run(WorkflowActivityContext ctx) {
-    Logger logger = LoggerFactory.getLogger(ProcessPaymentActivity.class);
-    var message = ctx.getInput(String.class);
-
-    // Imagine a notification being sent to the user
-    logger.info("{} : Sending Notification: {}", ctx.getName(), message);
-    return true;
+    Logger logger = LoggerFactory.getLogger(CheckShippingDestinationActivity.class);
+    var order = ctx.getInput(Order.class);
+    // Imagine the order being processed by another system
+    logger.info("{} : Processed Order: {}", ctx.getName(), order.id());
+    return new ActivityResult(true, "");
   }
 }
