@@ -34,7 +34,7 @@ public class ExternalEventsWorkflow implements Workflow {
 
       if(order.totalPrice() > 250){
         try{
-          approvalStatus = ctx.waitForExternalEvent("approval-event", Duration.ofSeconds(12), ApprovalStatus.class).await();
+          approvalStatus = ctx.waitForExternalEvent("approval-event", Duration.ofSeconds(120), ApprovalStatus.class).await();
         } catch (TaskCanceledException tce){
           var notification = "Approval request for order " + order.id() + " timed out.";
           ctx.callActivity(SendNotificationActivity.class.getName(), notification).await();
