@@ -18,7 +18,7 @@ GET {{ apphost }}/status
 
 ### Send an approval event
 @eventName=approval-event
-POST {{ apphost }}/event/{{ instanceId }}/{{ eventName }}
+POST {{ apphost }}/event
 Content-Type: application/json
 
 {
