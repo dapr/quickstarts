@@ -1,7 +1,6 @@
 @apphost=http://localhost:8080
 
 ### Start the FanOutFanIn workflow
-# @name startWorkflowRequest
 POST {{ apphost }}/start
 
 ### Get the workflow status
