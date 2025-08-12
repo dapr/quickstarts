@@ -6,8 +6,8 @@ This tutorial demonstrates how several workflow patterns can be combined in a si
 
 The demo consist of two applications:
 
-- `WorkflowApp` is the main application that orchestrates an order process in the `OrderWorkflow`.
-- `ShippingApp` is a supporting service that is being called by the `OrderWorkflow`.
+- `workflow-app` is the main application that orchestrates an order process in the `OrderWorkflow`.
+- `shipping-app` is a supporting service that is being called by the `OrderWorkflow`.
 
 The `OrderWorkflow` combines task chaining, fan-out/fan-in, and waiting for external event patterns. The workflow contains a number of activities for order processing including checking inventory, register shipment, process payment and more with a final order status being returned with the results of the order. It uses compensating logic in case the shipment fails to get registered and the customer needs to be reimbursed for the payment.
 
@@ -57,38 +57,28 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/csharp/combined-patterns` folder.
-2. Build the projects using the .NET CLI.
+1. Use a terminal to navigate to the `tutorials/workflow/java/combined-patterns` folder.
+2. Build and run the `workflow-app` project using Maven.
 
     ```bash
-    dotnet build ./WorkflowApp/
-    dotnet build ./ShippingApp/
+    cd workflow-app
+    mvn clean -Dspring-boot.run.arguments="--reuse=true" spring-boot:test-run
     ```
 
-3. Use the Dapr CLI to run the Dapr Multi-App run file. This starts both applications `order-workflow` and `shipping` with the Dapr components in the [resources](./resources) folder.
+3. In a separate terminal, build and run the `shipping-app` project using Maven. 
 
-    <!-- STEP
-    name: Run multi app run template
-    expected_stdout_lines:
-    - 'Started Dapr with app id "order-workflow"'
-    - 'Started Dapr with app id "shipping"'
-    expected_stderr_lines:
-    working_dir: .
-    output_match_mode: substring
-    background: true
-    sleep: 15
-    timeout_seconds: 30
-    -->
     ```bash
-    dapr run -f .
+    cd shipping-app
+    mvn clean -Dspring-boot.run.arguments="--reuse=true" spring-boot:test-run
     ```
-    <!-- END_STEP -->
+
+**Note**: notice that you are using the `reuse=true` property to make sure that both applications connect to the same infrastructure instead of creating its own. This is using [Testcontainers](https://www.testcontainers.com), check the []`reuse` functionality documentation here](https://java.testcontainers.org/features/reuse/), as you might need to enable this feature. 
 
 4. Use the POST request in the [`order-workflow.http`](./order-workflow.http) file to start the workflow, or use this cURL command:
 
     ```bash
     curl -i --request POST \
-    --url http://localhost:5260/start \
+    --url http://localhost:8080/start \
     --header 'content-type: application/json' \
     --data '{"id": "b0d38481-5547-411e-ae7b-255761cce17a","orderItem" : {"productId": "RBD001","productName": "Rubber Duck","quantity": 10,"totalPrice": 15.00},"customerInfo" : {"id" : "Customer1","country" : "The Netherlands"}}'
     ```
@@ -114,28 +104,29 @@ graph LR
     The app logs should come from both services executing all activities as follows:
 
     ```text
-    == APP - order-workflow == CheckInventory: Received input: OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }.
-    == APP - order-workflow == CheckShippingDestination: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
-    == APP - shipping == checkDestination: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
-    == APP - order-workflow == ProcessPayment: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
-    == APP - order-workflow == UpdateInventory: Received input: OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }.
-    == APP - order-workflow == RegisterShipment: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
-    == APP - shipping == registerShipment: Received input: Order { Id = 06d49c54-bf65-427b-90d1-730987e96e61, OrderItem = OrderItem { ProductId = RBD001, ProductName = Rubber Duck, Quantity = 10, TotalPrice = 15.00 }, CustomerInfo = CustomerInfo { Id = Customer1, Country = The Netherlands } }.
-    == APP - order-workflow == Shipment registered for order ShipmentRegistrationStatus { OrderId = 06d49c54-bf65-427b-90d1-730987e96e61, IsSuccess = True, Message = }
+    i.d.s.w.WorkflowAppRestController        : Received order: Order[id=b0d38481-5547-411e-ae7b-255761cce17a, orderItem=OrderItem[productId=RBD001, productName=Rubber Duck, quantity=10, totalPrice=15.00], customerInfo=CustomerInfo[id=Customer1, country=The Netherlands]]
+    s.w.w.a.CheckShippingDestinationActivity : io.dapr.springboot.workflowapp.workflow.activities.CheckShippingDestinationActivity : Checking Shipping Destination for Order: b0d38481-5547-411e-ae7b-255761cce17a
+    i.d.s.w.w.a.CheckInventoryActivity       : io.dapr.springboot.workflowapp.workflow.activities.CheckInventoryActivity : Received input: OrderItem[productId=RBD001, productName=Rubber Duck, quantity=10, totalPrice=15.00]
+    i.d.s.w.w.a.ProcessPaymentActivity       : io.dapr.springboot.workflowapp.workflow.activities.ProcessPaymentActivity : Process Order Item Payment: OrderItem[productId=RBD001, productName=Rubber Duck, quantity=10, totalPrice=15.00]
+    i.d.s.w.w.a.UpdateInventoryActivity      : io.dapr.springboot.workflowapp.workflow.activities.UpdateInventoryActivity : Received input: OrderItem[productId=RBD001, productName=Rubber Duck, quantity=10, totalPrice=15.00]
+    i.d.s.w.w.a.RegisterShipmentActivity     : io.dapr.springboot.workflowapp.workflow.activities.RegisterShipmentActivity : RegisterShipmentActivity for OrderItem: Order[id=b0d38481-5547-411e-ae7b-255761cce17a, orderItem=OrderItem[productId=RBD001, productName=Rubber Duck, quantity=10, totalPrice=15.00], customerInfo=CustomerInfo[id=Customer1, country=The Netherlands]]
+    i.d.s.w.WorkflowAppRestController        : Shipment registered for order ShipmentRegistrationStatus[orderId=b0d38481-5547-411e-ae7b-255761cce17a, isSuccess=true, message=]
+
+    
     ```
 
 5. Use the GET request in the [`order-workflow.http`](./order-workflow.http) file to get the status of the workflow, or use this cURL command:
 
     ```bash
-    curl --request GET --url http://localhost:3560/v1.0/workflows/dapr/06d49c54-bf65-427b-90d1-730987e96e61
+    curl --request GET --url "http://localhost:8080/output?instanceId=b0d38481-5547-411e-ae7b-255761cce17a"
     ```
 
     The expected serialized output of the workflow is:
 
     ```txt
-    {\"IsSuccess\":true,\"Message\":\"Order 06d49c54-bf65-427b-90d1-730987e96e61 processed successfully.\"}"
+    {"isSuccess":true,"message":"Order b0d38481-5547-411e-ae7b-255761cce17a processed successfully."}
     ```
 
     *The Order ID is generated when making the request and is different each time.*
 
-6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
+6. Stop both applications by pressing `Ctrl+C` in each terminal. 

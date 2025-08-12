@@ -20,6 +20,5 @@ Content-Type: application/json
     }
 }
 
-### Get the workflow status
-@instanceId={{startWorkflowRequest.response.headers.Location}}
-GET {{ apphost }}/status/{{ instanceId }}
+### Get the workflow output
+GET {{ apphost }}/output?instanceId={{ instanceId }}
