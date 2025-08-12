@@ -13,7 +13,6 @@ limitations under the License.
 
 package io.dapr.springboot.workflowapp.workflow.activities;
 
-import io.dapr.springboot.workflowapp.model.Order;
 import io.dapr.springboot.workflowapp.model.OrderItem;
 import io.dapr.springboot.workflowapp.model.PaymentResult;
 import io.dapr.workflows.WorkflowActivity;
@@ -22,14 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-/*
- */
+
 @Component
 public class ProcessPaymentActivity implements WorkflowActivity {
 
-  /*
-
-   */
 
   @Override
   public Object run(WorkflowActivityContext ctx) {

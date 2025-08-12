@@ -1,7 +1,6 @@
 package io.dapr.springboot.workflowapp;
 
 import io.dapr.client.DaprClient;
-import io.dapr.springboot.workflowapp.model.ProductInventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -15,7 +15,6 @@ package io.dapr.springboot.workflowapp.workflow.activities;
 
 import io.dapr.client.DaprClient;
 import io.dapr.client.domain.State;
-import io.dapr.springboot.workflowapp.model.ActivityResult;
 import io.dapr.springboot.workflowapp.model.OrderItem;
 import io.dapr.springboot.workflowapp.model.ProductInventory;
 import io.dapr.springboot.workflowapp.model.UpdateInventoryResult;

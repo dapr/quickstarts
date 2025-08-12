@@ -26,15 +26,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-/*
-
- */
 @Component
 public class CheckShippingDestinationActivity implements WorkflowActivity {
-
-  /*
-
-   */
 
   @Autowired
   private RestTemplate restTemplate;
