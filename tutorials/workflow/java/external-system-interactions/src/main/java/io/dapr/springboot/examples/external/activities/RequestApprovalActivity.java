@@ -28,6 +28,7 @@ public class RequestApprovalActivity implements WorkflowActivity {
     Logger logger = LoggerFactory.getLogger(RequestApprovalActivity.class);
     var order = ctx.getInput(Order.class);
     logger.info("{} : Request Approval for Order: {}", ctx.getName(), order.id());
+    /* Imagine an approval request being sent to another system */
     return true;
   }
 }
