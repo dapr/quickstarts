@@ -1,7 +1,6 @@
 @apphost=http://localhost:8080
 
 ### Start the Monitor workflow
-# @name startWorkflowRequest
 @counter=0
 POST {{ apphost }}/start/{{counter}}
 
