@@ -35,7 +35,6 @@ public class MonitorWorkflow implements Workflow {
         ctx.continueAsNew(counter);
       }
 
-
       ctx.complete("Status is healthy after checking " + counter + " times.");
     };
   }
