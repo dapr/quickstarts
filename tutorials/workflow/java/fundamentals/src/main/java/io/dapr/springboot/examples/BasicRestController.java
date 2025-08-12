@@ -43,6 +43,10 @@ public class BasicRestController {
   @Autowired
   private DaprWorkflowClient daprWorkflowClient;
 
+   /* 
+   * Note: The workflow instanceId is kept in memory in this demo for convenience, but this approach should never be used in production.
+   * In production you would persist the instanceId in a state store together with any relevant business data to retrieve it later.
+   */
   private String instanceId;
 
   /**
