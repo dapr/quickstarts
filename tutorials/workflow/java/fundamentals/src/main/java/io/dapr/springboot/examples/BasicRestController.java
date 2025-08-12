@@ -53,7 +53,7 @@ public class BasicRestController {
    * The DaprWorkflowClient is the API to manage workflows.
    * Here it is used to schedule a new workflow instance.
    *
-   * @return the instanceId of the ChainWorkflow execution
+   * @return the instanceId of the BasicWorkflow execution
    */
   @PostMapping("start")
   public String basic(@RequestParam("input") String input) throws TimeoutException {
