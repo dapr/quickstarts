@@ -1,7 +1,6 @@
 @apphost=http://localhost:8080
 
 ### Start the ParentWorkflow workflow
-# @name startWorkflowRequest
 POST {{ apphost }}/start
 Content-Type: application/json
 
