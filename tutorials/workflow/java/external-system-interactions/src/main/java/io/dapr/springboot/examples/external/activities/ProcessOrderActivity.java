@@ -21,14 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /*
-
+ * ProcessOrderActivity simulates processing by another system
  */
 @Component
 public class ProcessOrderActivity implements WorkflowActivity {
-
-  /*
-
-   */
 
   @Override
   public Object run(WorkflowActivityContext ctx) {

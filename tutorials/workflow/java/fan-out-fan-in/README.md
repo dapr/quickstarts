@@ -27,7 +27,7 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/java/task-chaining` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/java/fan-out-fan-in` folder.
 2. Build and run the project using Maven.
 
     ```bash
@@ -58,11 +58,12 @@ graph LR
     The expected app logs are as follows:
 
     ```text
-    == APP - fanoutfanin == GetWordLength: Received input: word.
-    == APP - fanoutfanin == GetWordLength: Received input: is.
-    == APP - fanoutfanin == GetWordLength: Received input: the.
-    == APP - fanoutfanin == GetWordLength: Received input: shortest.
-    == APP - fanoutfanin == GetWordLength: Received input: which.
+    io.dapr.workflows.WorkflowContext        : Starting Workflow: io.dapr.springboot.examples.fanoutfanin.FanOutFanInWorkflow
+    i.d.s.e.f.GetWordLengthActivity          : io.dapr.springboot.examples.fanoutfanin.GetWordLengthActivity : Received input: which
+    i.d.s.e.f.GetWordLengthActivity          : io.dapr.springboot.examples.fanoutfanin.GetWordLengthActivity : Received input: the
+    i.d.s.e.f.GetWordLengthActivity          : io.dapr.springboot.examples.fanoutfanin.GetWordLengthActivity : Received input: shortest
+    i.d.s.e.f.GetWordLengthActivity          : io.dapr.springboot.examples.fanoutfanin.GetWordLengthActivity : Received input: word
+    i.d.s.e.f.GetWordLengthActivity          : io.dapr.springboot.examples.fanoutfanin.GetWordLengthActivity : Received input: is
     ```
 
     > Note that the order of the logs may vary.

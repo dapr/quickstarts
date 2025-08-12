@@ -15,6 +15,7 @@ package io.dapr.springboot.examples.external;
 
 import io.dapr.durabletask.TaskCanceledException;
 import io.dapr.springboot.examples.external.activities.ProcessOrderActivity;
+import io.dapr.springboot.examples.external.activities.RequestApprovalActivity;
 import io.dapr.springboot.examples.external.activities.SendNotificationActivity;
 import io.dapr.workflows.Workflow;
 import io.dapr.workflows.WorkflowStub;
@@ -30,7 +31,10 @@ public class ExternalEventsWorkflow implements Workflow {
       ctx.getLogger().info("Starting Workflow: {}", ctx.getName());
 
       var order = ctx.getInput(Order.class);
-      var approvalStatus = new ApprovalStatus(order.id(), true);
+
+      Boolean approved = ctx.callActivity(RequestApprovalActivity.class.getName(), order, Boolean.class).await();
+
+      var approvalStatus = new ApprovalStatus(order.id(), approved);
 
       if(order.totalPrice() > 250){
         try{

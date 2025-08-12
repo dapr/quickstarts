@@ -43,6 +43,10 @@ public class ExternalEventsRestController {
   @Autowired
   private DaprWorkflowClient daprWorkflowClient;
 
+  /*
+   * **Note:** This local variable is used for examples purposes only.
+   * For production scenarios, you will need to map workflowInstanceIds to your business scenarios.
+   */
   private String instanceId;
 
   /**
@@ -54,7 +58,7 @@ public class ExternalEventsRestController {
   @PostMapping("start")
   public String basic(@RequestBody Order order) throws TimeoutException {
     logger.info("Received order: {}", order);
-    instanceId = daprWorkflowClient.scheduleNewWorkflow(ExternalEventsWorkflow.class, order);
+    instanceId = daprWorkflowClient.scheduleNewWorkflow(ExternalEventsWorkflow.class, order, order.id());
     return instanceId;
   }
 
