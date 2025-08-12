@@ -34,7 +34,7 @@ public class ParentWorkflow implements Workflow {
               .map(input -> ctx.callChildWorkflow(ChildWorkflow.class.getName(), input, String.class))
               .collect(Collectors.toList());
 
-      // Fan-in to get the total word count from all the individual activity results.
+      // Fan-out & fan-in to get the all the child workflow results.
       List<String> allChildWorkflowsResults = ctx.allOf(tasks).await();
 
       ctx.complete(allChildWorkflowsResults);
