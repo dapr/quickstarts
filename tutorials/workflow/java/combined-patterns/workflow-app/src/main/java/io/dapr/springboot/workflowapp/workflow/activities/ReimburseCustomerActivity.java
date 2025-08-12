@@ -28,7 +28,7 @@ public class ReimburseCustomerActivity implements WorkflowActivity {
   public Object run(WorkflowActivityContext ctx) {
     Logger logger = LoggerFactory.getLogger(ReimburseCustomerActivity.class);
     var order = ctx.getInput(Order.class);
-    logger.info("{} : Request Approval for Order: {}", ctx.getName(), order.id());
+    logger.info("{} : Request reimbursement for Order: {}", ctx.getName(), order.id());
     return new ReimburseCustomerResult(true);
   }
 }

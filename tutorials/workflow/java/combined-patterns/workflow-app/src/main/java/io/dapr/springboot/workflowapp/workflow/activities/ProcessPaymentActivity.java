@@ -13,6 +13,8 @@ limitations under the License.
 
 package io.dapr.springboot.workflowapp.workflow.activities;
 
+import io.dapr.springboot.workflowapp.model.Order;
+import io.dapr.springboot.workflowapp.model.OrderItem;
 import io.dapr.springboot.workflowapp.model.PaymentResult;
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
@@ -32,10 +34,9 @@ public class ProcessPaymentActivity implements WorkflowActivity {
   @Override
   public Object run(WorkflowActivityContext ctx) {
     Logger logger = LoggerFactory.getLogger(ProcessPaymentActivity.class);
-    var message = ctx.getInput(String.class);
+    var orderItem = ctx.getInput(OrderItem.class);
 
-    // Imagine a notification being sent to the user
-    logger.info("{} : Sending Notification: {}", ctx.getName(), message);
+    logger.info("{} : Process Order Item Payment: {}", ctx.getName(), orderItem);
     return new PaymentResult(true);
   }
 }

@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static io.dapr.springboot.workflowapp.WorkflowAppRestController.DAPR_INVENTORY_COMPONENT;
+
 @Component
 public class UpdateInventoryActivity implements WorkflowActivity {
 
@@ -50,7 +52,7 @@ public class UpdateInventoryActivity implements WorkflowActivity {
     }
 
     var updateProductInventory = new ProductInventory(productInventory.productId(), productInventory.quantity() - orderItem.quantity());
-    daprClient.saveState("inventory", orderItem.productId(), updateProductInventory).block();
+    daprClient.saveState(DAPR_INVENTORY_COMPONENT, orderItem.productId(), updateProductInventory).block();
     return new UpdateInventoryResult(true, "Inventory updated for: " + orderItem.productName());
   }
 

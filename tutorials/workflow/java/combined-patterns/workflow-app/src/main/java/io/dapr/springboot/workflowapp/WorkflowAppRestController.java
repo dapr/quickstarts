@@ -14,14 +14,18 @@ limitations under the License.
 package io.dapr.springboot.workflowapp;
 
 
+import io.dapr.Topic;
 import io.dapr.client.DaprClient;
+import io.dapr.client.domain.CloudEvent;
 import io.dapr.client.domain.State;
 import io.dapr.spring.workflows.config.EnableDaprWorkflows;
 import io.dapr.springboot.workflowapp.model.Order;
+import io.dapr.springboot.workflowapp.model.OrderStatus;
 import io.dapr.springboot.workflowapp.model.ProductInventory;
 import io.dapr.springboot.workflowapp.model.ShipmentRegistrationStatus;
 import io.dapr.springboot.workflowapp.workflow.OrderWorkflow;
 import io.dapr.workflows.client.DaprWorkflowClient;
+import io.dapr.workflows.client.WorkflowInstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +73,7 @@ public class WorkflowAppRestController {
   @PostMapping("start")
   public String basic(@RequestBody Order order) throws TimeoutException {
     logger.info("Received order: {}", order);
-    return daprWorkflowClient.scheduleNewWorkflow(OrderWorkflow.class, order);
+    return daprWorkflowClient.scheduleNewWorkflow(OrderWorkflow.class, order, order.id());
   }
 
 
@@ -80,9 +84,10 @@ public class WorkflowAppRestController {
    * @param status ShipmentRegistrationStatus
    */
   @PostMapping("shipmentRegistered")
-  public void shipmentRegistered(@RequestBody ShipmentRegistrationStatus status){
-    logger.info("Shipment registered for order {}", status);
-    daprWorkflowClient.raiseEvent(status.orderId(), SHIPMENT_REGISTERED_EVENT, status);
+  @Topic(pubsubName = DAPR_PUBSUB_COMPONENT, name = "shipment-registration-confirmed-events")
+  public void shipmentRegistered(@RequestBody CloudEvent<ShipmentRegistrationStatus> status){
+    logger.info("Shipment registered for order {}", status.getData());
+    daprWorkflowClient.raiseEvent(status.getData().orderId(), SHIPMENT_REGISTERED_EVENT, status.getData());
   }
 
 
@@ -112,6 +117,13 @@ public class WorkflowAppRestController {
       }else{
         return ResponseEntity.notFound().build();
       }
+  }
+
+  @GetMapping("/output")
+  public OrderStatus getOutput(@RequestParam("instanceId") String instanceId){
+    WorkflowInstanceStatus instanceState = daprWorkflowClient.getInstanceState(instanceId, true);
+    assert instanceState != null;
+    return instanceState.readOutputAs(OrderStatus.class);
   }
 
 

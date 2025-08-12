@@ -13,22 +13,36 @@ limitations under the License.
 
 package io.dapr.springboot.workflowapp.workflow.activities;
 
+import io.dapr.client.DaprClient;
 import io.dapr.springboot.workflowapp.model.Order;
+import io.dapr.springboot.workflowapp.model.OrderItem;
 import io.dapr.springboot.workflowapp.model.RegisterShipmentResult;
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import static io.dapr.springboot.workflowapp.WorkflowAppRestController.DAPR_PUBSUB_COMPONENT;
+import static io.dapr.springboot.workflowapp.WorkflowAppRestController.DAPR_PUBSUB_REGISTRATION_TOPIC;
 
 @Component
 public class RegisterShipmentActivity implements WorkflowActivity {
+
+  @Autowired
+  private DaprClient daprClient;
 
   @Override
   public Object run(WorkflowActivityContext ctx) {
     Logger logger = LoggerFactory.getLogger(RegisterShipmentActivity.class);
     var order = ctx.getInput(Order.class);
-    logger.info("{} : RegisterShipmentActivity for Order: {}", ctx.getName(), order.id());
+    logger.info("{} : RegisterShipmentActivity for OrderItem: {}", ctx.getName(), order);
+
+    daprClient.publishEvent(DAPR_PUBSUB_COMPONENT, DAPR_PUBSUB_REGISTRATION_TOPIC, order)
+            .block();
+
+
     return new RegisterShipmentResult(true);
   }
 }

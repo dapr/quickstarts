@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.List;
 
+import static io.dapr.springboot.workflowapp.WorkflowAppRestController.SHIPMENT_REGISTERED_EVENT;
+
 @Component
 public class OrderWorkflow implements Workflow {
   @Override
@@ -61,11 +63,11 @@ public class OrderWorkflow implements Workflow {
       try
       {
         // The RegisterShipment activity is using pub/sub messaging to communicate with the ShippingApp.
-        ctx.callActivity(RegisterShipmentActivity.class.getName(), order.orderItem(), RegisterShipmentResult.class).await();
+        ctx.callActivity(RegisterShipmentActivity.class.getName(), order, RegisterShipmentResult.class).await();
 
         // The ShippingApp will also use pub/sub messaging back to the WorkflowApp and raise an event.
         // The workflow will wait for the event to be received or until the timeout occurs.
-        shipmentRegistrationStatus = ctx.waitForExternalEvent("", Duration.ofSeconds(300), ShipmentRegistrationStatus.class).await();
+        shipmentRegistrationStatus = ctx.waitForExternalEvent(SHIPMENT_REGISTERED_EVENT, Duration.ofSeconds(30), ShipmentRegistrationStatus.class).await();
       } catch (TaskCanceledException tce){
         // Timeout occurred, the shipment-registered-event was not received.
         var message = "ShipmentRegistrationStatus for " + order.id() + " timed out.";

@@ -17,6 +17,7 @@ import com.redis.testcontainers.RedisContainer;
 import io.dapr.testcontainers.Component;
 import io.dapr.testcontainers.DaprContainer;
 import io.dapr.testcontainers.DaprLogLevel;
+import io.dapr.testcontainers.Subscription;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -31,38 +32,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static io.dapr.springboot.workflowapp.WorkflowAppRestController.DAPR_PUBSUB_COMPONENT;
 import static io.dapr.testcontainers.DaprContainerConstants.DAPR_RUNTIME_IMAGE_TAG;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class DaprTestContainersConfig {
 
 
-
   @Bean
-  public RedisContainer redisContainer(Network daprNetwork){
+  public RedisContainer redisContainer(Network daprNetwork, Environment env){
+    boolean reuse = env.getProperty("reuse", Boolean.class, false);
     return new RedisContainer(RedisContainer.DEFAULT_IMAGE_NAME)
             .withNetwork(daprNetwork)
+            .withReuse(reuse)
             .withNetworkAliases("redis");
   }
 
   @Bean
   @ServiceConnection
-  public DaprContainer daprContainer(Network daprNetwork, RedisContainer redisContainer) {
+  public DaprContainer daprContainer(Network daprNetwork, RedisContainer redisContainer, Environment env) {
+    boolean reuse = env.getProperty("reuse", Boolean.class, false);
     Map<String, String> redisProps = new HashMap<>();
-    redisProps.put("actorStateStore", String.valueOf(true));
     redisProps.put("redisHost", "redis:6379");
     redisProps.put("redisPassword", "");
 
     return new DaprContainer(DAPR_RUNTIME_IMAGE_TAG)
             .withAppName("workflow-app")
-            .withComponent(new Component("inventory", "state.redis", "v1", redisProps))
-            .withComponent(new Component("pubsub", "pubsub.redis", "v1", redisProps))
+            .withComponent(new Component("inventory", "state.in-memory", "v1",
+                    Collections.singletonMap("actorStateStore", String.valueOf(true))))
+            .withComponent(new Component( DAPR_PUBSUB_COMPONENT, "pubsub.redis", "v1", redisProps))
             .withAppPort(8080)
             .withNetwork(daprNetwork)
+            .withReusablePlacement(reuse)
+            .withReuseScheduler(reuse)
             .withAppHealthCheckPath("/actuator/health")
             .withAppChannelAddress("host.testcontainers.internal")
-            //.withDaprLogLevel(DaprLogLevel.DEBUG)
-            //.withLogConsumer(outputFrame -> System.out.println(outputFrame.getUtf8String()))
+//            .withDaprLogLevel(DaprLogLevel.DEBUG)
+//            .withLogConsumer(outputFrame -> System.out.println(outputFrame.getUtf8String()))
             .dependsOn(redisContainer);
   }
 

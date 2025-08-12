@@ -25,7 +25,7 @@ public class TestShippingApplication {
     SpringApplication.from(ShippingApplication::main)
             .with(DaprTestContainersConfig.class)
             .run(args);
-    org.testcontainers.Testcontainers.exposeHostPorts(8080);
+    org.testcontainers.Testcontainers.exposeHostPorts(8081);
   }
 
 }

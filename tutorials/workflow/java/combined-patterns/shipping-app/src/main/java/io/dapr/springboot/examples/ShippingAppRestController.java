@@ -14,7 +14,9 @@ limitations under the License.
 package io.dapr.springboot.examples;
 
 
+import io.dapr.Topic;
 import io.dapr.client.DaprClient;
+import io.dapr.client.domain.CloudEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +46,11 @@ public class ShippingAppRestController {
   // The RegisterShipment activity in the WorkflowApp is publishing to this topic.
   // This method is publishing a message to the shipment-registration-confirmed-events topic.
   @PostMapping("registerShipment")
-  public ShipmentRegistrationStatus registerShipment(@RequestBody Order order){
-    logger.info("registerShipment: Received input: {}", order);
-    var status = new ShipmentRegistrationStatus(order.id(), true, "");
-    if( order.id().isEmpty()){
+  @Topic(pubsubName = DAPR_PUBSUB_COMPONENT, name = DAPR_PUBSUB_REGISTRATION_TOPIC)
+  public ShipmentRegistrationStatus registerShipment(@RequestBody CloudEvent<Order> order){
+    logger.info("registerShipment: Received input: {}", order.getData());
+    var status = new ShipmentRegistrationStatus(order.getData().id(), true, "");
+    if( order.getData().id().isEmpty()){
       logger.info("Order Id is empty!");
     }else{
       daprClient.publishEvent(DAPR_PUBSUB_COMPONENT,

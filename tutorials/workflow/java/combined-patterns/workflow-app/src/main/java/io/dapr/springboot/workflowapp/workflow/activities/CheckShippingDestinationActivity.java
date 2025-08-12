@@ -19,7 +19,12 @@ import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 /*
 
@@ -31,12 +36,27 @@ public class CheckShippingDestinationActivity implements WorkflowActivity {
 
    */
 
+  @Autowired
+  private RestTemplate restTemplate;
+
   @Override
   public Object run(WorkflowActivityContext ctx) {
     Logger logger = LoggerFactory.getLogger(CheckShippingDestinationActivity.class);
     var order = ctx.getInput(Order.class);
-    // Imagine the order being processed by another system
-    logger.info("{} : Processed Order: {}", ctx.getName(), order.id());
-    return new ActivityResult(true, "");
+    logger.info("{} : Checking Shipping Destination for Order: {}", ctx.getName(), order.id());
+    HttpEntity<Order> orderHttpEntity = new HttpEntity<>(order);
+    String url = "http://localhost:8081/checkDestination"; // <- Shipping app URL
+    ResponseEntity<ShippingDestinationResult> httpPost = restTemplate.exchange(url, HttpMethod.POST,
+            orderHttpEntity, ShippingDestinationResult.class);
+
+    if(!httpPost.getStatusCode().is2xxSuccessful()){
+      logger.info("{} : Failed to register shipment. Reason:: {}", ctx.getName(), httpPost.getStatusCode().value());
+      throw new RuntimeException("Failed to register shipment. Reason: " + httpPost.getStatusCode().value());
+    }
+    ShippingDestinationResult result = httpPost.getBody();
+    assert result != null;
+    return new ActivityResult(result.isSuccess(), "");
   }
+
+  record ShippingDestinationResult(boolean isSuccess){}
 }

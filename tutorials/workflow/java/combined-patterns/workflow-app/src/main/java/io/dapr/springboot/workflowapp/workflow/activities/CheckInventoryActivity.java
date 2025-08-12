@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static io.dapr.springboot.workflowapp.WorkflowAppRestController.DAPR_INVENTORY_COMPONENT;
+
 @Component
 public class CheckInventoryActivity implements WorkflowActivity {
 
@@ -36,7 +38,7 @@ public class CheckInventoryActivity implements WorkflowActivity {
     var orderItem = ctx.getInput(OrderItem.class);
     logger.info("{} : Received input: {}", ctx.getName(), orderItem);
 
-    var productInventoryState = daprClient.getState("inventory", orderItem.productId(), ProductInventory.class).block();
+    var productInventoryState = daprClient.getState(DAPR_INVENTORY_COMPONENT, orderItem.productId(), ProductInventory.class).block();
     assert productInventoryState != null;
     ProductInventory productInventory = productInventoryState.getValue();
     if (productInventory == null)

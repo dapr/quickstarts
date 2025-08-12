@@ -40,8 +40,8 @@ class ShippingAppTests {
 
   @BeforeEach
   void setUp() {
-    RestAssured.baseURI = "http://localhost:" + 8080;
-    org.testcontainers.Testcontainers.exposeHostPorts(8080);
+    RestAssured.baseURI = "http://localhost:" + 8081;
+    org.testcontainers.Testcontainers.exposeHostPorts(8081);
   }
 
 
