@@ -5,6 +5,3 @@ apps:
   - appID: conversation
     appDirPath: ./conversation/
     command: ["python3", "app.py"]
-  - appID: conversation-tool-calling
-    appDirPath: ./conversation/
-    command: ["python3", "tool_calling_app.py"]
