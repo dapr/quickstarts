@@ -14,7 +14,11 @@ import logging
 import requests
 import os
 
-logging.basicConfig(level=logging.INFO)
+# Configure logging to only show the message without level/logger prefix
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s'
+)
 
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
