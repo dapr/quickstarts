@@ -28,7 +28,7 @@ Open a new terminal window and run the multi app run template:
  output_match_mode: substring
  match_order: none
  background: false
- sleep: 120
+ sleep: 100
  timeout_seconds: 180
  -->
 
