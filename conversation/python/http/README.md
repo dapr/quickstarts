@@ -8,7 +8,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conver
 
 This quickstart includes one app:
 
-- `app.py`, responsible for sending an input to the underlying LLM and retrieving an output.
+- `app.py`, responsible for sending an input to the underlying LLM and retrieving an output. It includes a secondary conversation request to showcase tool calling to the underlying LLM.
 
 ## Run the app with the template file
 
@@ -62,8 +62,11 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == INFO:root:Input sent: What is dapr?'
-  - '== APP - conversation == INFO:root:Output response: What is dapr?'
+  - '== APP - conversation == Conversation input sent: What is dapr?'
+  - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == No tool calls in response'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -78,12 +81,25 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is dapr?`.
+- The app then sends a weather request to the component with tools available to the LLM.
+- The LLM will either respond back with a tool call for the user, or an ask for more information.
 
 ```text
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
+```
+
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
+- Since we are using the `echo` Component mock LLM, the tool call is not executed and the LLM returns `No tool calls in response`.
+
+```text
+== APP == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP == Output message: What is the weather like in San Francisco in celsius?
+== APP == No tool calls in response
+```
 ```
 
 <!-- END_STEP -->
@@ -145,9 +161,17 @@ uv pip install -r requirements.txt
 dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
 ```
 
-You should see the output:
+The terminal console output should look similar to this, where:
 
-```bash
-== APP == INFO:root:Input sent: What is dapr?
-== APP == INFO:root:Output response: What is dapr?
+- The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is dapr?`.
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?`
+
+```text
+== APP - conversation == Conversation input sent: What is dapr?
+== APP - conversation == Output response: What is dapr?
+== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP - conversation == Output message: What is the weather like in San Francisco in celsius?
+== APP - conversation == No tool calls in response
 ```
