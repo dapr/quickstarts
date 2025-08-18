@@ -31,7 +31,7 @@ public class VersioningWorkflow1 implements Workflow {
   since these are difficult to replace with a new version.
 */
 @Component
-public class VersioningWorkflow1 implements Workflow {
+public class VersioningWorkflow2 implements Workflow {
   @Override
   public WorkflowStub create() {
     return ctx -> {
