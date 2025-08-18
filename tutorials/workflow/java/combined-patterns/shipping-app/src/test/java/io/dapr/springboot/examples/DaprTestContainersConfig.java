@@ -105,7 +105,4 @@ public class DaprTestContainersConfig {
     }
   }
 
-
- 
-
 }

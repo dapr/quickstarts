@@ -50,6 +50,7 @@ public class WorkflowAppRestController {
   public static final String DAPR_PUBSUB_COMPONENT = "shippingpubsub";
   public static final String DAPR_PUBSUB_REGISTRATION_TOPIC = "shipment-registration-events";
   public static final String SHIPMENT_REGISTERED_EVENT = "shipment-registered-event";
+  public static final String DAPR_PUBSUB_REGISTRATION_CONFIRMED_TOPIC = "shipment-registration-confirmed-events";
 
   @Autowired
   private DaprWorkflowClient daprWorkflowClient;
@@ -84,7 +85,7 @@ public class WorkflowAppRestController {
    * @param status ShipmentRegistrationStatus
    */
   @PostMapping("shipmentRegistered")
-  @Topic(pubsubName = DAPR_PUBSUB_COMPONENT, name = "shipment-registration-confirmed-events")
+  @Topic(pubsubName = DAPR_PUBSUB_COMPONENT, name = DAPR_PUBSUB_REGISTRATION_CONFIRMED_TOPIC)
   public void shipmentRegistered(@RequestBody CloudEvent<ShipmentRegistrationStatus> status){
     logger.info("Shipment registered for order {}", status.getData());
     daprWorkflowClient.raiseEvent(status.getData().orderId(), SHIPMENT_REGISTERED_EVENT, status.getData());
@@ -125,11 +126,6 @@ public class WorkflowAppRestController {
     assert instanceState != null;
     return instanceState.readOutputAs(OrderStatus.class);
   }
-
-
-
-
-
 
 }
 

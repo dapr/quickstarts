@@ -74,7 +74,7 @@ graph LR
     curl --request GET --url http://localhost:8080/output
     ```
 
-5. The expected serialized output of the workflow is an array with two strings:
+5. The expected serialized output of the workflow is one string (the shortest) from the array.
 
     ```txt
     "["is"]"
