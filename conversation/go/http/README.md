@@ -49,13 +49,6 @@ The terminal console output should look similar to this, where:
 
 2. Stop and clean up application processes.
 
-<!-- STEP
-name: Stop multi-app run 
-sleep: 5
--->
-
 ```bash
 dapr stop -f .
 ```
-
-<!-- END_STEP -->
