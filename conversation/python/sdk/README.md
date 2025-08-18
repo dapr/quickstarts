@@ -6,40 +6,12 @@ For comprehensive documentation on Dapr's Conversation API, see the [official do
 
 ## Sample Applications
 
-This quickstart includes three example applications:
+This quickstart includes two example applications:
 
 - `app.py`: Basic example that sends a prompt to an LLM and retrieves the response
-- `tool_calling.py`: Advanced example that defines a tool and sends a request to an LLM that supports tool calling
-- `tool_calling_from_function.py`: Similar to `tool_calling.py` but uses a helper function to generate the JSON schema for function calling
-
-## LLM Providers
-
-By default, this quickstart uses Dapr's mock LLM Echo Component, which simply echoes back the input for testing purposes.
-
-The repository also includes pre-configured components for the following LLM providers:
-- [OpenAI](../../components/openai.yaml)
-- [Ollama](../../components/ollama.yaml) (via its OpenAI compatibility layer)
-
-To use one of these alternative provider, modify the `provider_component` value in your application code from `echo` to either `openai` or `ollama`.
-
-Of course, you can also play adding components for other LLM providers supported by Dapr.
-
-### OpenAI Configuration
-
-To use the OpenAI provider:
-
-1. Change the `provider_component` parameter in your application code to `openai`
-2. Edit the [openai.yaml](../../components/openai.yaml) component file and replace `YOUR_OPENAI_API_KEY` with your actual OpenAI API key
-
-### Ollama Configuration
-
-To use the Ollama provider:
-
-1. Change the `provider_component` parameter in your application code to `ollama`
-2. Install and run Ollama locally on your machine
-3. Pull a model with tool-calling support from the [Ollama models repository](https://ollama.com/search?c=tools)
-
-The default configuration uses the `gpt-oss:20b` model, but you can modify the component file to use any compatible model that your system can run.
+- `tool_calling.py`: An example that demonstrates how to use the Conversation API to perform external tool calling with two approaches:
+    - Creating the tool definition json schema manually
+    - Using the `@tool` decorator to automatically generate the schema
 
 ## Running the Application
 
@@ -52,35 +24,36 @@ This approach uses [Dapr's multi-app run template files](https://docs.dapr.io/de
 For more LLM options, see the [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/) documentation.
 
 1. **Install dependencies:**
-
-    <!-- STEP
-    name: Install Python dependencies
-    -->
     
     ```bash
     cd ./conversation
     ```
     
     <details open="true">
-    <summary>Option 1: Using pip</summary>
-    
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    pip3 install -r requirements.txt
-    ```
-    
-    </details>
-    
-    <details>
-    <summary>Option 2: Using uv (faster alternative to pip)</summary>
-    
+    <summary>Option 1: Using uv (faster modern alternative to pip)</summary>
+
     ```bash
     python3 -m venv .venv
     source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
     # If you do not have uv installed yet, install it first:
     # pip install uv
     uv pip install -r requirements.txt
+    ```
+
+    </details>
+   
+    <details>
+    <summary>Option 2: Using pip</summary>
+
+    <!-- STEP
+    name: Install Python dependencies
+    -->
+    
+    ```bash
+    cd conversation   
+    python3 -m venv .venv
+    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
+    pip3 install -r requirements.txt
     ```
     
     </details>
@@ -91,7 +64,7 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     ```
     <!-- END_STEP -->
 
-2. **Run the application:**
+2. **Run the simple Conversation application:**
 
     <!-- STEP
     name: Run multi app run template
@@ -107,7 +80,8 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     -->
     
     ```bash
-    dapr run -f .
+    source conversation/.venv/bin/activate
+    dapr run -f .    
     ```
     
     Expected output:
@@ -130,6 +104,52 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     dapr stop -f .
     ```
     
+    <!-- END_STEP -->
+
+4. **Run the tool Calling Conversation application:**
+
+    <!-- STEP
+    name: Run multi app run template
+    expected_stdout_lines:
+      - "== APP - conversation == Input sent: calculate square root of 15"
+      - "== APP - conversation == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))"
+      - "== APP - conversation == Input sent: get weather in London in celsius"
+      - "== APP - conversation == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in London in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))"
+    expected_stderr_lines:
+    output_match_mode: substring
+    match_order: none
+    background: true
+    sleep: 15
+    timeout_seconds: 30
+    -->
+
+    ```bash
+    source conversation/.venv/bin/activate
+    dapr run -f dapr-tool-calling.yaml    
+    ```
+
+   Expected output:
+
+    ```text
+    == APP - conversation == Input sent: calculate square root of 15
+    == APP - conversation == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))
+    == APP - conversation == Input sent: get weather in London in celsius
+    == APP - conversation == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in London in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
+    ```
+
+    <!-- END_STEP -->
+
+5. **Stop the tool calling application:**
+
+    <!-- STEP
+    name: Stop multi-app run 
+    sleep: 5
+    -->
+
+    ```bash
+    dapr stop -f .
+    ```
+
     <!-- END_STEP -->
 
 ### Option 2: Using the Dapr CLI Directly
@@ -165,7 +185,4 @@ As an alternative to the multi-app template, you can run the application directl
     ```bash
     # For tool calling example
     dapr run --app-id conversation --resources-path ../../../components -- python3 tool_calling.py
-    
-    # For tool calling with function helper example
-    dapr run --app-id conversation --resources-path ../../../components -- python3 tool_calling_from_function.py
     ```

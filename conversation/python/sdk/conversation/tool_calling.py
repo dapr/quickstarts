@@ -11,13 +11,12 @@
 # limitations under the License.
 # ------------------------------------------------------------
 from dapr.clients import DaprClient
-from dapr.clients.grpc._request import (ConversationInputAlpha2, ConversationMessage, ConversationMessageContent,
-                                        ConversationMessageOfUser, ConversationToolsFunction, ConversationTools)
+from dapr.clients.grpc import conversation
 
 with DaprClient() as d:
     provider_component = "echo"
 
-    function = ConversationToolsFunction(
+    function = conversation.ConversationToolsFunction(
         name="calculate",
         description="Perform calculations",
         parameters={
@@ -31,11 +30,13 @@ with DaprClient() as d:
             "required": ["expression"]
         }
     )
-    calc_tool = ConversationTools(function=function)
+    calc_tool = conversation.ConversationTools(function=function)
 
     textInput = "calculate square root of 15"
     inputs = [
-        ConversationInputAlpha2(messages=[ConversationMessage(of_user=ConversationMessageOfUser(content=[ConversationMessageContent(text=textInput)]))],
+        conversation.ConversationInputAlpha2(messages=[
+            conversation.ConversationMessage(of_user=conversation.ConversationMessageOfUser(
+                content=[conversation.ConversationMessageContent(text=textInput)]))],
                                 scrub_pii=True),
     ]
 
@@ -50,3 +51,38 @@ with DaprClient() as d:
 
     for output in response.outputs:
         print(f'Output response: {output.choices[0]}')
+
+    # ------------------------------------------------------------
+    # Using higher level API helpers
+    # ------------------------------------------------------------
+
+    # using @tool decorator helper for tool registration.  The tools will be automatically registered in the SDK and
+    # will also be parsed to extract a json-schema representing the function signature so the LLM can understand how to use the tool.
+    @conversation.tool
+    def get_weather(location: str, unit: str) -> str:
+        """get weather from a location in the given unit"""
+        return f"The weather in {location} is 25 degrees {unit}."
+
+    textInput = "get weather in London in celsius"
+    # use create helper function (i.e.: create_user_message, create_system_message, etc...) to create inputs easily
+    inputs = [
+        conversation.ConversationInputAlpha2(messages=[conversation.create_user_message(textInput)], scrub_pii=True),
+    ]
+
+    print(f'Input sent: {textInput}')
+
+    response = d.converse_alpha2(
+        name=provider_component,
+        inputs=inputs,
+        temperature=0.7,
+        # use get_registered_tools helper function to get all registered tools
+        tools=conversation.get_registered_tools(),
+    )
+
+    for output in response.outputs:
+        print(f'Output response: {output.choices[0]}')
+
+        # registered tools are also automatically set to be invoked easily when called by the LLM
+        # using the method conversation.execute_registered_tool:
+        # >>> print(conversation.execute_registered_tool(name="get_weather", params={"location":"London", "unit":"celsius"}))
+
