@@ -131,7 +131,7 @@ func scheduleJob(ctx context.Context, in *common.InvocationEvent) (out *common.C
 	// schedule job
 	job := daprc.Job{
 		Name:    droidJob.Name,
-		DueTime: droidJob.DueTime,
+		DueTime: &droidJob.DueTime,
 		Data: &anypb.Any{
 			Value: content,
 		},
@@ -204,7 +204,7 @@ func handleJob(ctx context.Context, job *common.JobEvent) error {
 	if err := json.Unmarshal(job.Data, &jobData); err != nil {
 		return fmt.Errorf("failed to unmarshal job: %v", err)
 	}
-	
+
 	var jobPayload JobData
 	if err := json.Unmarshal(job.Data, &jobPayload); err != nil {
 		return fmt.Errorf("failed to unmarshal payload: %v", err)
