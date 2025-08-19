@@ -8,7 +8,7 @@
     </PropertyGroup>
   
     <ItemGroup>
-      <PackageReference Include="Dapr.AspNetCore" Version="1.16.0-rc12" />
+      <PackageReference Include="Dapr.AspNetCore" Version="1.16.0-rc13" />
     </ItemGroup>
 
   </Project>
