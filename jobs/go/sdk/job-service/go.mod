@@ -1,8 +1,6 @@
 module dapr_job_example
 
-go 1.24.4
-
-toolchain go1.24.5
+go 1.24.6
 
 require (
 	github.com/dapr/go-sdk v1.13.0-rc.1
