@@ -2,7 +2,7 @@
 
 ### Start the OrderWorkflow workflow
 # @name startWorkflowRequest
-@orderId={{$guid}}
+@orderId=b0d38481-5547-411e-ae7b-255761cce17a
 POST {{ apphost }}/start
 Content-Type: application/json
 
@@ -21,4 +21,4 @@ Content-Type: application/json
 }
 
 ### Get the workflow output
-GET {{ apphost }}/output?instanceId={{ instanceId }}
+GET {{ apphost }}/output?instanceId={{ orderId }}

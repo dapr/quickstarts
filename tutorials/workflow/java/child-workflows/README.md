@@ -58,7 +58,6 @@ graph LR
       --url http://localhost:8080/start \
       --header 'content-type: application/json' \
       --data '["Item 1","Item 2"]'
-
     ```
 
    The input of the workflow is an array with two strings:

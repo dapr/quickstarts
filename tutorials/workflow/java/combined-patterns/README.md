@@ -87,7 +87,7 @@ graph LR
 
     ```json
     {
-        "id": "{{orderId}}",
+        "id": "b0d38481-5547-411e-ae7b-255761cce17a",
         "orderItem" : {
             "productId": "RBD001",
             "productName": "Rubber Duck",

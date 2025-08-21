@@ -57,7 +57,7 @@ graph LR
 
     ```json
     {
-        "id": "{{orderId}}",
+        "id": "b7dd836b-e913-4446-9912-d400befebec5",
         "description": "Rubber ducks",
         "quantity": 100,
         "totalPrice": 500
@@ -92,7 +92,7 @@ graph LR
 
     ```json
     {
-        "orderId": "{{instanceId}}",
+        "orderId": "b7dd836b-e913-4446-9912-d400befebec5",
         "isApproved": true
     }
     ```
@@ -104,7 +104,7 @@ graph LR
     The expected serialized output of the workflow is:
 
     ```txt
-    "\"Workflow Instance (32d6bae5-5823-4d2a-8113-02f5265d629d) Status: COMPLETED
+    "\"Workflow Instance (b7dd836b-e913-4446-9912-d400befebec5) Status: COMPLETED
        Output: Order b7dd836b-e913-4446-9912-d400befebec5 has been approved.\""
     ```
 

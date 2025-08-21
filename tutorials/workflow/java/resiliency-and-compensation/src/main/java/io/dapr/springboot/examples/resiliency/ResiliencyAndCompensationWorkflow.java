@@ -29,7 +29,6 @@ public class ResiliencyAndCompensationWorkflow implements Workflow {
   public WorkflowStub create() {
     return ctx -> {
 
-
       var counter = ctx.getInput(Integer.class);
 
       WorkflowTaskRetryPolicy workflowTaskRetryPolicy = new WorkflowTaskRetryPolicy(3,
@@ -55,9 +54,7 @@ public class ResiliencyAndCompensationWorkflow implements Workflow {
           //@TODO: not supported yet
           //ctx.setCustomStatus()
         }
-
       }
-
 
       ctx.complete(workflowResult);
     };

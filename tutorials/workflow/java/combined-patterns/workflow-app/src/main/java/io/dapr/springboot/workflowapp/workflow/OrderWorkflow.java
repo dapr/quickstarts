@@ -74,8 +74,6 @@ public class OrderWorkflow implements Workflow {
         ctx.complete(new OrderStatus(false, message));
       }
 
-      assert shipmentRegistrationStatus != null;
-
       if (!shipmentRegistrationStatus.isSuccess())
       {
         // This is the compensation step in case the shipment registration event was not successful.
