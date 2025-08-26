@@ -43,12 +43,20 @@ func main() {
 
 	var inputBody = `{
 		"name": "echo",
-		"inputs": [{"content":"What is dapr?"}],
+		"inputs": [{
+			"messages": [{
+				"of_user": {
+					"content": [{
+						"text": "What is dapr?"
+					}]
+				}
+			}]
+		}],
 		"parameters": {},
 		"metadata": {}
-    }`
+	}`
 
-	reqURL := daprHost + ":" + daprHttpPort + "/v1.0-alpha1/conversation/" + conversationComponentName + "/converse"
+	reqURL := daprHost + ":" + daprHttpPort + "/v1.0-alpha2/conversation/" + conversationComponentName + "/converse"
 
 	req, err := http.NewRequest("POST", reqURL, strings.NewReader(inputBody))
 	if err != nil {
@@ -73,12 +81,102 @@ func main() {
 	}
 
 	// Unmarshal the response
-	var data map[string][]map[string]string
+	var data map[string]interface{}
 	if err := json.Unmarshal(bodyBytes, &data); err != nil {
 		log.Fatal(err)
 	}
 
-	result := data["outputs"][0]["result"]
+	// Navigate the new response structure: outputs[0].choices[0].message.content
+	outputs := data["outputs"].([]interface{})
+	output := outputs[0].(map[string]interface{})
+	choices := output["choices"].([]interface{})
+	choice := choices[0].(map[string]interface{})
+	message := choice["message"].(map[string]interface{})
+	result := message["content"].(string)
+
 	fmt.Println("Output response:", result)
 
+	// Tool calling example
+	var toolCallBody = `{
+		"name": "echo",
+		"inputs": [{
+			"messages": [{
+				"of_user": {
+					"content": [{
+						"text": "What is the weather like in San Francisco in celsius?"
+					}]
+				}
+			}]
+		}],
+		"parameters": {},
+		"metadata": {},
+		"tools": [{
+			"function": {
+				"name": "get_weather",
+				"description": "Get the current weather for a location",
+				"parameters": {
+					"type": "object",
+					"properties": {
+						"location": {
+							"type": "string",
+							"description": "The city and state, e.g. San Francisco, CA"
+						},
+						"unit": {
+							"type": "string",
+							"enum": ["celsius", "fahrenheit"],
+							"description": "The temperature unit to use"
+						}
+					},
+					"required": ["location"]
+				}
+			}
+		}],
+		"toolChoice": "auto"
+	}`
+
+	req2, err := http.NewRequest("POST", reqURL, strings.NewReader(toolCallBody))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	req2.Header.Set("Content-Type", "application/json")
+
+	res2, err := client.Do(req2)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res2.Body.Close()
+
+	fmt.Println("\nTool calling input sent: What is the weather like in San Francisco in celsius?")
+
+	bodyBytes2, err := io.ReadAll(res2.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var data2 map[string]interface{}
+	if err := json.Unmarshal(bodyBytes2, &data2); err != nil {
+		log.Fatal(err)
+	}
+
+	// Parse tool calling response
+	outputs2 := data2["outputs"].([]interface{})
+	output2 := outputs2[0].(map[string]interface{})
+	choices2 := output2["choices"].([]interface{})
+	choice2 := choices2[0].(map[string]interface{})
+	message2 := choice2["message"].(map[string]interface{})
+
+	if content, ok := message2["content"].(string); ok && content != "" {
+		fmt.Println("Output message:", content)
+	}
+
+	if toolCalls, ok := message2["toolCalls"].([]interface{}); ok && len(toolCalls) > 0 {
+		fmt.Println("Tool calls detected:")
+		for _, tc := range toolCalls {
+			fmt.Printf("Tool call: %v\n", tc)
+		}
+	} else {
+		fmt.Println("No tool calls in response")
+	}
 }
