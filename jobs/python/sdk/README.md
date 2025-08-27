@@ -1,8 +1,10 @@
-# Dapr Jobs API (HTTP Client)
+# Dapr Jobs API (SDK)
 
 In this quickstart, you'll schedule, get, and delete a job using Dapr's Job API. This API is responsible for scheduling and running jobs at a specific time or interval.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/jobs/) link for more information about Dapr and the Jobs API.
+
+> **Note:** This example leverages the Python SDK. If you are looking for the example using only HTTP requests, [click here](../http/).
 
 This quickstart includes two apps:
 
@@ -14,11 +16,6 @@ This quickstart includes two apps:
 - [Python 3.8+](https://www.python.org/downloads/)
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Initialized Dapr environment](https://docs.dapr.io/getting-started/install-dapr-selfhost/)
-
-## Environment Variables
-
-- `JOB_SERVICE_DAPR_HTTP_PORT`: The Dapr HTTP port of the job-service (default: 6280)
-- `DAPR_HOST`: The Dapr host address (default: http://localhost)
 
 ## Run all apps with multi-app run template file
 
@@ -68,18 +65,29 @@ The terminal console output should look similar to this, where:
 - The `C-3PO` job is being executed after 20 seconds.
 
 ```text
-== APP - job-scheduler == Job scheduled: R2-D2
-== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","dueTime":"15s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"R2-D2:Oil Change"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
-== APP - job-scheduler == Job scheduled: C-3PO
-== APP - job-service == Received job request...
+== APP - job-scheduler == Sending request to schedule job: R2-D2
+== APP - job-service == Scheduling job: R2-D2
+== APP - job-service ==   client.schedule_job_alpha1(job=job, overwrite=True)
+== APP - job-service == Job scheduled: R2-D2
+== APP - job-service == INFO:     192.168.1.106:0 - "POST /scheduleJob HTTP/1.1" 200 OK
+== APP - job-scheduler == Response: {"name":"R2-D2","job":"Oil Change","dueTime":15}
+== APP - job-scheduler == Sending request to retrieve job: R2-D2
+== APP - job-service ==   job = client.get_job_alpha1(name)
+== APP - job-service == Retrieving job: R2-D2
+== APP - job-service == INFO:     192.168.1.106:0 - "GET /getJob/R2-D2 HTTP/1.1" 200 OK
+== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","due_time":"15s","data":{"droid":"R2-D2","task":"Oil Change"}}
+== APP - job-scheduler == Sending request to schedule job: C-3PO
+== APP - job-service == Scheduling job: C-3PO
+== APP - job-service == Job scheduled: C-3PO
+== APP - job-service == INFO:     192.168.1.106:0 - "POST /scheduleJob HTTP/1.1" 200 OK
 == APP - job-service == Starting droid: R2-D2
 == APP - job-service == Executing maintenance job: Oil Change
-== APP - job-service == 127.0.0.1 - - "POST /job/R2-D2 HTTP/1.1" 200 -
-== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","dueTime":"20s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"C-3PO:Limb Calibration"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
-== APP - job-service == Received job request...
-== APP - job-service == Starting droid: C-3PO
-== APP - job-service == Executing maintenance job: Limb Calibration
-== APP - job-service == 127.0.0.1 - - "POST /job/C-3PO HTTP/1.1" 200 -
+== APP - job-service == INFO:     127.0.0.1:57206 - "POST /job/R2-D2 HTTP/1.1" 200 OK
+== APP - job-scheduler == Response: {"name":"C-3PO","job":"Limb Calibration","dueTime":20}
+== APP - job-scheduler == Sending request to retrieve job: C-3PO
+== APP - job-service == Retrieving job: C-3PO
+== APP - job-service == INFO:     192.168.1.106:0 - "GET /getJob/C-3PO HTTP/1.1" 200 OK
+== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","due_time":"20s","data":{"droid":"C-3PO","task":"Limb Calibration"}}
 ```
 
 <!-- END_STEP -->
@@ -116,37 +124,37 @@ dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --dapr-grpc-
 
 ```bash
 curl -X POST \
-  http://localhost:6280/v1.0-alpha1/jobs/R2D2 \
+  http://localhost:6200/scheduleJob \
   -H "Content-Type: application/json" \
   -d '{
-        "data": {
-          "@type": "type.googleapis.com/google.protobuf.StringValue",
-          "value": "R2-D2:Oil Change"
-        },
-        "dueTime": "2s"
-    }'
+    "name": "R2-D2",
+    "job": "Oil Change",
+    "dueTime": 2
+  }'
 ```
 
-In the `job-service` app terminal window, the output should be:
+In the `job-service` terminal window, the output should be:
 
 ```text
-== APP - job-service == Received job request...
-== APP - job-service == Starting droid: R2-D2
-== APP - job-service == Executing maintenance job: Oil Change
+
+== APP == Scheduling job: R2-D2
+== APP == Job scheduled: R2-D2
+== APP == INFO:     127.0.0.1:59756 - "POST /scheduleJob HTTP/1.1" 200 OK
+== APP == Starting droid: R2-D2
+== APP == Executing maintenance job: Oil Change
+== APP == INFO:     127.0.0.1:59759 - "POST /job/R2-D2 HTTP/1.1" 200 OK
 ```
 
 3. On the same terminal window, schedule the `C-3PO` Job using the Jobs API:
 
 ```bash
 curl -X POST \
-  http://localhost:6280/v1.0-alpha1/jobs/c-3po \
+  http://localhost:6200/scheduleJob \
   -H "Content-Type: application/json" \
   -d '{
-    "data": {
-      "@type": "type.googleapis.com/google.protobuf.StringValue",
-      "value": "C-3PO:Limb Calibration"
-    },
-    "dueTime": "30s"
+    "name": "C-3PO",
+    "job": "Limb Calibration",
+    "dueTime": 30
   }'
 ```
 
@@ -155,13 +163,13 @@ curl -X POST \
 1. On the same terminal window, run the command below to get the recently scheduled `C-3PO` job:
 
 ```bash
-curl -X GET http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json"
+curl -X GET http://localhost:6200/getJob/C-3PO -H "Content-Type: application/json"
 ```
 
 You should see the following:
 
 ```text
-{"name":"c-3po","dueTime":"30s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"C-3PO:Limb Calibration"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
+{"name":"C-3PO","due_time":"30s","data":{"droid":"C-3PO","task":"Limb Calibration"}}
 ```
 
 ### Delete a scheduled job
@@ -169,17 +177,23 @@ You should see the following:
 1. On the same terminal window, run the command below to delete the recently scheduled `C-3PO` job:
 
 ```bash
-curl -X DELETE http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json"
+curl -X DELETE http://localhost:6200/deleteJob/C-3PO -H "Content-Type: application/json"
+```
+
+You should see the following:
+
+```text
+{"message":"Job deleted"}
 ```
 
 2. Run the command below to attempt to retrieve the deleted job:
 
 ```bash
-curl -X GET http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: application/json"
+curl -X GET http://localhost:6200/getJob/C-3PO -H "Content-Type: application/json"
 ```
 
-You should see an error message indicating that the job was not found:
+In the `job-service` terminal window, the output should be similar to the following:
 
 ```text
-{"errorCode":"DAPR_SCHEDULER_GET_JOB","message":"failed to get job due to: rpc error: code = NotFound desc = job not found: c-3po","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","domain":"dapr.io","metadata":{"appID":"job-service","namespace":"default"},"reason":"DAPR_SCHEDULER_GET_JOB"}]}
+{"detail":"<_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.INTERNAL\n\tdetails = \"failed to get job due to: rpc error: code = NotFound desc = job not found: C-3PO\"\n\tdebug_error_string = \"UNKNOWN:Error received from peer ipv4:127.0.0.1:6281 {grpc_status:13, grpc_message:\"failed to get job due to: rpc error: code = NotFound desc = job not found: C-3PO\"}\"\n>"}
 ```
