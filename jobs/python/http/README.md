@@ -51,7 +51,7 @@ expected_stdout_lines:
   - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
   - '== APP - job-scheduler == Sending request to retrieve job: C-3PO'
-  - '== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","dueTime":"20s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"C-3PO:Limb Calibration"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
+  - '== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","dueTime":"20s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"C-3PO:Limb Calibration"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: C-3PO'
   - '== APP - job-service == Executing maintenance job: Limb Calibration'
