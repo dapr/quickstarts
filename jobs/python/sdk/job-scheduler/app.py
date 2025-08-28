@@ -46,7 +46,7 @@ def schedule_job(job: DroidJob) -> None:
         # Accept both 200 and 204 as success codes
         if response.status_code not in [200, 204]:
             raise Exception(
-                f"Failed to schedule job. Status code: {response.status_code}, Response: {response.text}")
+                f"Failed to schedule job. Status code: {response.status_code}, Response: {response.text}", flush=True)
 
         if response.text:
             print(f"Response: {response.text}")
@@ -69,10 +69,12 @@ def get_job_details(job: DroidJob) -> None:
         if response.status_code in [200, 204]:
             print(f"Job details for {job.name}: {response.text}", flush=True)
         else:
-            print(f"Failed to get job details. Status code: {response.status_code}, Response: {response.text}")
+            print(
+                f"Failed to get job details. Status code: {response.status_code}, Response: {response.text}")
 
     except requests.exceptions.RequestException as e:
-        print(f"Error getting job details for {job.name}: {str(e)}", flush=True)
+        print(
+            f"Error getting job details for {job.name}: {str(e)}", flush=True)
         raise
 
 

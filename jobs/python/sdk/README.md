@@ -38,11 +38,22 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-service == Received job request...'
+  - '== APP - job-scheduler == Sending request to schedule job: R2-D2'
+  - '== APP - job-service == Scheduling job: R2-D2'
+  - '== APP - job-service == Job scheduled: R2-D2'
+  - '== APP - job-scheduler == Response: {"name":"R2-D2","job":"Oil Change","dueTime":15}'
+  - '== APP - job-scheduler == Sending request to retrieve job: R2-D2'
+  - '== APP - job-service == Retrieving job: R2-D2'
+  - '== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","due_time":"15s","data":{"droid":"R2-D2","task":"Oil Change"}}'
+  - '== APP - job-scheduler == Sending request to schedule job: C-3PO'
+  - '== APP - job-service == Scheduling job: C-3PO'
+  - '== APP - job-service == Job scheduled: C-3PO'
+  - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
-  - '== APP - job-scheduler == Job Scheduled: C-3PO'
-  - '== APP - job-service == Received job request...'
-  - '== APP - job-service == Executing maintenance job: Limb Calibration'
+  - '== APP - job-scheduler == Response: {"name":"C-3PO","job":"Limb Calibration","dueTime":20}'
+  - '== APP - job-scheduler == Sending request to retrieve job: C-3PO'
+  - '== APP - job-service == Retrieving job: C-3PO'
+  - '== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","due_time":"20s","data":{"droid":"C-3PO","task":"Limb Calibration"}}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
