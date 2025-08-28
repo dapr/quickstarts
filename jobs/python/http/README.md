@@ -44,7 +44,7 @@ expected_stdout_lines:
   - '== APP - job-scheduler == Sending request to schedule job: R2-D2'
   - '== APP - job-scheduler == Job scheduled: R2-D2'
   - '== APP - job-scheduler == Sending request to retrieve job: R2-D2'
-  - '== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","dueTime":"15s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"R2-D2:Oil Change"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
+  - '== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","dueTime":"15s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"R2-D2:Oil Change"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}'
   - '== APP - job-scheduler == Sending request to schedule job: C-3PO'
   - '== APP - job-scheduler == Job scheduled: C-3PO'
   - '== APP - job-service == Received job request...'
@@ -55,7 +55,7 @@ expected_stdout_lines:
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: C-3PO'
   - '== APP - job-service == Executing maintenance job: Limb Calibration'
-expected_stderr_lines:
+expected_stderr_lines: []
 output_match_mode: substring
 match_order: none
 background: true
