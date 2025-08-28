@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Workflow" Version="1.16.0-rc13" />
+    <PackageReference Include="Dapr.Workflow" Version="1.16.0-rc15" />
   </ItemGroup>
 
 </Project>
