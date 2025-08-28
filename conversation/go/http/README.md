@@ -21,11 +21,11 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Conversation input sent: What is dapr?'
+  - '== APP - conversation == Input sent: What is dapr?'
   - '== APP - conversation == Output response: What is dapr?'
   - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
   - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == No tool calls in response'
+  - '== APP - conversation == Tool calls detected:'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -46,18 +46,19 @@ The terminal console output should look similar to this, where:
 - The LLM will either respond back with a tool call for the user, or an ask for more information.
 
 ```text
-== APP - conversation == Conversation input sent: What is dapr?
+== APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
 ```
 
 - The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
-- Since we are using the `echo` Component mock LLM, the tool call is not executed and the LLM returns `No tool calls in response`.
+- The echo Component returns the tool call information.
 
 ```text
 == APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
 == APP - conversation == Output message: What is the weather like in San Francisco in celsius?
-== APP - conversation == No tool calls in response
+== APP - conversation == Tool calls detected:
+== APP - conversation == Tool call: map[function:map[arguments:unit,location name:get_weather] id:0]
 ```
 
 <!-- END_STEP -->
@@ -84,9 +85,10 @@ The terminal console output should look similar to this, where:
 - The mock LLM echoes `What is the weather like in San Francisco in celsius?`
 
 ```text
-== APP - conversation == Conversation input sent: What is dapr?
+== APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
 == APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
 == APP - conversation == Output message: What is the weather like in San Francisco in celsius?
-== APP - conversation == No tool calls in response
+== APP - conversation == Tool calls detected:
+== APP - conversation == Tool call: map[function:map[arguments:unit,location name:get_weather] id:0]
 ```
