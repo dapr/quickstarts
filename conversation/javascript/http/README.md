@@ -63,7 +63,7 @@ The terminal console output should look similar to this, where:
 
 - The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
-- The echo Component returns the tool call information.s
+- The echo Component calls the `get_weather` tool and returns the requested weather information.
 
 ```text
 == APP == Tool calling input sent: What is the weather like in San Francisco in celsius?
@@ -106,7 +106,8 @@ The terminal console output should look similar to this, where:
 - The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is dapr?`.
 - The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
-- The echo Component returns the tool call information.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?`
+- The echo Component returns the information from the `get_weather` tool call.
 
 ```text
 == APP - conversation == Conversation input sent: What is dapr?
