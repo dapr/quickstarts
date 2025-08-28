@@ -4,7 +4,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,43 +12,72 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+#pragma warning disable DAPR_CONVERSATION
 
 using Dapr.AI.Conversation;
+using Dapr.AI.Conversation.ConversationRoles;
 using Dapr.AI.Conversation.Extensions;
 
-class Program
+const string conversationComponentName = "echo";
+const string prompt = "What is dapr?";
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDaprConversationClient();
+var app = builder.Build();
+
+//Instantiate Dapr Conversation Client
+var conversationClient = app.Services.GetRequiredService<DaprConversationClient>();
+
+var conversationOptions = new ConversationOptions(conversationComponentName);
+var inputs = new ConversationInput(new List<IConversationMessage>
 {
-  private const string ConversationComponentName = "echo";
+    new UserMessage {
+        Name = "TestUser",
+        Content = [
+            new MessageContent(prompt),
+        ], 
+    },
+});
 
-  static async Task Main(string[] args)
-  {
-    const string prompt = "What is dapr?";
+// Send a request to the echo mock LLM component
+var response = await conversationClient.ConverseAsync([inputs], conversationOptions);
+Console.WriteLine("Input sent: " + prompt);
 
-    var builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddDaprConversationClient();
-    var app = builder.Build();
+Console.Write("Output response:");
 
-    //Instantiate Dapr Conversation Client
-    var conversationClient = app.Services.GetRequiredService<DaprConversationClient>();
-
-    try
+foreach (var output in response.Outputs)
+{
+    foreach (var choice in output.Choices)
     {
-      // Send a request to the echo mock LLM component
-      var response = await conversationClient.ConverseAsync(ConversationComponentName, [new(prompt, DaprConversationRole.Generic)]);
-      Console.WriteLine("Input sent: " + prompt);
+        Console.WriteLine($" {choice.Message}");
 
-      if (response != null)
-      {
-        Console.Write("Output response:");
-        foreach (var resp in response.Outputs)
+        foreach (var toolCall in choice.Message.ToolCalls)
         {
-          Console.WriteLine($" {resp.Result}");
+            if (toolCall is CalledToolFunction calledToolFunction)
+            {
+                Console.WriteLine($"\t\tId: {calledToolFunction.Id}, Name: {calledToolFunction.Name}, Arguments: {calledToolFunction.JsonArguments}");
+            }
+            else
+            {
+                Console.WriteLine($"\t\tId: {toolCall.Id}");
+            }
         }
-      }
     }
-    catch (Exception ex)
-    {
-      Console.WriteLine("Error: " + ex.Message);
-    }
-  }
 }
+
+// note: Alternative, for the LINQ inclined.
+// response.Outputs
+//     .SelectMany((output) => output.Choices
+//         .SelectMany((choice) => choice.Message.ToolCalls
+//             .Select((toolCall) => ( Output: output, Choice: choice, ToolCall: toolCall) )))
+//     .ToList()
+//     .ForEach((entry) =>
+//     {
+//         Console.WriteLine($" {entry.Choice.Message}");
+//         
+//         Console.WriteLine(entry switch
+//         {
+//             (_, _, CalledToolFunction calledToolFunction) => $"\t\tId: {calledToolFunction.Id}, Name: {calledToolFunction.Name}, Arguments: {calledToolFunction.JsonArguments}",
+//             _ => $"\t\tId: {entry.ToolCall.Id}",
+//         });
+//     });
