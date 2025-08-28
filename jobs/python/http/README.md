@@ -44,14 +44,14 @@ expected_stdout_lines:
   - '== APP - job-scheduler == Sending request to schedule job: R2-D2'
   - '== APP - job-scheduler == Job scheduled: R2-D2'
   - '== APP - job-scheduler == Sending request to retrieve job: R2-D2'
-  - '== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","dueTime":"15s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"R2-D2:Oil Change"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}'
+  - '== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2", "dueTime":"15s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"R2-D2:Oil Change"}}, "failurePolicy":{"constant":{"interval":"1s", "maxRetries":3}}}'
   - '== APP - job-scheduler == Sending request to schedule job: C-3PO'
   - '== APP - job-scheduler == Job scheduled: C-3PO'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
   - '== APP - job-scheduler == Sending request to retrieve job: C-3PO'
-  - '== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","dueTime":"20s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"C-3PO:Limb Calibration"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}'
+  - '== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO", "dueTime":"20s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"C-3PO:Limb Calibration"}}, "failurePolicy":{"constant":{"interval":"1s", "maxRetries":3}}}'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: C-3PO'
   - '== APP - job-service == Executing maintenance job: Limb Calibration'
@@ -80,7 +80,7 @@ The terminal console output should look similar to this, where:
 == APP - job-scheduler == Sending request to schedule job: R2-D2
 == APP - job-scheduler == Job scheduled: R2-D2
 == APP - job-scheduler == Sending request to retrieve job: R2-D2
-== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","dueTime":"15s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"R2-D2:Oil Change"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
+== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2", "dueTime":"15s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"R2-D2:Oil Change"}}, "failurePolicy":{"constant":{"interval":"1s", "maxRetries":3}}}
 == APP - job-scheduler == Sending request to schedule job: C-3PO
 == APP - job-scheduler == Job scheduled: C-3PO
 == APP - job-service == Received job request...
@@ -88,7 +88,7 @@ The terminal console output should look similar to this, where:
 == APP - job-service == Executing maintenance job: Oil Change
 == APP - job-service == 127.0.0.1 - - "POST /job/R2-D2 HTTP/1.1" 200 -
 == APP - job-scheduler == Sending request to retrieve job: C-3PO
-== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","dueTime":"20s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"C-3PO:Limb Calibration"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
+== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO", "dueTime":"20s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"C-3PO:Limb Calibration"}}, "failurePolicy":{"constant":{"interval":"1s", "maxRetries":3}}}
 == APP - job-service == Received job request...
 == APP - job-service == Starting droid: C-3PO
 == APP - job-service == Executing maintenance job: Limb Calibration
@@ -174,7 +174,7 @@ curl -X GET http://localhost:6280/v1.0-alpha1/jobs/c-3po -H "Content-Type: appli
 You should see the following:
 
 ```text
-{"name":"c-3po","dueTime":"30s","data":{"@type":"type.googleapis.com/google.protobuf.Value","value":{"@type":"type.googleapis.com/google.protobuf.StringValue","value":"C-3PO:Limb Calibration"}},"failurePolicy":{"constant":{"interval":"1s","maxRetries":3}}}
+{"name":"c-3po", "dueTime":"30s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"C-3PO:Limb Calibration"}}, "failurePolicy":{"constant":{"interval":"1s", "maxRetries":3}}}
 ```
 
 ### Delete a scheduled job
