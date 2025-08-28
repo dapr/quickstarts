@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Actors" Version="1.16.0-rc13" />
+    <PackageReference Include="Dapr.Actors" Version="1.16.0-rc15" />
   </ItemGroup>
 
   <ItemGroup>
