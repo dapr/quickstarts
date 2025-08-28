@@ -81,17 +81,17 @@ func main() {
 	}
 
 	// Unmarshal the response
-	var data map[string]interface{}
+	var data map[string]any
 	if err := json.Unmarshal(bodyBytes, &data); err != nil {
 		log.Fatal(err)
 	}
 
 	// Navigate the new response structure: outputs[0].choices[0].message.content
-	outputs := data["outputs"].([]interface{})
-	output := outputs[0].(map[string]interface{})
-	choices := output["choices"].([]interface{})
-	choice := choices[0].(map[string]interface{})
-	message := choice["message"].(map[string]interface{})
+	outputs := data["outputs"].([]any)
+	output := outputs[0].(map[string]any)
+	choices := output["choices"].([]any)
+	choice := choices[0].(map[string]any)
+	message := choice["message"].(map[string]any)
 	result := message["content"].(string)
 
 	fmt.Println("Output response:", result)
@@ -155,23 +155,23 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var data2 map[string]interface{}
+	var data2 map[string]any
 	if err := json.Unmarshal(bodyBytes2, &data2); err != nil {
 		log.Fatal(err)
 	}
 
 	// Parse tool calling response
-	outputs2 := data2["outputs"].([]interface{})
-	output2 := outputs2[0].(map[string]interface{})
-	choices2 := output2["choices"].([]interface{})
-	choice2 := choices2[0].(map[string]interface{})
-	message2 := choice2["message"].(map[string]interface{})
+	outputs2 := data2["outputs"].([]any)
+	output2 := outputs2[0].(map[string]any)
+	choices2 := output2["choices"].([]any)
+	choice2 := choices2[0].(map[string]any)
+	message2 := choice2["message"].(map[string]any)
 
 	if content, ok := message2["content"].(string); ok && content != "" {
 		fmt.Println("Output message:", content)
 	}
 
-	if toolCalls, ok := message2["toolCalls"].([]interface{}); ok && len(toolCalls) > 0 {
+	if toolCalls, ok := message2["toolCalls"].([]any); ok && len(toolCalls) > 0 {
 		fmt.Println("Tool calls detected:")
 		for _, tc := range toolCalls {
 			fmt.Printf("Tool call: %v\n", tc)
