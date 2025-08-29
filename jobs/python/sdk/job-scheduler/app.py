@@ -34,7 +34,7 @@ def schedule_job(job: DroidJob) -> None:
         }
 
         # Use HTTP client to call the job-service via Dapr
-        req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service/method/scheduleJob"
+        req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service-sdk/method/scheduleJob"
 
         response = requests.post(
             req_url,
