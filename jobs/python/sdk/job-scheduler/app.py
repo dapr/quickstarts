@@ -33,7 +33,7 @@ def schedule_job(job: DroidJob) -> None:
             "dueTime": job.due_time
         }
 
-        # Use HTTP client to call the job-service via Dapr
+        # Use HTTP client to call the job-service-sdk via Dapr
         req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service-sdk/method/scheduleJob"
 
         response = requests.post(
@@ -61,7 +61,7 @@ def get_job_details(job: DroidJob) -> None:
     print(f"Sending request to retrieve job: {job.name}", flush=True)
 
     try:
-        # Use HTTP client to call the job-service via Dapr
+        # Use HTTP client to call the job-service-sdk via Dapr
         req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service-sdk/method/getJob/{job.name}"
 
         response = requests.get(req_url)

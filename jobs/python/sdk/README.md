@@ -39,21 +39,21 @@ pip3 install -r requirements.txt
 name: Run multi app run template
 expected_stdout_lines:
   - '== APP - job-scheduler-sdk == Sending request to schedule job: R2-D2'
-  - '== APP - job-service == Scheduling job: R2-D2'
-  - '== APP - job-service == Job scheduled: R2-D2'
-  - '== APP - job-scheduler == Response: {"name":"R2-D2","job":"Oil Change","dueTime":15}'
-  - '== APP - job-scheduler == Sending request to retrieve job: R2-D2'
-  - '== APP - job-service == Retrieving job: R2-D2'
-  - '== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","due_time":"15s","data":{"droid":"R2-D2","task":"Oil Change"}}'
-  - '== APP - job-scheduler == Sending request to schedule job: C-3PO'
-  - '== APP - job-service == Scheduling job: C-3PO'
-  - '== APP - job-service == Job scheduled: C-3PO'
-  - '== APP - job-service == Starting droid: R2-D2'
-  - '== APP - job-service == Executing maintenance job: Oil Change'
-  - '== APP - job-scheduler == Response: {"name":"C-3PO","job":"Limb Calibration","dueTime":20}'
-  - '== APP - job-scheduler == Sending request to retrieve job: C-3PO'
-  - '== APP - job-service == Retrieving job: C-3PO'
-  - '== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","due_time":"20s","data":{"droid":"C-3PO","task":"Limb Calibration"}}'
+  - '== APP - job-service-sdk == Scheduling job: R2-D2'
+  - '== APP - job-service-sdk == Job scheduled: R2-D2'
+  - '== APP - job-scheduler-sdk == Response: {"name":"R2-D2","job":"Oil Change","dueTime":15}'
+  - '== APP - job-scheduler-sdk == Sending request to retrieve job: R2-D2'
+  - '== APP - job-service-sdk == Retrieving job: R2-D2'
+  - '== APP - job-scheduler-sdk == Job details for R2-D2: {"name":"R2-D2","due_time":"15s","data":{"droid":"R2-D2","task":"Oil Change"}}'
+  - '== APP - job-scheduler-sdk == Sending request to schedule job: C-3PO'
+  - '== APP - job-service-sdk == Scheduling job: C-3PO'
+  - '== APP - job-service-sdk == Job scheduled: C-3PO'
+  - '== APP - job-service-sdk == Starting droid: R2-D2'
+  - '== APP - job-service-sdk == Executing maintenance job: Oil Change'
+  - '== APP - job-scheduler-sdk == Response: {"name":"C-3PO","job":"Limb Calibration","dueTime":20}'
+  - '== APP - job-scheduler-sdk == Sending request to retrieve job: C-3PO'
+  - '== APP - job-service-sdk == Retrieving job: C-3PO'
+  - '== APP - job-scheduler-sdk == Job details for C-3PO: {"name":"C-3PO","due_time":"20s","data":{"droid":"C-3PO","task":"Limb Calibration"}}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -76,29 +76,29 @@ The terminal console output should look similar to this, where:
 - The `C-3PO` job is being executed after 20 seconds.
 
 ```text
-== APP - job-scheduler == Sending request to schedule job: R2-D2
-== APP - job-service == Scheduling job: R2-D2
-== APP - job-service ==   client.schedule_job_alpha1(job=job, overwrite=True)
-== APP - job-service == Job scheduled: R2-D2
-== APP - job-service == INFO:     192.168.1.106:0 - "POST /scheduleJob HTTP/1.1" 200 OK
-== APP - job-scheduler == Response: {"name":"R2-D2","job":"Oil Change","dueTime":15}
-== APP - job-scheduler == Sending request to retrieve job: R2-D2
-== APP - job-service ==   job = client.get_job_alpha1(name)
-== APP - job-service == Retrieving job: R2-D2
-== APP - job-service == INFO:     192.168.1.106:0 - "GET /getJob/R2-D2 HTTP/1.1" 200 OK
-== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2","due_time":"15s","data":{"droid":"R2-D2","task":"Oil Change"}}
-== APP - job-scheduler == Sending request to schedule job: C-3PO
-== APP - job-service == Scheduling job: C-3PO
-== APP - job-service == Job scheduled: C-3PO
-== APP - job-service == INFO:     192.168.1.106:0 - "POST /scheduleJob HTTP/1.1" 200 OK
-== APP - job-service == Starting droid: R2-D2
-== APP - job-service == Executing maintenance job: Oil Change
-== APP - job-service == INFO:     127.0.0.1:57206 - "POST /job/R2-D2 HTTP/1.1" 200 OK
-== APP - job-scheduler == Response: {"name":"C-3PO","job":"Limb Calibration","dueTime":20}
-== APP - job-scheduler == Sending request to retrieve job: C-3PO
-== APP - job-service == Retrieving job: C-3PO
-== APP - job-service == INFO:     192.168.1.106:0 - "GET /getJob/C-3PO HTTP/1.1" 200 OK
-== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO","due_time":"20s","data":{"droid":"C-3PO","task":"Limb Calibration"}}
+== APP - job-scheduler-sdk == Sending request to schedule job: R2-D2
+== APP - job-service-sdk == Scheduling job: R2-D2
+== APP - job-service-sdk ==   client.schedule_job_alpha1(job=job, overwrite=True)
+== APP - job-service-sdk == Job scheduled: R2-D2
+== APP - job-service-sdk == INFO:     192.168.1.106:0 - "POST /scheduleJob HTTP/1.1" 200 OK
+== APP - job-scheduler-sdk == Response: {"name":"R2-D2","job":"Oil Change","dueTime":15}
+== APP - job-scheduler-sdk == Sending request to retrieve job: R2-D2
+== APP - job-service-sdk ==   job = client.get_job_alpha1(name)
+== APP - job-service-sdk == Retrieving job: R2-D2
+== APP - job-service-sdk == INFO:     192.168.1.106:0 - "GET /getJob/R2-D2 HTTP/1.1" 200 OK
+== APP - job-scheduler-sdk == Job details for R2-D2: {"name":"R2-D2","due_time":"15s","data":{"droid":"R2-D2","task":"Oil Change"}}
+== APP - job-scheduler-sdk == Sending request to schedule job: C-3PO
+== APP - job-service-sdk == Scheduling job: C-3PO
+== APP - job-service-sdk == Job scheduled: C-3PO
+== APP - job-service-sdk == INFO:     192.168.1.106:0 - "POST /scheduleJob HTTP/1.1" 200 OK
+== APP - job-service-sdk == Starting droid: R2-D2
+== APP - job-service-sdk == Executing maintenance job: Oil Change
+== APP - job-service-sdk == INFO:     127.0.0.1:57206 - "POST /job/R2-D2 HTTP/1.1" 200 OK
+== APP - job-scheduler-sdk == Response: {"name":"C-3PO","job":"Limb Calibration","dueTime":20}
+== APP - job-scheduler-sdk == Sending request to retrieve job: C-3PO
+== APP - job-service-sdk == Retrieving job: C-3PO
+== APP - job-service-sdk == INFO:     192.168.1.106:0 - "GET /getJob/C-3PO HTTP/1.1" 200 OK
+== APP - job-scheduler-sdk == Job details for C-3PO: {"name":"C-3PO","due_time":"20s","data":{"droid":"C-3PO","task":"Limb Calibration"}}
 ```
 
 <!-- END_STEP -->
@@ -120,14 +120,14 @@ dapr stop -f .
 
 ### Schedule jobs
 
-1. Open a terminal and run the `job-service` app. Build the dependencies if you haven't already.
+1. Open a terminal and run the `job-service-sdk` app. Build the dependencies if you haven't already.
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
 ```bash
-cd job-service
+cd job-service-sdk
 dapr run --app-id job-service-sdk --app-port 6200 --dapr-http-port 6280 --dapr-grpc-port 6281 -- python app.py
 ```
 
@@ -144,7 +144,7 @@ curl -X POST \
   }'
 ```
 
-In the `job-service` terminal window, the output should be:
+In the `job-service-sdk` terminal window, the output should be:
 
 ```text
 
@@ -203,7 +203,7 @@ You should see the following:
 curl -X GET http://localhost:6200/getJob/C-3PO -H "Content-Type: application/json"
 ```
 
-In the `job-service` terminal window, the output should be similar to the following:
+In the `job-service-sdk` terminal window, the output should be similar to the following:
 
 ```text
 {"detail":"<_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.INTERNAL\n\tdetails = \"failed to get job due to: rpc error: code = NotFound desc = job not found: C-3PO\"\n\tdebug_error_string = \"UNKNOWN:Error received from peer ipv4:127.0.0.1:6281 {grpc_status:13, grpc_message:\"failed to get job due to: rpc error: code = NotFound desc = job not found: C-3PO\"}\"\n>"}
