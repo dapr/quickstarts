@@ -128,7 +128,7 @@ pip3 install -r requirements.txt
 
 ```bash
 cd job-service
-dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --dapr-grpc-port 6281 -- python app.py
+dapr run --app-id job-service-sdk --app-port 6200 --dapr-http-port 6280 --dapr-grpc-port 6281 -- python app.py
 ```
 
 2. In a new terminal window, schedule the `R2-D2` Job using the Jobs API:
