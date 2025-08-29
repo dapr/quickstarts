@@ -9,7 +9,7 @@ apps:
     daprdLogDestination: console
     command: ["python3", "app.py"]
   - appDirPath: ./job-scheduler/
-    appID: job-scheduler
+    appID: job-scheduler-sdk
     appPort: 6300
     daprHTTPPort: 6380
     daprGRPCPort: 6381
