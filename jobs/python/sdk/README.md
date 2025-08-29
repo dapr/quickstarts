@@ -38,7 +38,7 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-scheduler == Sending request to schedule job: R2-D2'
+  - '== APP - job-scheduler-sdk == Sending request to schedule job: R2-D2'
   - '== APP - job-service == Scheduling job: R2-D2'
   - '== APP - job-service == Job scheduled: R2-D2'
   - '== APP - job-scheduler == Response: {"name":"R2-D2","job":"Oil Change","dueTime":15}'
