@@ -62,7 +62,7 @@ def get_job_details(job: DroidJob) -> None:
 
     try:
         # Use HTTP client to call the job-service via Dapr
-        req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service/method/getJob/{job.name}"
+        req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service-sdk/method/getJob/{job.name}"
 
         response = requests.get(req_url)
 
