@@ -97,7 +97,7 @@ The terminal console output should look similar to this, where:
 
 <!-- END_STEP -->
 
-2. Stop and clean up application processes using a new terminal window
+2. Stop and clean up application processes using a new terminal window.
 
 <!-- STEP
 name: Stop multi-app run
