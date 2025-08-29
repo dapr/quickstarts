@@ -1,6 +1,6 @@
 version: 1
 apps:
-  - appDirPath: ./job-service-sdk/
+  - appDirPath: ./job-service/
     appID: job-service-sdk
     appPort: 6200
     daprHTTPPort: 6280
@@ -8,7 +8,7 @@ apps:
     appLogDestination: console
     daprdLogDestination: console
     command: ["python3", "app.py"]
-  - appDirPath: ./job-scheduler-sdk/
+  - appDirPath: ./job-scheduler/
     appID: job-scheduler-sdk
     appPort: 6300
     daprHTTPPort: 6380
