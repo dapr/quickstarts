@@ -6,21 +6,17 @@
 POST {{ apphost }}/start/{{counter}}
 
 ### Get the workflow status via the application
-@instanceId={{startWorkflowRequest.response.body.instanceId}}
+@instanceId={{startWorkflowRequest.response.body.*}}
 GET {{ apphost }}/status/{{ instanceId }}
 
 ### Suspend the workflow
-@instanceId={{startWorkflowRequest.response.body.instanceId}}
 POST {{ apphost }}/suspend/{{ instanceId }}
 
 ### Resume the workflow
-@instanceId={{startWorkflowRequest.response.body.instanceId}}
 POST {{ apphost }}/resume/{{ instanceId }}
 
 ### Terminate the workflow
-@instanceId={{startWorkflowRequest.response.body.instanceId}}
 POST {{ apphost }}/terminate/{{ instanceId }}
 
 ### Purge the workflow
-@instanceId={{startWorkflowRequest.response.body.instanceId}}
 DELETE {{ apphost }}/purge/{{ instanceId }}
