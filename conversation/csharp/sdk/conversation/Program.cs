@@ -25,7 +25,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprConversationClient();
 var app = builder.Build();
 
-//Instantiate Dapr Conversation Client
 var conversationClient = app.Services.GetRequiredService<DaprConversationClient>();
 
 var conversationOptions = new ConversationOptions(conversationComponentName);
@@ -41,7 +40,7 @@ var inputs = new ConversationInput(new List<IConversationMessage>
 
 // Send a request to the echo mock LLM component
 var response = await conversationClient.ConverseAsync([inputs], conversationOptions);
-Console.WriteLine("Input sent: " + prompt);
+Console.WriteLine($"Input sent: {prompt}");
 
 Console.Write("Output response:");
 
@@ -67,17 +66,18 @@ foreach (var output in response.Outputs)
 
 // note: Alternative, for the LINQ inclined.
 // response.Outputs
-//     .SelectMany((output) => output.Choices
-//         .SelectMany((choice) => choice.Message.ToolCalls
-//             .Select((toolCall) => ( Output: output, Choice: choice, ToolCall: toolCall) )))
+//     .SelectMany((output) => output.Choices)
 //     .ToList()
-//     .ForEach((entry) =>
+//     .ForEach((choice) =>
 //     {
-//         Console.WriteLine($" {entry.Choice.Message}");
-//         
-//         Console.WriteLine(entry switch
+//         Console.WriteLine($" {choice.Message}");
+//
+//         choice.Message.ToolCalls.ToList().ForEach((toolCall) =>
 //         {
-//             (_, _, CalledToolFunction calledToolFunction) => $"\t\tId: {calledToolFunction.Id}, Name: {calledToolFunction.Name}, Arguments: {calledToolFunction.JsonArguments}",
-//             _ => $"\t\tId: {entry.ToolCall.Id}",
+//             Console.WriteLine(toolCall switch
+//             {
+//                 CalledToolFunction calledToolFunction => $"\t\tId: {calledToolFunction.Id}, Name: {calledToolFunction.Name}, Arguments: {calledToolFunction.JsonArguments}",
+//                 _ => $"\t\tId: {toolCall.Id}",
+//             });
 //         });
 //     });

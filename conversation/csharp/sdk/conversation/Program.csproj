@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AI" Version="1.16.0-rc15" />
+    <PackageReference Include="Dapr.AI" Version="1.16.0-rc16" />
   </ItemGroup>
 
 </Project>
