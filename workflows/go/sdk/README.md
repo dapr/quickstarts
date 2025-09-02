@@ -28,7 +28,7 @@ expected_stdout_lines:
   - "for 1 cars - $5000"
   - "There are 10 cars available for purchase"
   - "There are now 9 cars left in stock"
-  - "workflow status: COMPLETED"
+  - "workflow status: ORCHESTRATION_STATUS_COMPLETED"
 output_match_mode: substring
 background: false
 timeout_seconds: 120
