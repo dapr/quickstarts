@@ -17,6 +17,7 @@ limitations under the License.
 using Dapr.AI.Conversation;
 using Dapr.AI.Conversation.ConversationRoles;
 using Dapr.AI.Conversation.Extensions;
+using Dapr.AI.Conversation.Tools;
 
 const string conversationComponentName = "echo";
 const string prompt = "What is dapr?";
@@ -27,14 +28,39 @@ var app = builder.Build();
 
 var conversationClient = app.Services.GetRequiredService<DaprConversationClient>();
 
-var conversationOptions = new ConversationOptions(conversationComponentName);
+var conversationOptions = new ConversationOptions(conversationComponentName)
+{
+    Tools = [
+        new ToolFunction("demo")
+        {
+            Parameters = new Dictionary<string, object?> {
+                { "type", "object" },
+                { "properties", new Dictionary<string, object?>
+                {
+                    { "location", new Dictionary<string, object?>
+                    {
+                        { "type", "string" },
+                        { "description", "The city and state, e.g. San Francisco, CA" },
+                    } },
+                    { "unit", new Dictionary<string, object?>
+                    {
+                        { "type", "string" },
+                        { "enum", new[] { "celsius", "fahrenheit" } },
+                        { "description", "The temperature unit to use" },
+                    } },
+                } },
+                { "required", "location" },
+            },
+        },
+    ],
+};
 var inputs = new ConversationInput(new List<IConversationMessage>
 {
     new UserMessage {
         Name = "TestUser",
         Content = [
             new MessageContent(prompt),
-        ], 
+        ],
     },
 });
 
