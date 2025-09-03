@@ -48,7 +48,7 @@ foreach (var output in response.Outputs)
 {
     foreach (var choice in output.Choices)
     {
-        Console.WriteLine($" {choice.Message}");
+        Console.WriteLine($" {choice.Message.Content}");
 
         foreach (var toolCall in choice.Message.ToolCalls)
         {
@@ -63,21 +63,3 @@ foreach (var output in response.Outputs)
         }
     }
 }
-
-// note: Alternative, for the LINQ inclined.
-// response.Outputs
-//     .SelectMany((output) => output.Choices)
-//     .ToList()
-//     .ForEach((choice) =>
-//     {
-//         Console.WriteLine($" {choice.Message}");
-//
-//         choice.Message.ToolCalls.ToList().ForEach((toolCall) =>
-//         {
-//             Console.WriteLine(toolCall switch
-//             {
-//                 CalledToolFunction calledToolFunction => $"\t\tId: {calledToolFunction.Id}, Name: {calledToolFunction.Name}, Arguments: {calledToolFunction.JsonArguments}",
-//                 _ => $"\t\tId: {toolCall.Id}",
-//             });
-//         });
-//     });
