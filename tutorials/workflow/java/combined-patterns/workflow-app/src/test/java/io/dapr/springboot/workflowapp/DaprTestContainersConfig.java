@@ -67,8 +67,8 @@ public class DaprTestContainersConfig {
             .withReuseScheduler(reuse)
             .withAppHealthCheckPath("/actuator/health")
             .withAppChannelAddress("host.testcontainers.internal")
-//            .withDaprLogLevel(DaprLogLevel.DEBUG)
-//            .withLogConsumer(outputFrame -> System.out.println(outputFrame.getUtf8String()))
+            .withDaprLogLevel(DaprLogLevel.INFO)
+            .withLogConsumer(outputFrame -> System.out.println(outputFrame.getUtf8String()))
             .dependsOn(redisContainer);
   }
 
@@ -106,7 +106,4 @@ public class DaprTestContainersConfig {
       return Network.newNetwork();
     }
   }
-
- 
-
 }

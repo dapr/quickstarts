@@ -31,10 +31,10 @@ public class SendNotificationActivity implements WorkflowActivity {
   @Override
   public Object run(WorkflowActivityContext ctx) {
     Logger logger = LoggerFactory.getLogger(SendNotificationActivity.class);
-    var message = ctx.getInput(String.class);
+    var counter = ctx.getInput(Integer.class);
 
     // Imagine a notification being sent to the user
-    logger.info("{} : Sending Notification: {}", ctx.getName(), message);
+    logger.info("{} : Sending Notification: {}", ctx.getName(), counter);
     return true;
   }
 }

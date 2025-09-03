@@ -15,6 +15,7 @@ package io.dapr.springboot.examples;
 
 import io.dapr.testcontainers.Component;
 import io.dapr.testcontainers.DaprContainer;
+import io.dapr.testcontainers.DaprLogLevel;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +35,9 @@ public class DaprTestContainersConfig {
             .withComponent(new Component("kvstore", "state.in-memory", "v1", Collections.singletonMap("actorStateStore", String.valueOf(true))))
             .withAppPort(8080)
             .withAppHealthCheckPath("/actuator/health")
-            .withAppChannelAddress("host.testcontainers.internal");
+            .withAppChannelAddress("host.testcontainers.internal")
+            .withDaprLogLevel(DaprLogLevel.INFO)
+            .withLogConsumer(outputFrame -> System.out.println(outputFrame.getUtf8String()));
   }
 
 
