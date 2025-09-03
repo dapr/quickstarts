@@ -39,7 +39,10 @@ expected_stdout_lines:
   - '== APP - conversation == Output response: What is dapr?'
   - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
   - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == No tool calls in response'
+  - '== APP - conversation == Tool calls detected:'
+  - "== APP - conversation == Tool call: {'id': '0', 'function': {'name': 'get_weather', 'arguments': 'location,unit'}}"
+  - '== APP - conversation == Function name: get_weather'
+  - '== APP - conversation == Function arguments: location,unit'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -71,8 +74,10 @@ The terminal console output should look similar to this, where:
 ```text
 == APP == Tool calling input sent: What is the weather like in San Francisco in celsius?
 == APP == Output message: What is the weather like in San Francisco in celsius?
-== APP == No tool calls in response
-```
+== APP == Tool calls detected:
+== APP == Tool call: {'id': '0', 'function': {'name': 'get_weather', 'arguments': 'location,unit'}}
+== APP == Function name: get_weather
+== APP == Function arguments: location,unit
 ```
 
 <!-- END_STEP -->
