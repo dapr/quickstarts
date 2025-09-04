@@ -21,14 +21,20 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Input sent: What is dapr?'
+  - '== APP - conversation == Conversation input sent: What is dapr?'
   - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Tool calls detected:'
+  - "== APP - conversation == Tool call: {\"id\":0,\"function\":{\"name\":\"get_weather\",\"arguments\":"
+  - '== APP - conversation == Function name: get_weather'
+  - '== APP - conversation == Function arguments: '
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
 sleep: 15
-timeout_seconds: 15
+timeout_seconds: 30
 -->
 
 ```bash

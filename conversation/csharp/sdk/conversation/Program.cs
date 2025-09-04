@@ -101,7 +101,7 @@ var toolCallResponse = await conversationClient.ConverseAsync(
 
 Console.WriteLine($"Tool calling input sent: {toolCallInput}");
 Console.WriteLine($"Output message: {toolCallResponse.Outputs.First().Choices.First().Message.Content}");
-Console.WriteLine($"Tool calls detected:");
+Console.WriteLine("Tool calls detected:");
 
 var functionToolCall = toolCallResponse.Outputs.First().Choices.First().Message.ToolCalls.First() as CalledToolFunction
     ?? throw new("Unexpected tool call type for demo.");
