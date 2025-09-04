@@ -14,78 +14,107 @@ limitations under the License.
 */
 #pragma warning disable DAPR_CONVERSATION
 
+using System.Text.Json;
 using Dapr.AI.Conversation;
 using Dapr.AI.Conversation.ConversationRoles;
 using Dapr.AI.Conversation.Extensions;
 using Dapr.AI.Conversation.Tools;
 
 const string conversationComponentName = "echo";
-const string prompt = "What is dapr?";
+const string conversationText = "What is dapr?";
+const string toolCallInput = "What is the weather like in San Francisco in celsius?";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprConversationClient();
 var app = builder.Build();
 
+//
+// Setup
+
 var conversationClient = app.Services.GetRequiredService<DaprConversationClient>();
 
 var conversationOptions = new ConversationOptions(conversationComponentName)
 {
+    ScrubPII = false,
+    ToolChoice = ToolChoice.Auto,
+    Temperature = 0.7,
     Tools = [
-        new ToolFunction("demo")
+        new ToolFunction("function")
         {
-            Parameters = new Dictionary<string, object?> {
-                { "type", "object" },
-                { "properties", new Dictionary<string, object?>
-                {
-                    { "location", new Dictionary<string, object?>
-                    {
-                        { "type", "string" },
-                        { "description", "The city and state, e.g. San Francisco, CA" },
-                    } },
-                    { "unit", new Dictionary<string, object?>
-                    {
-                        { "type", "string" },
-                        { "enum", new[] { "celsius", "fahrenheit" } },
-                        { "description", "The temperature unit to use" },
-                    } },
-                } },
-                { "required", "location" },
-            },
+            Name = "get_weather",
+            Description = "Get the current weather for a location",
+            Parameters = JsonSerializer.Deserialize<Dictionary<string, object?>>("""
+            {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": ["celsius", "fahrenheit"],
+                  "description": "The temperature unit to use"
+                }
+              },
+              "required": ["location"]
+            }
+            """) ?? throw new("Unable to parse tool function parameters."),
         },
     ],
 };
-var inputs = new ConversationInput(new List<IConversationMessage>
+
+//
+// Simple Conversation
+
+var conversationResponse = await conversationClient.ConverseAsync(
+    [new ConversationInput(new List<IConversationMessage>
+    {
+        new UserMessage {
+            Name = "TestUser",
+            Content = [
+                new MessageContent(conversationText),
+            ],
+        },
+    })], 
+    conversationOptions
+);
+
+Console.WriteLine($"Conversation input sent: {conversationText}");
+Console.WriteLine($"Output response: {conversationResponse.Outputs.First().Choices.First().Message.Content}");
+
+//
+// Tool Calling
+
+var toolCallResponse = await conversationClient.ConverseAsync(
+    [new ConversationInput(new List<IConversationMessage>
+    {
+        new UserMessage {
+            Name = "TestUser",
+            Content = [
+                new MessageContent(toolCallInput),
+            ],
+        },
+    })], 
+    conversationOptions
+);
+
+Console.WriteLine($"Tool calling input sent: {toolCallInput}");
+Console.WriteLine($"Output message: {toolCallResponse.Outputs.First().Choices.First().Message.Content}");
+Console.WriteLine($"Tool calls detected:");
+
+var functionToolCall = toolCallResponse.Outputs.First().Choices.First().Message.ToolCalls.First() as CalledToolFunction
+    ?? throw new("Unexpected tool call type for demo.");
+
+var toolCallJson = JsonSerializer.Serialize(new
 {
-    new UserMessage {
-        Name = "TestUser",
-        Content = [
-            new MessageContent(prompt),
-        ],
+    id = 0,
+    function = new
+    {
+        name = functionToolCall.Name,
+        arguments = functionToolCall.JsonArguments,
     },
 });
-
-// Send a request to the echo mock LLM component
-var response = await conversationClient.ConverseAsync([inputs], conversationOptions);
-Console.WriteLine($"Input sent: {prompt}");
-
-Console.Write("Output response:");
-
-foreach (var output in response.Outputs)
-{
-    foreach (var choice in output.Choices)
-    {
-        Console.WriteLine($" {choice.Message.Content}");
-
-        foreach (var toolCall in choice.Message.ToolCalls)
-        {
-            if (toolCall is CalledToolFunction calledToolFunction)
-            {
-                Console.WriteLine($"\t\tId: {calledToolFunction.Id}, Name: {calledToolFunction.Name}, Arguments: {calledToolFunction.JsonArguments}");
-            }
-            else
-            {
-                Console.WriteLine($"\t\tId: {toolCall.Id}");
-            }
-        }
-    }
-}
+Console.WriteLine($"Tool call: {toolCallJson}");
+Console.WriteLine($"Function name: {functionToolCall.Name}");
+Console.WriteLine($"Function arguments: {functionToolCall.JsonArguments}");
