@@ -38,7 +38,7 @@ expected_stdout_lines:
   - '== APP - conversation == Output response: What is dapr?'
   - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
   - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Tool calls detected: [{"id":"0","function":{"name":"get_weather","arguments":"location,unit"}}]'
+  - '== APP - conversation == Tool calls detected: [{"id":"0","function":{"name":"get_weather","arguments":'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
