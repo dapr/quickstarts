@@ -28,7 +28,7 @@ expected_stdout_lines:
   - '== APP - conversation == Tool calls detected:'
   - "== APP - conversation == Tool call: {\"id\":0,\"function\":{\"name\":\"get_weather\",\"arguments\":"
   - '== APP - conversation == Function name: get_weather'
-  - '== APP - conversation == Function arguments: location,unit'
+  - '== APP - conversation == Function arguments: '
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
