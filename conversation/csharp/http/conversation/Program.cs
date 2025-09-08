@@ -30,7 +30,7 @@ var httpClient = new HttpClient();
 
 var conversationRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>>("""
   {
-    "name": "anthropic",
+    "name": "echo",
     "inputs": [{
       "messages": [{
         "of_user": {
@@ -45,7 +45,6 @@ var conversationRequestBody = JsonSerializer.Deserialize<Dictionary<string, obje
   }
 """);
 
-// {"outputs":[{"choices":[{"finishReason":"stop","message":{"content":"What is dapr?"}}]}]}
 var conversationResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/echo/converse", conversationRequestBody);
 var conversationResult = await conversationResponse.Content.ReadFromJsonAsync<JsonElement>();
 
@@ -68,7 +67,7 @@ Console.WriteLine($"Output response: {conversationContent}");
 
 var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>>("""
   {
-    "name": "anthropic",
+    "name": "demo",
     "inputs": [
       {
         "messages": [
@@ -133,7 +132,6 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
   }
 """);
 
-// {"outputs":[{"choices":[{"finishReason":"tool_calls","message":{"content":"What is the weather like in San Francisco in celsius?","toolCalls":[{"id":"0","function":{"name":"get_weather","arguments":"location,unit"}}]}}]}]}
 var toolCallingResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/echo/converse", toolCallRequestBody);
 var toolCallingResult = await toolCallingResponse.Content.ReadFromJsonAsync<JsonElement>();
 

@@ -28,7 +28,7 @@ expected_stdout_lines:
   - '== APP - conversation == Tool calls detected:'
   - "== APP - conversation == Tool call: {\"id\":0,\"function\":{\"name\":\"get_weather\",\"arguments\":"
   - '== APP - conversation == Function name: get_weather'
-  - '== APP - conversation == Function arguments: '
+  - '== APP - conversation == Function arguments: location,unit'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -43,12 +43,21 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is dapr?`.
 
 ```text
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
+```
+
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
+- The echo Component calls the `get_weather` tool and returns the requested weather information.
+
+```text
+== APP - conversation == Function name: get_weather
+== APP - conversation == Function arguments: location,unit
 ```
 
 <!-- END_STEP -->
@@ -84,8 +93,17 @@ The terminal console output should look similar to this, where:
 
 - The app sends an input `What is dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is dapr?`.
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
+- The echo Component calls the `get_weather` tool and returns the requested weather information.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
+== APP - conversation == Conversation input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
+== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP - conversation == Output message: What is the weather like in San Francisco in celsius?
+== APP - conversation == Tool calls detected:
+== APP - conversation == Tool call: {"id":0,"function":{"name":"get_weather","arguments":"location,unit"}}
+== APP - conversation == Function name: get_weather
+== APP - conversation == Function arguments: location,unit
 ```
