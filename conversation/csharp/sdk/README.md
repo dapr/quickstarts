@@ -47,7 +47,7 @@ The terminal console output should look similar to this, where:
 - The mock LLM echoes `What is dapr?`.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
+== APP - conversation == Conversation input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
 ```
 
