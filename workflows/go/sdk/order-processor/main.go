@@ -7,10 +7,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/dapr/durabletask-go/api"
-	"github.com/dapr/durabletask-go/backend"
-	"github.com/dapr/durabletask-go/client"
-	"github.com/dapr/durabletask-go/task"
+	"github.com/dapr/durabletask-go/workflow"
 	dapr "github.com/dapr/go-sdk/client"
 )
 
@@ -25,9 +22,9 @@ func main() {
 	fmt.Println("*** Welcome to the Dapr Workflow console app sample!")
 	fmt.Println("*** Using this app, you can place orders that start workflows.")
 
-	registry := task.NewTaskRegistry()
+	registry := workflow.NewTaskRegistry()
 
-	if err := registry.AddOrchestrator(OrderProcessingWorkflow); err != nil {
+	if err := registry.AddWorkflow(OrderProcessingWorkflow); err != nil {
 		log.Fatal(err)
 	}
 	if err := registry.AddActivity(NotifyActivity); err != nil {
@@ -51,8 +48,8 @@ func main() {
 		log.Fatalf("failed to create Dapr client: %v", err)
 	}
 
-	client := client.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger())
-	if err := client.StartWorkItemListener(context.TODO(), registry); err != nil {
+	wfclient := workflow.NewClient(daprClient.GrpcClientConn())
+	if err := wfclient.StartWorker(context.TODO(), registry); err != nil {
 		log.Fatalf("failed to start work item listener: %v", err)
 	}
 
@@ -78,8 +75,8 @@ func main() {
 		TotalCost: totalCost,
 	}
 
-	id, err := client.ScheduleNewOrchestration(context.TODO(), workflowName,
-		api.WithInput(orderPayload),
+	id, err := wfclient.ScheduleNewWorkflow(context.TODO(), workflowName,
+		workflow.WithInput(orderPayload),
 	)
 	if err != nil {
 		log.Fatalf("failed to start workflow: %v", err)
@@ -87,12 +84,12 @@ func main() {
 
 	waitCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	_, err = client.WaitForOrchestrationCompletion(waitCtx, id)
+	_, err = wfclient.WaitForWorkflowCompletion(waitCtx, id)
 	if err != nil {
 		log.Fatalf("failed to wait for workflow: %v", err)
 	}
 
-	respFetch, err := client.FetchOrchestrationMetadata(context.Background(), id, api.WithFetchPayloads(true))
+	respFetch, err := wfclient.FetchWorkflowMetadata(context.Background(), id, workflow.WithFetchPayloads(true))
 	if err != nil {
 		log.Fatalf("failed to get workflow: %v", err)
 	}
