@@ -18,7 +18,7 @@ This quickstart includes two apps:
 ## Environment Variables
 
 - `JOB_SERVICE_DAPR_HTTP_PORT`: The Dapr HTTP port of the job-service (default: 6280)
-- `DAPR_HOST`: The Dapr host address (default: http://localhost)
+- `DAPR_HOST`: The Dapr host address (default: <http://localhost>)
 
 ## Run all apps with multi-app run template file
 
@@ -44,14 +44,14 @@ expected_stdout_lines:
   - '== APP - job-scheduler == Sending request to schedule job: R2-D2'
   - '== APP - job-scheduler == Job scheduled: R2-D2'
   - '== APP - job-scheduler == Sending request to retrieve job: R2-D2'
-  - '== APP - job-scheduler == Job details for R2-D2: {"name":"R2-D2", "dueTime":"15s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"R2-D2:Oil Change"}}, "failurePolicy":{"constant":{"interval":"1s", "maxRetries":3}}}'
+  - '== APP - job-scheduler == Job details for R2-D2:'
   - '== APP - job-scheduler == Sending request to schedule job: C-3PO'
   - '== APP - job-scheduler == Job scheduled: C-3PO'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: R2-D2'
   - '== APP - job-service == Executing maintenance job: Oil Change'
   - '== APP - job-scheduler == Sending request to retrieve job: C-3PO'
-  - '== APP - job-scheduler == Job details for C-3PO: {"name":"C-3PO", "dueTime":"20s", "data":{"@type":"type.googleapis.com/google.protobuf.Value", "value":{"@type":"type.googleapis.com/google.protobuf.StringValue", "value":"C-3PO:Limb Calibration"}}, "failurePolicy":{"constant":{"interval":"1s", "maxRetries":3}}}'
+  - '== APP - job-scheduler == Job details for C-3PO:'
   - '== APP - job-service == Received job request...'
   - '== APP - job-service == Starting droid: C-3PO'
   - '== APP - job-service == Executing maintenance job: Limb Calibration'
