@@ -1,3 +1,4 @@
 #dapr>=1.16.0-rc1
 
--e ../../../../../python-sdk
+# TODO: temporary until we get an rc or release
+dapr-dev @ git+https://github.com/dapr/python-sdk@main
