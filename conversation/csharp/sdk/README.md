@@ -57,7 +57,6 @@ The terminal console output should look similar to this, where:
 
 ```text
 == APP - conversation == Function name: get_weather
-== APP - conversation == Function arguments: location,unit
 ```
 
 <!-- END_STEP -->
