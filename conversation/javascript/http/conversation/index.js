@@ -114,10 +114,10 @@ async function main() {
     const result = data?.outputs?.[0]?.choices?.[0]?.message?.content;
     console.log("Output message:", result);
 
-    if (data?.outputs?.[1]?.choices?.[0]?.message?.toolCalls) {
+    if (data?.outputs?.[0]?.choices?.[0]?.message?.toolCalls) {
       console.log(
-        "Output message:",
-        JSON.stringify(data.outputs[1].choices[0].message?.toolCalls, null, 2)
+        "Tool calls detected:",
+        JSON.stringify(data.outputs[0].choices[0].message?.toolCalls)
       );
     } else {
       console.log("No tool calls in response");

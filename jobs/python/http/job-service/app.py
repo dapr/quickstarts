@@ -25,7 +25,6 @@ class JobHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         print('Received job request...', flush=True)
-        
         try:
             # Check if path starts with /job/
             if not self.path.startswith('/job/'):
@@ -51,7 +50,7 @@ class JobHandler(BaseHTTPRequestHandler):
             self._send_response(200)
 
         except Exception as e:
-            print("Error processing job request:", flush= True)
+            print("Error processing job request:", flush=True)
             print(traceback.format_exc())
             self._send_response(400, f"Error processing job: {str(e)}")
 

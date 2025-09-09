@@ -59,6 +59,8 @@ This example uses the default LLM Component provided by Dapr which simply echoes
     cd ..
     ```
 
+<!-- END_STEP -->
+
 2. Open a new terminal window and run the multi app run template:
 
     <!-- STEP

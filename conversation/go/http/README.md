@@ -8,7 +8,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conver
 
 This quickstart includes one app:
 
-- `conversation.go`, responsible for sending an input to the underlying LLM and retrieving an output.
+- `conversation.go`, responsible for sending an input to the underlying LLM and retrieving an output. It includes a secondary conversation request to showcase tool calling to the underlying LLM.
 
 ## Run the app with the template file
 
@@ -23,6 +23,9 @@ name: Run multi app run template
 expected_stdout_lines:
   - '== APP - conversation == Input sent: What is dapr?'
   - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Tool calls detected:'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -37,25 +40,55 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is dapr?`.
+- The app then sends a weather request to the component with tools available to the LLM.
+- The LLM will either respond back with a tool call for the user, or an ask for more information.
 
 ```text
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
 ```
 
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
+- The echo Component returns the tool call information.
+
+```text
+== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP - conversation == Output message: What is the weather like in San Francisco in celsius?
+== APP - conversation == Tool calls detected:
+== APP - conversation == Tool call: map[function:map[arguments:unit,location name:get_weather] id:0]
+```
+
 <!-- END_STEP -->
 
 2. Stop and clean up application processes.
-
-<!-- STEP
-name: Stop multi-app run 
-sleep: 5
--->
 
 ```bash
 dapr stop -f .
 ```
 
-<!-- END_STEP -->
+## Run the app with the Dapr CLI
+
+1. Run the application:
+
+```bash
+dapr run --app-id conversation --resources-path ../../../components -- go run conversation.go
+```
+
+The terminal console output should look similar to this, where:
+
+- The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is dapr?`.
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?`
+
+```text
+== APP - conversation == Input sent: What is dapr?
+== APP - conversation == Output response: What is dapr?
+== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP - conversation == Output message: What is the weather like in San Francisco in celsius?
+== APP - conversation == Tool calls detected:
+== APP - conversation == Tool call: map[function:map[arguments:unit,location name:get_weather] id:0]
+```
