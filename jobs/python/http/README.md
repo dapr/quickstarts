@@ -18,7 +18,7 @@ This quickstart includes two apps:
 ## Environment Variables
 
 - `JOB_SERVICE_DAPR_HTTP_PORT`: The Dapr HTTP port of the job-service (default: 6280)
-- `DAPR_HOST`: The Dapr host address (default: <http://localhost>)
+- `DAPR_HOST`: The Dapr host address (default: "http://localhost")
 
 ## Run all apps with multi-app run template file
 
