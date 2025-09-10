@@ -29,6 +29,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/dapr/go-sdk => github.com/joshvanl/go-sdk v0.0.0-20250910171744-fa8bb0031809
+replace github.com/dapr/go-sdk => github.com/joshvanl/go-sdk v0.0.0-20250910185450-183a89ceb931
 
-replace github.com/dapr/durabletask-go => github.com/joshvanl/durabletask-go v0.0.0-20250910171434-0cfc77c76021
+replace github.com/dapr/durabletask-go => github.com/joshvanl/durabletask-go v0.0.0-20250910185157-411f994c4181
