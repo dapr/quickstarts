@@ -7,18 +7,18 @@ import (
 	"log"
 	"time"
 
+	"github.com/dapr/durabletask-go/workflow"
 	"github.com/dapr/go-sdk/client"
-	"github.com/dapr/go-sdk/workflow"
 )
 
 // OrderProcessingWorkflow is the main workflow for orchestrating activities in the order process.
 func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
-	orderID := ctx.InstanceID()
+	orderID := ctx.ID()
 	var orderPayload OrderPayload
 	if err := ctx.GetInput(&orderPayload); err != nil {
 		return nil, err
 	}
-	err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{
+	err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{
 		Message: fmt.Sprintf("Received order %s for %d %s - $%d", orderID, orderPayload.Quantity, orderPayload.ItemName, orderPayload.TotalCost),
 	})).Await(nil)
 	if err != nil {
@@ -26,7 +26,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	}
 
 	var verifyInventoryResult InventoryResult
-	if err := ctx.CallActivity(VerifyInventoryActivity, workflow.ActivityInput(InventoryRequest{
+	if err := ctx.CallActivity(VerifyInventoryActivity, workflow.WithActivityInput(InventoryRequest{
 		RequestID: orderID,
 		ItemName:  orderPayload.ItemName,
 		Quantity:  orderPayload.Quantity,
@@ -36,13 +36,13 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 
 	if !verifyInventoryResult.Success {
 		notification := Notification{Message: fmt.Sprintf("Insufficient inventory for %s", orderPayload.ItemName)}
-		err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(notification)).Await(nil)
+		err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(notification)).Await(nil)
 		return OrderResult{Processed: false}, err
 	}
 
 	if orderPayload.TotalCost > 5000 {
 		var approvalRequired ApprovalRequired
-		if err := ctx.CallActivity(RequestApprovalActivity, workflow.ActivityInput(orderPayload)).Await(&approvalRequired); err != nil {
+		if err := ctx.CallActivity(RequestApprovalActivity, workflow.WithActivityInput(orderPayload)).Await(&approvalRequired); err != nil {
 			return OrderResult{Processed: false}, err
 		}
 		if err := ctx.WaitForExternalEvent("manager_approval", time.Second*200).Await(nil); err != nil {
@@ -50,43 +50,43 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		}
 		// TODO: Confirm timeout flow - this will be in the form of an error.
 		if approvalRequired.Approval {
-			if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been approved!", orderID)})).Await(nil); err != nil {
+			if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been approved!", orderID)})).Await(nil); err != nil {
 				log.Printf("failed to notify of a successful order: %v\n", err)
 			}
 		} else {
-			if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been rejected!", orderID)})).Await(nil); err != nil {
+			if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Payment for order %s has been rejected!", orderID)})).Await(nil); err != nil {
 				log.Printf("failed to notify of an unsuccessful order :%v\n", err)
 			}
 			return OrderResult{Processed: false}, err
 		}
 	}
-	err = ctx.CallActivity(ProcessPaymentActivity, workflow.ActivityInput(PaymentRequest{
+	err = ctx.CallActivity(ProcessPaymentActivity, workflow.WithActivityInput(PaymentRequest{
 		RequestID:          orderID,
 		ItemBeingPurchased: orderPayload.ItemName,
 		Amount:             orderPayload.TotalCost,
 		Quantity:           orderPayload.Quantity,
 	})).Await(nil)
 	if err != nil {
-		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
+		if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
 			log.Printf("failed to notify of a failed order: %v", err)
 		}
 		return OrderResult{Processed: false}, err
 	}
 
-	err = ctx.CallActivity(UpdateInventoryActivity, workflow.ActivityInput(PaymentRequest{
+	err = ctx.CallActivity(UpdateInventoryActivity, workflow.WithActivityInput(PaymentRequest{
 		RequestID:          orderID,
 		ItemBeingPurchased: orderPayload.ItemName,
 		Amount:             orderPayload.TotalCost,
 		Quantity:           orderPayload.Quantity,
 	})).Await(nil)
 	if err != nil {
-		if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
+		if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s failed!", orderID)})).Await(nil); err != nil {
 			log.Printf("failed to notify of a failed order: %v", err)
 		}
 		return OrderResult{Processed: false}, err
 	}
 
-	if err := ctx.CallActivity(NotifyActivity, workflow.ActivityInput(Notification{Message: fmt.Sprintf("Order %s has completed!", orderID)})).Await(nil); err != nil {
+	if err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{Message: fmt.Sprintf("Order %s has completed!", orderID)})).Await(nil); err != nil {
 		log.Printf("failed to notify of a successful order: %v", err)
 	}
 	return OrderResult{Processed: true}, err
