@@ -12,7 +12,7 @@
     <properties>
         <springframework.version>3.5.0</springframework.version>
         <springweb.version>6.2.7</springweb.version>
-        <dapr-sdk.version>1.15.0</dapr-sdk.version>
+        <dapr-sdk.version>1.16.0-rc-2</dapr-sdk.version>
     </properties>
 
     <dependencies>

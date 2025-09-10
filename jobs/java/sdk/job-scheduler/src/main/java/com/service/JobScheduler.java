@@ -2,6 +2,7 @@ package com.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.DeleteJobRequest;
@@ -25,7 +26,6 @@ public class JobScheduler {
                 Properties.HTTP_PORT, "6390",
                 Properties.GRPC_PORT, "6200"
         );
-
         try (DaprPreviewClient client = new DaprClientBuilder().withPropertyOverrides(overrides).buildPreviewClient()) {
 
             // Schedule R2-D2 Job.
@@ -49,6 +49,8 @@ public class JobScheduler {
 
             // Delete the C-3PO Job
             deleteJob(client, c3POJobName);
+            // Delete the R2-D2 Job
+            deleteJob(client, r2D2JobName);
         }
     }
 
@@ -60,6 +62,7 @@ public class JobScheduler {
         client.scheduleJob(request).block();
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         System.out.println("Job Scheduled: " + mapper.writeValueAsString(request));
     }
 
@@ -68,6 +71,7 @@ public class JobScheduler {
         GetJobResponse response = client.getJob(new GetJobRequest(jobName)).block();
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         System.out.println("Job Details: " + mapper.writeValueAsString(response));
     }
 
