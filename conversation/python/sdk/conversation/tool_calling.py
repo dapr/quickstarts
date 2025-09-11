@@ -16,6 +16,11 @@ from dapr.clients.grpc import conversation
 with DaprClient() as d:
     provider_component = "echo"
 
+    # ------------------------------------------------------------
+    # Creating Tool Function definition using lower level API and hand-crafted JSON schema
+    # ------------------------------------------------------------
+
+    # This is how to register a tool using hand-crafted JSON schema
     function = conversation.ConversationToolsFunction(
         name="calculate",
         description="Perform calculations",
@@ -63,7 +68,7 @@ with DaprClient() as d:
         """get weather from a location in the given unit"""
         return f"The weather in {location} is 25 degrees {unit}."
 
-    textInput = "get weather in London in celsius"
+    textInput = "get weather in San Francisco in celsius"
     # use create helper function (i.e.: create_user_message, create_system_message, etc...) to create inputs easily
     inputs = [
         conversation.ConversationInputAlpha2(messages=[conversation.create_user_message(textInput)], scrub_pii=True),
@@ -84,5 +89,5 @@ with DaprClient() as d:
 
         # registered tools are also automatically set to be invoked easily when called by the LLM
         # using the method conversation.execute_registered_tool:
-        # >>> print(conversation.execute_registered_tool(name="get_weather", params={"location":"London", "unit":"celsius"}))
+        # >>> print(conversation.execute_registered_tool(name="get_weather", params={"location":"San Francisco", "unit":"celsius"}))
 

@@ -17,7 +17,7 @@ This quickstart includes two example applications:
 
 You can run the sample applications using either the Dapr multi-app template or the Dapr CLI directly.
 
-### Option 1: Using the Multi-App Template
+### Use the multi-app-run template file
 
 This approach uses [Dapr's multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) to simplify deployment with `dapr run -f .`.
 
@@ -113,8 +113,8 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     expected_stdout_lines:
       - "== APP - conversation-tool-calling == Input sent: calculate square root of 15"
       - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))"
-      - "== APP - conversation-tool-calling == Input sent: get weather in London in celsius"
-      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in London in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))"
+      - "== APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius"
+      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))"
     expected_stderr_lines:
     output_match_mode: substring
     match_order: none
@@ -133,8 +133,8 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     ```text
     == APP - conversation-tool-calling == Input sent: calculate square root of 15
     == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))
-    == APP - conversation-tool-calling == Input sent: get weather in London in celsius
-    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in London in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
+    == APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius
+    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
     ```
 
     <!-- END_STEP -->
@@ -152,7 +152,7 @@ For more LLM options, see the [supported Conversation components](https://docs.d
 
     <!-- END_STEP -->
 
-### Option 2: Using the Dapr CLI Directly
+### Run the apps individually
 
 As an alternative to the multi-app template, you can run the application directly with the Dapr CLI.
 

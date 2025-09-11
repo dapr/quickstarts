@@ -19,7 +19,7 @@ This example uses the default LLM Component provided by Dapr which simply echoes
 1.  Install dependencies:
 
     <details open="true">
-    <summary>Option 2: Using uv (faster modern alternative to pip)</summary>
+    <summary>Option 1: Using uv (faster modern alternative to pip)</summary>
     
     ```
     cd conversation
@@ -35,7 +35,7 @@ This example uses the default LLM Component provided by Dapr which simply echoes
     </details>
      
     <details>
-    <summary>Option 1: Using classic pip</summary>
+    <summary>Option 2: Using classic pip</summary>
 
     <!-- STEP
     name: Install Python dependencies
@@ -59,7 +59,6 @@ This example uses the default LLM Component provided by Dapr which simply echoes
     cd ..
     ```
 
-<!-- END_STEP -->
 
 2. Open a new terminal window and run the multi app run template:
 
@@ -71,7 +70,7 @@ This example uses the default LLM Component provided by Dapr which simply echoes
       - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
       - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
       - '== APP - conversation == Tool calls detected:'
-      - '== APP - conversation == Tool call: {'id': '0', 'function': {'name': 'get_weather', 'arguments': 'location,unit'}}'
+      - "== APP - conversation == Tool call: {'id': '0', 'function': {'name': 'get_weather', 'arguments': 'location,unit'}}"
       - '== APP - conversation == Function name: get_weather'
       - '== APP - conversation == Function arguments: location,unit'   
     expected_stderr_lines:
@@ -101,7 +100,8 @@ This example uses the default LLM Component provided by Dapr which simply echoes
     
     - The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
     - The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
-    - Since we are using the `echo` Component mock LLM, the tool call is not executed and the LLM returns `No tool calls in response`.
+    - Since we are using the `echo` Component mock LLM, the tool call is not executed and the LLM returns but we return a simulated `tool call` response.
+      The response is mocked to showcase the tool call response and what was sent as the tool definition, like the function name and arguments.
     
     ```text
     == APP == Tool calling input sent: What is the weather like in San Francisco in celsius?
@@ -177,6 +177,9 @@ This example uses the default LLM Component provided by Dapr which simply echoes
     - The mock LLM echoes `What is dapr?`.
     - The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
     - The mock LLM echoes `What is the weather like in San Francisco in celsius?`
+    - The mock also "calls" the `get_weather` tool.
+    - Since we are using the `echo` Component mock LLM, the tool call is not executed and the LLM returns but we return a simulated `tool call` response.
+      The response is mocked to showcase the tool call response and what was sent as the tool definition, like the function name and arguments.
     
     ```text
     == APP - conversation == Conversation input sent: What is dapr?
