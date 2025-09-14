@@ -6,9 +6,12 @@ toolchain go1.24.5
 
 require github.com/dapr/go-sdk v1.13.0-rc.1
 
+// TODO: remove when PR https://github.com/dapr/go-sdk/pull/766 is merged
+replace github.com/dapr/go-sdk => github.com/mikeee/dapr_go-sdk v1.13.0-rc.1.0.20250911101203-c6cb090061af
+
 require (
 	github.com/dapr/dapr v1.16.0-rc.3 // indirect
-	github.com/dapr/kit v0.15.4 // indirect
+	github.com/dapr/kit v0.16.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	go.opentelemetry.io/otel v1.36.0 // indirect
 	golang.org/x/net v0.41.0 // indirect

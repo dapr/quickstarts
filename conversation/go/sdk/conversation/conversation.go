@@ -23,27 +23,39 @@ import (
 )
 
 func main() {
-	client, err := dapr.NewClient()
+	client, err := dapr.NewClientWithPort("56178")
 	if err != nil {
 		panic(err)
 	}
 
-	input := dapr.ConversationInput{
-		Content: "What is dapr?",
-		// Role:     nil, // Optional
-		// ScrubPII: nil, // Optional
+	inputMsg := "What is dapr?"
+	conversationComponent := "echo"
+
+	request := dapr.ConversationRequestAlpha2{
+		Name: conversationComponent,
+		Inputs: []*dapr.ConversationInputAlpha2{
+			{
+				Messages: []*dapr.ConversationMessageAlpha2{
+					{
+						ConversationMessageOfUser: &dapr.ConversationMessageOfUserAlpha2{
+							Content: []*dapr.ConversationMessageContentAlpha2{
+								{
+									Text: &inputMsg,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
-	fmt.Println("Input sent:", input.Content)
+	fmt.Println("Input sent:", inputMsg)
 
-	var conversationComponent = "echo"
-
-	request := dapr.NewConversationRequest(conversationComponent, []dapr.ConversationInput{input})
-
-	resp, err := client.ConverseAlpha1(context.Background(), request)
+	resp, err := client.ConverseAlpha2(context.Background(), request)
 	if err != nil {
 		log.Fatalf("err: %v", err)
 	}
 
-	fmt.Println("Output response:", resp.Outputs[0].Result)
+	fmt.Println("Output response:", resp.Outputs[0].Choices[0].Message.Content)
 }
