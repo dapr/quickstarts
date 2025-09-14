@@ -58,9 +58,21 @@ func GenerateFunctionTool[T any](name, description string) (*dapr.ConversationTo
 	}), nil
 }
 
-// getWeather get weather from a location in the given unit
-func get25DegreesWeather(req GetDegreesWeatherRequest) string {
-	return fmt.Sprintf("The Weather in %s is 25 degrees %s", req.Location, req.Unit)
+// createUserMessageInput is a helper method to create user messages in expected proto format
+func createUserMessageInput(msg string) *dapr.ConversationInputAlpha2 {
+	return &dapr.ConversationInputAlpha2{
+		Messages: []*dapr.ConversationMessageAlpha2{
+			{
+				ConversationMessageOfUser: &dapr.ConversationMessageOfUserAlpha2{
+					Content: []*dapr.ConversationMessageContentAlpha2{
+						{
+							Text: &msg,
+						},
+					},
+				},
+			},
+		},
+	}
 }
 
 func main() {
@@ -73,22 +85,8 @@ func main() {
 	conversationComponent := "echo"
 
 	request := dapr.ConversationRequestAlpha2{
-		Name: conversationComponent,
-		Inputs: []*dapr.ConversationInputAlpha2{
-			{
-				Messages: []*dapr.ConversationMessageAlpha2{
-					{
-						ConversationMessageOfUser: &dapr.ConversationMessageOfUserAlpha2{
-							Content: []*dapr.ConversationMessageContentAlpha2{
-								{
-									Text: &inputMsg,
-								},
-							},
-						},
-					},
-				},
-			},
-		},
+		Name:   conversationComponent,
+		Inputs: []*dapr.ConversationInputAlpha2{createUserMessageInput(inputMsg)},
 	}
 
 	fmt.Println("Input sent:", inputMsg)
@@ -107,23 +105,9 @@ func main() {
 
 	weatherMessage := "get weather in San Francisco in celsius"
 	requestWithTool := dapr.ConversationRequestAlpha2{
-		Name: conversationComponent,
-		Inputs: []*dapr.ConversationInputAlpha2{
-			{
-				Messages: []*dapr.ConversationMessageAlpha2{
-					{
-						ConversationMessageOfUser: &dapr.ConversationMessageOfUserAlpha2{
-							Content: []*dapr.ConversationMessageContentAlpha2{
-								{
-									Text: &weatherMessage,
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-		Tools: []*dapr.ConversationToolsAlpha2{tool},
+		Name:   conversationComponent,
+		Inputs: []*dapr.ConversationInputAlpha2{createUserMessageInput(weatherMessage)},
+		Tools:  []*dapr.ConversationToolsAlpha2{tool},
 	}
 
 	resp, err = client.ConverseAlpha2(context.Background(), requestWithTool)

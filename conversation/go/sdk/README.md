@@ -45,6 +45,8 @@ The terminal console output should look similar to this, where:
 ```text
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
+== APP - conversation == Output response: get weather in San Francisco in celsius
+== APP - conversation == Tool Call - Name: getWeather - Arguments: location,unit
 ```
 
 <!-- END_STEP -->
