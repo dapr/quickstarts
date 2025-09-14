@@ -25,6 +25,7 @@ expected_stdout_lines:
   - '== APP - conversation == Output response: What is dapr?'
   - '== APP - conversation == Output response: get weather in San Francisco in celsius'
   - '== APP - conversation == Tool Call - Name: getWeather - Arguments: '
+  - '== APP - conversation == Tool Execution Output: The weather in San Francisco is 25 degrees Celsius'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -47,6 +48,7 @@ The terminal console output should look similar to this, where:
 == APP - conversation == Output response: What is dapr?
 == APP - conversation == Output response: get weather in San Francisco in celsius
 == APP - conversation == Tool Call - Name: getWeather - Arguments: location,unit
+== APP - conversation == Tool Execution Output: The weather in San Francisco is 25 degrees Celsius
 ```
 
 <!-- END_STEP -->

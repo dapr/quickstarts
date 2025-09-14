@@ -16,8 +16,10 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/invopop/jsonschema"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -25,6 +27,28 @@ import (
 
 	dapr "github.com/dapr/go-sdk/client"
 )
+
+// createMapOfArgsForEcho is a helper to deal with an issue with current echo provider not returning args as a map but a csv
+func createMapOfArgsForEcho(s string) ([]byte, error) {
+	m := map[string]any{}
+	for _, p := range strings.Split(s, ",") {
+		m[p] = p
+	}
+	return json.Marshal(m)
+}
+
+// getWeatherInLocation is an example function to use as tool
+func getWeatherInLocation(request GetDegreesWeatherRequest, defaultValues GetDegreesWeatherRequest) string {
+	location := request.Location
+	unit := request.Unit
+	if location == "location" {
+		location = defaultValues.Location
+	}
+	if unit == "unit" {
+		unit = defaultValues.Unit
+	}
+	return fmt.Sprintf("The weather in %s is 25 degrees %s", location, unit)
+}
 
 type GetDegreesWeatherRequest struct {
 	Location string `json:"location" jsonschema:"title=Location,description=The location to look up the weather for"`
@@ -76,7 +100,7 @@ func createUserMessageInput(msg string) *dapr.ConversationInputAlpha2 {
 }
 
 func main() {
-	client, err := dapr.NewClientWithPort("56178")
+	client, err := dapr.NewClient()
 	if err != nil {
 		panic(err)
 	}
@@ -118,5 +142,28 @@ func main() {
 	fmt.Println("Output response:", resp.Outputs[0].Choices[0].Message.Content)
 	for _, toolCalls := range resp.Outputs[0].Choices[0].Message.ToolCalls {
 		fmt.Printf("Tool Call - Name: %s - Arguments: %v\n", toolCalls.ToolTypes.Name, toolCalls.ToolTypes.Arguments)
+
+		// parse the arguments and execute tool
+		args := []byte(toolCalls.ToolTypes.Arguments)
+		if conversationComponent == "echo" {
+			// echo does not return a compliant tools argument, it should return json object with keys being the argument names
+			args, err = createMapOfArgsForEcho(toolCalls.ToolTypes.Arguments)
+			if err != nil {
+				log.Fatalf("err: %v", err)
+			}
+		}
+
+		// find the tool (only one in this case) and execute
+		for _, toolInfo := range requestWithTool.Tools {
+			if toolInfo.Name == toolCalls.ToolTypes.Name && toolInfo.Name == "getWeather" {
+				var reqArgs GetDegreesWeatherRequest
+				if err = json.Unmarshal(args, &reqArgs); err != nil {
+					log.Fatalf("err: %v", err)
+				}
+				// execute tool
+				toolExecutionOutput := getWeatherInLocation(reqArgs, GetDegreesWeatherRequest{Location: "San Francisco", Unit: "Celsius"})
+				fmt.Printf("Tool Execution Output: %s\n", toolExecutionOutput)
+			}
+		}
 	}
 }
