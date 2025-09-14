@@ -10,9 +10,14 @@ require github.com/dapr/go-sdk v1.13.0-rc.1
 replace github.com/dapr/go-sdk => github.com/mikeee/dapr_go-sdk v1.13.0-rc.1.0.20250911101203-c6cb090061af
 
 require (
+	github.com/bahlo/generic-list-go v0.2.0 // indirect
+	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/dapr/dapr v1.16.0-rc.3 // indirect
 	github.com/dapr/kit v0.16.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/invopop/jsonschema v0.13.0 // indirect
+	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	go.opentelemetry.io/otel v1.36.0 // indirect
 	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect

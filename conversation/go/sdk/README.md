@@ -23,6 +23,8 @@ name: Run multi app run template
 expected_stdout_lines:
   - '== APP - conversation == Input sent: What is dapr?'
   - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == Output response: get weather in San Francisco in celsius'
+  - '== APP - conversation == Tool Call - Name: getWeather - Arguments: '
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
