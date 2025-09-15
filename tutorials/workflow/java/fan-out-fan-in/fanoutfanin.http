@@ -1,0 +1,16 @@
+@apphost=http://localhost:8080
+
+### Start the FanOutFanIn workflow
+POST {{ apphost }}/start
+Content-Type: application/json
+
+[
+    "which",
+    "word",
+    "is",
+    "the",
+    "shortest"
+]
+
+### Get the workflow status
+GET {{ apphost }}/output
