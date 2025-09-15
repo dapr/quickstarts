@@ -42,7 +42,6 @@ func main() {
 	}
 
 	var inputBody = `{
-		"name": "echo",
 		"inputs": [{
 			"messages": [{
 				"of_user": {
@@ -98,7 +97,6 @@ func main() {
 
 	// Tool calling example
 	var toolCallBody = `{
-		"name": "echo",
 		"inputs": [{
 			"messages": [{
 				"of_user": {
