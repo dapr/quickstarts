@@ -1,4 +1,4 @@
-## 🧠 Agentic Contract Review — Durable Workflows with Dapr (+ OpenAI, Gemini, Anthropic)
+## 🧠 Agentic Human-In-The-Loop — Durable Workflows with Dapr (+ OpenAI, Gemini, Anthropic)
 
 This repo demonstrates a durable, agentic AI workflow for contract review built on Dapr Workflows and a simple FastAPI service. It ships three interchangeable implementations using different LLM providers:
 
@@ -59,7 +59,6 @@ curl -X POST http://localhost:8000/review -H "Content-Type: application/json" -d
 
 # 6) If required, approve later by posting to /approve/{instanceId}
 
-```bash
 curl -X POST http://localhost:8000/approve/workflow-<CONTRACT-ID> -H "Content-Type: application/json"   -d '{
     "approved": true,
     "reviewer": "Alice",
