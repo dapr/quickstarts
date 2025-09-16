@@ -9,7 +9,6 @@ async function main() {
   // Plain conversation
   try {
     const converseInputBody = {
-      name: conversationComponentName,
       inputs: [
         {
           messages: [
@@ -49,7 +48,6 @@ async function main() {
   // Tool calling
   try {
     const toolCallingInputBody = {
-      name: conversationComponentName,
       inputs: [
         {
           messages: [
