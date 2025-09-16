@@ -28,7 +28,7 @@ CONVERSATION_COMPONENT_NAME = 'echo'
 input = {
     'inputs': [{
         'messages': [{
-            'of_user': {
+            'ofUser': {
                 'content': [{
                     'text': 'What is dapr?'
                 }]
@@ -67,13 +67,13 @@ except (KeyError, IndexError) as e:
 tool_call_input = {
     'inputs': [{
         'messages': [{
-            'of_user': {
+            'ofUser': {
                 'content': [{
                     'text': 'What is the weather like in San Francisco in celsius?'
                 }]
             }
         }],
-        'scrubPII': False
+        'scrubPii': False
     }],
     'parameters': {
         'max_tokens': {
