@@ -29,7 +29,7 @@ input = {
     'name': 'anthropic',
     'inputs': [{
         'messages': [{
-            'of_user': {
+            'ofUser': {
                 'content': [{
                     'text': 'What is dapr?'
                 }]
@@ -69,13 +69,13 @@ tool_call_input = {
     'name': 'anthropic',
     'inputs': [{
         'messages': [{
-            'of_user': {
+            'ofUser': {
                 'content': [{
                     'text': 'What is the weather like in San Francisco in celsius?'
                 }]
             }
         }],
-        'scrubPII': False
+        'scrubPii': False
     }],
     'parameters': {
         'max_tokens': {
