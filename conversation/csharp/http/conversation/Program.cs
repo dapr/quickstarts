@@ -32,7 +32,7 @@ var conversationRequestBody = JsonSerializer.Deserialize<Dictionary<string, obje
   {
     "inputs": [{
       "messages": [{
-        "of_user": {
+        "ofUser": {
           "content": [{
             "text": "What is dapr?"
           }]
@@ -70,7 +70,7 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
       {
         "messages": [
           {
-            "of_user": {
+            "ofUser": {
               "content": [
                 {
                   "text": "What is the weather like in San Francisco in celsius?"
@@ -79,7 +79,7 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
             }
           }
         ],
-        "scrubPII": false
+        "scrubPii": false
       }
     ],
     "parameters": {
