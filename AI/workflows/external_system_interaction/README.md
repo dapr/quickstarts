@@ -28,7 +28,7 @@ All three implementations share these semantics; you can swap providers without 
 ### 🛠 Prerequisites (All Providers)
 
 *   Python 3.10+
-*   [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/)
+*   [Dapr and Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 *   Docker (for local Dapr dependencies)  
 *   Provider API key (one of):
     *   **OpenAI**: OPENAI\_API\_KEY
@@ -43,7 +43,7 @@ Pick a provider folder and follow its README. The flow is generally:
 
 ```bash
 # 1) Choose a provider implementation
-cd gemini   # or openai / anthropic
+cd openai   # or gemini / anthropic
 
 # 2) Install deps
 pip install -r requirements.txt

@@ -22,7 +22,7 @@ Even though this example is using Claude, you can replace the Anthropic SDK with
 ## 🛠 Prerequisites
 
 - Python 3.10+
-- [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/)
+- [Dapr and Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - Docker (for Redis state backend via `dapr init`)
 - Anthropic Claude API Key (sign up at [Anthropic](https://www.anthropic.com/))
 

@@ -22,7 +22,7 @@ Even though this example is using Gemini, you can replace the Gemini SDK with an
 ## 🛠 Prerequisites
 
 - Python 3.10+
-- [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/)
+- [Dapr and Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - Docker (for Redis state backend via `dapr init`)
 - Gemini API Key (sign up at [Gemini](https://aistudio.google.com/app/apikey/))
 
