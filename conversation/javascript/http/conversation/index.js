@@ -9,12 +9,11 @@ async function main() {
   // Plain conversation
   try {
     const converseInputBody = {
-      name: conversationComponentName,
       inputs: [
         {
           messages: [
             {
-              of_user: {
+              ofUser: {
                 content: [
                   {
                     text: "What is dapr?",
@@ -49,12 +48,11 @@ async function main() {
   // Tool calling
   try {
     const toolCallingInputBody = {
-      name: conversationComponentName,
       inputs: [
         {
           messages: [
             {
-              of_user: {
+              ofUser: {
                 content: [
                   {
                     text: "What is the weather like in San Francisco in celsius?",
@@ -63,14 +61,14 @@ async function main() {
               },
             },
           ],
-          scrub_pii: false,
+          scrubPii: false,
         },
       ],
       metadata: {
         api_key: "test-key",
         version: "1.0",
       },
-      scrub_pii: false,
+      scrubPii: false,
       temperature: 0.7,
       tools: [
         {
@@ -95,7 +93,7 @@ async function main() {
           },
         },
       ],
-      tool_choice: "auto",
+      toolChoice: "auto",
     };
     const response = await fetch(reqURL, {
       method: "POST",

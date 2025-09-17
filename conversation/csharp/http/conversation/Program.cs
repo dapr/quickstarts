@@ -30,10 +30,9 @@ var httpClient = new HttpClient();
 
 var conversationRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>>("""
   {
-    "name": "echo",
     "inputs": [{
       "messages": [{
-        "of_user": {
+        "ofUser": {
           "content": [{
             "text": "What is dapr?"
           }]
@@ -67,12 +66,11 @@ Console.WriteLine($"Output response: {conversationContent}");
 
 var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>>("""
   {
-    "name": "demo",
     "inputs": [
       {
         "messages": [
           {
-            "of_user": {
+            "ofUser": {
               "content": [
                 {
                   "text": "What is the weather like in San Francisco in celsius?"
@@ -81,7 +79,7 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
             }
           }
         ],
-        "scrubPII": false
+        "scrubPii": false
       }
     ],
     "parameters": {
@@ -135,24 +133,20 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
 var toolCallingResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/echo/converse", toolCallRequestBody);
 var toolCallingResult = await toolCallingResponse.Content.ReadFromJsonAsync<JsonElement>();
 
-var toolCallingContent = toolCallingResult
+var messageElement = toolCallingResult
   .GetProperty("outputs")
   .EnumerateArray()
   .First()
   .GetProperty("choices")
   .EnumerateArray()
   .First()
-  .GetProperty("message")
-  .GetProperty("content");
+  .GetProperty("message");
 
-var functionCalled = toolCallingResult
-  .GetProperty("outputs")
-  .EnumerateArray()
-  .First()
-  .GetProperty("choices")
-  .EnumerateArray()
-  .First()
-  .GetProperty("message")
+var toolCallingContent = messageElement.TryGetProperty("content", out var contentElement) 
+    ? contentElement.GetString() 
+    : null;
+
+var functionCalled = messageElement
   .GetProperty("toolCalls")
   .EnumerateArray()
   .First()

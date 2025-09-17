@@ -26,10 +26,9 @@ base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
 CONVERSATION_COMPONENT_NAME = 'echo'
 
 input = {
-    'name': 'anthropic',
     'inputs': [{
         'messages': [{
-            'of_user': {
+            'ofUser': {
                 'content': [{
                     'text': 'What is dapr?'
                 }]
@@ -66,16 +65,15 @@ except (KeyError, IndexError) as e:
         logging.info(f'No outputs found in response')
 
 tool_call_input = {
-    'name': 'anthropic',
     'inputs': [{
         'messages': [{
-            'of_user': {
+            'ofUser': {
                 'content': [{
                     'text': 'What is the weather like in San Francisco in celsius?'
                 }]
             }
         }],
-        'scrubPII': False
+        'scrubPii': False
     }],
     'parameters': {
         'max_tokens': {

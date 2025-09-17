@@ -42,10 +42,9 @@ func main() {
 	}
 
 	var inputBody = `{
-		"name": "echo",
 		"inputs": [{
 			"messages": [{
-				"of_user": {
+				"ofUser": {
 					"content": [{
 						"text": "What is dapr?"
 					}]
@@ -98,10 +97,9 @@ func main() {
 
 	// Tool calling example
 	var toolCallBody = `{
-		"name": "echo",
 		"inputs": [{
 			"messages": [{
-				"of_user": {
+				"ofUser": {
 					"content": [{
 						"text": "What is the weather like in San Francisco in celsius?"
 					}]
