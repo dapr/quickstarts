@@ -17,6 +17,7 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | Dapr Quickstart | Description |
 |:--------:|:--------:|
 | [Workflow](./workflows) | Dapr Workflow enables you to create long running, fault-tolerant, stateful applications |
+| [AI](./AI) | Create AI agents and apps that are durable, fault-tolerant with built-in synchronous and asynchronous messaging |
 | [Publish and Subscribe](./pub_sub) | Asynchronous communication between two services using messaging |
 | [AI](./AI) | Agentic building blocks including durable workflows, eventing, authentication and state persistence |
 | [Service Invocation](./service_invocation) | Synchronous communication between two services using HTTP |
