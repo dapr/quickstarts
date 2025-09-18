@@ -7,8 +7,8 @@ import (
 	"log"
 	"time"
 
+	"github.com/dapr/durabletask-go/workflow"
 	"github.com/dapr/go-sdk/client"
-	"github.com/dapr/go-sdk/workflow"
 )
 
 var (
@@ -22,49 +22,46 @@ func main() {
 	fmt.Println("*** Welcome to the Dapr Workflow console app sample!")
 	fmt.Println("*** Using this app, you can place orders that start workflows.")
 
-	w, err := workflow.NewWorker()
-	if err != nil {
-		log.Fatalf("failed to start worker: %v", err)
-	}
+	r := workflow.NewRegistry()
 
-	if err := w.RegisterWorkflow(OrderProcessingWorkflow); err != nil {
+	if err := r.AddWorkflow(OrderProcessingWorkflow); err != nil {
 		log.Fatal(err)
 	}
-	if err := w.RegisterActivity(NotifyActivity); err != nil {
+	if err := r.AddActivity(NotifyActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := w.RegisterActivity(RequestApprovalActivity); err != nil {
+	if err := r.AddActivity(RequestApprovalActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := w.RegisterActivity(VerifyInventoryActivity); err != nil {
+	if err := r.AddActivity(VerifyInventoryActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := w.RegisterActivity(ProcessPaymentActivity); err != nil {
+	if err := r.AddActivity(ProcessPaymentActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := w.RegisterActivity(UpdateInventoryActivity); err != nil {
+	if err := r.AddActivity(UpdateInventoryActivity); err != nil {
 		log.Fatal(err)
 	}
 
-	if err := w.Start(); err != nil {
-		log.Fatal(err)
-	}
-
-	daprClient, err := client.NewClient()
-	if err != nil {
-		log.Fatalf("failed to initialise dapr client: %v", err)
-	}
-	wfClient, err := workflow.NewClient(workflow.WithDaprClient(daprClient))
+	wfClient, err := client.NewWorkflowClient()
 	if err != nil {
 		log.Fatalf("failed to initialise workflow client: %v", err)
 	}
 
+	if err := wfClient.StartWorker(context.Background(), r); err != nil {
+		log.Fatal(err)
+	}
+
+	dclient, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
 	inventory := []InventoryItem{
 		{ItemName: "paperclip", PerItemCost: 5, Quantity: 100},
 		{ItemName: "cars", PerItemCost: 5000, Quantity: 10},
 		{ItemName: "computers", PerItemCost: 500, Quantity: 100},
 	}
-	if err := restockInventory(daprClient, inventory); err != nil {
+	if err := restockInventory(dclient, inventory); err != nil {
 		log.Fatalf("failed to restock: %v", err)
 	}
 
@@ -81,7 +78,7 @@ func main() {
 		TotalCost: totalCost,
 	}
 
-	id, err := wfClient.ScheduleNewWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
+	id, err := wfClient.ScheduleWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
 	if err != nil {
 		log.Fatalf("failed to start workflow: %v", err)
 	}
@@ -98,7 +95,7 @@ func main() {
 		log.Fatalf("failed to get workflow: %v", err)
 	}
 
-	fmt.Printf("workflow status: %v\n", respFetch.RuntimeStatus)
+	fmt.Printf("workflow status: %v\n", respFetch.String())
 
 	fmt.Println("Purchase of item is complete")
 }
