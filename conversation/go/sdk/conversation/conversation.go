@@ -37,7 +37,7 @@ func createMapOfArgsForEcho(s string) ([]byte, error) {
 	return json.Marshal(m)
 }
 
-// getWeatherInLocation is an example function to use as tool
+// getWeatherInLocation is an example function to use as a tool call
 func getWeatherInLocation(request GetDegreesWeatherRequest, defaultValues GetDegreesWeatherRequest) string {
 	location := request.Location
 	unit := request.Unit
