@@ -24,7 +24,7 @@ expected_stdout_lines:
   - '== APP - conversation-sdk == Input sent: What is dapr?'
   - '== APP - conversation == Output response: What is dapr?'
   - '== APP - conversation-sdk == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Tool Call - Name: getWeather - Arguments: '
+  - '== APP - conversation == Tool Call: Name: getWeather, Arguments: '
   - '== APP - conversation == Tool Call Output: The weather in San Francisco is 25 degrees Celsius'
 expected_stderr_lines:
 output_match_mode: substring
