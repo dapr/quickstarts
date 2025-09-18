@@ -127,7 +127,7 @@ func main() {
 		log.Fatalf("err: %v", err)
 	}
 
-	weatherMessage := "get weather in San Francisco in celsius"
+	weatherMessage := "Tool calling input sent: What is the weather like in San Francisco in celsius?'"
 	requestWithTool := dapr.ConversationRequestAlpha2{
 		Name:   conversationComponent,
 		Inputs: []*dapr.ConversationInputAlpha2{createUserMessageInput(weatherMessage)},
