@@ -47,7 +47,7 @@ The terminal console output should look similar to this, where:
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
   - '== APP - conversation-sdk == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-== APP - conversation == Tool Call - Name: getWeather - Arguments: location,unit
+== APP - conversation-sdk == Tool Call: Name: getWeather, Arguments: location,unit
 == APP - conversation == Tool Execution Output: The weather in San Francisco is 25 degrees Celsius
 ```
 
