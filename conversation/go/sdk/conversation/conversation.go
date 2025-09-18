@@ -162,7 +162,7 @@ func main() {
 				}
 				// execute tool
 				toolExecutionOutput := getWeatherInLocation(reqArgs, GetDegreesWeatherRequest{Location: "San Francisco", Unit: "Celsius"})
-				fmt.Printf("Tool Execution Output: %s\n", toolExecutionOutput)
+				fmt.Printf("Tool Call Output: %s\n", toolExecutionOutput)
 			}
 		}
 	}
