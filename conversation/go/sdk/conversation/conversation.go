@@ -139,9 +139,9 @@ func main() {
 		log.Fatalf("err: %v", err)
 	}
 
-	fmt.Println("Output response:", resp.Outputs[0].Choices[0].Message.Content)
+	fmt.Println(resp.Outputs[0].Choices[0].Message.Content)
 	for _, toolCalls := range resp.Outputs[0].Choices[0].Message.ToolCalls {
-		fmt.Printf("Tool Call:  Name: %s, Arguments: %v\n", toolCalls.ToolTypes.Name, toolCalls.ToolTypes.Arguments)
+		fmt.Printf("Tool Call: Name: %s - Arguments: %v\n", toolCalls.ToolTypes.Name, toolCalls.ToolTypes.Arguments)
 
 		// parse the arguments and execute tool
 		args := []byte(toolCalls.ToolTypes.Arguments)
