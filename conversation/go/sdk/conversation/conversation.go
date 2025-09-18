@@ -28,7 +28,7 @@ import (
 	dapr "github.com/dapr/go-sdk/client"
 )
 
-// createMapOfArgsForEcho is a helper to deal with an issue with current echo provider not returning args as a map but a csv
+// createMapOfArgsForEcho is a helper function to deal with the issue with the echo component not returning args as a map but in csv format
 func createMapOfArgsForEcho(s string) ([]byte, error) {
 	m := map[string]any{}
 	for _, p := range strings.Split(s, ",") {
