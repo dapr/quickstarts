@@ -146,7 +146,7 @@ func main() {
 		// parse the arguments and execute tool
 		args := []byte(toolCalls.ToolTypes.Arguments)
 		if conversationComponent == "echo" {
-			// echo does not return a compliant tools argument, it should return json object with keys being the argument names
+			// The echo component does not return a compliant tool calling response in json format but rather returns a csv
 			args, err = createMapOfArgsForEcho(toolCalls.ToolTypes.Arguments)
 			if err != nil {
 				log.Fatalf("err: %v", err)
