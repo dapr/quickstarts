@@ -18,6 +18,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 	if err := ctx.GetInput(&orderPayload); err != nil {
 		return nil, err
 	}
+
 	err := ctx.CallActivity(NotifyActivity, workflow.WithActivityInput(Notification{
 		Message: fmt.Sprintf("Received order %s for %d %s - $%d", orderID, orderPayload.Quantity, orderPayload.ItemName, orderPayload.TotalCost),
 	})).Await(nil)
@@ -45,7 +46,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		if err := ctx.CallActivity(RequestApprovalActivity, workflow.WithActivityInput(orderPayload)).Await(&approvalRequired); err != nil {
 			return OrderResult{Processed: false}, err
 		}
-		if err := ctx.WaitForExternalEvent("manager_approval", time.Second*200).Await(nil); err != nil {
+		if err := ctx.WaitForSingleEvent("manager_approval", time.Second*200).Await(nil); err != nil {
 			return OrderResult{Processed: false}, err
 		}
 		// TODO: Confirm timeout flow - this will be in the form of an error.
@@ -93,7 +94,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 }
 
 // NotifyActivity outputs a notification message
-func NotifyActivity(ctx workflow.ActivityContext) (any, error) {
+func NotifyActivity(ctx task.ActivityContext) (any, error) {
 	var input Notification
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
@@ -103,7 +104,7 @@ func NotifyActivity(ctx workflow.ActivityContext) (any, error) {
 }
 
 // ProcessPaymentActivity is used to process a payment
-func ProcessPaymentActivity(ctx workflow.ActivityContext) (any, error) {
+func ProcessPaymentActivity(ctx task.ActivityContext) (any, error) {
 	var input PaymentRequest
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
@@ -113,7 +114,7 @@ func ProcessPaymentActivity(ctx workflow.ActivityContext) (any, error) {
 }
 
 // VerifyInventoryActivity is used to verify if an item is available in the inventory
-func VerifyInventoryActivity(ctx workflow.ActivityContext) (any, error) {
+func VerifyInventoryActivity(ctx task.ActivityContext) (any, error) {
 	var input InventoryRequest
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
@@ -145,7 +146,7 @@ func VerifyInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 }
 
 // UpdateInventoryActivity modifies the inventory.
-func UpdateInventoryActivity(ctx workflow.ActivityContext) (any, error) {
+func UpdateInventoryActivity(ctx task.ActivityContext) (any, error) {
 	var input PaymentRequest
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
@@ -179,7 +180,7 @@ func UpdateInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 }
 
 // RequestApprovalActivity requests approval for the order
-func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
+func RequestApprovalActivity(ctx task.ActivityContext) (any, error) {
 	var input OrderPayload
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err

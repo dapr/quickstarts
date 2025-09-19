@@ -1,0 +1,22 @@
+@apphost=http://localhost:8080
+
+### Start the NeverEndingWorkflow workflow
+# @name startWorkflowRequest
+@counter=0
+POST {{ apphost }}/start/{{counter}}
+
+### Get the workflow status via the application
+@instanceId={{startWorkflowRequest.response.body.*}}
+GET {{ apphost }}/status/{{ instanceId }}
+
+### Suspend the workflow
+POST {{ apphost }}/suspend/{{ instanceId }}
+
+### Resume the workflow
+POST {{ apphost }}/resume/{{ instanceId }}
+
+### Terminate the workflow
+POST {{ apphost }}/terminate/{{ instanceId }}
+
+### Purge the workflow
+DELETE {{ apphost }}/purge/{{ instanceId }}
