@@ -94,7 +94,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 }
 
 // NotifyActivity outputs a notification message
-func NotifyActivity(ctx task.ActivityContext) (any, error) {
+func NotifyActivity(ctx workflow.ActivityContext) (any, error) {
 	var input Notification
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
@@ -104,7 +104,7 @@ func NotifyActivity(ctx task.ActivityContext) (any, error) {
 }
 
 // ProcessPaymentActivity is used to process a payment
-func ProcessPaymentActivity(ctx task.ActivityContext) (any, error) {
+func ProcessPaymentActivity(ctx workflow.ActivityContext) (any, error) {
 	var input PaymentRequest
 	if err := ctx.GetInput(&input); err != nil {
 		return "", err
@@ -114,7 +114,7 @@ func ProcessPaymentActivity(ctx task.ActivityContext) (any, error) {
 }
 
 // VerifyInventoryActivity is used to verify if an item is available in the inventory
-func VerifyInventoryActivity(ctx task.ActivityContext) (any, error) {
+func VerifyInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 	var input InventoryRequest
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
@@ -146,7 +146,7 @@ func VerifyInventoryActivity(ctx task.ActivityContext) (any, error) {
 }
 
 // UpdateInventoryActivity modifies the inventory.
-func UpdateInventoryActivity(ctx task.ActivityContext) (any, error) {
+func UpdateInventoryActivity(ctx workflow.ActivityContext) (any, error) {
 	var input PaymentRequest
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
@@ -180,7 +180,7 @@ func UpdateInventoryActivity(ctx task.ActivityContext) (any, error) {
 }
 
 // RequestApprovalActivity requests approval for the order
-func RequestApprovalActivity(ctx task.ActivityContext) (any, error) {
+func RequestApprovalActivity(ctx workflow.ActivityContext) (any, error) {
 	var input OrderPayload
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, err
