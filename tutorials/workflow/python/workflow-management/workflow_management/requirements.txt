@@ -1,4 +1,4 @@
-dapr>=1.16.0-rc1
-dapr-ext-workflow>=1.16.0rc1
+dapr>=1.16.0
+dapr-ext-workflow>=1.16.0
 fastapi>=0.115.0
 uvicorn>=0.34.2
