@@ -46,7 +46,7 @@ func OrderProcessingWorkflow(ctx *workflow.WorkflowContext) (any, error) {
 		if err := ctx.CallActivity(RequestApprovalActivity, workflow.WithActivityInput(orderPayload)).Await(&approvalRequired); err != nil {
 			return OrderResult{Processed: false}, err
 		}
-		if err := ctx.WaitForSingleEvent("manager_approval", time.Second*200).Await(nil); err != nil {
+		if err := ctx.WaitForExternalEvent("manager_approval", time.Second*200).Await(nil); err != nil {
 			return OrderResult{Processed: false}, err
 		}
 		// TODO: Confirm timeout flow - this will be in the form of an error.
