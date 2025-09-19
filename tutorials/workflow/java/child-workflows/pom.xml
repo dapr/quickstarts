@@ -15,7 +15,7 @@
   <description>Child Workflows Example</description>
 
   <properties>
-    <dapr.spring.version>0.15.0</dapr.spring.version>
+    <dapr.spring.version>1.16.0</dapr.spring.version>
   </properties>
   <dependencies>
     <dependency>
