@@ -86,12 +86,12 @@ func main() {
 
 	waitCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	_, err = client.WaitForOrchestrationCompletion(waitCtx, id)
+	_, err = wfClient.WaitForWorkflowCompletion(waitCtx, id)
 	if err != nil {
 		log.Fatalf("failed to wait for workflow: %v", err)
 	}
 
-	respFetch, err := client.FetchOrchestrationMetadata(context.Background(), id, api.WithFetchPayloads(true))
+	respFetch, err := wfClient.FetchWorkflowMetadata(context.Background(), id, workflow.WithFetchPayloads(true))
 	if err != nil {
 		log.Fatalf("failed to get workflow: %v", err)
 	}
@@ -101,7 +101,7 @@ func main() {
 	fmt.Println("Purchase of item is complete")
 }
 
-func restockInventory(daprClient dapr.Client, inventory []InventoryItem) error {
+func restockInventory(daprClient client.Client, inventory []InventoryItem) error {
 	for _, item := range inventory {
 		itemSerialized, err := json.Marshal(item)
 		if err != nil {
