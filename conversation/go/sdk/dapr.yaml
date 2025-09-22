@@ -3,5 +3,5 @@ common:
   resourcesPath: ../../components/
 apps:
   - appDirPath: ./conversation/
-    appID: conversation
+    appID: conversation-sdk
     command: ["go", "run", "."]

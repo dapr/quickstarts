@@ -1,97 +1,188 @@
 # Dapr Conversation API (Python SDK)
 
-In this quickstart, you'll send an input to a mock Large Language Model (LLM) using Dapr's Conversation API. This API is responsible for providing one consistent API entry point to talk to underlying LLM providers.
+This quickstart demonstrates how to interact with Large Language Models (LLMs) using Dapr's Conversation API. The Conversation API provides a unified interface for communicating with various LLM providers through a consistent entry point.
 
-Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
+For comprehensive documentation on Dapr's Conversation API, see the [official documentation](https://docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/).
 
-This quickstart includes one app:
+## Sample Applications
 
-- `app.py`, responsible for sending an input to the underlying LLM and retrieving an output.
+This quickstart includes two example applications:
 
-## Run the app with the template file
+- `app.py`: Basic example that sends a prompt to an LLM and retrieves the response
+- `tool_calling.py`: An example that demonstrates how to use the Conversation API to perform external tool calling with two approaches:
+    - Creating the tool definition json schema manually
+    - Using the `@tool` decorator to automatically generate the schema
 
-This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  
+## Running the Application
 
-This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Here are other [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
+You can run the sample applications using either the Dapr multi-app template or the Dapr CLI directly.
 
-1. Install dependencies:
+### Use the multi-app-run template file
 
-<!-- STEP
-name: Install Python dependencies
--->
+This approach uses [Dapr's multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) to simplify deployment with `dapr run -f .`.
 
-```bash
-cd ./conversation
-pip3 install -r requirements.txt
-cd ..
-```
+For more LLM options, see the [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/) documentation.
 
-<!-- END_STEP -->
+1. **Install dependencies:**
+    
+    ```bash
+    cd ./conversation
+    ```
+    
+    <details open="true">
+    <summary>Option 1: Using uv (faster modern alternative to pip)</summary>
 
-2. Open a new terminal window and run the multi app run template:
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
+    # If you do not have uv installed yet, install it first:
+    # pip install uv
+    uv pip install -r requirements.txt
+    ```
 
-<!-- STEP
-name: Run multi app run template
-expected_stdout_lines:
-  - '== APP - conversation == Input sent: What is dapr?'
-  - '== APP - conversation == Output response: What is dapr?'
-expected_stderr_lines:
-output_match_mode: substring
-match_order: none
-background: true
-sleep: 15
-timeout_seconds: 30
--->
+    </details>
+   
+    <details>
+    <summary>Option 2: Using pip</summary>
 
-```bash
-dapr run -f .
-```
+    <!-- STEP
+    name: Install Python dependencies
+    -->
+    
+    ```bash
+    cd conversation   
+    python3 -m venv .venv
+    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
+    pip3 install -r requirements.txt
+    ```
+    
+    </details>
+    
+    ```bash
+    # Return to the parent directory
+    cd ..
+    ```
+    <!-- END_STEP -->
 
-The terminal console output should look similar to this, where:
+2. **Run the simple Conversation application:**
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is dapr?`.
+    <!-- STEP
+    name: Run multi app run template
+    expected_stdout_lines:
+      - '== APP - conversation-sdk == Input sent: What is dapr?'
+      - '== APP - conversation-sdk == Output response: What is dapr?'
+    expected_stderr_lines:
+    output_match_mode: substring
+    match_order: none
+    background: true
+    sleep: 15
+    timeout_seconds: 30
+    -->
+    
+    ```bash
+    source conversation/.venv/bin/activate
+    dapr run -f .    
+    ```
+    
+    Expected output:
+    
+    ```text
+    == APP - conversation-sdk == Input sent: What is dapr?
+    == APP - conversation-sdk == Output response: What is dapr?
+    ```
+    
+    <!-- END_STEP -->
 
-```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
-```
+3. **Stop the application:**
 
-<!-- END_STEP -->
+    <!-- STEP
+    name: Stop multi-app run 
+    sleep: 5
+    -->
+    
+    ```bash
+    dapr stop -f .
+    ```
+    
+    <!-- END_STEP -->
 
-3. Stop and clean up application processes.
+4. **Run the tool Calling Conversation application:**
 
-<!-- STEP
-name: Stop multi-app run 
-sleep: 5
--->
+    <!-- STEP
+    name: Run multi app run template
+    expected_stdout_lines:
+      - "== APP - conversation-tool-calling == Input sent: calculate square root of 15"
+      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))"
+      - "== APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius"
+      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))"
+    expected_stderr_lines:
+    output_match_mode: substring
+    match_order: none
+    background: true
+    sleep: 15
+    timeout_seconds: 30
+    -->
 
-```bash
-dapr stop -f .
-```
+    ```bash
+    source conversation/.venv/bin/activate
+    dapr run -f dapr-tool-calling.yaml    
+    ```
 
-<!-- END_STEP -->
+   Expected output:
 
-## Run the app with the Dapr CLI
+    ```text
+    == APP - conversation-tool-calling == Input sent: calculate square root of 15
+    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))
+    == APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius
+    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
+    ```
 
-1. Install dependencies:
+    <!-- END_STEP -->
 
-Open a terminal and run:
+5. **Stop the tool calling application:**
 
-```bash
-cd ./conversation
-pip3 install -r requirements.txt
-```
+    <!-- STEP
+    name: Stop multi-app run 
+    sleep: 5
+    -->
 
-2. Run the application:
+    ```bash
+    dapr stop -f dapr-tool-calling.yaml   
+    ```
 
-```bash
-dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
-```
+    <!-- END_STEP -->
 
-You should see the output:
+### Run the apps individually
 
-```bash
-== APP == Input sent: What is dapr?
-== APP == Output response: What is dapr?
-```
+As an alternative to the multi-app template, you can run the application directly with the Dapr CLI.
+
+1. **Install dependencies:**
+
+    ```bash
+    cd ./conversation
+    python3 -m venv .venv
+    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
+    pip3 install -r requirements.txt
+    ```
+
+2. **Run the application:**
+
+    ```bash
+    dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
+    ```
+    
+    Expected output:
+    
+    ```text
+    == APP == Input sent: What is dapr?
+    == APP == Output response: What is dapr?
+    ```
+    
+3. **Try the tool calling examples:**
+
+    You can run the other example applications similarly:
+    
+    ```bash
+    # For tool calling example
+    dapr run --app-id conversation --resources-path ../../../components -- python3 tool_calling.py
+    ```

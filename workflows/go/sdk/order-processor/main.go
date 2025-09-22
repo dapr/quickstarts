@@ -7,11 +7,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/dapr/durabletask-go/api"
-	"github.com/dapr/durabletask-go/backend"
-	"github.com/dapr/durabletask-go/client"
-	"github.com/dapr/durabletask-go/task"
-	dapr "github.com/dapr/go-sdk/client"
+
+	"github.com/dapr/durabletask-go/workflow"
+	"github.com/dapr/go-sdk/client"
 )
 
 var (
@@ -25,43 +23,46 @@ func main() {
 	fmt.Println("*** Welcome to the Dapr Workflow console app sample!")
 	fmt.Println("*** Using this app, you can place orders that start workflows.")
 
-	registry := task.NewTaskRegistry()
+	r := workflow.NewRegistry()
 
-	if err := registry.AddOrchestrator(OrderProcessingWorkflow); err != nil {
+	if err := r.AddWorkflow(OrderProcessingWorkflow); err != nil {
 		log.Fatal(err)
 	}
-	if err := registry.AddActivity(NotifyActivity); err != nil {
+	if err := r.AddActivity(NotifyActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := registry.AddActivity(RequestApprovalActivity); err != nil {
+	if err := r.AddActivity(RequestApprovalActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := registry.AddActivity(VerifyInventoryActivity); err != nil {
+	if err := r.AddActivity(VerifyInventoryActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := registry.AddActivity(ProcessPaymentActivity); err != nil {
+	if err := r.AddActivity(ProcessPaymentActivity); err != nil {
 		log.Fatal(err)
 	}
-	if err := registry.AddActivity(UpdateInventoryActivity); err != nil {
+	if err := r.AddActivity(UpdateInventoryActivity); err != nil {
 		log.Fatal(err)
 	}
 
-	daprClient, err := dapr.NewClient()
+	wfClient, err := client.NewWorkflowClient()
 	if err != nil {
-		log.Fatalf("failed to create Dapr client: %v", err)
+		log.Fatalf("failed to initialise workflow client: %v", err)
 	}
 
-	client := client.NewTaskHubGrpcClient(daprClient.GrpcClientConn(), backend.DefaultLogger())
-	if err := client.StartWorkItemListener(context.TODO(), registry); err != nil {
-		log.Fatalf("failed to start work item listener: %v", err)
+	if err := wfClient.StartWorker(context.Background(), r); err != nil {
+		log.Fatal(err)
 	}
 
+	dclient, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
 	inventory := []InventoryItem{
 		{ItemName: "paperclip", PerItemCost: 5, Quantity: 100},
 		{ItemName: "cars", PerItemCost: 5000, Quantity: 10},
 		{ItemName: "computers", PerItemCost: 500, Quantity: 100},
 	}
-	if err := restockInventory(daprClient, inventory); err != nil {
+	if err := restockInventory(dclient, inventory); err != nil {
 		log.Fatalf("failed to restock: %v", err)
 	}
 
@@ -78,31 +79,29 @@ func main() {
 		TotalCost: totalCost,
 	}
 
-	id, err := client.ScheduleNewOrchestration(context.TODO(), workflowName,
-		api.WithInput(orderPayload),
-	)
+	id, err := wfClient.ScheduleWorkflow(context.Background(), workflowName, workflow.WithInput(orderPayload))
 	if err != nil {
 		log.Fatalf("failed to start workflow: %v", err)
 	}
 
 	waitCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	_, err = client.WaitForOrchestrationCompletion(waitCtx, id)
+	_, err = wfClient.WaitForWorkflowCompletion(waitCtx, id)
 	if err != nil {
 		log.Fatalf("failed to wait for workflow: %v", err)
 	}
 
-	respFetch, err := client.FetchOrchestrationMetadata(context.Background(), id, api.WithFetchPayloads(true))
+	respFetch, err := wfClient.FetchWorkflowMetadata(context.Background(), id, workflow.WithFetchPayloads(true))
 	if err != nil {
 		log.Fatalf("failed to get workflow: %v", err)
 	}
 
-	fmt.Printf("workflow status: %v\n", respFetch.RuntimeStatus)
+	fmt.Printf("workflow status: %v\n", respFetch.String())
 
 	fmt.Println("Purchase of item is complete")
 }
 
-func restockInventory(daprClient dapr.Client, inventory []InventoryItem) error {
+func restockInventory(daprClient client.Client, inventory []InventoryItem) error {
 	for _, item := range inventory {
 		itemSerialized, err := json.Marshal(item)
 		if err != nil {
