@@ -14,7 +14,7 @@ This quickstart includes one app:
 
 This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.
 
-This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Here are other [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the default LLM component (Echo) which simply returns the input for testing purposes. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `echo` to `openai`. For other available integrations, see the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
 
 1. Install dependencies:
 
@@ -34,8 +34,11 @@ npm install
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Input sent: What is dapr?'
+  - '== APP - conversation == Conversation input sent: What is dapr?'
   - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Tool calls detected: [{"id":"0","function":{"name":"get_weather","arguments":'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -50,12 +53,22 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is dapr?`.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+== APP == Conversation input sent: What is dapr?
+== APP == Output response: What is dapr?
+```
+
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?` and calls the `get_weather` tool.
+- The echo Component calls the `get_weather` tool and returns the requested weather information.
+
+```text
+== APP == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP == Output message: What is the weather like in San Francisco in celsius?
+== APP == Tool calls detected: [{"id":"0","function":{"name":"get_weather","arguments":"location,unit"}}]
 ```
 
 <!-- END_STEP -->
@@ -90,10 +103,16 @@ dapr run --app-id conversation --resources-path ../../../components/ -- npm run 
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
+- The app first sends an input `What is dapr?` to the `echo` Component mock LLM.
 - The mock LLM echoes `What is dapr?`.
+- The app then sends an input `What is the weather like in San Francisco in celsius?` to the `echo` Component mock LLM.
+- The mock LLM echoes `What is the weather like in San Francisco in celsius?`
+- The echo Component returns the information from the `get_weather` tool call.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
+== APP - conversation == Conversation input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
+== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP - conversation == Output message: What is the weather like in San Francisco in celsius?
+== APP == Tool calls detected: [{"id":"0","function":{"name":"get_weather","arguments":"location,unit"}}]
 ```
