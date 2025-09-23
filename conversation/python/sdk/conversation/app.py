@@ -11,24 +11,20 @@
 # limitations under the License.
 # ------------------------------------------------------------
 from dapr.clients import DaprClient
-from dapr.clients.grpc._request import ConversationInput
+from dapr.clients.grpc.conversation import ConversationInputAlpha2, ConversationMessage, ConversationMessageContent, ConversationMessageOfUser
 
 with DaprClient() as d:
+    text_input = "What is dapr?"
+    provider_component = "echo"
+
     inputs = [
-        ConversationInput(content="What is dapr?", role='user', scrub_pii=True),
+        ConversationInputAlpha2(messages=[ConversationMessage(of_user=ConversationMessageOfUser(content=[ConversationMessageContent(text=text_input)]))],
+                                scrub_pii=True),
     ]
 
-    metadata = {
-        'model': 'modelname',
-        'key': 'authKey',
-        'cacheTTL': '10m',
-    }
+    print(f'Input sent: {text_input}')
 
-    print('Input sent: What is dapr?')
-
-    response = d.converse_alpha1(
-        name='echo', inputs=inputs, temperature=0.7, context_id='chat-123', metadata=metadata
-    )
+    response = d.converse_alpha2(name=provider_component, inputs=inputs, temperature=0.7, context_id='chat-123')
 
     for output in response.outputs:
-        print(f'Output response: {output.result}')
+        print(f'Output response: {output.choices[0].message.content}')
