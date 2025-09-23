@@ -50,22 +50,22 @@ run-all:
 # Run Go Order Orchestrator
 run-go:
 	@echo "Starting Go Order Orchestrator..."
-	cd go/order-orchestrator && dapr run --log-level debug --app-id order-orchestrator --app-port 50001 --dapr-http-port 3505 --dapr-grpc-port 50014 --resources-path ../../components -- go run .
+	cd go/order-orchestrator && dapr run --app-id order-orchestrator --app-port 50001 --dapr-http-port 3505 --dapr-grpc-port 50014 --resources-path ../../components -- go run .
 
 # Run Java Payment Service
 run-payment:
 	@echo "Starting Java Payment Service..."
-	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd payment-service && dapr run --log-level debug --app-id payment-service --app-port 50002 --dapr-http-port 3506 --dapr-grpc-port 50015 --resources-path ../../components -- java -jar target/payment-service-1.0.0.jar'
+	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd payment-service && dapr run --app-id payment-service --app-port 50002 --dapr-http-port 3506 --dapr-grpc-port 50015 --resources-path ../../components -- java -jar target/payment-service-1.0.0.jar'
 
 # Run Java Inventory Service
 run-inventory:
 	@echo "Starting Java Inventory Service..."
-	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd inventory-service && dapr run --log-level debug --app-id inventory-service --app-port 50003 --dapr-http-port 3507 --dapr-grpc-port 50016 --resources-path ../../components -- java -jar target/inventory-service-1.0.0.jar'
+	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd inventory-service && dapr run --app-id inventory-service --app-port 50003 --dapr-http-port 3507 --dapr-grpc-port 50016 --resources-path ../../components -- java -jar target/inventory-service-1.0.0.jar'
 
 # Run Java AI Recommendation Service
 run-ai:
 	@echo "Starting Java AI Recommendation Service..."
-	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd ai-recommendation-service && dapr run --log-level debug --app-id ai-recommendation-service --app-port 50004 --dapr-http-port 3508 --dapr-grpc-port 50017 --resources-path ../../components -- java -jar target/ai-recommendation-service-1.0.0.jar'
+	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd ai-recommendation-service && dapr run --app-id ai-recommendation-service --app-port 50004 --dapr-http-port 3508 --dapr-grpc-port 50017 --resources-path ../../components -- java -jar target/ai-recommendation-service-1.0.0.jar'
 
 # Clean Java build artifacts
 clean:

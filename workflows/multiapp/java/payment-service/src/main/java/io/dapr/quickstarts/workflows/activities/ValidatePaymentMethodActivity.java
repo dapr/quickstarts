@@ -2,18 +2,15 @@ package io.dapr.quickstarts.workflows.activities;
 
 import io.dapr.workflows.WorkflowActivity;
 import io.dapr.workflows.WorkflowActivityContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * ValidatePaymentMethodActivity for Payment Service - validates payment methods.
  * This activity is called cross-app from the main workflow (written in Go).
  */
  public class ValidatePaymentMethodActivity implements WorkflowActivity {
-     private static final Logger logger = LoggerFactory.getLogger(ValidatePaymentMethodActivity.class);
-
      @Override
      public Object run(WorkflowActivityContext context) {
+         var logger = context.getLogger();
          logger.info("=== Payment Service: ValidatePaymentMethodActivity STARTED ===");
 
          try {
@@ -32,3 +29,4 @@ import org.slf4j.LoggerFactory;
              throw e;
          }
      }
+ }
