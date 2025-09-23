@@ -1,0 +1,28 @@
+version: 1
+common:
+  resourcesPath: ./components
+apps:
+  - appID: order-orchestrator
+    appDirPath: ./go/order-orchestrator/
+    appPort: 50001
+    daprHTTPPort: 3505
+    daprGRPCPort: 50014
+    command: ["go", "run", "."]
+  - appID: payment-service
+    appDirPath: ./java/payment-service/
+    appPort: 50002
+    daprHTTPPort: 3506
+    daprGRPCPort: 50015
+    command: ["java", "-jar", "target/payment-service-1.0.0.jar"]
+  - appID: inventory-service
+    appDirPath: ./java/inventory-service/
+    appPort: 50003
+    daprHTTPPort: 3507
+    daprGRPCPort: 50016
+    command: ["java", "-jar", "target/inventory-service-1.0.0.jar"]
+  - appID: ai-recommendation-service
+    appDirPath: ./java/ai-recommendation-service/
+    appPort: 50004
+    daprHTTPPort: 3508
+    daprGRPCPort: 50017
+    command: ["java", "-jar", "target/ai-recommendation-service-1.0.0.jar"]
