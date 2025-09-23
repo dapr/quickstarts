@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.dapr.quickstarts</groupId>
-    <artifactId>payment-service</artifactId>
+    <artifactId>ai-recommendation-service</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Payment Service</name>
-    <description>Java Payment Service for Multi-App Workflows</description>
+    <name>AI Recommendation Service</name>
+    <description>Java AI Recommendation Service for Multi-App Workflows</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -52,7 +52,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>io.dapr.quickstarts.workflows.PaymentServiceApplication</mainClass>
+                                    <mainClass>io.dapr.quickstarts.workflows.AIRecommendationServiceApplication</mainClass>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>

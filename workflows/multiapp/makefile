@@ -70,9 +70,9 @@ run-ai:
 # Clean Java build artifacts
 clean:
 	@echo "Cleaning Java build artifacts..."
-	cd java/payment-service && mvn clean -q
-	cd java/inventory-service && mvn clean -q
-	cd java/ai-recommendation-service && mvn clean -q
+	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd payment-service && mvn clean compile -q'
+	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd inventory-service && mvn clean compile -q'
+	@bash -c 'source ~/.sdkman/bin/sdkman-init.sh && cd java && sdk env && cd ai-recommendation-service && mvn clean compile -q'
 	@echo "Clean completed!"
 
 # Test the workflow
