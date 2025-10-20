@@ -51,7 +51,7 @@ jobs:
           export PATH=/opt/podman/bin:$PATH
           echo "/opt/podman/bin" >> $GITHUB_PATH
           sudo podman-mac-helper install
-          podman machine init
+          podman machine init --cpus=2 --memory=2048 --user-mode-networking
           podman machine start --log-level debug
           echo "CONTAINER_RUNTIME=podman" >> $GITHUB_ENV
       
