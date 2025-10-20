@@ -14,12 +14,19 @@
 name: Validate csharp quickstart
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - mac-test
+      - master
+      - feature/new_quickstarts
+      - release-*
+    tags:
+      - v*
   pull_request:
     branches:
-      - mac-test
+      - master
+      - feature/new_quickstarts
+      - release-*
 
 jobs:
   validate:
