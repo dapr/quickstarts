@@ -14,81 +14,71 @@
 name: Validate csharp quickstart
 
 on:
-  workflow_dispatch:
   push:
     branches:
-      - master
-      - feature/new_quickstarts
-      - release-*
-    tags:
-      - v*
+      - mac-test
   pull_request:
     branches:
-      - master
-      - feature/new_quickstarts
-      - release-*
+      - mac-test
+
 jobs:
   validate:
-    name: Validate C# quickstart on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Validate C# quickstart on Apple Silicon
+    runs-on: macos-latest-xlarge
     timeout-minutes: 130
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-      fail-fast: false
     steps:
       - name: Check out code 
         uses: actions/checkout@v2
+      
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
           envFile: './.github/env/global.env'
           expand: 'true'
-      - name: Install podman - MacOS
+      
+      - name: Install podman
         timeout-minutes: 15
-        if: matrix.os == 'macos-latest'
         run: |
-          # Install podman
-          curl -sL -o podman.pkg https://github.com/containers/podman/releases/download/v${{ env.PODMAN_VERSION }}/podman-installer-macos-amd64.pkg
+          curl -sL -o podman.pkg https://github.com/containers/podman/releases/download/v${{ env.PODMAN_VERSION }}/podman-installer-macos-arm64.pkg
           sudo installer -pkg podman.pkg -target /
           export PATH=/opt/podman/bin:$PATH
           echo "/opt/podman/bin" >> $GITHUB_PATH
-          # Start podman machine
           sudo podman-mac-helper install
           podman machine init
           podman machine start --log-level debug
           echo "CONTAINER_RUNTIME=podman" >> $GITHUB_ENV
+      
       - name: Install podman-compose
-        if: matrix.os == 'macos-latest'
         run: |
           sudo pip3 install podman-compose
+      
       - name: Create symbolic link between Podman and Docker
-        if: matrix.os == 'macos-latest'
         run: |
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
+      
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             6.0.x
             8.0.x
-      - name: Set up Dapr CLI - Mac/Linux
-        if: matrix.os != 'windows-latest'
+      
+      - name: Set up Dapr CLI
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
-      - name: Set up Dapr CLI - Windows
-        if: matrix.os == 'windows-latest'
-        run: powershell -Command "\$$script=iwr -useb ${{ env.DAPR_INSTALL_URL }}/install.ps1; \$$block=[ScriptBlock]::Create(\$$script); invoke-command -ScriptBlock \$$block -ArgumentList ${{ env.DAPR_CLI_VERSION }}"
+      
       - name: Install Dapr
         run: |
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
           dapr --version 
+      
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
           pip3 install setuptools wheel
           pip3 install mechanical-markdown
+      
       - name: Validate building blocks with C#
         run: |
           variants=("http" "sdk")
@@ -107,6 +97,7 @@ jobs:
               fi
             done
           done
+      
       - name: Linkcheck README.md
         run: |
           make validate
