@@ -46,12 +46,12 @@ jobs:
       - name: Install podman
         timeout-minutes: 15
         run: |
-          curl -sL -o podman.pkg https://github.com/containers/podman/releases/download/v${{ env.PODMAN_VERSION }}/podman-installer-macos-arm64.pkg
+          curl -sL -o podman.pkg https://github.com/containers/podman/releases/download/v5.6.2/podman-installer-macos-arm64.pkg
           sudo installer -pkg podman.pkg -target /
           export PATH=/opt/podman/bin:$PATH
           echo "/opt/podman/bin" >> $GITHUB_PATH
           sudo podman-mac-helper install
-          podman machine init --cpus=2 --memory=2048 --user-mode-networking
+          podman machine init
           podman machine start --log-level debug
           echo "CONTAINER_RUNTIME=podman" >> $GITHUB_ENV
       
