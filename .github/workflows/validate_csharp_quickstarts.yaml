@@ -43,27 +43,6 @@ jobs:
           envFile: './.github/env/global.env'
           expand: 'true'
       
-      - name: Install podman
-        timeout-minutes: 15
-        run: |
-          curl -sL -o podman.pkg https://github.com/containers/podman/releases/download/v5.6.2/podman-installer-macos-arm64.pkg
-          sudo installer -pkg podman.pkg -target /
-          export PATH=/opt/podman/bin:$PATH
-          echo "/opt/podman/bin" >> $GITHUB_PATH
-          sudo podman-mac-helper install
-          podman machine init
-          podman machine start --log-level debug
-          echo "CONTAINER_RUNTIME=podman" >> $GITHUB_ENV
-      
-      - name: Install podman-compose
-        run: |
-          sudo pip3 install podman-compose
-      
-      - name: Create symbolic link between Podman and Docker
-        run: |
-          sudo ln -s $(which podman) /usr/local/bin/docker
-          sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
-      
       - name: Install .NET Core 
         uses: actions/setup-dotnet@v3
         with:
