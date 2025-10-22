@@ -4,10 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>SmartDeviceServiceQuickstart</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Actors" Version="1.16.0" />
     <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.16.0" />
   </ItemGroup>
 
