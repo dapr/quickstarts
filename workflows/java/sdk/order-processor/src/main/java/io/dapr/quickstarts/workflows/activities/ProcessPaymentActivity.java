@@ -1,11 +1,11 @@
 package io.dapr.quickstarts.workflows.activities;
 
+import io.dapr.workflows.WorkflowActivity;
+import io.dapr.workflows.WorkflowActivityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.dapr.quickstarts.workflows.models.PaymentRequest;
-import io.dapr.workflows.runtime.WorkflowActivity;
-import io.dapr.workflows.runtime.WorkflowActivityContext;
 
 public class ProcessPaymentActivity implements WorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(ProcessPaymentActivity.class);

@@ -1,0 +1,12 @@
+@apphost=http://localhost:8080
+
+### Start the Resiliency and Compensation Workflow workflow
+# @name startWorkflowRequest
+@input=1
+POST {{ apphost }}/start/{{input}}
+
+### Get the workflow output
+GET {{ apphost }}/output
+
+
+

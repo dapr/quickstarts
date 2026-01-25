@@ -19,7 +19,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@dapr/dapr": "^3.5.2",
+    "@dapr/dapr": "^3.6.1",
     "@types/node": "^18.16.3",
     "express": "^4.19.2"
   }
