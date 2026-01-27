@@ -82,9 +82,8 @@ The wokflow engine will always execute the latest version of the workflow. Older
     The input for the workflow is a string with the value `This`. The expected app logs are as follows:
 
     ```text
-    == APP - versioning == activity1: Received input: This.
-    == APP - versioning == activity2: Received input: This is.
-    == APP - versioning == activity3: Received input: This is task.
+    == APP - versioning == patching_workflow_activity_2: Received input: input.
+    == APP - versioning == named_versioned_activity_2: Received input: input.
     ```
 
 5. Use the GET request in the [`versioning.http`](./versioning.http) file to get the status of the workflow, or use this cURL command:
