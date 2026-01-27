@@ -1,11 +1,18 @@
 @apphost=http://localhost:5263
 
-### Start the task_chaining workflow
+### Start the versioning workflows
 # @name startWorkflowRequest
 POST {{ apphost }}/start
 
 
-@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@instanceId={{startWorkflowRequest.response.body.workflows_instances[0].instance_id}}
 @daprHost=http://localhost:3561
-### Get the workflow status
+### Get the patching workflow status
 GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
+
+
+@instanceId={{startWorkflowRequest.response.body.workflows_instances[1].instance_id}}
+@daprHost=http://localhost:3561
+### Get the named versioned workflow status
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
+

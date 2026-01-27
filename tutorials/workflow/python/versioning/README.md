@@ -21,7 +21,7 @@ graph LR
    A2 --> EW
 ```
 
-The workflow starts by evaluating whether the `patch1` patch is patched. If it is, the workflow will continue to the `activity1` activity. If it is not, the workflow will continue to the `activity2` activity.
+The workflow starts by evaluating whether the `patch1` patch is patched. If it is, the workflow will continue to the `activity2` activity. If it is not, the workflow will continue to the `activity1` activity.
 
 ## Inspect the named versioned workflow code
 
@@ -79,7 +79,7 @@ The wokflow engine will always execute the latest version of the workflow. Older
     curl -i --request POST http://localhost:5263/start
     ```
 
-    The input for the workflow is a string with the value `This`. The expected app logs are as follows:
+    The input for the workflow is a string with the value `input`. The expected app logs are as follows:
 
     ```text
     == APP - versioning == patching_workflow_activity_2: Received input: input.
@@ -94,10 +94,10 @@ The wokflow engine will always execute the latest version of the workflow. Older
 
     Where `<INSTANCEID>` is the workflow instance ID you received in the `instance_id` property in the previous step.
 
-    The expected serialized output of the workflow is:
+    The expected serialized output for the named versioned workflow is:
 
     ```txt
-    "\"This is task versioning\""
+    "\"input task\""
     ```
 
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
