@@ -23,7 +23,7 @@
             <dependency>
                 <groupId>io.dapr</groupId>
                 <artifactId>dapr-sdk</artifactId>
-                <version>1.16.0</version>
+                <version>1.16.1-rc-2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

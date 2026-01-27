@@ -1,12 +1,12 @@
 # Dapr Conversation API (Java SDK)
 
-In this quickstart, you'll send an input to a mock Large Language Model (LLM) using Dapr's Conversation API. This API is responsible for providing one consistent API entry point to talk to underlying LLM providers.
+In this quickstart, you'll send an input to a mock Large Language Model (LLM) using Dapr's Conversation API. This API is responsible for providing one consistent API entry point to talk to underlying LLM providers. This example demonstrates both simple conversation and tool calling capabilities.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
 
 This quickstart includes one app:
 
-- Conversation, responsible for sending an input to the underlying LLM and retrieving an output.
+- Conversation, responsible for sending an input to the underlying LLM and retrieving an output, including tool call support.
 
 ## Run the app with the template file
 
@@ -35,8 +35,16 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Input: What is Dapr?'
-  - '== APP - conversation == Output response: What is Dapr?'
+  - '== APP - conversation == === Simple Conversation ==='
+  - '== APP - conversation == Conversation input sent: What is dapr?'
+  - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == === Tool Calling ==='
+  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
+  - '== APP - conversation == Tool calls detected:'
+  - '== APP - conversation == Tool call: {"id": "0", "function": {"name": "get_weather", "arguments": location,unit}}'
+  - '== APP - conversation == Function name: get_weather'
+  - '== APP - conversation == Function arguments: location,unit'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -51,12 +59,23 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is Dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is Dapr?`.
+- The app sends a simple conversation input `What is dapr?` to the `echo` Component mock LLM.
+- The mock LLM echoes back the response.
+- The app then demonstrates tool calling by sending `What is the weather like in San Francisco in celsius?`.
+- The response includes detected tool calls with function name and arguments.
 
 ```text
-== APP - conversation == Input: What is Dapr?
-== APP - conversation == Output response: What is Dapr?
+== APP - conversation == === Simple Conversation ===
+== APP - conversation == Conversation input sent: What is dapr?
+== APP - conversation == Output response: What is dapr?
+
+== APP - conversation == === Tool Calling ===
+== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
+== APP - conversation == Output message: What is the weather like in San Francisco in celsius?
+== APP - conversation == Tool calls detected:
+== APP - conversation == Tool call: {"id": "0", "function": {"name": "get_weather", "arguments": location,unit}}
+== APP - conversation == Function name: get_weather
+== APP - conversation == Function arguments: location,unit
 ```
 
 <!-- END_STEP -->
@@ -80,21 +99,27 @@ dapr stop -f .
 ```bash
 cd ./conversation
 mvn clean install
-java -jar ConversationAIService-0.0.1-SNAPSHOT.jar com.service.Conversation
+java -jar target/ConversationAIService-0.0.1-SNAPSHOT.jar com.service.Conversation
 ```
 
-2. Run the Dapr process alongside the application.
+2. Run the Dapr process alongside the application
 
 ```bash
 dapr run --app-id conversation --resources-path ../../../components/
 ```
 
-The terminal console output should look similar to below, where:
-
-- The app sends an input `What is Dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is Dapr?`.
+The terminal console output should look similar to this:
 
 ```text
-== APP - conversation == Input: What is Dapr?
-== APP - conversation == Output response: What is Dapr?
+=== Simple Conversation ===
+Conversation input sent: What is dapr?
+Output response: What is dapr?
+
+=== Tool Calling ===
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Output message: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {"id": "0", "function": {"name": "get_weather", "arguments": location,unit}}
+Function name: get_weather
+Function arguments: location,unit
 ```
