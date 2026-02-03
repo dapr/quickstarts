@@ -36,7 +36,16 @@ input = {
         }]
     }],
     'parameters': {},
-    'metadata': {}
+    'metadata': {},
+    'response_format': {
+        'type': 'json_schema',
+        'json_schema': {
+            'name': 'response',
+            'strict': True,
+            'schema': {'type': 'object', 'properties': {'answer': {'type': 'string'}}}
+        }
+    },
+    'prompt_cache_retention': '24h'
 }
 
 # Send input to conversation endpoint
@@ -51,8 +60,18 @@ logging.info('Conversation input sent: What is dapr?')
 data = result.json()
 try:
     if 'outputs' in data and len(data['outputs']) > 0:
-        output = data["outputs"][0]["choices"][0]["message"]["content"]
-        logging.info('Output response: ' + output)
+        out = data['outputs'][0]
+        if out.get('model'):
+            logging.info('Model: ' + out['model'])
+        if out.get('usage'):
+            u = out['usage']
+            logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
+                         u.get('prompt_tokens'), u.get('completion_tokens'), u.get('total_tokens'))
+        if 'choices' in out and len(out['choices']) > 0:
+            output = out["choices"][0]["message"]["content"]
+            logging.info('Output response: ' + output)
+        else:
+            logging.error('No choices in output')
     else:
         logging.error('No outputs found in response')
         logging.error('Response data: ' + str(data))
@@ -89,6 +108,15 @@ tool_call_input = {
         'api_key': 'test-key',
         'version': '1.0'
     },
+    'response_format': {
+        'type': 'json_schema',
+        'json_schema': {
+            'name': 'response',
+            'strict': True,
+            'schema': {'type': 'object', 'properties': {'answer': {'type': 'string'}}}
+        }
+    },
+    'prompt_cache_retention': '24h',
     'scrubPii': False,
     'temperature': 0.7,
     'tools': [{
@@ -127,6 +155,12 @@ logging.info('Tool calling input sent: What is the weather like in San Francisco
 data = tool_call_result.json()
 if 'outputs' in data and len(data['outputs']) > 0:
     output = data['outputs'][0]
+    if output.get('model'):
+        logging.info('Model: %s', output['model'])
+    if output.get('usage'):
+        u = output['usage']
+        logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
+                     u.get('prompt_tokens'), u.get('completion_tokens'), u.get('total_tokens'))
     if 'choices' in output and len(output['choices']) > 0:
         choice = output['choices'][0]
         if 'message' in choice:
