@@ -34,7 +34,7 @@ public class ConversationApplication {
 
     public static void main(String[] args) throws Exception {
         String baseUrl = DAPR_HOST + ":" + DAPR_HTTP_PORT;
-        String conversationUrl = baseUrl + "/v1.0-alpha1/conversation/" + CONVERSATION_COMPONENT_NAME + "/converse";
+        String conversationUrl = baseUrl + "/v1.0-alpha2/conversation/" + CONVERSATION_COMPONENT_NAME + "/converse";
 
         // Create the input request body
         String inputBody = """
