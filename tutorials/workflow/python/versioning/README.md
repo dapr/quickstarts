@@ -57,21 +57,9 @@ The wokflow engine will always execute the latest version of the workflow. Older
 
 3. Navigate back one level to the `versioning` folder and use the Dapr CLI to run the Dapr Multi-App run file
 
-    <!-- STEP
-    name: Run multi app run template
-    expected_stdout_lines:
-    - 'Started Dapr with app id "versioning"'
-    expected_stderr_lines:
-    working_dir: .
-    output_match_mode: substring
-    background: true
-    sleep: 15
-    timeout_seconds: 30
-    -->
     ```bash
     dapr run -f .
     ```
-    <!-- END_STEP -->
 
 4. Use the POST request in the [`versioning.http`](./versioning.http) file to start the workflow, or use this cURL command:
 
