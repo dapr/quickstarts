@@ -2,49 +2,58 @@
 
 This tutorial demonstrates how to version your workflows. For more information about workflow versioning see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-features-concepts/#versioning).
 
-## Inspect the patching workflow code
+This tutorial uses a scenario where a `notify_user` workflow initially sends an email to users. The workflow is then updated to send an SMS instead. Two versioning strategies are demonstrated: **named versions** and **patching**.
 
-Open the `patching_workflow.py` file in the `tutorials/workflow/python/versioning/versioning` folder. This file contains the definition for the workflow.
+## Inspect the original workflow
+
+Open the `before.py` file in the `tutorials/workflow/python/versioning/versioning` folder. This file contains the original workflow definition that sends an email to notify a user.
 
 ```mermaid
 graph LR
    SW((Start Workflow))
-   A1[activity1]
-   A2[activity2]
-   P1[patch1 patched?]@{shape: diamond}
-   EW((End
-   Workflow))
-   SW --> P1
-   P1 --> A1
-   P1 --> A2
-   A1 --> EW
-   A2 --> EW
+   SE[send_email]
+   EW((End Workflow))
+   SW --> SE --> EW
 ```
 
-The workflow starts by evaluating whether the `patch1` patch is patched. If it is, the workflow will continue to the `activity2` activity. If it is not, the workflow will continue to the `activity1` activity.
+## Inspect the named versioned workflow
 
-## Inspect the named versioned workflow code
-
-Also open the `named_versioned_workflow.py` file in the `tutorials/workflow/python/versioning/versioning` folder. This file contains the definition for the named versioned workflow.
+Open the `after_named_version.py` file. This file shows how to migrate the workflow using named versions. A new version of the workflow (`notify_user`) is created that calls `send_sms`, while the original version is kept as `notify_user_v1` for any in-flight workflow instances.
 
 ```mermaid
 graph LR
-   SW1((Start Version 1))
-   SW2((Start Version 2))
-   A1[activity1]
-   A2[activity2]
+   SW1((notify_user
+   old))
+   SW2((notify_user
+   new))
+   SE[send_email]
+   SS[send_sms]
    EW1((End Workflow))
    EW2((End Workflow))
-   SW1 --> A1
-   SW2 --> A2
-   A1 --> EW1
-   A2 --> EW2
+   SW1 --> SE --> EW1
+   SW2 --> SS --> EW2
 ```
 
-In this case, two versions of the workflow are defined. The first version starts with the `activity1` activity and the second version starts with the `activity2` activity.
+The workflow engine will always execute the latest version of the workflow for new instances. Older versions will only be executed for workflows that were already in-flight when the update was deployed.
 
-The wokflow engine will always execute the latest version of the workflow. Older versions of the workflow will be only executed for workflows that were started with such version.
+## Inspect the patching workflow
 
+Open the `after_patching.py` file. This file shows how to migrate the workflow using patching. The `ctx.is_patched("send_sms")` check determines whether the workflow should execute the new `send_sms` activity or the original `send_email` activity.
+
+```mermaid
+graph LR
+   SW((Start Workflow))
+   P{is_patched
+   send_sms?}
+   SE[send_email]
+   SS[send_sms]
+   EW((End Workflow))
+   SW --> P
+   P -- Yes --> SS --> EW
+   P -- No --> SE --> EW
+```
+
+New workflow instances will execute the patched code path (`send_sms`), while in-flight workflows will continue using the original code path (`send_email`).
 
 ## Run the tutorial
 
@@ -55,26 +64,33 @@ The wokflow engine will always execute the latest version of the workflow. Older
     pip3 install -r requirements.txt
     ```
 
-3. Navigate back one level to the `versioning` folder and use the Dapr CLI to run the Dapr Multi-App run file
+3. Navigate back one level to the `versioning` folder. The `dapr.yaml` file is configured to run `before.py` by default. To try a versioned workflow, update the `command` field in `dapr.yaml` to run `after_named_version.py` or `after_patching.py` instead.
+
+4. Use the Dapr CLI to run the application:
 
     ```bash
     dapr run -f .
     ```
 
-4. Use the POST request in the [`versioning.http`](./versioning.http) file to start the workflow, or use this cURL command:
+5. Use the POST request in the [`versioning.http`](./versioning.http) file to start the workflow, or use this cURL command:
 
     ```bash
     curl -i --request POST http://localhost:5263/start
     ```
 
-    The input for the workflow is a string with the value `input`. The expected app logs are as follows:
+    When running `before.py`, the expected app logs are:
 
     ```text
-    == APP - versioning == patching_workflow_activity_2: Received input: input.
-    == APP - versioning == named_versioned_activity_2: Received input: input.
+    == APP - versioning == send_email: Received input: user_id.
     ```
 
-5. Use the GET request in the [`versioning.http`](./versioning.http) file to get the status of the workflow, or use this cURL command:
+    When running `after_named_version.py` or `after_patching.py`, the expected app logs are:
+
+    ```text
+    == APP - versioning == send_sms: Received input: user_id.
+    ```
+
+6. Use the GET request in the [`versioning.http`](./versioning.http) file to get the status of the workflow, or use this cURL command:
 
     ```bash
     curl --request GET --url http://localhost:3561/v1.0/workflows/dapr/<INSTANCEID>
@@ -82,10 +98,4 @@ The wokflow engine will always execute the latest version of the workflow. Older
 
     Where `<INSTANCEID>` is the workflow instance ID you received in the `instance_id` property in the previous step.
 
-    The expected serialized output for the named versioned workflow is:
-
-    ```txt
-    "\"input task\""
-    ```
-
-6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
+7. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

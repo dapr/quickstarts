@@ -6,6 +6,6 @@ apps:
     appDirPath: versioning
     appPort: 5263
     daprHTTPPort: 3561
-    command: ["python3", "app.py"]
+    command: ["python3", "before.py"]
     appLogDestination: console
     daprdLogDestination: console
