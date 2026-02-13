@@ -18,7 +18,7 @@ graph LR
 
 ## Inspect the named versioned workflow
 
-Review the `after_named_version.py` file. This file shows how to create a new workflow version using named versions. A new version of the workflow (`notify_user`) is created that calls the `send_sms` activity, while the original version is kept as `notify_user_v1` for any workflow instances that might already be running.
+Review the `after_named_version.py` file. This file shows how to create a new workflow version using named versions. A new version of the workflow (`notify_user_new`) is created that calls the `send_sms` activity, while the original version is kept as `notify_user` for any workflow instances that might already be running.
 
 ```mermaid
 graph LR
