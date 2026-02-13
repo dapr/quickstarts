@@ -18,7 +18,7 @@ graph LR
 
 ## Inspect the named versioned workflow
 
-Open the `after_named_version.py` file. This file shows how to migrate the workflow using named versions. A new version of the workflow (`notify_user`) is created that calls `send_sms`, while the original version is kept as `notify_user_v1` for any in-flight workflow instances.
+Review the `after_named_version.py` file. This file shows how to create a new workflow version using named versions. A new version of the workflow (`notify_user`) is created that calls the `send_sms` activity, while the original version is kept as `notify_user_v1` for any workflow instances that might already be running.
 
 ```mermaid
 graph LR
@@ -34,11 +34,11 @@ graph LR
    SW2 --> SS --> EW2
 ```
 
-The workflow engine will always execute the latest version of the workflow for new instances. Older versions will only be executed for workflows that were already in-flight when the update was deployed.
+The workflow engine will always execute the latest version of the workflow when new instances are started. Older versions will only be executed for workflows that were already in-flight when the update was deployed.
 
 ## Inspect the patching workflow
 
-Open the `after_patching.py` file. This file shows how to migrate the workflow using patching. The `ctx.is_patched("send_sms")` check determines whether the workflow should execute the new `send_sms` activity or the original `send_email` activity.
+Review the `after_patching.py` file. This file shows how to create a new workflow version using patching. The `ctx.is_patched("send_sms")` check determines whether the workflow should execute the new `send_sms` activity or the original `send_email` activity based on if the patch `send_sms` is applied.
 
 ```mermaid
 graph LR
@@ -53,7 +53,7 @@ graph LR
    P -- No --> SE --> EW
 ```
 
-New workflow instances will execute the patched code path (`send_sms`), while in-flight workflows will continue using the original code path (`send_email`).
+New workflow instances will execute the patched code path (`send_sms`) since the workflow has already had a patch applied, while already started, in-flight workflows will continue using the original code path (`send_email`).
 
 ## Run the tutorial
 
@@ -64,7 +64,24 @@ New workflow instances will execute the patched code path (`send_sms`), while in
     pip3 install -r requirements.txt
     ```
 
-3. Navigate back one level to the `versioning` folder. The `dapr.yaml` file is configured to run `before.py` by default. To try a versioned workflow, update the `command` field in `dapr.yaml` to run `after_named_version.py` or `after_patching.py` instead.
+3. Navigate back one level to the `versioning` folder. By default, the `dapr.yaml` file is set to run `before.py`:
+
+    ```yaml
+    command: ["python3", "before.py"]
+    ```
+
+   To try a versioned workflow, change the `command` field in this file to one of the following, depending on which version you'd like to run:
+
+    - For the named version example (`after_named_version.py`):
+      ```yaml
+      command: ["python3", "after_named_version.py"]
+      ```
+    - For the patching version example (`after_patching.py`):
+      ```yaml
+      command: ["python3", "after_patching.py"]
+      ```
+
+   Make sure to save the file after making your changes.
 
 4. Use the Dapr CLI to run the application:
 
@@ -84,7 +101,7 @@ New workflow instances will execute the patched code path (`send_sms`), while in
     == APP - versioning == send_email: Received input: user_id.
     ```
 
-    When running `after_named_version.py` or `after_patching.py`, the expected app logs are:
+    When running `after_named_version.py` or `after_patching.py`, the expected app logs change from `send_email` to `send_sms` and are:
 
     ```text
     == APP - versioning == send_sms: Received input: user_id.
