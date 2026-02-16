@@ -10,6 +10,23 @@ This quickstart includes one app:
 
 - `ConversationApplication.java`, responsible for sending an input to the underlying LLM and retrieving an output.
 
+## Features Demonstrated
+
+This quickstart demonstrates:
+
+1. **Basic Conversation** - Send a simple message to an LLM and receive a response using the alpha2 API
+2. **Tool Calling** - Define tools/functions that the LLM can invoke, following OpenAI's function calling format
+
+### Tool Calling
+
+The conversation API supports advanced tool calling capabilities that allow LLMs to interact with external functions and APIs. This enables you to build sophisticated AI applications that can:
+
+- Execute custom functions based on user requests
+- Integrate with external services and databases
+- Provide dynamic, context-aware responses
+
+Tool calling follows [OpenAI's function calling format](https://platform.openai.com/docs/guides/function-calling), making it easy to integrate with existing AI development workflows.
+
 ## Pre-requisites
 
 * [Dapr and Dapr Cli](https://docs.dapr.io/getting-started/install-dapr-cli/).
@@ -46,8 +63,11 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
+  - '== APP - conversation == === Basic Conversation Example ==='
   - '== APP - conversation == Input sent: What is dapr?'
-  - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == === Tool Calling Example ==='
+  - '== APP - conversation == Input sent: What is the weather like in San Francisco?'
+  - '== APP - conversation == Tools defined: get_weather (location, unit)'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -60,14 +80,18 @@ timeout_seconds: 30
 dapr run -f .
 ```
 
-The terminal console output should look similar to this, where:
-
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is dapr?`.
+The terminal console output should look similar to this:
 
 ```text
+== APP - conversation == === Basic Conversation Example ===
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
+
+== APP - conversation == === Tool Calling Example ===
+== APP - conversation == Input sent: What is the weather like in San Francisco?
+== APP - conversation == Tools defined: get_weather (location, unit)
+== APP - conversation == Note: The echo component echoes input for testing purposes.
+== APP - conversation == For actual tool calling, configure a real LLM component like OpenAI.
 ```
 
 <!-- END_STEP -->
@@ -103,8 +127,13 @@ dapr run --app-id conversation --resources-path ../../../components -- java -jar
 You should see the output:
 
 ```bash
+== APP == === Basic Conversation Example ===
 == APP == Input sent: What is dapr?
 == APP == Output response: What is dapr?
+
+== APP == === Tool Calling Example ===
+== APP == Input sent: What is the weather like in San Francisco?
+== APP == Tools defined: get_weather (location, unit)
 ```
 
 3. Stop the application:
@@ -112,3 +141,33 @@ You should see the output:
 ```bash
 dapr stop --app-id conversation
 ```
+
+## Tool Calling with a Real LLM
+
+To use actual tool calling functionality, configure a real LLM component (e.g., OpenAI, Anthropic). Here's an example OpenAI component configuration:
+
+```yaml
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: openai
+spec:
+  type: conversation.openai
+  version: v1
+  metadata:
+    - name: key
+      value: "<your-openai-api-key>"
+    - name: model
+      value: "gpt-4"
+```
+
+Then update `CONVERSATION_COMPONENT_NAME` in the application to use your configured component.
+
+When using a real LLM with tool calling:
+
+1. The LLM analyzes the user request and available tools
+2. If a tool is needed, the response includes `finishReason: "tool_calls"` with tool call details
+3. Your application executes the tool and gets results
+4. Send results back to the LLM using an `ofTool` message to continue the conversation
+
+For more details, see the [Conversation API reference](https://docs.dapr.io/reference/api/conversation_api/).
