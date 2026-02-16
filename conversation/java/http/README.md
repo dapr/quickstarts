@@ -65,9 +65,19 @@ name: Run multi app run template
 expected_stdout_lines:
   - '== APP - conversation == === Basic Conversation Example ==='
   - '== APP - conversation == Input sent: What is dapr?'
+  - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation =='
   - '== APP - conversation == === Tool Calling Example ==='
   - '== APP - conversation == Input sent: What is the weather like in San Francisco?'
   - '== APP - conversation == Tools defined: get_weather (location, unit)'
+  - '== APP - conversation == LLM requested tool calls:'
+  - '== APP - conversation ==   Tool ID: 0'
+  - '== APP - conversation ==   Function: get_weather'
+  - '== APP - conversation ==   Arguments: location,unit'
+  - '== APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}'
+  - '== APP - conversation == '
+  - '== APP - conversation == Note: The echo component echoes input for testing purposes.'
+  - '== APP - conversation == For actual tool calling, configure a real LLM component like OpenAI.'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -86,10 +96,16 @@ The terminal console output should look similar to this:
 == APP - conversation == === Basic Conversation Example ===
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
-
+== APP - conversation == 
 == APP - conversation == === Tool Calling Example ===
 == APP - conversation == Input sent: What is the weather like in San Francisco?
 == APP - conversation == Tools defined: get_weather (location, unit)
+== APP - conversation == LLM requested tool calls:
+== APP - conversation ==   Tool ID: 0
+== APP - conversation ==   Function: get_weather
+== APP - conversation ==   Arguments: location,unit
+== APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
+== APP - conversation == 
 == APP - conversation == Note: The echo component echoes input for testing purposes.
 == APP - conversation == For actual tool calling, configure a real LLM component like OpenAI.
 ```
