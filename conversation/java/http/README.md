@@ -127,13 +127,21 @@ dapr run --app-id conversation --resources-path ../../../components -- java -jar
 You should see the output:
 
 ```bash
-== APP == === Basic Conversation Example ===
-== APP == Input sent: What is dapr?
-== APP == Output response: What is dapr?
-
-== APP == === Tool Calling Example ===
-== APP == Input sent: What is the weather like in San Francisco?
-== APP == Tools defined: get_weather (location, unit)
+== APP - conversation == === Basic Conversation Example ===
+== APP - conversation == Input sent: What is dapr?
+== APP - conversation == Output response: What is dapr?
+== APP - conversation == 
+== APP - conversation == === Tool Calling Example ===
+== APP - conversation == Input sent: What is the weather like in San Francisco?
+== APP - conversation == Tools defined: get_weather (location, unit)
+== APP - conversation == LLM requested tool calls:
+== APP - conversation ==   Tool ID: 0
+== APP - conversation ==   Function: get_weather
+== APP - conversation ==   Arguments: location,unit
+== APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
+== APP - conversation == 
+== APP - conversation == Note: The echo component echoes input for testing purposes.
+== APP - conversation == For actual tool calling, configure a real LLM component like OpenAI.
 ```
 
 3. Stop the application:
