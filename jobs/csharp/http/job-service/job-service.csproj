@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>job_service</RootNamespace>
+    <AssemblyName>JobServiceQuickstart</AssemblyName>
   </PropertyGroup>
 
 </Project>

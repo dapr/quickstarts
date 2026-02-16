@@ -5,10 +5,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>JobServiceQuickstart</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Jobs" Version="1.15.0-rc07" />
+    <PackageReference Include="Dapr.Jobs" Version="1.16.0" />
   </ItemGroup>
 
 </Project>

@@ -12,6 +12,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@dapr/dapr": "^3.5.2"
+        "@dapr/dapr": "^3.6.1"
     }
 }

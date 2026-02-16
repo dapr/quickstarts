@@ -1,5 +1,5 @@
 fastapi
-dapr-ext-fastapi>=1.15.0
+dapr-ext-fastapi>=1.16.0
 cloudevents
 uvicorn
 anyio>=4.4.0 # not directly required, pinned by Snyk to avoid a vulnerability

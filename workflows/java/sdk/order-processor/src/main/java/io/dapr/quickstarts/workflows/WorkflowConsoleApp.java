@@ -55,10 +55,9 @@ public class WorkflowConsoleApp {
     builder.registerActivity(UpdateInventoryActivity.class);
 
     // Build and then start the workflow runtime pulling and executing tasks
-    try (WorkflowRuntime runtime = builder.build()) {
-      System.out.println("Start workflow runtime");
-      runtime.start(false);
-    }
+    WorkflowRuntime runtime = builder.build();
+    System.out.println("Start workflow runtime");
+    runtime.start(false);
 
     InventoryItem inventory = prepareInventoryAndOrder();
 
@@ -66,7 +65,6 @@ public class WorkflowConsoleApp {
     try (workflowClient) {
       executeWorkflow(workflowClient, inventory);
     }
-
   }
 
   private static void executeWorkflow(DaprWorkflowClient workflowClient, InventoryItem inventory) {

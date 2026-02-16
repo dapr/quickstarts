@@ -4,7 +4,7 @@ In this quickstart, you'll send an input to a mock Large Language Model (LLM) us
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
 
-> **Note:** This example leverages HTTP `requests` only. If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
+> **Note:** This example leverages native HTTP client requests only. If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
 
 This quickstart includes one app:
 

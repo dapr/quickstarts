@@ -1,4 +1,5 @@
 #pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable DAPR_JOBS
 using Dapr.Jobs;
 using Dapr.Jobs.Extensions;
 using Dapr.Jobs.Models;
@@ -161,3 +162,4 @@ public class DroidJob
 }
 
 #pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore DAPR_JOBS
