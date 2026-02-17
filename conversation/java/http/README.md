@@ -96,7 +96,7 @@ The terminal console output should look similar to this:
 == APP - conversation == === Basic Conversation Example ===
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
-== APP - conversation == 
+== APP - conversation ==
 == APP - conversation == === Tool Calling Example ===
 == APP - conversation == Input sent: What is the weather like in San Francisco?
 == APP - conversation == Tools defined: get_weather (location, unit)
@@ -146,7 +146,7 @@ You should see the output:
 == APP - conversation == === Basic Conversation Example ===
 == APP - conversation == Input sent: What is dapr?
 == APP - conversation == Output response: What is dapr?
-== APP - conversation == 
+== APP - conversation ==
 == APP - conversation == === Tool Calling Example ===
 == APP - conversation == Input sent: What is the weather like in San Francisco?
 == APP - conversation == Tools defined: get_weather (location, unit)
