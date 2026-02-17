@@ -25,7 +25,7 @@ The conversation API supports advanced tool calling capabilities that allow LLMs
 - Integrate with external services and databases
 - Provide dynamic, context-aware responses
 
-Tool calling follows [OpenAI's function calling format](https://platform.openai.com/docs/guides/function-calling), making it easy to integrate with existing AI development workflows.
+Tool calling follows [OpenAI's function calling format](https://developers.openai.com/api/docs/guides/function-calling), making it easy to integrate with existing AI development workflows.
 
 ## Pre-requisites
 
