@@ -1,0 +1,7 @@
+version: 1
+apps:
+  - appID: batch-http
+    appDirPath: ./batch
+    appPort: 8080
+    command: ["mvn", "spring-boot:run"]
+    resourcesPath: ../../../components
