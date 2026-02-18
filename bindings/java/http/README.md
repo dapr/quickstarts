@@ -78,7 +78,7 @@ output_match_mode: substring
 -->
 
 ```bash
-docker exec -it postgres psql -U postgres -d orders -c "SELECT * FROM orders;"
+docker exec postgres psql -U postgres -d orders -c "SELECT * FROM orders;"
 ```
 
 <!-- END_STEP -->
