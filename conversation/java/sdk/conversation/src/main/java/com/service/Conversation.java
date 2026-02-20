@@ -1,9 +1,5 @@
 package com.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import io.dapr.client.DaprClientBuilder;
 import io.dapr.client.DaprPreviewClient;
 import io.dapr.client.domain.ConversationInputAlpha2;
@@ -18,11 +14,30 @@ import io.dapr.client.domain.ConversationTools;
 import io.dapr.client.domain.ConversationToolsFunction;
 import io.dapr.client.domain.UserMessage;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Conversation {
 
     private static final String CONVERSATION_COMPONENT_NAME = "echo";
     private static final String CONVERSATION_TEXT = "What is dapr?";
     private static final String TOOL_CALL_INPUT = "What is the weather like in San Francisco in celsius?";
+
+    // Define the JSON schema for the response format
+    private static final String RESPONSE_SCHEMA = """
+            {
+              "type": "object",
+              "properties": {
+                "answer": {
+                  "type": "string",
+                  "description": "The answer to the user's question"
+                },
+              "required": ["answer"],
+              "additionalProperties": false
+            }
+        """;
 
     public static void main(String[] args) {
         try (DaprPreviewClient client = new DaprClientBuilder().buildPreviewClient()) {
@@ -62,16 +77,19 @@ public class Conversation {
             ConversationInputAlpha2 conversationInput = new ConversationInputAlpha2(List.of(conversationMessage));
 
             ConversationResponseAlpha2 conversationResponse = client.converseAlpha2(
-                    new ConversationRequestAlpha2(CONVERSATION_COMPONENT_NAME, List.of(conversationInput))
-                            .setScrubPii(false)
-                            .setToolChoice("auto")
-                            .setTemperature(0.7)
-                            .setTools(List.of(weatherTool))).block();
+                new ConversationRequestAlpha2(CONVERSATION_COMPONENT_NAME, List.of(conversationInput))
+                    .setScrubPii(false)
+                    .setToolChoice("auto")
+                    .setTemperature(0.7)
+                    .setResponseFormat(RESPONSE_SCHEMA)
+                    .setPromptCacheRetention(Duration.ofMinutes(5))
+                    .setTools(List.of(weatherTool))).block();
 
             System.out.println("Conversation input sent: " + CONVERSATION_TEXT);
             String outputContent = conversationResponse.getOutputs().get(0)
                     .getChoices().get(0).getMessage().getContent();
             System.out.println("Output response: " + outputContent);
+            UsageUtils.printDetails(CONVERSATION_COMPONENT_NAME, conversationResponse.getOutputs().get(0));
 
             // ==========================================
             // Tool Calling
@@ -84,11 +102,13 @@ public class Conversation {
             ConversationInputAlpha2 toolCallInput = new ConversationInputAlpha2(List.of(toolCallMessage));
 
             ConversationResponseAlpha2 toolCallResponse = client.converseAlpha2(
-                    new ConversationRequestAlpha2(CONVERSATION_COMPONENT_NAME, List.of(toolCallInput))
-                            .setScrubPii(false)
-                            .setToolChoice("auto")
-                            .setTemperature(0.7)
-                            .setTools(List.of(weatherTool))).block();
+                new ConversationRequestAlpha2(CONVERSATION_COMPONENT_NAME, List.of(toolCallInput))
+                    .setScrubPii(false)
+                    .setToolChoice("auto")
+                    .setTemperature(0.7)
+                    .setResponseFormat(RESPONSE_SCHEMA)
+                    .setPromptCacheRetention(Duration.ofMinutes(10))
+                    .setTools(List.of(weatherTool))).block();
 
             System.out.println("Tool calling input sent: " + TOOL_CALL_INPUT);
 
@@ -112,6 +132,7 @@ public class Conversation {
                 }
             }
 
+            UsageUtils.printDetails(CONVERSATION_COMPONENT_NAME, conversationResponse.getOutputs().get(0));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
