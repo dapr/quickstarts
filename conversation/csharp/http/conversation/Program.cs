@@ -142,7 +142,7 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
         }
       }
     ],
-    "toolChoice": "auto"
+    "toolChoice": "required"
   }
 """);
 

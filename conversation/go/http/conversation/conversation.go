@@ -151,7 +151,7 @@ func main() {
 				}
 			}
 		}],
-		"toolChoice": "auto"
+		"toolChoice": "required"
 	}`
 
 	req2, err := http.NewRequest("POST", reqURL, strings.NewReader(toolCallBody))

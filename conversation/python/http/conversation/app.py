@@ -137,7 +137,7 @@ tool_call_input = {
             }
         }
     }],
-    'toolChoice': 'auto'
+    'toolChoice': 'required'
 }
 
 # Send input to conversation endpoint

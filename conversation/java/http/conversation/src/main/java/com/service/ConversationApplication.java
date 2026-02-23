@@ -177,7 +177,7 @@ public class ConversationApplication {
                         }
                     }
                 ],
-                "toolChoice": "auto"
+                "toolChoice": "required"
             }
             """;
 

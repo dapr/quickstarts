@@ -131,7 +131,7 @@ async function main() {
           },
         },
       ],
-      toolChoice: "auto",
+      toolChoice: "required",
     };
     const response = await fetch(reqURL, {
       method: "POST",
