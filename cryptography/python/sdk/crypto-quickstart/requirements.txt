@@ -1,2 +1,2 @@
-dapr>=1.16.0
+dapr>=1.17.0rc3
 typing-extensions
