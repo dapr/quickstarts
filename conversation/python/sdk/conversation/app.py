@@ -15,7 +15,7 @@ from dapr.clients.grpc.conversation import ConversationInputAlpha2, Conversation
 
 with DaprClient() as d:
     text_input = "What is dapr?"
-    provider_component = "echo"
+    provider_component = "ollama"
 
     inputs = [
         ConversationInputAlpha2(messages=[ConversationMessage(of_user=ConversationMessageOfUser(content=[ConversationMessageContent(text=text_input)]))],

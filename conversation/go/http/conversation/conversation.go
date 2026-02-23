@@ -25,7 +25,7 @@ import (
 	"time"
 )
 
-const conversationComponentName = "echo"
+const conversationComponentName = "ollama"
 
 func main() {
 	daprHost := os.Getenv("DAPR_HOST")
@@ -38,11 +38,11 @@ func main() {
 	}
 
 	client := http.Client{
-		Timeout: 15 * time.Second,
+		Timeout: 60 * time.Second,
 	}
 
 	var inputBody = `{
-		"name": "echo",
+		"name": "ollama",
 		"inputs": [{
 			"messages": [{
 				"ofUser": {
@@ -55,19 +55,13 @@ func main() {
 		"parameters": {},
 		"metadata": {},
 		"response_format": {
-			"type": "json_schema",
-			"json_schema": {
-				"name": "response",
-				"strict": true,
-				"schema": {
-					"type": "object",
-					"properties": {
-						"answer": {"type": "string"}
-					}
-				}
-			}
+			"type": "object",
+			"properties": {
+				"answer": {"type": "string"}
+			},
+			"required": ["answer"]
 		},
-		"prompt_cache_retention": "24h"
+		"prompt_cache_retention": "86400s"
     }`
 
 	reqURL := daprHost + ":" + daprHttpPort + "/v1.0-alpha2/conversation/" + conversationComponentName + "/converse"
@@ -79,7 +73,7 @@ func main() {
 
 	req.Header.Set("Content-Type", "application/json")
 
-	// Send a request to the echo LLM component
+	// Send a request to the Ollama LLM component
 	res, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)

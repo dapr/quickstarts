@@ -1,0 +1,10 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: ollama
+spec:
+  type: conversation.ollama
+  version: v1
+  metadata:
+    - name: model
+      value: llama3.2:latest

@@ -14,7 +14,7 @@ from dapr.clients import DaprClient
 from dapr.clients.grpc import conversation
 
 with DaprClient() as d:
-    provider_component = "echo"
+    provider_component = "ollama"
 
     # ------------------------------------------------------------
     # Creating Tool Function definition using lower level API and hand-crafted JSON schema

@@ -23,7 +23,7 @@ logging.basicConfig(
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
 
-CONVERSATION_COMPONENT_NAME = 'echo'
+CONVERSATION_COMPONENT_NAME = 'ollama'
 
 input = {
     'inputs': [{
@@ -38,14 +38,13 @@ input = {
     'parameters': {},
     'metadata': {},
     'response_format': {
-        'type': 'json_schema',
-        'json_schema': {
-            'name': 'response',
-            'strict': True,
-            'schema': {'type': 'object', 'properties': {'answer': {'type': 'string'}}}
-        }
+        'type': 'object',
+        'properties': {
+            'answer': {'type': 'string'}
+        },
+        'required': ['answer']
     },
-    'prompt_cache_retention': '24h'
+    'prompt_cache_retention': '86400s'
 }
 
 # Send input to conversation endpoint
@@ -109,14 +108,12 @@ tool_call_input = {
         'version': '1.0'
     },
     'response_format': {
-        'type': 'json_schema',
-        'json_schema': {
-            'name': 'response',
-            'strict': True,
-            'schema': {'type': 'object', 'properties': {'answer': {'type': 'string'}}}
+        'type': 'object',
+        'properties': {
+            'answer': {'type': 'string'}
         }
     },
-    'prompt_cache_retention': '24h',
+    'prompt_cache_retention': '86400s',
     'scrubPii': False,
     'temperature': 0.7,
     'tools': [{
