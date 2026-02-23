@@ -20,7 +20,7 @@ using Dapr.AI.Conversation.ConversationRoles;
 using Dapr.AI.Conversation.Extensions;
 using Dapr.AI.Conversation.Tools;
 
-const string conversationComponentName = "echo";
+const string conversationComponentName = "ollama";
 const string conversationText = "What is dapr?";
 const string toolCallInput = "What is the weather like in San Francisco in celsius?";
 

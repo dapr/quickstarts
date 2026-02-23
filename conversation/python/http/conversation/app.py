@@ -65,7 +65,7 @@ try:
         if out.get('usage'):
             u = out['usage']
             logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
-                         u.get('prompt_tokens'), u.get('completion_tokens'), u.get('total_tokens'))
+                         u.get('promptTokens'), u.get('completionTokens'), u.get('totalTokens'))
         if 'choices' in out and len(out['choices']) > 0:
             output = out["choices"][0]["message"]["content"]
             logging.info('Output response: ' + output)

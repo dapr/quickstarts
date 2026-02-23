@@ -193,7 +193,7 @@ func main() {
 	}
 	if usage, ok := output2["usage"].(map[string]any); ok {
 		fmt.Printf("Usage: prompt_tokens=%v completion_tokens=%v total_tokens=%v\n",
-			usage["prompt_tokens"], usage["completion_tokens"], usage["total_tokens"])
+			usage["promptTokens"], usage["completionTokens"], usage["totalTokens"])
 	}
 
 	choices2 := output2["choices"].([]any)

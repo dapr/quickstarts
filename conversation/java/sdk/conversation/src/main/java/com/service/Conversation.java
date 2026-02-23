@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class Conversation {
 
-    private static final String CONVERSATION_COMPONENT_NAME = "echo";
+    private static final String CONVERSATION_COMPONENT_NAME = "ollama";
     private static final String CONVERSATION_TEXT = "What is dapr?";
     private static final String TOOL_CALL_INPUT = "What is the weather like in San Francisco in celsius?";
 
@@ -33,7 +33,8 @@ public class Conversation {
                 "answer": {
                   "type": "string",
                   "description": "The answer to the user's question"
-                },
+                }
+              },
               "required": ["answer"],
               "additionalProperties": false
             }

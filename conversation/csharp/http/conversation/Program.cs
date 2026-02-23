@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright 2024 The Dapr Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@ limitations under the License.
 */
 
 using System.Net.Http.Json;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
-// const string conversationComponentName = "echo";
 const string conversationText = "What is dapr?";
 const string toolCallInput = "What is the weather like in San Francisco in celsius?";
 
@@ -40,17 +40,28 @@ var conversationRequestBody = JsonSerializer.Deserialize<Dictionary<string, obje
       }]
     }],
     "parameters": {},
-    "metadata": {}
+    "metadata": {},
+    "response_format": {
+      "type": "object",
+      "properties": {"answer": {"type": "string"}},
+      "required": ["answer"]
+    },
+    "prompt_cache_retention": "86400s"
   }
 """);
 
-var conversationResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/echo/converse", conversationRequestBody);
+var conversationResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/ollama/converse", conversationRequestBody);
 var conversationResult = await conversationResponse.Content.ReadFromJsonAsync<JsonElement>();
 
-var conversationContent = conversationResult
-  .GetProperty("outputs")
-  .EnumerateArray()
-  .First()
+var firstOutput = conversationResult.GetProperty("outputs").EnumerateArray().First();
+
+Console.WriteLine($"Conversation input sent: {conversationText}");
+if (firstOutput.TryGetProperty("model", out var modelElement) && modelElement.GetString() is { Length: > 0 } model)
+    Console.WriteLine($"Model: {model}");
+if (firstOutput.TryGetProperty("usage", out var usageElement))
+    Console.WriteLine($"Usage: prompt_tokens={usageElement.GetProperty("promptTokens").GetString()} completion_tokens={usageElement.GetProperty("completionTokens").GetString()} total_tokens={usageElement.GetProperty("totalTokens").GetString()}");
+
+var conversationContent = firstOutput
   .GetProperty("choices")
   .EnumerateArray()
   .First()
@@ -58,7 +69,6 @@ var conversationContent = conversationResult
   .GetProperty("content")
   .GetString();
 
-Console.WriteLine($"Conversation input sent: {conversationText}");
 Console.WriteLine($"Output response: {conversationContent}");
 
 //
@@ -82,20 +92,14 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
         "scrubPii": false
       }
     ],
-    "parameters": {
-      "max_tokens": {
-        "@type": "type.googleapis.com/google.protobuf.Int64Value",
-        "value": "100"
-      },
-      "model": {
-        "@type": "type.googleapis.com/google.protobuf.StringValue",
-        "value": "claude-3-5-sonnet-20240620"
-      }
+    "parameters": {},
+    "metadata": {},
+    "response_format": {
+      "type": "object",
+      "properties": {"answer": {"type": "string"}},
+      "required": ["answer"]
     },
-    "metadata": {
-      "api_key": "test-key",
-      "version": "1.0"
-    },
+    "prompt_cache_retention": "86400s",
     "scrubPii": false,
     "temperature": 0.7,
     "tools": [
@@ -130,7 +134,7 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
   }
 """);
 
-var toolCallingResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/echo/converse", toolCallRequestBody);
+var toolCallingResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/ollama/converse", toolCallRequestBody);
 var toolCallingResult = await toolCallingResponse.Content.ReadFromJsonAsync<JsonElement>();
 
 var messageElement = toolCallingResult
@@ -142,8 +146,8 @@ var messageElement = toolCallingResult
   .First()
   .GetProperty("message");
 
-var toolCallingContent = messageElement.TryGetProperty("content", out var contentElement) 
-    ? contentElement.GetString() 
+var toolCallingContent = messageElement.TryGetProperty("content", out var contentElement)
+    ? contentElement.GetString()
     : null;
 
 var functionCalled = messageElement
@@ -163,7 +167,7 @@ var toolCallJson = JsonSerializer.Serialize(new
     name = functionName,
     arguments = functionArguments,
   },
-});
+}, s_jsonOptions);
 
 Console.WriteLine($"Tool calling input sent: {toolCallInput}");
 Console.WriteLine($"Output message: {toolCallingContent}");
@@ -171,3 +175,8 @@ Console.WriteLine("Tool calls detected:");
 Console.WriteLine($"Tool call: {toolCallJson}");
 Console.WriteLine($"Function name: {functionName}");
 Console.WriteLine($"Function arguments: {functionArguments}");
+
+static partial class Program
+{
+    static readonly JsonSerializerOptions s_jsonOptions = new() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+}

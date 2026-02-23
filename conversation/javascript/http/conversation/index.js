@@ -1,4 +1,4 @@
-const conversationComponentName = "echo";
+const conversationComponentName = "ollama";
 
 async function main() {
   const daprHost = process.env.DAPR_HOST || "http://localhost";
@@ -26,6 +26,12 @@ async function main() {
       ],
       parameters: {},
       metadata: {},
+      response_format: {
+        type: "object",
+        properties: { answer: { type: "string" } },
+        required: ["answer"],
+      },
+      prompt_cache_retention: "86400s",
     };
     const response = await fetch(reqURL, {
       method: "POST",
@@ -38,7 +44,17 @@ async function main() {
     console.log("Conversation input sent: What is dapr?");
 
     const data = await response.json();
-    const result = data.outputs[0].choices[0].message.content;
+    const output = data.outputs[0];
+    if (output.model) {
+      console.log("Model:", output.model);
+    }
+    if (output.usage) {
+      const u = output.usage;
+      console.log(
+        `Usage: prompt_tokens=${u.promptTokens} completion_tokens=${u.completionTokens} total_tokens=${u.totalTokens}`
+      );
+    }
+    const result = output.choices[0].message.content;
     console.log("Output response:", result);
   } catch (error) {
     console.error("Error:", error.message);
@@ -64,10 +80,13 @@ async function main() {
           scrubPii: false,
         },
       ],
-      metadata: {
-        api_key: "test-key",
-        version: "1.0",
+      metadata: {},
+      response_format: {
+        type: "object",
+        properties: { answer: { type: "string" } },
+        required: ["answer"],
       },
+      prompt_cache_retention: "86400s",
       scrubPii: false,
       temperature: 0.7,
       tools: [
@@ -108,14 +127,23 @@ async function main() {
     );
 
     const data = await response.json();
+    const output = data?.outputs?.[0];
+    if (output?.usage) {
+      const u = output.usage;
+      console.log(
+        `Usage: prompt_tokens=${u.promptTokens} completion_tokens=${u.completionTokens} total_tokens=${u.totalTokens}`
+      );
+    }
 
-    const result = data?.outputs?.[0]?.choices?.[0]?.message?.content;
-    console.log("Output message:", result);
+    const result = output?.choices?.[0]?.message?.content;
+    if (result) {
+      console.log("Output message:", result);
+    }
 
-    if (data?.outputs?.[0]?.choices?.[0]?.message?.toolCalls) {
+    if (output?.choices?.[0]?.message?.toolCalls) {
       console.log(
         "Tool calls detected:",
-        JSON.stringify(data.outputs[0].choices[0].message?.toolCalls)
+        JSON.stringify(output.choices[0].message?.toolCalls)
       );
     } else {
       console.log("No tool calls in response");
