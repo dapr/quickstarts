@@ -43,9 +43,9 @@ The terminal console output should look similar to this:
 
 ```text
 == APP - checkout-http == Published data: Order { OrderId = 1 }
-== APP - order-processor-http == Subscriber received : 1
+== APP - order-processor-http == Subscriber received : Order { OrderId = 1 }
 == APP - checkout-http == Published data: Order { OrderId = 2 }
-== APP - order-processor-http == Subscriber received : 2
+== APP - order-processor-http == Subscriber received : Order { OrderId = 2 }
 == APP - checkout-http == Published data: Order { OrderId = 3 }
 == APP - order-processor-http == Subscriber received : 3
 == APP - checkout-http == Published data: Order { OrderId = 4 }
