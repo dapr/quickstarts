@@ -91,26 +91,32 @@ public class ConversationApplication {
 
         System.out.println("Input sent: What is dapr?");
 
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new RuntimeException("API request failed with status " + response.statusCode() + ": " + response.body());
+        }
+
         JsonNode responseJson = objectMapper.readTree(response.body());
         JsonNode outputs = responseJson.get("outputs");
-        if (outputs != null && outputs.isArray() && outputs.size() > 0) {
-            JsonNode output = outputs.get(0);
-            if (output.has("model") && !output.get("model").asText().isEmpty()) {
-                System.out.println("Model: " + output.get("model").asText());
-            }
-            if (output.has("usage")) {
-                JsonNode usage = output.get("usage");
-                System.out.printf("Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s%n",
-                        usage.path("promptTokens").asText(),
-                        usage.path("completionTokens").asText(),
-                        usage.path("totalTokens").asText());
-            }
-            JsonNode choices = output.get("choices");
-            if (choices != null && choices.isArray() && choices.size() > 0) {
-                JsonNode message = choices.get(0).get("message");
-                if (message != null) {
-                    System.out.println("Output response: " + message.get("content").asText());
-                }
+        if (outputs == null || !outputs.isArray() || outputs.size() == 0) {
+            throw new RuntimeException("Response does not contain 'outputs' array. Response: " + response.body());
+        }
+        
+        JsonNode output = outputs.get(0);
+        if (output.has("model") && !output.get("model").asText().isEmpty()) {
+            System.out.println("Model: " + output.get("model").asText());
+        }
+        if (output.has("usage")) {
+            JsonNode usage = output.get("usage");
+            System.out.printf("Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s%n",
+                    usage.path("promptTokens").asText(),
+                    usage.path("completionTokens").asText(),
+                    usage.path("totalTokens").asText());
+        }
+        JsonNode choices = output.get("choices");
+        if (choices != null && choices.isArray() && choices.size() > 0) {
+            JsonNode message = choices.get(0).get("message");
+            if (message != null) {
+                System.out.println("Output response: " + message.get("content").asText());
             }
         }
     }
@@ -186,34 +192,40 @@ public class ConversationApplication {
         System.out.println("Input sent: What is the weather like in San Francisco?");
         System.out.println("Tools defined: get_weather (location, unit)");
 
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new RuntimeException("API request failed with status " + response.statusCode() + ": " + response.body());
+        }
+
         JsonNode responseJson = objectMapper.readTree(response.body());
         JsonNode outputs = responseJson.get("outputs");
-        if (outputs != null && outputs.isArray() && outputs.size() > 0) {
-            JsonNode choices = outputs.get(0).get("choices");
-            if (choices != null && choices.isArray() && choices.size() > 0) {
-                JsonNode choice = choices.get(0);
-                String finishReason = choice.has("finishReason") ? choice.get("finishReason").asText() : "";
-                JsonNode message = choice.get("message");
+        if (outputs == null || !outputs.isArray() || outputs.size() == 0) {
+            throw new RuntimeException("Response does not contain 'outputs' array. Response: " + response.body());
+        }
+        
+        JsonNode choices = outputs.get(0).get("choices");
+        if (choices != null && choices.isArray() && choices.size() > 0) {
+            JsonNode choice = choices.get(0);
+            String finishReason = choice.has("finishReason") ? choice.get("finishReason").asText() : "";
+            JsonNode message = choice.get("message");
 
-                if ("tool_calls".equals(finishReason) && message != null && message.has("toolCalls")) {
-                    System.out.println("LLM requested tool calls:");
-                    JsonNode toolCalls = message.get("toolCalls");
-                    for (JsonNode toolCall : toolCalls) {
-                        String toolId = toolCall.get("id").asText();
-                        JsonNode function = toolCall.get("function");
-                        String functionName = function.get("name").asText();
-                        String arguments = function.get("arguments").asText();
+            if ("tool_calls".equals(finishReason) && message != null && message.has("toolCalls")) {
+                System.out.println("LLM requested tool calls:");
+                JsonNode toolCalls = message.get("toolCalls");
+                for (JsonNode toolCall : toolCalls) {
+                    String toolId = toolCall.get("id").asText();
+                    JsonNode function = toolCall.get("function");
+                    String functionName = function.get("name").asText();
+                    String arguments = function.get("arguments").asText();
 
-                        System.out.println("  Tool ID: " + toolId);
-                        System.out.println("  Function: " + functionName);
-                        System.out.println("  Arguments: " + arguments);
+                    System.out.println("  Tool ID: " + toolId);
+                    System.out.println("  Function: " + functionName);
+                    System.out.println("  Arguments: " + arguments);
 
-                        String toolResult = executeWeatherTool(functionName, arguments);
-                        System.out.println("  Tool Result: " + toolResult);
-                    }
-                } else if (message != null && message.has("content")) {
-                    System.out.println("Output response: " + message.get("content").asText());
+                    String toolResult = executeWeatherTool(functionName, arguments);
+                    System.out.println("  Tool Result: " + toolResult);
                 }
+            } else if (message != null && message.has("content")) {
+                System.out.println("Output response: " + message.get("content").asText());
             }
         }
     }

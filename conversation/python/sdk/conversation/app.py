@@ -25,6 +25,21 @@ with DaprClient() as d:
     print(f'Input sent: {text_input}')
 
     response = d.converse_alpha2(name=provider_component, inputs=inputs, temperature=0.7, context_id='chat-123')
-
+    
+    if not response or not hasattr(response, 'outputs') or not response.outputs:
+        raise ValueError(f"Response does not contain 'outputs'. Response: {response}")
+    
     for output in response.outputs:
-        print(f'Output response: {output.choices[0].message.content}')
+        if not output or not hasattr(output, 'choices') or not output.choices or len(output.choices) == 0:
+            raise ValueError(f"Output does not contain 'choices' array. Output: {output}")
+        
+        choice = output.choices[0]
+        if not choice or not hasattr(choice, 'message') or not choice.message:
+            raise ValueError(f"Choice does not contain 'message'. Choice: {choice}")
+        
+        message = choice.message
+        content = getattr(message, 'content', None)
+        if content is None:
+            raise ValueError(f"Message does not contain 'content'. Message: {message}")
+        
+        print(f'Output response: {content}')

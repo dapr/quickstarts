@@ -51,9 +51,21 @@ var conversationRequestBody = JsonSerializer.Deserialize<Dictionary<string, obje
 """);
 
 var conversationResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/ollama/converse", conversationRequestBody);
-var conversationResult = await conversationResponse.Content.ReadFromJsonAsync<JsonElement>();
+conversationResponse.EnsureSuccessStatusCode();
+var responseText = await conversationResponse.Content.ReadAsStringAsync();
+var conversationResult = JsonSerializer.Deserialize<JsonElement>(responseText);
 
-var firstOutput = conversationResult.GetProperty("outputs").EnumerateArray().First();
+if (conversationResult.ValueKind == JsonValueKind.Null || conversationResult.ValueKind == JsonValueKind.Undefined)
+{
+    throw new InvalidOperationException($"Failed to parse response as JSON. Response: {responseText}");
+}
+
+if (!conversationResult.TryGetProperty("outputs", out var outputsElement))
+{
+    throw new InvalidOperationException($"Response does not contain 'outputs' property. Response: {responseText}");
+}
+
+var firstOutput = outputsElement.EnumerateArray().First();
 
 Console.WriteLine($"Conversation input sent: {conversationText}");
 if (firstOutput.TryGetProperty("model", out var modelElement) && modelElement.GetString() is { Length: > 0 } model)
@@ -135,10 +147,21 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
 """);
 
 var toolCallingResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/ollama/converse", toolCallRequestBody);
-var toolCallingResult = await toolCallingResponse.Content.ReadFromJsonAsync<JsonElement>();
+toolCallingResponse.EnsureSuccessStatusCode();
+var toolCallingResponseText = await toolCallingResponse.Content.ReadAsStringAsync();
+var toolCallingResult = JsonSerializer.Deserialize<JsonElement>(toolCallingResponseText);
 
-var messageElement = toolCallingResult
-  .GetProperty("outputs")
+if (toolCallingResult.ValueKind == JsonValueKind.Null || toolCallingResult.ValueKind == JsonValueKind.Undefined)
+{
+    throw new InvalidOperationException($"Failed to parse response as JSON. Response: {toolCallingResponseText}");
+}
+
+if (!toolCallingResult.TryGetProperty("outputs", out var toolCallingOutputsElement))
+{
+    throw new InvalidOperationException($"Response does not contain 'outputs' property. Response: {toolCallingResponseText}");
+}
+
+var messageElement = toolCallingOutputsElement
   .EnumerateArray()
   .First()
   .GetProperty("choices")
