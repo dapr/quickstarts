@@ -10,36 +10,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------
+import sys
 from dapr.clients import DaprClient
 from dapr.clients.grpc.conversation import ConversationInputAlpha2, ConversationMessage, ConversationMessageContent, ConversationMessageOfUser
 
-with DaprClient() as d:
-    text_input = "What is dapr?"
-    provider_component = "ollama"
+try:
+    with DaprClient() as d:
+        text_input = "What is dapr?"
+        provider_component = "ollama"
 
-    inputs = [
-        ConversationInputAlpha2(messages=[ConversationMessage(of_user=ConversationMessageOfUser(content=[ConversationMessageContent(text=text_input)]))],
-                                scrub_pii=True),
-    ]
+        inputs = [
+            ConversationInputAlpha2(messages=[ConversationMessage(of_user=ConversationMessageOfUser(content=[ConversationMessageContent(text=text_input)]))],
+                                    scrub_pii=True),
+        ]
 
-    print(f'Input sent: {text_input}')
+        print(f'Input sent: {text_input}', flush=True)
 
-    response = d.converse_alpha2(name=provider_component, inputs=inputs, temperature=0.7, context_id='chat-123')
-    
-    if not response or not hasattr(response, 'outputs') or not response.outputs:
-        raise ValueError(f"Response does not contain 'outputs'. Response: {response}")
-    
-    for output in response.outputs:
-        if not output or not hasattr(output, 'choices') or not output.choices or len(output.choices) == 0:
-            raise ValueError(f"Output does not contain 'choices' array. Output: {output}")
+        response = d.converse_alpha2(name=provider_component, inputs=inputs, temperature=0.7, context_id='chat-123')
         
-        choice = output.choices[0]
-        if not choice or not hasattr(choice, 'message') or not choice.message:
-            raise ValueError(f"Choice does not contain 'message'. Choice: {choice}")
-        
-        message = choice.message
-        content = getattr(message, 'content', None)
-        if content is None:
-            raise ValueError(f"Message does not contain 'content'. Message: {message}")
-        
-        print(f'Output response: {content}')
+        if response and hasattr(response, 'outputs') and response.outputs:
+            for output in response.outputs:
+                if hasattr(output, 'model') and output.model:
+                    print(f'Model: {output.model}', flush=True)
+                
+                if hasattr(output, 'usage') and output.usage:
+                    usage = output.usage
+                    prompt_tokens = getattr(usage, 'prompt_tokens', None) or getattr(usage, 'promptTokens', None)
+                    completion_tokens = getattr(usage, 'completion_tokens', None) or getattr(usage, 'completionTokens', None)
+                    total_tokens = getattr(usage, 'total_tokens', None) or getattr(usage, 'totalTokens', None)
+                    print(f'Usage: prompt_tokens={prompt_tokens} completion_tokens={completion_tokens} total_tokens={total_tokens}', flush=True)
+                
+                if output and hasattr(output, 'choices') and output.choices and len(output.choices) > 0:
+                    choice = output.choices[0]
+                    if choice and hasattr(choice, 'message') and choice.message:
+                        message = choice.message
+                        content = getattr(message, 'content', None)
+                        if content:
+                            print(f'Output response: {content}', flush=True)
+                        else:
+                            print(f'Output response: {message}', flush=True)
+                    else:
+                        print(f'Output response: {choice}', flush=True)
+                else:
+                    print('No choices in output', flush=True)
+                    print(f'Output response: {output}', flush=True)
+        else:
+            print('No outputs found in response', flush=True)
+            print(f'Response data: {response}', flush=True)
+except Exception as e:
+    print(f'Error: {e}', file=sys.stderr, flush=True)
+    sys.exit(1)
