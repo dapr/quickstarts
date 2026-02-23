@@ -78,6 +78,15 @@ jobs:
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           dapr init --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
           dapr --version
+      - name: Cache Ollama models
+        uses: actions/cache@v4
+        with:
+          path: ~/.ollama
+          key: ${{ runner.os }}-ollama-llama3.2
+      - name: Setup Ollama
+        uses: ai-action/setup-ollama@v2
+      - name: Pull Ollama model
+        run: ollama pull llama3.2:latest
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
