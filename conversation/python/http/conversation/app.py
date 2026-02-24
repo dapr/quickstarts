@@ -157,7 +157,7 @@ if 'outputs' in data and len(data['outputs']) > 0:
     if output.get('usage'):
         u = output['usage']
         logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
-                     u.get('prompt_tokens'), u.get('completion_tokens'), u.get('total_tokens'))
+                     u.get('promptTokens'), u.get('completionTokens'), u.get('totalTokens'))
     if 'choices' in output and len(output['choices']) > 0:
         choice = output['choices'][0]
         if 'message' in choice:
