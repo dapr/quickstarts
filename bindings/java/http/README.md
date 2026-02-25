@@ -1,6 +1,6 @@
 # Dapr Bindings (HTTP)
 
-In this quickstart, you'll create a microservice to demonstrate Dapr's bindings API to work with external systems as inputs and outputs. The service listens to input binding events from a system CRON and then outputs the contents of local data to a PostreSql output binding.
+In this quickstart, you'll create a microservice to demonstrate Dapr's bindings API to work with external systems as inputs and outputs. The service listens to input binding events from a system CRON and then outputs the contents of local data to a PostgreSQL output binding.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindings/) link for more information about Dapr and Bindings.
 
@@ -39,7 +39,21 @@ docker compose up -d
 
 ### Run Java service with Dapr
 
-2. From the quickstart directory `bindings/java/http`, run:
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run:
+
+<!-- STEP
+name: Install Java dependencies
+-->
+
+```bash
+cd ./batch
+mvn clean package -DskipTests
+cd ..
+```
+
+<!-- END_STEP -->
+
+3. From the quickstart directory `bindings/java/http`, run the java service app with Dapr:
 
 <!-- STEP
 name: Run batch-http service
@@ -60,13 +74,13 @@ dapr run -f .
 
 <!-- END_STEP -->
 
-This command starts the Spring Boot service and the Dapr sidecar automatically using the configuration in `dapr.yaml`.
+The `-f` flag runs the application using the Multi-App Run configuration defined in `dapr.yaml`, automatically starting both the application and its Dapr sidecar.
 
 The cron input binding triggers the service every 10 seconds, and the service writes records to PostgreSQL using the output binding.
 
 ### Verify Data Persistence
 
-3. To verify that the data is being persisted, run the following command to check the rows in the database:
+4. Open a new terminal window and run the following command to check the rows in the database:
 
 <!-- STEP
 name: Verify Data Persistence
