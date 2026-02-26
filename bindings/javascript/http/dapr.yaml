@@ -1,0 +1,8 @@
+version: 1
+apps:
+  - appID: batch-http
+    appDirPath: ./batch
+    appPort: 6002
+    daprHTTPPort: 3502
+    command: ["node", "--trace-warnings", "index.js"]
+    resourcesPath: ../../../components
