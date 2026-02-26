@@ -2,12 +2,12 @@
 
 This tutorial demonstrates two strategies for versioning your workflows. For more information about workflow versioning, see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-features-concepts/#versioning).
 
-When you need to change a workflow that already has in-flight instances, you can't simply swap out the logic — those running instances must replay their history deterministically. Dapr provides two approaches depending on how significant the change is:
+When you need to change a workflow that already has in-flight instances, you can't simply edit the logic since those running instances replay their history deterministically. Dapr provides two approaches depending on how significant the change is:
 
-1. **Patching** — for small, incremental changes. You modify the existing workflow definition in place and use `ctx.isPatched()` to branch between old and new behavior.
-2. **Named versioning** — for larger changes. You register explicit named versions of the workflow side-by-side, letting the engine run old instances on the old version while new instances pick up the latest.
+1. **Patching** — for small, incremental changes. You modify the existing workflow definition in place and use the `isPatched` flag to branch between old and new behavior.
+2. **Named versioning** — for larger changes. You register explicit named versions of the workflow side-by-side, letting Dapr run old instances on the old version while new instances pick up the latest.
 
-A common migration path is to start with patching for quick fixes, then eventually cut over to a full named version once the scope of changes warrants it.
+A common scenario is to start with patching for quick fixes, then eventually migrate to using a full named version once the scope of changes warrants it.
 
 ---
 
@@ -34,6 +34,15 @@ graph LR
 
 - **Original** (`WORKFLOW_PATCHED_ENABLED=false`): always calls `SendEmail`.
 - **Patched** (`WORKFLOW_PATCHED_ENABLED=true`): calls `SendSms` for new instances; existing instances that haven't reached the patch point yet fall through to `SendEmail`.
+
+## Environment Variables Reference
+
+| Variable | Value | Effect |
+|----------|-------|--------|
+| `WORKFLOW_PATCHED_ENABLED` | `false` | Registers the **original** patched workflow (`SendEmail` always) |
+| `WORKFLOW_PATCHED_ENABLED` | `true` | Registers the **patched** workflow (`ctx.isPatched()` decides `SendSms` vs `SendEmail`) |
+| `WORKFLOW_V2_ENABLED` | `false` | Registers only **v1** as latest (`SendEmail`) |
+| `WORKFLOW_V2_ENABLED` | `true` | Registers **v1** as non-latest and **v2** as latest (`SendSms`) |
 
 ### Run the patched workflow
 
@@ -134,11 +143,4 @@ graph LR
 
 ---
 
-## Environment Variables Reference
 
-| Variable | Value | Effect |
-|----------|-------|--------|
-| `WORKFLOW_PATCHED_ENABLED` | `false` | Registers the **original** patched workflow (`SendEmail` always) |
-| `WORKFLOW_PATCHED_ENABLED` | `true` | Registers the **patched** workflow (`ctx.isPatched()` decides `SendSms` vs `SendEmail`) |
-| `WORKFLOW_V2_ENABLED` | `false` | Registers only **v1** as latest (`SendEmail`) |
-| `WORKFLOW_V2_ENABLED` | `true` | Registers **v1** as non-latest and **v2** as latest (`SendSms`) |
