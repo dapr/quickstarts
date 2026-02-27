@@ -26,7 +26,7 @@ try:
 
         print(f'Input sent: {text_input}', flush=True)
 
-        response = d.converse_alpha2(name=provider_component, inputs=inputs, temperature=0.7, context_id='chat-123')
+        response = d.converse_alpha2(name=provider_component, inputs=inputs, temperature=0.7)
         
         if response and hasattr(response, 'outputs') and response.outputs:
             for output in response.outputs:
