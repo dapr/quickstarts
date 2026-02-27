@@ -3,7 +3,7 @@ module conversation
 go 1.24.13
 
 require (
-	github.com/dapr/go-sdk v1.14.0-rc.2
+	github.com/dapr/go-sdk v1.14.1
 	github.com/invopop/jsonschema v0.13.0
 	google.golang.org/protobuf v1.36.11
 )
@@ -13,9 +13,9 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dapr/dapr v1.17.0-rc.1.0.20260223152404-af1d144142f5 // indirect
+	github.com/dapr/dapr v1.17.0 // indirect
 	github.com/dapr/durabletask-go v0.11.0 // indirect
-	github.com/dapr/kit v0.16.2-0.20251124175541-3ac186dff64d // indirect
+	github.com/dapr/kit v0.17.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
