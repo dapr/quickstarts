@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Client" Version="1.17.0-rc14" />
-    <PackageReference Include="Dapr.Jobs" Version="1.17.0-rc14" />
+    <PackageReference Include="Dapr.Client" Version="1.17.0" />
+    <PackageReference Include="Dapr.Jobs" Version="1.17.0" />
   </ItemGroup>
 
 </Project>
