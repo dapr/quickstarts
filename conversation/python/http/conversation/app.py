@@ -107,12 +107,6 @@ tool_call_input = {
         'api_key': 'test-key',
         'version': '1.0'
     },
-    'response_format': {
-        'type': 'object',
-        'properties': {
-            'answer': {'type': 'string'}
-        }
-    },
     'prompt_cache_retention': '86400s',
     'scrubPii': False,
     'temperature': 0.7,

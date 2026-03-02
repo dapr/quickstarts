@@ -107,8 +107,6 @@ public class Conversation {
                     .setScrubPii(false)
                     .setToolChoice("auto")
                     .setTemperature(0.7)
-                    .setResponseFormat(RESPONSE_SCHEMA)
-                    .setPromptCacheRetention(Duration.ofMinutes(10))
                     .setTools(List.of(weatherTool))).block();
 
             System.out.println("Tool calling input sent: " + TOOL_CALL_INPUT);

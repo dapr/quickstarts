@@ -147,11 +147,6 @@ public class ConversationApplication {
                 ],
                 "parameters": {},
                 "metadata": {},
-                "response_format": {
-                    "type": "object",
-                    "properties": {"answer": {"type": "string"}},
-                    "required": ["answer"]
-                },
                 "prompt_cache_retention": "86400s",
                 "temperature": 0.7,
                 "tools": [

@@ -144,11 +144,9 @@ func main() {
 	weatherMessage := "What is the weather like in San Francisco in celsius?"
 	fmt.Println("Tool calling input sent:", weatherMessage)
 	requestWithTool := dapr.ConversationRequestAlpha2{
-		Name:                 conversationComponent,
-		Inputs:               []*dapr.ConversationInputAlpha2{createUserMessageInput(weatherMessage)},
-		Tools:                []*dapr.ConversationToolsAlpha2{tool},
-		ResponseFormat:       responseFormat,
-		PromptCacheRetention: durationpb.New(24 * time.Hour),
+		Name:   conversationComponent,
+		Inputs: []*dapr.ConversationInputAlpha2{createUserMessageInput(weatherMessage)},
+		Tools:  []*dapr.ConversationToolsAlpha2{tool},
 	}
 
 	resp, err = client.ConverseAlpha2(context.Background(), requestWithTool)
