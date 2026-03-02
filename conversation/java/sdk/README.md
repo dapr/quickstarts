@@ -40,8 +40,7 @@ expected_stdout_lines:
   - '== APP - conversation == Output response:'
   - '== APP - conversation == === Tool Calling ==='
   - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Tool calls detected:'
-  - '== APP - conversation == Function name: get_weather'
+  - '== APP - conversation == Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none

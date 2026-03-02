@@ -210,6 +210,6 @@ func main() {
 			fmt.Printf("Tool call: %v\n", tc)
 		}
 	} else {
-		fmt.Println("No tool calls in response")
+		fmt.Println("Tool calls not found")
 	}
 }

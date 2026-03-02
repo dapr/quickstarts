@@ -101,20 +101,28 @@ var toolCallResponse = await conversationClient.ConverseAsync(
 
 Console.WriteLine($"Tool calling input sent: {toolCallInput}");
 Console.WriteLine($"Output message: {toolCallResponse.Outputs.First().Choices.First().Message.Content}");
-Console.WriteLine("Tool calls detected:");
 
-var functionToolCall = toolCallResponse.Outputs.First().Choices.First().Message.ToolCalls.First() as CalledToolFunction
-    ?? throw new("Unexpected tool call type for demo.");
-
-var toolCallJson = JsonSerializer.Serialize(new
+var toolCalls = toolCallResponse.Outputs.First().Choices.First().Message.ToolCalls;
+if (toolCalls != null && toolCalls.Count > 0)
 {
-    id = 0,
-    function = new
+    Console.WriteLine("Tool calls detected:");
+    var functionToolCall = toolCalls.First() as CalledToolFunction
+        ?? throw new("Unexpected tool call type for demo.");
+
+    var toolCallJson = JsonSerializer.Serialize(new
     {
-        name = functionToolCall.Name,
-        arguments = functionToolCall.JsonArguments,
-    },
-});
-Console.WriteLine($"Tool call: {toolCallJson}");
-Console.WriteLine($"Function name: {functionToolCall.Name}");
-Console.WriteLine($"Function arguments: {functionToolCall.JsonArguments}");
+        id = 0,
+        function = new
+        {
+            name = functionToolCall.Name,
+            arguments = functionToolCall.JsonArguments,
+        },
+    });
+    Console.WriteLine($"Tool call: {toolCallJson}");
+    Console.WriteLine($"Function name: {functionToolCall.Name}");
+    Console.WriteLine($"Function arguments: {functionToolCall.JsonArguments}");
+}
+else
+{
+    Console.WriteLine("Tool calls not found");
+}

@@ -129,6 +129,8 @@ public class Conversation {
                     System.out.println("Function name: " + functionName);
                     System.out.println("Function arguments: " + functionArguments);
                 }
+            } else {
+                System.out.println("Tool calls not found");
             }
 
             UsageUtils.printDetails(CONVERSATION_COMPONENT_NAME, conversationResponse.getOutputs().get(0));

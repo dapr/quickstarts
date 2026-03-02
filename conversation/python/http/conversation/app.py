@@ -170,7 +170,7 @@ if 'outputs' in data and len(data['outputs']) > 0:
                         logging.info(f"Function name: {func_call.get('name', 'unknown')}")
                         logging.info(f"Function arguments: {func_call.get('arguments', 'none')}")
             else:
-                logging.info('No tool calls in response')
+                logging.info('Tool calls not found')
         else:
             logging.error('No message in choice')
     else:

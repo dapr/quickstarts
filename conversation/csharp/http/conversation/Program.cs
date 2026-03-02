@@ -167,31 +167,38 @@ var toolCallingContent = messageElement.TryGetProperty("content", out var conten
     ? contentElement.GetString()
     : null;
 
-var functionCalled = messageElement
-  .GetProperty("toolCalls")
-  .EnumerateArray()
-  .First()
-  .GetProperty("function");
-
-var functionName = functionCalled.GetProperty("name").GetString();
-var functionArguments = functionCalled.GetProperty("arguments").GetString();
-
-var toolCallJson = JsonSerializer.Serialize(new
-{
-  id = 0,
-  function = new
-  {
-    name = functionName,
-    arguments = functionArguments,
-  },
-}, s_jsonOptions);
-
 Console.WriteLine($"Tool calling input sent: {toolCallInput}");
 Console.WriteLine($"Output message: {toolCallingContent}");
-Console.WriteLine("Tool calls detected:");
-Console.WriteLine($"Tool call: {toolCallJson}");
-Console.WriteLine($"Function name: {functionName}");
-Console.WriteLine($"Function arguments: {functionArguments}");
+
+if (messageElement.TryGetProperty("toolCalls", out var toolCallsElement) && toolCallsElement.GetArrayLength() > 0)
+{
+    var functionCalled = toolCallsElement
+        .EnumerateArray()
+        .First()
+        .GetProperty("function");
+
+    var functionName = functionCalled.GetProperty("name").GetString();
+    var functionArguments = functionCalled.GetProperty("arguments").GetString();
+
+    var toolCallJson = JsonSerializer.Serialize(new
+    {
+        id = 0,
+        function = new
+        {
+            name = functionName,
+            arguments = functionArguments,
+        },
+    }, s_jsonOptions);
+
+    Console.WriteLine("Tool calls detected:");
+    Console.WriteLine($"Tool call: {toolCallJson}");
+    Console.WriteLine($"Function name: {functionName}");
+    Console.WriteLine($"Function arguments: {functionArguments}");
+}
+else
+{
+    Console.WriteLine("Tool calls not found");
+}
 
 static partial class Program
 {

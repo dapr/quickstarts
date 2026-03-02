@@ -182,7 +182,7 @@ async function main() {
         console.log(`  Arguments: ${functionArgs}`);
       }
     } else {
-      console.log("No tool calls in response");
+      console.log("Tool calls not found");
     }
   } catch (error) {
     console.error("Error:", error.message);

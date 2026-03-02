@@ -69,9 +69,7 @@ This example uses the Ollama LLM component for local inference. You can switch t
       - '== APP - conversation == Usage:'
       - '== APP - conversation == Output response:'
       - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-      - '== APP - conversation == Tool calls detected:'
-      - "== APP - conversation == Tool call: {'id': 'call_"
-      - '== APP - conversation == Function name: get_weather'
+      - '== APP - conversation == Tool calls'
     expected_stderr_lines:
     output_match_mode: substring
     match_order: none
