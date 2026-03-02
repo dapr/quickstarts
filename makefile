@@ -1,4 +1,5 @@
 include validate.mk
+SHELL := /bin/bash
 
 ##################################################
 # Main targets
