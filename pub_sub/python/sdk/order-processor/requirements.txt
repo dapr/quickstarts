@@ -1,5 +1,5 @@
 Flask
-dapr>=1.17.0rc3
+dapr>=1.17.0
 cloudevents
 uvicorn
 typing-extensions
