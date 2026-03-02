@@ -70,25 +70,25 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     name: Run multi app run template
     expected_stdout_lines:
       - '== APP - conversation-sdk == Input sent: What is dapr?'
-      - '== APP - conversation-sdk == Output response:'
+      - '== APP - conversation-sdk == Output response: What is dapr?'
     expected_stderr_lines:
     output_match_mode: substring
     match_order: none
     background: true
-    sleep: 30
-    timeout_seconds: 60
+    sleep: 15
+    timeout_seconds: 30
     -->
-
+    
     ```bash
     source conversation/.venv/bin/activate
-    dapr run -f .
+    dapr run -f .    
     ```
-
+    
     Expected output:
-
+    
     ```text
     == APP - conversation-sdk == Input sent: What is dapr?
-    == APP - conversation-sdk == Output response: Dapr is an open-source, cross-platform microservices framework...
+    == APP - conversation-sdk == Output response: What is dapr?
     ```
     
     <!-- END_STEP -->
@@ -112,15 +112,15 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     name: Run multi app run template
     expected_stdout_lines:
       - "== APP - conversation-tool-calling == Input sent: calculate square root of 15"
-      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls'"
+      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))"
       - "== APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius"
-      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls'"
+      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))"
     expected_stderr_lines:
     output_match_mode: substring
     match_order: none
     background: true
-    sleep: 30
-    timeout_seconds: 60
+    sleep: 15
+    timeout_seconds: 30
     -->
 
     ```bash
@@ -132,9 +132,9 @@ For more LLM options, see the [supported Conversation components](https://docs.d
 
     ```text
     == APP - conversation-tool-calling == Input sent: calculate square root of 15
-    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='call_...', function=ConversationToolCallsOfFunction(name='calculate', arguments='{"expression": "sqrt(15)"}'))]))
+    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))
     == APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius
-    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='call_...', function=ConversationToolCallsOfFunction(name='get_weather', arguments='{"location": "San Francisco", "unit": "celsius"}'))]))
+    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
     ```
 
     <!-- END_STEP -->
