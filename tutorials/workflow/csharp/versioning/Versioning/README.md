@@ -44,9 +44,9 @@ It doesn't matter that we didn't have a version suffix on the original workflow 
 will automatically assume it to be an earlier version (version 0) of the workflow version family `NotifyUserWorkflow` 
 and will understand that it's superceded by `NotifyUserWorkflowV2` when evaluated at runtime by the default selector. 
 
-When your application runs, if a workflow is already in flight using `NotifyUserWorkflow`, it will continue to use
-your original workflow class, but any new workflow executions will instead route to the new `NotifyUserWorkflowV2` class
-instead.
+Uncomment the whole of `NotifyUserWorkflowV2`. When your application runs, if a workflow is already in flight 
+using `NotifyUserWorkflow`, it will continue to use your original workflow class, but any new workflow executions will 
+instead route to the new `NotifyUserWorkflowV2` class instead.
 
 ```mermaid
 flowchart LR
