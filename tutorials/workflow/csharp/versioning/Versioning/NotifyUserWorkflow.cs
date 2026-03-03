@@ -14,16 +14,18 @@ public sealed partial class NotifyUserWorkflow : Workflow<string, string>
 		var logger = context.CreateReplaySafeLogger<NotifyUserWorkflow>();
 		LogRunningWorkflow(logger);
 		
-		if (context.IsPatched("send_sms"))
-		{
-			LogTakingPatchedPath(logger, nameof(SendSmsActivity));
-			return await context.CallActivityAsync<string>(nameof(SendSmsActivity), input);
-		}
-		else
-		{
+		// Step 1: Remove the comments in the class below to add a patch to the class directly and run a different
+		// activity when the workflow runs.
+		// if (context.IsPatched("send_sms"))
+		// {
+		// 	LogTakingPatchedPath(logger, nameof(SendSmsActivity));
+		// 	return await context.CallActivityAsync<string>(nameof(SendSmsActivity), input);
+		// }
+		// else
+		// {
 			LogTakingUnpatchedPath(logger, nameof(SendEmailActivity));
 			return await context.CallActivityAsync<string>(nameof(SendEmailActivity), input);
-		}
+		//}
 	}
 
 	[LoggerMessage(LogLevel.Information, "Running the original version of the NotifyUserWorkflow workflow family")]
