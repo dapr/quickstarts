@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class Conversation {
 
-    private static final String CONVERSATION_COMPONENT_NAME = "echo";
+    private static final String CONVERSATION_COMPONENT_NAME = "ollama";
     private static final String CONVERSATION_TEXT = "What is dapr?";
     private static final String TOOL_CALL_INPUT = "What is the weather like in San Francisco in celsius?";
 
@@ -33,7 +33,8 @@ public class Conversation {
                 "answer": {
                   "type": "string",
                   "description": "The answer to the user's question"
-                },
+                }
+              },
               "required": ["answer"],
               "additionalProperties": false
             }
@@ -106,8 +107,6 @@ public class Conversation {
                     .setScrubPii(false)
                     .setToolChoice("auto")
                     .setTemperature(0.7)
-                    .setResponseFormat(RESPONSE_SCHEMA)
-                    .setPromptCacheRetention(Duration.ofMinutes(10))
                     .setTools(List.of(weatherTool))).block();
 
             System.out.println("Tool calling input sent: " + TOOL_CALL_INPUT);
@@ -130,6 +129,8 @@ public class Conversation {
                     System.out.println("Function name: " + functionName);
                     System.out.println("Function arguments: " + functionArguments);
                 }
+            } else {
+                System.out.println("Tool calls not found");
             }
 
             UsageUtils.printDetails(CONVERSATION_COMPONENT_NAME, conversationResponse.getOutputs().get(0));

@@ -38,9 +38,9 @@ Tool calling follows [OpenAI's function calling format](https://developers.opena
 
 ## Run the app with the template file
 
-Run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and the Dapr CLI with dapr run -f ..
+Run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and the Dapr CLI with `dapr run -f .`.
 
-This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Here are other [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the Ollama LLM component for local inference. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `ollama` to `openai`. For other available integrations, see the other [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
 
 ### Build and run the Java application
 
@@ -65,25 +65,20 @@ name: Run multi app run template
 expected_stdout_lines:
   - '== APP - conversation == === Basic Conversation Example ==='
   - '== APP - conversation == Input sent: What is dapr?'
-  - '== APP - conversation == Output response: What is dapr?'
-  - '== APP - conversation =='
+  - '== APP - conversation == Usage:'
+  - '== APP - conversation == Output response:'
   - '== APP - conversation == === Tool Calling Example ==='
   - '== APP - conversation == Input sent: What is the weather like in San Francisco?'
   - '== APP - conversation == Tools defined: get_weather (location, unit)'
   - '== APP - conversation == LLM requested tool calls:'
-  - '== APP - conversation ==   Tool ID: 0'
   - '== APP - conversation ==   Function: get_weather'
-  - '== APP - conversation ==   Arguments: location,unit'
   - '== APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}'
-  - '== APP - conversation == '
-  - '== APP - conversation == Note: The echo component echoes input for testing purposes.'
-  - '== APP - conversation == For actual tool calling, configure a real LLM component like OpenAI.'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
-timeout_seconds: 30
+sleep: 30
+timeout_seconds: 120
 -->
 
 ```bash
@@ -95,19 +90,17 @@ The terminal console output should look similar to this:
 ```text
 == APP - conversation == === Basic Conversation Example ===
 == APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+== APP - conversation == Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
 == APP - conversation ==
 == APP - conversation == === Tool Calling Example ===
 == APP - conversation == Input sent: What is the weather like in San Francisco?
 == APP - conversation == Tools defined: get_weather (location, unit)
 == APP - conversation == LLM requested tool calls:
-== APP - conversation ==   Tool ID: 0
+== APP - conversation ==   Tool ID: call_xxxx
 == APP - conversation ==   Function: get_weather
-== APP - conversation ==   Arguments: location,unit
+== APP - conversation ==   Arguments: {"location":"San Francisco, CA","unit":"celsius"}
 == APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
-== APP - conversation == 
-== APP - conversation == Note: The echo component echoes input for testing purposes.
-== APP - conversation == For actual tool calling, configure a real LLM component like OpenAI.
 ```
 
 <!-- END_STEP -->
@@ -145,19 +138,17 @@ You should see the output:
 ```bash
 == APP - conversation == === Basic Conversation Example ===
 == APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+== APP - conversation == Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
 == APP - conversation ==
 == APP - conversation == === Tool Calling Example ===
 == APP - conversation == Input sent: What is the weather like in San Francisco?
 == APP - conversation == Tools defined: get_weather (location, unit)
 == APP - conversation == LLM requested tool calls:
-== APP - conversation ==   Tool ID: 0
+== APP - conversation ==   Tool ID: call_xxxx
 == APP - conversation ==   Function: get_weather
-== APP - conversation ==   Arguments: location,unit
+== APP - conversation ==   Arguments: {"location":"San Francisco, CA","unit":"celsius"}
 == APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
-== APP - conversation == 
-== APP - conversation == Note: The echo component echoes input for testing purposes.
-== APP - conversation == For actual tool calling, configure a real LLM component like OpenAI.
 ```
 
 3. Stop the application:
