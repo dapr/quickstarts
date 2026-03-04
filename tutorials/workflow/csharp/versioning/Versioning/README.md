@@ -3,7 +3,7 @@
 This tutorial demonstrates how to version your workflows. For more information about workflow versioning in general,
 see the 
 [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-features-concepts/#versioning) 
-and to learn more about your options using the .NET SDK, refer to the [SDK docs]().
+and to learn more about your options using the .NET SDK, refer to the [SDK docs](https://docs.dapr.io/developing-applications/sdks/dotnet/).
 
 ## Inspect the starting workflow
 
@@ -40,7 +40,7 @@ patches and introduce any additional functionality you might want in your next d
 supports numerical-based suffix versioning with an optional prefix, here 'V', we introduce a new workflow version named 
 `NotifyUserWorkflowV2`.
 
-It doesn't matter that we didn't have a version suffix on the original workflow because this built-in default strategy 
+It doesn't matter that we didn't have a version suffix on the original workflow because the Dotnet SDK
 will automatically assume it to be an earlier version (version 0) of the workflow version family `NotifyUserWorkflow` 
 and will understand that it's superceded by `NotifyUserWorkflowV2` when evaluated at runtime by the default selector. 
 
