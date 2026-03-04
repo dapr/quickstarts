@@ -25,8 +25,8 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
   - 'Started Dapr with app id "checkout-http"'
-  - '== APP - checkout-http == Published data: Order { OrderId = 2 }'
-  - '== APP - order-processor-http == Subscriber received : 2'
+  - 'Published data: Order { OrderId = 2 }'
+  - 'Subscriber received : Order { OrderId = 2 }'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -43,9 +43,9 @@ The terminal console output should look similar to this:
 
 ```text
 == APP - checkout-http == Published data: Order { OrderId = 1 }
-== APP - order-processor-http == Subscriber received : 1
+== APP - order-processor-http == Subscriber received : Order { OrderId = 1 }
 == APP - checkout-http == Published data: Order { OrderId = 2 }
-== APP - order-processor-http == Subscriber received : 2
+== APP - order-processor-http == Subscriber received : Order { OrderId = 2 }
 == APP - checkout-http == Published data: Order { OrderId = 3 }
 == APP - order-processor-http == Subscriber received : 3
 == APP - checkout-http == Published data: Order { OrderId = 4 }

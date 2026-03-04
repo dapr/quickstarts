@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapr.Workflow" Version="1.17.0" />
+    <PackageReference Include="Dapr.Workflow.Versioning" Version="1.17.0" />
+  </ItemGroup>
+
+</Project>

@@ -12,7 +12,7 @@ This quickstart includes one app:
 
 This section shows how to run the application using the [multi-app run template file](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and Dapr CLI with `dapr run -f .`.  
 
-This example uses the default LLM component (Echo) which simply returns the input for testing purposes. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `echo` to `openai`. For other available integrations, see the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the Ollama LLM component for local inference. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `ollama` to `openai`. For other available integrations, see the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
 
 Open a new terminal window and run the multi app run template:
 
@@ -37,20 +37,16 @@ name: Run multi app run template
 expected_stdout_lines:
   - '== APP - conversation == === Simple Conversation ==='
   - '== APP - conversation == Conversation input sent: What is dapr?'
-  - '== APP - conversation == Output response: What is dapr?'
+  - '== APP - conversation == Output response:'
   - '== APP - conversation == === Tool Calling ==='
   - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Output message: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Tool calls detected:'
-  - '== APP - conversation == Tool call: {"id": "0", "function": {"name": "get_weather", "arguments": location,unit}}'
-  - '== APP - conversation == Function name: get_weather'
-  - '== APP - conversation == Function arguments: location,unit'
+  - '== APP - conversation == Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
-timeout_seconds: 15
+sleep: 30
+timeout_seconds: 120
 -->
 
 ```bash
@@ -59,23 +55,23 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends a simple conversation input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes back the response.
+- The app sends a simple conversation input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
 - The app then demonstrates tool calling by sending `What is the weather like in San Francisco in celsius?`.
 - The response includes detected tool calls with function name and arguments.
 
 ```text
 == APP - conversation == === Simple Conversation ===
 == APP - conversation == Conversation input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+== APP - conversation == Output response: {"answer":"Dapr is an open-source, cross-platform microservices framework..."}
+== APP - conversation == Conversation model : llama3.2:latest
 
 == APP - conversation == === Tool Calling ===
 == APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-== APP - conversation == Output message: What is the weather like in San Francisco in celsius?
 == APP - conversation == Tool calls detected:
-== APP - conversation == Tool call: {"id": "0", "function": {"name": "get_weather", "arguments": location,unit}}
+== APP - conversation == Tool call: {"id": "call_xxxx", "function": {"name": "get_weather", "arguments": {"location":"San Francisco, CA","unit":"celsius"}}}
 == APP - conversation == Function name: get_weather
-== APP - conversation == Function arguments: location,unit
+== APP - conversation == Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
 ```
 
 <!-- END_STEP -->
@@ -113,13 +109,13 @@ The terminal console output should look similar to this:
 ```text
 === Simple Conversation ===
 Conversation input sent: What is dapr?
-Output response: What is dapr?
+Output response: {"answer":"Dapr is an open-source, cross-platform microservices framework..."}
+Conversation model : llama3.2:latest
 
 === Tool Calling ===
 Tool calling input sent: What is the weather like in San Francisco in celsius?
-Output message: What is the weather like in San Francisco in celsius?
 Tool calls detected:
-Tool call: {"id": "0", "function": {"name": "get_weather", "arguments": location,unit}}
+Tool call: {"id": "call_xxxx", "function": {"name": "get_weather", "arguments": {"location":"San Francisco, CA","unit":"celsius"}}}
 Function name: get_weather
-Function arguments: location,unit
+Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
 ```

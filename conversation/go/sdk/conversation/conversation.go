@@ -19,23 +19,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strings"
+	"time"
 
 	"github.com/invopop/jsonschema"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/structpb"
 
 	dapr "github.com/dapr/go-sdk/client"
 )
-
-// createMapOfArgsForEcho is a helper function to deal with the issue with the echo component not returning args as a map but in csv format
-func createMapOfArgsForEcho(s string) ([]byte, error) {
-	m := map[string]any{}
-	for _, p := range strings.Split(s, ",") {
-		m[p] = p
-	}
-	return json.Marshal(m)
-}
 
 // getWeatherInLocation is an example function to use as a tool call
 func getWeatherInLocation(request GetDegreesWeatherRequest, defaultValues GetDegreesWeatherRequest) string {
@@ -106,11 +98,25 @@ func main() {
 	}
 
 	inputMsg := "What is dapr?"
-	conversationComponent := "echo"
+	conversationComponent := "ollama"
+
+	// Optional: structured outputs and prompt cache retention
+	responseFormat, err := structpb.NewStruct(map[string]any{
+		"type": "object",
+		"properties": map[string]any{
+			"answer": map[string]any{"type": "string"},
+		},
+		"required": []any{"answer"},
+	})
+	if err != nil {
+		log.Fatalf("failed to build response_format: %v", err)
+	}
 
 	request := dapr.ConversationRequestAlpha2{
-		Name:   conversationComponent,
-		Inputs: []*dapr.ConversationInputAlpha2{createUserMessageInput(inputMsg)},
+		Name:                 conversationComponent,
+		Inputs:               []*dapr.ConversationInputAlpha2{createUserMessageInput(inputMsg)},
+		ResponseFormat:       responseFormat,
+		PromptCacheRetention: durationpb.New(24 * time.Hour),
 	}
 
 	fmt.Println("Input sent:", inputMsg)
@@ -120,14 +126,23 @@ func main() {
 		log.Fatalf("err: %v", err)
 	}
 
-	fmt.Println("Output response:", resp.Outputs[0].Choices[0].Message.Content)
+	firstOut := resp.Outputs[0]
+	if firstOut.Model != nil && *firstOut.Model != "" {
+		fmt.Println("Model:", *firstOut.Model)
+	}
+	if firstOut.Usage != nil {
+		fmt.Printf("Usage: prompt_tokens=%d completion_tokens=%d total_tokens=%d\n",
+			firstOut.Usage.PromptTokens, firstOut.Usage.CompletionTokens, firstOut.Usage.TotalTokens)
+	}
+	fmt.Println("Output response:", firstOut.Choices[0].Message.Content)
 
 	tool, err := GenerateFunctionTool[GetDegreesWeatherRequest]("getWeather", "get weather from a location in the given unit")
 	if err != nil {
 		log.Fatalf("err: %v", err)
 	}
 
-	weatherMessage := "Tool calling input sent: What is the weather like in San Francisco in celsius?'"
+	weatherMessage := "What is the weather like in San Francisco in celsius?"
+	fmt.Println("Tool calling input sent:", weatherMessage)
 	requestWithTool := dapr.ConversationRequestAlpha2{
 		Name:   conversationComponent,
 		Inputs: []*dapr.ConversationInputAlpha2{createUserMessageInput(weatherMessage)},
@@ -139,19 +154,21 @@ func main() {
 		log.Fatalf("err: %v", err)
 	}
 
-	fmt.Println(resp.Outputs[0].Choices[0].Message.Content)
-	for _, toolCalls := range resp.Outputs[0].Choices[0].Message.ToolCalls {
+	toolOut := resp.Outputs[0]
+	if toolOut.Model != nil && *toolOut.Model != "" {
+		fmt.Println("Model:", *toolOut.Model)
+	}
+	if toolOut.Usage != nil {
+		fmt.Printf("Usage: prompt_tokens=%d completion_tokens=%d total_tokens=%d\n",
+			toolOut.Usage.PromptTokens, toolOut.Usage.CompletionTokens, toolOut.Usage.TotalTokens)
+	}
+
+	fmt.Println(toolOut.Choices[0].Message.Content)
+	for _, toolCalls := range toolOut.Choices[0].Message.ToolCalls {
 		fmt.Printf("Tool Call: Name: %s - Arguments: %v\n", toolCalls.ToolTypes.Name, toolCalls.ToolTypes.Arguments)
 
 		// parse the arguments and execute tool
 		args := []byte(toolCalls.ToolTypes.Arguments)
-		if conversationComponent == "echo" {
-			// The echo component does not return a compliant tool calling response in json format but rather returns a csv
-			args, err = createMapOfArgsForEcho(toolCalls.ToolTypes.Arguments)
-			if err != nil {
-				log.Fatalf("err: %v", err)
-			}
-		}
 
 		// find the tool (only one in this case) and execute
 		for _, toolInfo := range requestWithTool.Tools {

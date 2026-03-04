@@ -4,6 +4,7 @@ metadata:
   name: openai
 spec:
   type: conversation.openai
+  version: v1
   metadata:
     - name: key
       value: <YOUR_API_KEY>
