@@ -17,7 +17,7 @@ This quickstart includes one service:
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Fetched Secret:  YourPasskeyHere'
+  - 'Fetched Secret:  YourPasskeyHere'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

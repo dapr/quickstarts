@@ -19,7 +19,7 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor"'
   - 'Started Dapr with app id "checkout"'
-  - '== APP - order-processor == Order received: {"orderId":10}'
+  - 'Order received: {"orderId":10}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -35,26 +35,26 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - checkout-http == Published data: {"orderId":1}
-== APP - order-processor == Subscriber received: {"orderId":1}
-== APP - checkout-http == Published data: {"orderId":2}
-== APP - order-processor == Subscriber received: {"orderId":2}
-== APP - checkout-http == Published data: {"orderId":3}
-== APP - order-processor == Subscriber received: {"orderId":3}
-== APP - checkout-http == Published data: {"orderId":4}
-== APP - order-processor == Subscriber received: {"orderId":4}
-== APP - checkout-http == Published data: {"orderId":5}
-== APP - order-processor == Subscriber received: {"orderId":5}
-== APP - checkout-http == Published data: {"orderId":6}
-== APP - order-processor == Subscriber received: {"orderId":6}
-== APP - checkout-http == Published data: {"orderId":7}
-== APP - order-processor == Subscriber received: {"orderId":7}
-== APP - checkout-http == Published data: {"orderId":8}
-== APP - order-processor == Subscriber received: {"orderId":8}
-== APP - checkout-http == Published data: {"orderId":9}
-== APP - order-processor == Subscriber received: {"orderId":9}
-== APP - checkout-http == Published data: {"orderId":10}
-== APP - order-processor == Subscriber received: {"orderId":10}
+Published data: {"orderId":1}
+Subscriber received: {"orderId":1}
+Published data: {"orderId":2}
+Subscriber received: {"orderId":2}
+Published data: {"orderId":3}
+Subscriber received: {"orderId":3}
+Published data: {"orderId":4}
+Subscriber received: {"orderId":4}
+Published data: {"orderId":5}
+Subscriber received: {"orderId":5}
+Published data: {"orderId":6}
+Subscriber received: {"orderId":6}
+Published data: {"orderId":7}
+Subscriber received: {"orderId":7}
+Published data: {"orderId":8}
+Subscriber received: {"orderId":8}
+Published data: {"orderId":9}
+Subscriber received: {"orderId":9}
+Published data: {"orderId":10}
+Subscriber received: {"orderId":10}
 ```
 <!-- END_STEP -->
 

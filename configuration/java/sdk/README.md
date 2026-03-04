@@ -54,9 +54,9 @@ mvn clean install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP == Configuration for orderId2: {'value':'102'}"
-  - '== APP == App subscribed to config changes with subscription id:'
-  - '== APP == App unsubscribed to config changes'
+  - "Configuration for orderId2: {'value':'102'}"
+  - 'App subscribed to config changes with subscription id:'
+  - 'App unsubscribed to config changes'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

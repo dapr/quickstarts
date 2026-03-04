@@ -31,8 +31,8 @@ name: Install Node dependencies
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP - order-processor == Saving Order:  { orderId: '1' }"
-  - "== APP - order-processor == Getting Order:  { orderId: '1' }"
+  - "Saving Order:  { orderId: '1' }"
+  - "Getting Order:  { orderId: '1' }"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -76,8 +76,8 @@ name: Install Node dependencies
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
-  - "== APP == Saving Order:  { orderId: '1' }"
-  - "== APP == Getting Order:  { orderId: '1' }"
+  - "Saving Order:  { orderId: '1' }"
+  - "Getting Order:  { orderId: '1' }"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./order-processor

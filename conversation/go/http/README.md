@@ -21,11 +21,11 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Input sent: What is dapr?'
-  - '== APP - conversation == Usage:'
-  - '== APP - conversation == Output response:'
-  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Tool calls'
+  - 'Input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -46,11 +46,11 @@ The terminal console output should look similar to this, where:
 - The LLM responds with a tool call to `get_weather`.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-== APP - conversation == Tool calls detected:
-== APP - conversation == Tool call: map[function:map[arguments:... name:get_weather] id:call_xxxx]
+Input sent: What is dapr?
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: map[function:map[arguments:... name:get_weather] id:call_xxxx]
 ```
 
 <!-- END_STEP -->
@@ -77,9 +77,9 @@ The terminal console output should look similar to this, where:
 - The LLM responds with a tool call to `get_weather`.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-== APP - conversation == Tool calls detected:
-== APP - conversation == Tool call: map[function:map[arguments:... name:get_weather] id:call_xxxx]
+Input sent: What is dapr?
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: map[function:map[arguments:... name:get_weather] id:call_xxxx]
 ```

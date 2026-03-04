@@ -111,9 +111,9 @@ Once both services are running, the `order-processor` service will receive order
 ##### `order-processor` output
 
 ```bash
-== APP == Order received: { orderId: 1 }
-== APP == Order received: { orderId: 2 }
-== APP == Order received: { orderId: 3 }
+Order received: { orderId: 1 }
+Order received: { orderId: 2 }
+Order received: { orderId: 3 }
 ```
 
 ### Simulate an application failure by stopping the `order-processor` service
@@ -199,10 +199,10 @@ dapr run --app-port 8001 --app-id order-processor --resources-path ../../../reso
 ##### `order-processor` output:
 
 ```bash
-== APP == Order received: { orderId: 4 }
-== APP == Order received: { orderId: 5 }
-== APP == Order received: { orderId: 6 }
-== APP == Order received: { orderId: 7 }
+Order received: { orderId: 4 }
+Order received: { orderId: 5 }
+Order received: { orderId: 6 }
+Order received: { orderId: 7 }
 ```
 
 ### Stop the apps with Dapr

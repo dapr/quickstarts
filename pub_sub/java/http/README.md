@@ -66,25 +66,25 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - order-processor-http == 2023-09-04 14:25:37.624  INFO 88784 --- [nio-8080-exec-1] c.s.c.OrderProcessingServiceController   : Subscriber received: 1
-== APP - checkout-http == 1175 [main] INFO com.service.CheckoutServiceApplication - Published data: 2
-== APP - order-processor-http == 2023-09-04 14:25:38.558  INFO 88784 --- [nio-8080-exec-2] c.s.c.OrderProcessingServiceController   : Subscriber received: 2
-== APP - checkout-http == 2184 [main] INFO com.service.CheckoutServiceApplication - Published data: 3
-== APP - order-processor-http == 2023-09-04 14:25:39.567  INFO 88784 --- [nio-8080-exec-3] c.s.c.OrderProcessingServiceController   : Subscriber received: 3
-== APP - checkout-http == 3195 [main] INFO com.service.CheckoutServiceApplication - Published data: 4
-== APP - order-processor-http == 2023-09-04 14:25:40.578  INFO 88784 --- [nio-8080-exec-4] c.s.c.OrderProcessingServiceController   : Subscriber received: 4
-== APP - checkout-http == 4203 [main] INFO com.service.CheckoutServiceApplication - Published data: 5
-== APP - order-processor-http == 2023-09-04 14:25:41.586  INFO 88784 --- [nio-8080-exec-5] c.s.c.OrderProcessingServiceController   : Subscriber received: 5
-== APP - checkout-http == 5215 [main] INFO com.service.CheckoutServiceApplication - Published data: 6
-== APP - order-processor-http == 2023-09-04 14:25:42.600  INFO 88784 --- [nio-8080-exec-6] c.s.c.OrderProcessingServiceController   : Subscriber received: 6
-== APP - checkout-http == 6219 [main] INFO com.service.CheckoutServiceApplication - Published data: 7
-== APP - order-processor-http == 2023-09-04 14:25:43.601  INFO 88784 --- [nio-8080-exec-7] c.s.c.OrderProcessingServiceController   : Subscriber received: 7
-== APP - checkout-http == 7224 [main] INFO com.service.CheckoutServiceApplication - Published data: 8
-== APP - order-processor-http == 2023-09-04 14:25:44.607  INFO 88784 --- [nio-8080-exec-8] c.s.c.OrderProcessingServiceController   : Subscriber received: 8
-== APP - checkout-http == 8229 [main] INFO com.service.CheckoutServiceApplication - Published data: 9
-== APP - order-processor-http == 2023-09-04 14:25:45.612  INFO 88784 --- [nio-8080-exec-9] c.s.c.OrderProcessingServiceController   : Subscriber received: 9
-== APP - checkout-http == 9237 [main] INFO com.service.CheckoutServiceApplication - Published data: 10
-== APP - order-processor-http == 2023-09-04 14:25:46.620  INFO 88784 --- [io-8080-exec-10] c.s.c.OrderProcessingServiceController   : Subscriber received: 10
+2023-09-04 14:25:37.624  INFO 88784 --- [nio-8080-exec-1] c.s.c.OrderProcessingServiceController   : Subscriber received: 1
+1175 [main] INFO com.service.CheckoutServiceApplication - Published data: 2
+2023-09-04 14:25:38.558  INFO 88784 --- [nio-8080-exec-2] c.s.c.OrderProcessingServiceController   : Subscriber received: 2
+2184 [main] INFO com.service.CheckoutServiceApplication - Published data: 3
+2023-09-04 14:25:39.567  INFO 88784 --- [nio-8080-exec-3] c.s.c.OrderProcessingServiceController   : Subscriber received: 3
+3195 [main] INFO com.service.CheckoutServiceApplication - Published data: 4
+2023-09-04 14:25:40.578  INFO 88784 --- [nio-8080-exec-4] c.s.c.OrderProcessingServiceController   : Subscriber received: 4
+4203 [main] INFO com.service.CheckoutServiceApplication - Published data: 5
+2023-09-04 14:25:41.586  INFO 88784 --- [nio-8080-exec-5] c.s.c.OrderProcessingServiceController   : Subscriber received: 5
+5215 [main] INFO com.service.CheckoutServiceApplication - Published data: 6
+2023-09-04 14:25:42.600  INFO 88784 --- [nio-8080-exec-6] c.s.c.OrderProcessingServiceController   : Subscriber received: 6
+6219 [main] INFO com.service.CheckoutServiceApplication - Published data: 7
+2023-09-04 14:25:43.601  INFO 88784 --- [nio-8080-exec-7] c.s.c.OrderProcessingServiceController   : Subscriber received: 7
+7224 [main] INFO com.service.CheckoutServiceApplication - Published data: 8
+2023-09-04 14:25:44.607  INFO 88784 --- [nio-8080-exec-8] c.s.c.OrderProcessingServiceController   : Subscriber received: 8
+8229 [main] INFO com.service.CheckoutServiceApplication - Published data: 9
+2023-09-04 14:25:45.612  INFO 88784 --- [nio-8080-exec-9] c.s.c.OrderProcessingServiceController   : Subscriber received: 9
+9237 [main] INFO com.service.CheckoutServiceApplication - Published data: 10
+2023-09-04 14:25:46.620  INFO 88784 --- [io-8080-exec-10] c.s.c.OrderProcessingServiceController   : Subscriber received: 10
 ```
 
 3. Stop and clean up application processes

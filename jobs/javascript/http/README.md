@@ -42,14 +42,14 @@ npm install
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-scheduler == Job Scheduled: R2-D2'
-  - '== APP - job-scheduler == Job Scheduled: C-3PO'
-  - '== APP - job-service == Received job request...'
-  - '== APP - job-service == Starting droid: R2-D2'
-  - '== APP - job-service == Executing maintenance job: Oil Change'
-  - '== APP - job-service == Received job request...'
-  - '== APP - job-service == Starting droid: C-3PO'
-  - '== APP - job-service == Executing maintenance job: Limb Calibration'
+  - 'Job Scheduled: R2-D2'
+  - 'Job Scheduled: C-3PO'
+  - 'Received job request...'
+  - 'Starting droid: R2-D2'
+  - 'Executing maintenance job: Oil Change'
+  - 'Received job request...'
+  - 'Starting droid: C-3PO'
+  - 'Executing maintenance job: Limb Calibration'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -72,21 +72,21 @@ The terminal console output should look similar to this, where:
 - The `C-3PO` job is being executed after 20 seconds.
 
 ```text
-== APP - job-scheduler == Job Scheduled: R2-D2
-== APP - job-scheduler == Job details: {"name":"R2-D2", "dueTime":"15s", "data":{"value":{"value":"R2-D2:Oil Change"}}}
-== APP - job-scheduler == Job Scheduled: C-3PO
-== APP - job-scheduler == Job details: {"name":"C-3PO", "dueTime":"20s", "data":{"value":{"value":"C-3PO:Limb Calibration"}}}
-== APP - job-service == Received job request...
-== APP - job-service == Starting droid: R2-D2
-== APP - job-service == Executing maintenance job: Oil Change
+Job Scheduled: R2-D2
+Job details: {"name":"R2-D2", "dueTime":"15s", "data":{"value":{"value":"R2-D2:Oil Change"}}}
+Job Scheduled: C-3PO
+Job details: {"name":"C-3PO", "dueTime":"20s", "data":{"value":{"value":"C-3PO:Limb Calibration"}}}
+Received job request...
+Starting droid: R2-D2
+Executing maintenance job: Oil Change
 ```
 
 After 20 seconds, the terminal output should present the `C-3PO` job being processed:
 
 ```text
-== APP - job-service == Received job request...
-== APP - job-service == Starting droid: C-3PO
-== APP - job-service == Executing maintenance job: Limb Calibration
+Received job request...
+Starting droid: C-3PO
+Executing maintenance job: Limb Calibration
 ```
 
 <!-- END_STEP -->
@@ -130,9 +130,9 @@ curl -X POST \
 Back at the `job-service` app terminal window, the output should be:
 
 ```text
-== APP - job-app == Received job request...
-== APP - job-app == Starting droid: R2-D2
-== APP - job-app == Executing maintenance job: Oil Change
+Received job request...
+Starting droid: R2-D2
+Executing maintenance job: Oil Change
 ```
 
 3. On the same terminal window, schedule the `C-3PO` Job using the Jobs API.

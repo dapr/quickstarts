@@ -1,12 +1,8 @@
 import asyncio
-import json
-import threading
 import time
-import logging
 from dapr.clients import DaprClient
 from dapr.clients.grpc._response import ConfigurationResponse
 
-logging.basicConfig(level=logging.INFO)
 
 DAPR_CONFIGURATION_STORE = 'configstore'
 CONFIGURATION_KEYS = ['orderId1', 'orderId2']

@@ -118,19 +118,19 @@ graph LR
     The app logs should come from both services executing all activities as follows:
 
     ```text
-    == APP - order-workflow == start: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands')
-    == APP - order-workflow == order_workflow: Received order id: b0d38481-5547-411e-ae7b-255761cce17a.
-    == APP - order-workflow == check_shipping_destination: Received input: id='Customer1' country='The Netherlands'.
-    == APP - order-workflow == check_inventory: Received input: product_id='RBD001' product_name='Rubber Duck' quantity=10 total_price=15.0.
-    == APP - order-workflow == get_inventory_item: product_id='RBD001' product_name='Rubber Duck' quantity=50
-    == APP - shipping == checkDestination: Received input: id='Customer1' country='The Netherlands'.
-    == APP - order-workflow == process_payment: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands').
-    == APP - order-workflow == order_workflow: Payment result: is_success=True.
-    == APP - order-workflow == update_inventory: Received input: product_id='RBD001' product_name='Rubber Duck' quantity=10 total_price=15.0.
-    == APP - order-workflow == get_inventory_item: product_id='RBD001' product_name='Rubber Duck' quantity=50
-    == APP - order-workflow == register_shipment: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands').
-    == APP - shipping == registerShipment: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands').
-    == APP - order-workflow == shipmentRegistered: Received input: order_id='b0d38481-5547-411e-ae7b-255761cce17a' is_success=True message=None.
+    start: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands')
+    order_workflow: Received order id: b0d38481-5547-411e-ae7b-255761cce17a.
+    check_shipping_destination: Received input: id='Customer1' country='The Netherlands'.
+    check_inventory: Received input: product_id='RBD001' product_name='Rubber Duck' quantity=10 total_price=15.0.
+    get_inventory_item: product_id='RBD001' product_name='Rubber Duck' quantity=50
+    checkDestination: Received input: id='Customer1' country='The Netherlands'.
+    process_payment: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands').
+    order_workflow: Payment result: is_success=True.
+    update_inventory: Received input: product_id='RBD001' product_name='Rubber Duck' quantity=10 total_price=15.0.
+    get_inventory_item: product_id='RBD001' product_name='Rubber Duck' quantity=50
+    register_shipment: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands').
+    registerShipment: Received input: id='b0d38481-5547-411e-ae7b-255761cce17a' order_item=OrderItem(product_id='RBD001', product_name='Rubber Duck', quantity=10, total_price=15.0) customer_info=CustomerInfo(id='Customer1', country='The Netherlands').
+    shipmentRegistered: Received input: order_id='b0d38481-5547-411e-ae7b-255761cce17a' is_success=True message=None.
     ```
 
 5. Use the GET request in the [`order-workflow.http`](./order-workflow.http) file to get the status of the workflow, or use this cURL command:

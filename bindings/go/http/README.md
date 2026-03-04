@@ -19,7 +19,7 @@ name: Run and initialize PostgreSQL container
 expected_return_code:
 background: true
 sleep: 60
-timeout_seconds: 120
+timeout_seconds: 150
 -->
 
 ```bash
@@ -49,10 +49,10 @@ go build .
 name: Run batch-http service
 working_dir: ./batch
 expected_stdout_lines:
-  - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
-  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.40)'
-  - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
-  - '== APP == Finished processing batch'
+  - 'insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
+  - 'insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.40)'
+  - 'insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
+  - 'Finished processing batch'
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11

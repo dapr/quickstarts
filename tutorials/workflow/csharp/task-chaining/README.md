@@ -58,9 +58,9 @@ graph LR
     The input for the workflow is a string with the value `This`. The expected app logs are as follows:
 
     ```text
-    == APP - chaining == Activity1: Received input: This.
-    == APP - chaining == Activity2: Received input: This is.
-    == APP - chaining == Activity3: Received input: This is task.
+    Activity1: Received input: This.
+    Activity2: Received input: This is.
+    Activity3: Received input: This is task.
     ```
 
 5. Use the GET request in the [`chaining.http`](./chaining.http) file to get the status of the workflow, or use this cURL command:

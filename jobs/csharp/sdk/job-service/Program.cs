@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprJobsClient();
 var app = builder.Build();
 
-var appPort = Environment.GetEnvironmentVariable("APP_PORT") ?? "6200";
+var appPort = Environment.GetEnvironmentVariable("APP_PORT") ?? "6201";
 var jobsClient = app.Services.GetRequiredService<DaprJobsClient>();
 
 app.MapPost("/scheduleJob", async (HttpContext context) =>
