@@ -45,8 +45,8 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - 'Started Dapr with app id "order-processor-sdk"'
-  - 'Started Dapr with app id "checkout-sdk"'
+  - 'Validating config and starting app "order-processor-sdk"'
+  - 'Validating config and starting app "checkout-sdk"'
   - '== APP - checkout-sdk == INFO:root:Published data: {"orderId": 1}'
   - '== APP - order-processor-sdk == Subscriber received : 1'
 expected_stderr_lines:

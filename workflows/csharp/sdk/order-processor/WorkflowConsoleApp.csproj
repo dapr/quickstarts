@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.Workflow" Version="1.16.0" />
+    <PackageReference Include="Dapr.Workflow" Version="1.17.0" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.17.0" />
   </ItemGroup>
 
 </Project>

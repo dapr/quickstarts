@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright 2024 The Dapr Authors
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@ limitations under the License.
 */
 
 using System.Net.Http.Json;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
-// const string conversationComponentName = "echo";
 const string conversationText = "What is dapr?";
 const string toolCallInput = "What is the weather like in San Francisco in celsius?";
 
@@ -40,17 +40,40 @@ var conversationRequestBody = JsonSerializer.Deserialize<Dictionary<string, obje
       }]
     }],
     "parameters": {},
-    "metadata": {}
+    "metadata": {},
+    "response_format": {
+      "type": "object",
+      "properties": {"answer": {"type": "string"}},
+      "required": ["answer"]
+    },
+    "prompt_cache_retention": "86400s"
   }
 """);
 
-var conversationResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/echo/converse", conversationRequestBody);
-var conversationResult = await conversationResponse.Content.ReadFromJsonAsync<JsonElement>();
+var conversationResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/ollama/converse", conversationRequestBody);
+conversationResponse.EnsureSuccessStatusCode();
+var responseText = await conversationResponse.Content.ReadAsStringAsync();
+var conversationResult = JsonSerializer.Deserialize<JsonElement>(responseText);
 
-var conversationContent = conversationResult
-  .GetProperty("outputs")
-  .EnumerateArray()
-  .First()
+if (conversationResult.ValueKind == JsonValueKind.Null || conversationResult.ValueKind == JsonValueKind.Undefined)
+{
+    throw new InvalidOperationException($"Failed to parse response as JSON. Response: {responseText}");
+}
+
+if (!conversationResult.TryGetProperty("outputs", out var outputsElement))
+{
+    throw new InvalidOperationException($"Response does not contain 'outputs' property. Response: {responseText}");
+}
+
+var firstOutput = outputsElement.EnumerateArray().First();
+
+Console.WriteLine($"Conversation input sent: {conversationText}");
+if (firstOutput.TryGetProperty("model", out var modelElement) && modelElement.GetString() is { Length: > 0 } model)
+    Console.WriteLine($"Model: {model}");
+if (firstOutput.TryGetProperty("usage", out var usageElement))
+    Console.WriteLine($"Usage: prompt_tokens={usageElement.GetProperty("promptTokens").GetString()} completion_tokens={usageElement.GetProperty("completionTokens").GetString()} total_tokens={usageElement.GetProperty("totalTokens").GetString()}");
+
+var conversationContent = firstOutput
   .GetProperty("choices")
   .EnumerateArray()
   .First()
@@ -58,7 +81,6 @@ var conversationContent = conversationResult
   .GetProperty("content")
   .GetString();
 
-Console.WriteLine($"Conversation input sent: {conversationText}");
 Console.WriteLine($"Output response: {conversationContent}");
 
 //
@@ -82,20 +104,8 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
         "scrubPii": false
       }
     ],
-    "parameters": {
-      "max_tokens": {
-        "@type": "type.googleapis.com/google.protobuf.Int64Value",
-        "value": "100"
-      },
-      "model": {
-        "@type": "type.googleapis.com/google.protobuf.StringValue",
-        "value": "claude-3-5-sonnet-20240620"
-      }
-    },
-    "metadata": {
-      "api_key": "test-key",
-      "version": "1.0"
-    },
+    "parameters": {},
+    "metadata": {},
     "scrubPii": false,
     "temperature": 0.7,
     "tools": [
@@ -126,15 +136,26 @@ var toolCallRequestBody = JsonSerializer.Deserialize<Dictionary<string, object?>
         }
       }
     ],
-    "toolChoice": "auto"
+    "toolChoice": "required"
   }
 """);
 
-var toolCallingResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/echo/converse", toolCallRequestBody);
-var toolCallingResult = await toolCallingResponse.Content.ReadFromJsonAsync<JsonElement>();
+var toolCallingResponse = await httpClient.PostAsJsonAsync("http://localhost:3500/v1.0-alpha2/conversation/ollama/converse", toolCallRequestBody);
+toolCallingResponse.EnsureSuccessStatusCode();
+var toolCallingResponseText = await toolCallingResponse.Content.ReadAsStringAsync();
+var toolCallingResult = JsonSerializer.Deserialize<JsonElement>(toolCallingResponseText);
 
-var messageElement = toolCallingResult
-  .GetProperty("outputs")
+if (toolCallingResult.ValueKind == JsonValueKind.Null || toolCallingResult.ValueKind == JsonValueKind.Undefined)
+{
+    throw new InvalidOperationException($"Failed to parse response as JSON. Response: {toolCallingResponseText}");
+}
+
+if (!toolCallingResult.TryGetProperty("outputs", out var toolCallingOutputsElement))
+{
+    throw new InvalidOperationException($"Response does not contain 'outputs' property. Response: {toolCallingResponseText}");
+}
+
+var messageElement = toolCallingOutputsElement
   .EnumerateArray()
   .First()
   .GetProperty("choices")
@@ -142,32 +163,44 @@ var messageElement = toolCallingResult
   .First()
   .GetProperty("message");
 
-var toolCallingContent = messageElement.TryGetProperty("content", out var contentElement) 
-    ? contentElement.GetString() 
+var toolCallingContent = messageElement.TryGetProperty("content", out var contentElement)
+    ? contentElement.GetString()
     : null;
-
-var functionCalled = messageElement
-  .GetProperty("toolCalls")
-  .EnumerateArray()
-  .First()
-  .GetProperty("function");
-
-var functionName = functionCalled.GetProperty("name").GetString();
-var functionArguments = functionCalled.GetProperty("arguments").GetString();
-
-var toolCallJson = JsonSerializer.Serialize(new
-{
-  id = 0,
-  function = new
-  {
-    name = functionName,
-    arguments = functionArguments,
-  },
-});
 
 Console.WriteLine($"Tool calling input sent: {toolCallInput}");
 Console.WriteLine($"Output message: {toolCallingContent}");
-Console.WriteLine("Tool calls detected:");
-Console.WriteLine($"Tool call: {toolCallJson}");
-Console.WriteLine($"Function name: {functionName}");
-Console.WriteLine($"Function arguments: {functionArguments}");
+
+if (messageElement.TryGetProperty("toolCalls", out var toolCallsElement) && toolCallsElement.GetArrayLength() > 0)
+{
+    var functionCalled = toolCallsElement
+        .EnumerateArray()
+        .First()
+        .GetProperty("function");
+
+    var functionName = functionCalled.GetProperty("name").GetString();
+    var functionArguments = functionCalled.GetProperty("arguments").GetString();
+
+    var toolCallJson = JsonSerializer.Serialize(new
+    {
+        id = 0,
+        function = new
+        {
+            name = functionName,
+            arguments = functionArguments,
+        },
+    }, s_jsonOptions);
+
+    Console.WriteLine("Tool calls detected:");
+    Console.WriteLine($"Tool call: {toolCallJson}");
+    Console.WriteLine($"Function name: {functionName}");
+    Console.WriteLine($"Function arguments: {functionArguments}");
+}
+else
+{
+    Console.WriteLine("Tool calls not found");
+}
+
+static partial class Program
+{
+    static readonly JsonSerializerOptions s_jsonOptions = new() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+}
