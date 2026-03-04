@@ -57,11 +57,11 @@ openssl rand -out keys/symmetric-key-256 32
 name: Run order-processor service
 working_dir: crypto-quickstart
 expected_stdout_lines:
-  - '== APP == Encrypted the message, got 856 bytes'
-  - '== APP == Decrypted the message, got 24 bytes'
-  - '== APP == The secret is "passw0rd"'
-  - '== APP == Wrote encrypted data to encrypted.out'
-  - '== APP == Wrote decrypted data to decrypted.out.jpg'
+  - 'Encrypted the message, got 856 bytes'
+  - 'Decrypted the message, got 24 bytes'
+  - 'The secret is "passw0rd"'
+  - 'Wrote encrypted data to encrypted.out'
+  - 'Wrote decrypted data to decrypted.out.jpg'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

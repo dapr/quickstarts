@@ -29,7 +29,7 @@ mvn clean install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Fetched Secret: {"secret":"YourPasskeyHere"}'
+  - 'Fetched Secret: {"secret":"YourPasskeyHere"}'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

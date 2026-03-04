@@ -35,12 +35,12 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == === Simple Conversation ==='
-  - '== APP - conversation == Conversation input sent: What is dapr?'
-  - '== APP - conversation == Output response:'
-  - '== APP - conversation == === Tool Calling ==='
-  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Tool calls'
+  - '=== Simple Conversation ==='
+  - 'Conversation input sent: What is dapr?'
+  - 'Output response:'
+  - '=== Tool Calling ==='
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -61,17 +61,17 @@ The terminal console output should look similar to this, where:
 - The response includes detected tool calls with function name and arguments.
 
 ```text
-== APP - conversation == === Simple Conversation ===
-== APP - conversation == Conversation input sent: What is dapr?
-== APP - conversation == Output response: {"answer":"Dapr is an open-source, cross-platform microservices framework..."}
-== APP - conversation == Conversation model : llama3.2:latest
+=== Simple Conversation ===
+Conversation input sent: What is dapr?
+Output response: {"answer":"Dapr is an open-source, cross-platform microservices framework..."}
+Conversation model : llama3.2:latest
 
-== APP - conversation == === Tool Calling ===
-== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-== APP - conversation == Tool calls detected:
-== APP - conversation == Tool call: {"id": "call_xxxx", "function": {"name": "get_weather", "arguments": {"location":"San Francisco, CA","unit":"celsius"}}}
-== APP - conversation == Function name: get_weather
-== APP - conversation == Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
+=== Tool Calling ===
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {"id": "call_xxxx", "function": {"name": "get_weather", "arguments": {"location":"San Francisco, CA","unit":"celsius"}}}
+Function name: get_weather
+Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
 ```
 
 <!-- END_STEP -->

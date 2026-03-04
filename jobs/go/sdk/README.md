@@ -20,10 +20,10 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
  name: Run multi app run template
  expected_stdout_lines:
-   - '== APP - job-service-sdk == Starting droid: R2-D2'
-   - '== APP - job-service-sdk == Executing maintenance job: Oil Change'
-   - '== APP - job-service-sdk == Starting droid: C-3PO'
-   - '== APP - job-service-sdk == Executing maintenance job: Memory Wipe'
+   - 'Starting droid: R2-D2'
+   - 'Executing maintenance job: Oil Change'
+   - 'Starting droid: C-3PO'
+   - 'Executing maintenance job: Memory Wipe'
  expected_stderr_lines:
  output_match_mode: substring
  match_order: none
@@ -49,33 +49,33 @@ The terminal console output should look similar to this, where:
 
 
 ```text
-== APP - job-service-sdk == dapr client initializing for: 127.0.0.1:6481
-== APP - job-service-sdk == Registered job handler for:  R2-D2
-== APP - job-service-sdk == Registered job handler for:  C-3PO
-== APP - job-service-sdk == Registered job handler for:  BB-8
-== APP - job-service-sdk == Starting server on port: 6400
-== APP - job-service-sdk == Job scheduled:  R2-D2
-== APP - job-service-sdk == Job scheduled:  C-3PO
-== APP - job-service-sdk == 2024/07/17 18:09:59 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
-== APP - job-scheduler-sdk == Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}
-== APP - job-service-sdk == Job scheduled:  BB-8
-== APP - job-service-sdk == 2024/07/17 18:09:59 job:{name:"BB-8"  due_time:"15s"  data:{value:"{\"droid\":\"BB-8\",\"Task\":\"Internal Gyroscope Check\"}"}}
-== APP - job-scheduler-sdk == Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}
-== APP - job-scheduler-sdk == Deleted job:  BB-8
+dapr client initializing for: 127.0.0.1:6481
+Registered job handler for:  R2-D2
+Registered job handler for:  C-3PO
+Registered job handler for:  BB-8
+Starting server on port: 6400
+Job scheduled:  R2-D2
+Job scheduled:  C-3PO
+2024/07/17 18:09:59 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
+Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}
+Job scheduled:  BB-8
+2024/07/17 18:09:59 job:{name:"BB-8"  due_time:"15s"  data:{value:"{\"droid\":\"BB-8\",\"Task\":\"Internal Gyroscope Check\"}"}}
+Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}
+Deleted job:  BB-8
 ```
 
 After 5 seconds, the terminal output should present the `R2-D2` job being processed:
 
 ```text
-== APP - job-service-sdk == Starting droid: R2-D2
-== APP - job-service-sdk == Executing maintenance job: Oil Change
+Starting droid: R2-D2
+Executing maintenance job: Oil Change
 ```
 
 After 10 seconds, the terminal output should present the `C3-PO` job being processed:
 
 ```text
-== APP - job-service-sdk == Starting droid: C-3PO
-== APP - job-service-sdk == Executing maintenance job: Memory Wipe
+Starting droid: C-3PO
+Executing maintenance job: Memory Wipe
 ```
 
 <!-- END_STEP -->
@@ -105,11 +105,11 @@ dapr run --app-id job-service-sdk --app-port 6400 --dapr-grpc-port 6481 --app-pr
 The output should be:
 
 ```text
-== APP == dapr client initializing for: 127.0.0.1:6481
-== APP == Registered job handler for:  R2-D2
-== APP == Registered job handler for:  C-3PO
-== APP == Registered job handler for:  BB-8
-== APP == Starting server on port: 6400
+dapr client initializing for: 127.0.0.1:6481
+Registered job handler for:  R2-D2
+Registered job handler for:  C-3PO
+Registered job handler for:  BB-8
+Starting server on port: 6400
 ```
 
 2. On a new terminal window, run the `job-scheduler` app:
@@ -121,22 +121,22 @@ dapr run --app-id job-scheduler-sdk --app-port 6500 -- go run .
 The output should be:
 
 ```text
-== APP == dapr client initializing for: 
-== APP == Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}
-== APP == Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}
-== APP == Job deleted:  BB-8
+dapr client initializing for: 
+Get job response:  {"droid":"C-3PO","Task":"Memory Wipe"}
+Get job response:  {"droid":"BB-8","Task":"Internal Gyroscope Check"}
+Job deleted:  BB-8
 ```
 
 Back at the `job-service` app terminal window, the output should be:
 
 ```text
-== APP == Job scheduled:  R2-D2
-== APP == Job scheduled:  C-3PO
-== APP == 2024/07/17 18:25:36 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
-== APP == Job scheduled:  BB-8
-== APP == 2024/07/17 18:25:36 job:{name:"BB-8"  due_time:"15s"  data:{value:"{\"droid\":\"BB-8\",\"Task\":\"Internal Gyroscope Check\"}"}}
-== APP == Starting droid: R2-D2
-== APP == Executing maintenance job: Oil Change
-== APP == Starting droid: C-3PO
-== APP == Executing maintenance job: Memory Wipe
+Job scheduled:  R2-D2
+Job scheduled:  C-3PO
+2024/07/17 18:25:36 job:{name:"C-3PO"  due_time:"10s"  data:{value:"{\"droid\":\"C-3PO\",\"Task\":\"Memory Wipe\"}"}}
+Job scheduled:  BB-8
+2024/07/17 18:25:36 job:{name:"BB-8"  due_time:"15s"  data:{value:"{\"droid\":\"BB-8\",\"Task\":\"Internal Gyroscope Check\"}"}}
+Starting droid: R2-D2
+Executing maintenance job: Oil Change
+Starting droid: C-3PO
+Executing maintenance job: Memory Wipe
 ```

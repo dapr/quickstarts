@@ -21,11 +21,11 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Conversation input sent: What is dapr?'
-  - '== APP - conversation == Usage:'
-  - '== APP - conversation == Output response:'
-  - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation == Tool calls'
+  - 'Conversation input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -45,14 +45,14 @@ The terminal console output should look similar to this, where:
 - The app then sends a weather request with a `get_weather` tool available; the LLM calls the tool.
 
 ```text
-== APP - conversation == Conversation input sent: What is dapr?
-== APP - conversation == Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
-== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-== APP - conversation == Tool calls detected:
-== APP - conversation == Tool call: {"id":0,"function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}
-== APP - conversation == Function name: get_weather
-== APP - conversation == Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
+Conversation input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {"id":0,"function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}
+Function name: get_weather
+Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
 ```
 
 <!-- END_STEP -->
@@ -91,12 +91,12 @@ The terminal console output should look similar to this, where:
 - The app then sends a weather request with a `get_weather` tool available; the LLM calls the tool.
 
 ```text
-== APP - conversation == Conversation input sent: What is dapr?
-== APP - conversation == Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
-== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-== APP - conversation == Tool calls detected:
-== APP - conversation == Tool call: {"id":0,"function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}
-== APP - conversation == Function name: get_weather
-== APP - conversation == Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
+Conversation input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {"id":0,"function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}
+Function name: get_weather
+Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
 ```

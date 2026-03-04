@@ -69,8 +69,8 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     <!-- STEP
     name: Run multi app run template
     expected_stdout_lines:
-      - '== APP - conversation-sdk == Input sent: What is dapr?'
-      - '== APP - conversation-sdk == Output response: What is dapr?'
+      - 'Input sent: What is dapr?'
+      - 'Output response: What is dapr?'
     expected_stderr_lines:
     output_match_mode: substring
     match_order: none
@@ -87,8 +87,8 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     Expected output:
     
     ```text
-    == APP - conversation-sdk == Input sent: What is dapr?
-    == APP - conversation-sdk == Output response: What is dapr?
+    Input sent: What is dapr?
+    Output response: What is dapr?
     ```
     
     <!-- END_STEP -->
@@ -111,10 +111,10 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     <!-- STEP
     name: Run multi app run template
     expected_stdout_lines:
-      - "== APP - conversation-tool-calling == Input sent: calculate square root of 15"
-      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))"
-      - "== APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius"
-      - "== APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))"
+      - "Input sent: calculate square root of 15"
+      - "Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))"
+      - "Input sent: get weather in San Francisco in celsius"
+      - "Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))"
     expected_stderr_lines:
     output_match_mode: substring
     match_order: none
@@ -131,10 +131,10 @@ For more LLM options, see the [supported Conversation components](https://docs.d
    Expected output:
 
     ```text
-    == APP - conversation-tool-calling == Input sent: calculate square root of 15
-    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))
-    == APP - conversation-tool-calling == Input sent: get weather in San Francisco in celsius
-    == APP - conversation-tool-calling == Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
+    Input sent: calculate square root of 15
+    Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))
+    Input sent: get weather in San Francisco in celsius
+    Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
     ```
 
     <!-- END_STEP -->
@@ -174,8 +174,8 @@ As an alternative to the multi-app template, you can run the application directl
     Expected output:
     
     ```text
-    == APP == Input sent: What is dapr?
-    == APP == Output response: What is dapr?
+Input sent: What is dapr?
+Output response: What is dapr?
     ```
     
 3. **Try the tool calling examples:**

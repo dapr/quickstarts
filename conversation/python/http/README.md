@@ -65,11 +65,11 @@ This example uses the Ollama LLM component for local inference. You can switch t
     <!-- STEP
     name: Run multi app run template
     expected_stdout_lines:
-      - '== APP - conversation == Conversation input sent: What is dapr?'
-      - '== APP - conversation == Usage:'
-      - '== APP - conversation == Output response:'
-      - '== APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-      - '== APP - conversation == Tool calls'
+      - 'Conversation input sent: What is dapr?'
+      - 'Usage:'
+      - 'Output response:'
+      - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+      - 'Tool calls'
     expected_stderr_lines:
     output_match_mode: substring
     match_order: none
@@ -91,13 +91,13 @@ This example uses the Ollama LLM component for local inference. You can switch t
     - The LLM responds with a tool call to `get_weather`.
 
     ```text
-    == APP - conversation == Conversation input sent: What is dapr?
-    == APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-    == APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-    == APP - conversation == Tool calls detected:
-    == APP - conversation == Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
-    == APP - conversation == Function name: get_weather
-    == APP - conversation == Function arguments: ...
+    Conversation input sent: What is dapr?
+    Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+    Tool calling input sent: What is the weather like in San Francisco in celsius?
+    Tool calls detected:
+    Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
+    Function name: get_weather
+    Function arguments: ...
     ```
     
     <!-- END_STEP -->
@@ -167,11 +167,11 @@ This example uses the Ollama LLM component for local inference. You can switch t
     - The LLM responds with a tool call to `get_weather`.
 
     ```text
-    == APP - conversation == Conversation input sent: What is dapr?
-    == APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-    == APP - conversation == Tool calling input sent: What is the weather like in San Francisco in celsius?
-    == APP - conversation == Tool calls detected:
-    == APP - conversation == Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
-    == APP - conversation == Function name: get_weather
-    == APP - conversation == Function arguments: ...
+    Conversation input sent: What is dapr?
+    Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+    Tool calling input sent: What is the weather like in San Francisco in celsius?
+    Tool calls detected:
+    Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
+    Function name: get_weather
+    Function arguments: ...
     ```

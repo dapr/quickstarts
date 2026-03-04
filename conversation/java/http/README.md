@@ -63,16 +63,16 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == === Basic Conversation Example ==='
-  - '== APP - conversation == Input sent: What is dapr?'
-  - '== APP - conversation == Usage:'
-  - '== APP - conversation == Output response:'
-  - '== APP - conversation == === Tool Calling Example ==='
-  - '== APP - conversation == Input sent: What is the weather like in San Francisco?'
-  - '== APP - conversation == Tools defined: get_weather (location, unit)'
-  - '== APP - conversation == LLM requested tool calls:'
-  - '== APP - conversation ==   Function: get_weather'
-  - '== APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}'
+  - '=== Basic Conversation Example ==='
+  - 'Input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - '=== Tool Calling Example ==='
+  - 'Input sent: What is the weather like in San Francisco?'
+  - 'Tools defined: get_weather (location, unit)'
+  - 'LLM requested tool calls:'
+  - '  Function: get_weather'
+  - '  Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -88,19 +88,19 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - conversation == === Basic Conversation Example ===
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
-== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-== APP - conversation ==
-== APP - conversation == === Tool Calling Example ===
-== APP - conversation == Input sent: What is the weather like in San Francisco?
-== APP - conversation == Tools defined: get_weather (location, unit)
-== APP - conversation == LLM requested tool calls:
-== APP - conversation ==   Tool ID: call_xxxx
-== APP - conversation ==   Function: get_weather
-== APP - conversation ==   Arguments: {"location":"San Francisco, CA","unit":"celsius"}
-== APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
+=== Basic Conversation Example ===
+Input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+
+=== Tool Calling Example ===
+Input sent: What is the weather like in San Francisco?
+Tools defined: get_weather (location, unit)
+LLM requested tool calls:
+  Tool ID: call_xxxx
+  Function: get_weather
+  Arguments: {"location":"San Francisco, CA","unit":"celsius"}
+  Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
 ```
 
 <!-- END_STEP -->
@@ -136,19 +136,19 @@ dapr run --app-id conversation --resources-path ../../../components -- java -jar
 You should see the output:
 
 ```bash
-== APP - conversation == === Basic Conversation Example ===
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
-== APP - conversation == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-== APP - conversation ==
-== APP - conversation == === Tool Calling Example ===
-== APP - conversation == Input sent: What is the weather like in San Francisco?
-== APP - conversation == Tools defined: get_weather (location, unit)
-== APP - conversation == LLM requested tool calls:
-== APP - conversation ==   Tool ID: call_xxxx
-== APP - conversation ==   Function: get_weather
-== APP - conversation ==   Arguments: {"location":"San Francisco, CA","unit":"celsius"}
-== APP - conversation ==   Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
+=== Basic Conversation Example ===
+Input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+
+=== Tool Calling Example ===
+Input sent: What is the weather like in San Francisco?
+Tools defined: get_weather (location, unit)
+LLM requested tool calls:
+  Tool ID: call_xxxx
+  Function: get_weather
+  Arguments: {"location":"San Francisco, CA","unit":"celsius"}
+  Tool Result: {"temperature": 65, "unit": "fahrenheit", "description": "Sunny"}
 ```
 
 3. Stop the application:

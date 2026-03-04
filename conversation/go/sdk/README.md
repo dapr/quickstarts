@@ -21,12 +21,12 @@ Open a new terminal window and run the multi app run template:
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation-sdk == Input sent: What is dapr?'
-  - '== APP - conversation-sdk == Usage:'
-  - '== APP - conversation-sdk == Output response:'
-  - '== APP - conversation-sdk == Tool calling input sent: What is the weather like in San Francisco in celsius?'
-  - '== APP - conversation-sdk == Tool Call: Name: getWeather'
-  - '== APP - conversation-sdk == Tool Call Output:'
+  - 'Input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool Call: Name: getWeather'
+  - 'Tool Call Output:'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -46,11 +46,11 @@ The terminal console output should look similar to this, where:
 - The app sends a weather question with a `getWeather` tool available; the LLM calls the tool and the app executes it.
 
 ```text
-== APP - conversation-sdk == Input sent: What is dapr?
-== APP - conversation-sdk == Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-== APP - conversation-sdk == Tool calling input sent: What is the weather like in San Francisco in celsius?
-== APP - conversation-sdk == Tool Call: Name: getWeather - Arguments: {"location":"San Francisco, CA","unit":"celsius"}
-== APP - conversation-sdk == Tool Call Output: The weather in San Francisco, CA is 25 degrees celsius
+Input sent: What is dapr?
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool Call: Name: getWeather - Arguments: {"location":"San Francisco, CA","unit":"celsius"}
+Tool Call Output: The weather in San Francisco, CA is 25 degrees celsius
 ```
 
 <!-- END_STEP -->

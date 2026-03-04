@@ -57,36 +57,36 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - order-processor == Order received : {"orderId": 1}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 1}
-== APP - order-processor == Order received : {"orderId": 2}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 2}
-== APP - order-processor == Order received : {"orderId": 3}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 3}
-== APP - order-processor == Order received : {"orderId": 4}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 4}
-== APP - order-processor == Order received : {"orderId": 5}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 5}
-== APP - order-processor == Order received : {"orderId": 6}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 6}
-== APP - order-processor == Order received : {"orderId": 7}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 7}
-== APP - order-processor == Order received : {"orderId": 8}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 8}
-== APP - order-processor == Order received : {"orderId": 9}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 9}
-== APP - order-processor == Order received : {"orderId": 10}
-== APP - order-processor == 127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
-== APP - checkout == Order passed: {"orderId": 10}
+Order received : {"orderId": 1}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 1}
+Order received : {"orderId": 2}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 2}
+Order received : {"orderId": 3}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 3}
+Order received : {"orderId": 4}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 4}
+Order received : {"orderId": 5}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 5}
+Order received : {"orderId": 6}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 6}
+Order received : {"orderId": 7}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 7}
+Order received : {"orderId": 8}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 8}
+Order received : {"orderId": 9}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 9}
+Order received : {"orderId": 10}
+127.0.0.1 - - [DATE] "POST /orders HTTP/1.1" 200 -
+Order passed: {"orderId": 10}
 ```
 
 3. Stop and clean up application processes

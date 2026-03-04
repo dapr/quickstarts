@@ -27,8 +27,8 @@ expected_stdout_lines:
   - 'Validating config and starting app "checkout"'
   - 'Started Dapr with app id "checkout"'
   - 'Writing log files to directory'
-  - '== APP - order-processor == Order received : Order { orderId = 2 }'
-  - '== APP - checkout == Order passed: Order { OrderId = 2 }'
+  - 'Order received : Order { orderId = 2 }'
+  - 'Order passed: Order { OrderId = 2 }'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -44,26 +44,26 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - order-processor == Order received : Order { orderId = 1 }
-== APP - checkout == Order passed: Order { OrderId = 1 }
-== APP - order-processor == Order received : Order { orderId = 2 }
-== APP - checkout == Order passed: Order { OrderId = 2 }
-== APP - order-processor == Order received : Order { orderId = 3 }
-== APP - checkout == Order passed: Order { OrderId = 3 }
-== APP - order-processor == Order received : Order { orderId = 4 }
-== APP - checkout == Order passed: Order { OrderId = 4 }
-== APP - order-processor == Order received : Order { orderId = 5 }
-== APP - checkout == Order passed: Order { OrderId = 5 }
-== APP - order-processor == Order received : Order { orderId = 6 }
-== APP - checkout == Order passed: Order { OrderId = 6 }
-== APP - order-processor == Order received : Order { orderId = 7 }
-== APP - checkout == Order passed: Order { OrderId = 7 }
-== APP - order-processor == Order received : Order { orderId = 8 }
-== APP - checkout == Order passed: Order { OrderId = 8 }
-== APP - order-processor == Order received : Order { orderId = 9 }
-== APP - checkout == Order passed: Order { OrderId = 9 }
-== APP - order-processor == Order received : Order { orderId = 10 }
-== APP - checkout == Order passed: Order { OrderId = 10 }
+Order received : Order { orderId = 1 }
+Order passed: Order { OrderId = 1 }
+Order received : Order { orderId = 2 }
+Order passed: Order { OrderId = 2 }
+Order received : Order { orderId = 3 }
+Order passed: Order { OrderId = 3 }
+Order received : Order { orderId = 4 }
+Order passed: Order { OrderId = 4 }
+Order received : Order { orderId = 5 }
+Order passed: Order { OrderId = 5 }
+Order received : Order { orderId = 6 }
+Order passed: Order { OrderId = 6 }
+Order received : Order { orderId = 7 }
+Order passed: Order { OrderId = 7 }
+Order received : Order { orderId = 8 }
+Order passed: Order { OrderId = 8 }
+Order received : Order { orderId = 9 }
+Order passed: Order { OrderId = 9 }
+Order received : Order { orderId = 10 }
+Order passed: Order { OrderId = 10 }
 ```
 
 2. Stop and clean up application processes

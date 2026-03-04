@@ -44,25 +44,25 @@ dapr run -f .
 3. Expected output
 
 ```
-== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
-== APP - order-processor == *** Using this app, you can place orders that start workflows.
-== APP - order-processor == dapr client initializing for: 127.0.0.1:46533
-== APP - order-processor == INFO: 2025/02/13 13:18:33 connecting work item listener stream
-== APP - order-processor == 2025/02/13 13:18:33 work item listener started
-== APP - order-processor == INFO: 2025/02/13 13:18:33 starting background processor
-== APP - order-processor == adding base stock item: paperclip
-== APP - order-processor == adding base stock item: cars
-== APP - order-processor == adding base stock item: computers
-== APP - order-processor == ==========Begin the purchase of item:==========
-== APP - order-processor == NotifyActivity: Received order b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 cars - $5000
-== APP - order-processor == VerifyInventoryActivity: Verifying inventory for order b4cb2687-1af0-4f8d-9659-eb6389c07ade of 1 cars
-== APP - order-processor == VerifyInventoryActivity: There are 10 cars available for purchase
-== APP - order-processor == ProcessPaymentActivity: b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 - cars (5000USD)
-== APP - order-processor == UpdateInventoryActivity: Checking Inventory for order b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 * cars
-== APP - order-processor == UpdateInventoryActivity: There are now 9 cars left in stock
-== APP - order-processor == NotifyActivity: Order b4cb2687-1af0-4f8d-9659-eb6389c07ade has completed!
-== APP - order-processor == workflow status: COMPLETED
-== APP - order-processor == Purchase of item is complete
+*** Welcome to the Dapr Workflow console app sample!
+*** Using this app, you can place orders that start workflows.
+dapr client initializing for: 127.0.0.1:46533
+INFO: 2025/02/13 13:18:33 connecting work item listener stream
+2025/02/13 13:18:33 work item listener started
+INFO: 2025/02/13 13:18:33 starting background processor
+adding base stock item: paperclip
+adding base stock item: cars
+adding base stock item: computers
+==========Begin the purchase of item:==========
+NotifyActivity: Received order b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 cars - $5000
+VerifyInventoryActivity: Verifying inventory for order b4cb2687-1af0-4f8d-9659-eb6389c07ade of 1 cars
+VerifyInventoryActivity: There are 10 cars available for purchase
+ProcessPaymentActivity: b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 - cars (5000USD)
+UpdateInventoryActivity: Checking Inventory for order b4cb2687-1af0-4f8d-9659-eb6389c07ade for 1 * cars
+UpdateInventoryActivity: There are now 9 cars left in stock
+NotifyActivity: Order b4cb2687-1af0-4f8d-9659-eb6389c07ade has completed!
+workflow status: COMPLETED
+Purchase of item is complete
 ```
 
 4. Stop Dapr workflow with CTRL-C or:

@@ -42,26 +42,26 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - checkout-http == Published data: Order { OrderId = 1 }
-== APP - order-processor-http == Subscriber received : Order { OrderId = 1 }
-== APP - checkout-http == Published data: Order { OrderId = 2 }
-== APP - order-processor-http == Subscriber received : Order { OrderId = 2 }
-== APP - checkout-http == Published data: Order { OrderId = 3 }
-== APP - order-processor-http == Subscriber received : 3
-== APP - checkout-http == Published data: Order { OrderId = 4 }
-== APP - order-processor-http == Subscriber received : 4
-== APP - checkout-http == Published data: Order { OrderId = 5 }
-== APP - order-processor-http == Subscriber received : 5
-== APP - checkout-http == Published data: Order { OrderId = 6 }
-== APP - order-processor-http == Subscriber received : 6
-== APP - checkout-http == Published data: Order { OrderId = 7 }
-== APP - order-processor-http == Subscriber received : 7
-== APP - checkout-http == Published data: Order { OrderId = 8 }
-== APP - order-processor-http == Subscriber received : 8
-== APP - checkout-http == Published data: Order { OrderId = 9 }
-== APP - order-processor-http == Subscriber received : 9
-== APP - checkout-http == Published data: Order { OrderId = 10 }
-== APP - order-processor-http == Subscriber received : 10
+Published data: Order { OrderId = 1 }
+Subscriber received : Order { OrderId = 1 }
+Published data: Order { OrderId = 2 }
+Subscriber received : Order { OrderId = 2 }
+Published data: Order { OrderId = 3 }
+Subscriber received : 3
+Published data: Order { OrderId = 4 }
+Subscriber received : 4
+Published data: Order { OrderId = 5 }
+Subscriber received : 5
+Published data: Order { OrderId = 6 }
+Subscriber received : 6
+Published data: Order { OrderId = 7 }
+Subscriber received : 7
+Published data: Order { OrderId = 8 }
+Subscriber received : 8
+Published data: Order { OrderId = 9 }
+Subscriber received : 9
+Published data: Order { OrderId = 10 }
+Subscriber received : 10
 ```
 
 2. Stop and clean up application processes

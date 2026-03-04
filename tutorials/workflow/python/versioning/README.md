@@ -98,13 +98,13 @@ New workflow instances will execute the patched code path (`send_sms`) since the
     When running `before.py`, the expected app logs are:
 
     ```text
-    == APP - versioning == send_email: Received input: user_id.
+    send_email: Received input: user_id.
     ```
 
     When running `after_named_version.py` or `after_patching.py`, the expected app logs change from `send_email` to `send_sms` and are:
 
     ```text
-    == APP - versioning == send_sms: Received input: user_id.
+    send_sms: Received input: user_id.
     ```
 
 6. Use the GET request in the [`versioning.http`](./versioning.http) file to get the status of the workflow, or use this cURL command:

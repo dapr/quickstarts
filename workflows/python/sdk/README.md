@@ -33,8 +33,8 @@ cd ..
 <!-- STEP
 name: Running this example
 expected_stdout_lines:
-  - "== APP - order-processor == INFO:UpdateInventoryActivity:There are now 9 cars left in stock"
-  - "== APP - order-processor == Workflow completed! Result: {\"processed\": true"
+  - "INFO:UpdateInventoryActivity:There are now 9 cars left in stock"
+  - "Workflow completed! Result: {\"processed\": true"
 output_match_mode: substring
 background: true
 timeout_seconds: 120
@@ -50,50 +50,50 @@ dapr run -f .
 3. Expected output
 
 ```
-== APP - order-processor == *** Welcome to the Dapr Workflow console app sample!
-== APP - order-processor == *** Using this app, you can place orders that start workflows.
-== APP - order-processor == 2025-02-13 11:44:11.357 durabletask-worker INFO: Starting gRPC worker that connects to dns:127.0.0.1:38891
-== APP - order-processor == 2025-02-13 11:44:11.361 durabletask-worker INFO: Successfully connected to dns:127.0.0.1:38891. Waiting for work items...
-== APP - order-processor == INFO:NotifyActivity:Received order 6830cb00174544a0b062ba818e14fddc for 1 cars at $5000 !
-== APP - order-processor == 2025-02-13 11:44:14.157 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:VerifyInventoryActivity:Verifying inventory for order 6830cb00174544a0b062ba818e14fddc of 1 cars
-== APP - order-processor == INFO:VerifyInventoryActivity:There are 10 Cars available for purchase
-== APP - order-processor == 2025-02-13 11:44:14.171 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:ProcessPaymentActivity:Processing payment: 6830cb00174544a0b062ba818e14fddc for 1 cars at 5000 USD
-== APP - order-processor == INFO:ProcessPaymentActivity:Payment for request ID 6830cb00174544a0b062ba818e14fddc processed successfully
-== APP - order-processor == 2025-02-13 11:44:14.177 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:UpdateInventoryActivity:Checking inventory for order 6830cb00174544a0b062ba818e14fddc for 1 cars
-== APP - order-processor == INFO:UpdateInventoryActivity:There are now 9 cars left in stock
-== APP - order-processor == 2025-02-13 11:44:14.189 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:NotifyActivity:Order 6830cb00174544a0b062ba818e14fddc has completed!
-== APP - order-processor == 2025-02-13 11:44:14.195 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestration completed with status: COMPLETED
-== APP - order-processor == item: InventoryItem(item_name=Paperclip, per_item_cost=5, quantity=100)
-== APP - order-processor == item: InventoryItem(item_name=Cars, per_item_cost=5000, quantity=10)
-== APP - order-processor == item: InventoryItem(item_name=Computers, per_item_cost=500, quantity=100)
-== APP - order-processor == ==========Begin the purchase of item:==========
-== APP - order-processor == Starting order workflow, purchasing 1 of cars
-== APP - order-processor == 2025-02-13 11:44:16.363 durabletask-client INFO: Starting new 'order_processing_workflow' instance with ID = 'fc8a507e4a2246d2917d3ad4e3111240'.
-== APP - order-processor == 2025-02-13 11:44:16.366 durabletask-client INFO: Waiting 30s for instance 'fc8a507e4a2246d2917d3ad4e3111240' to complete.
-== APP - order-processor == 2025-02-13 11:44:16.366 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:NotifyActivity:Received order fc8a507e4a2246d2917d3ad4e3111240 for 1 cars at $5000 !
-== APP - order-processor == 2025-02-13 11:44:16.373 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:VerifyInventoryActivity:Verifying inventory for order fc8a507e4a2246d2917d3ad4e3111240 of 1 cars
-== APP - order-processor == INFO:VerifyInventoryActivity:There are 10 Cars available for purchase
-== APP - order-processor == 2025-02-13 11:44:16.383 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:ProcessPaymentActivity:Processing payment: fc8a507e4a2246d2917d3ad4e3111240 for 1 cars at 5000 USD
-== APP - order-processor == INFO:ProcessPaymentActivity:Payment for request ID fc8a507e4a2246d2917d3ad4e3111240 processed successfully
-== APP - order-processor == 2025-02-13 11:44:16.390 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:UpdateInventoryActivity:Checking inventory for order fc8a507e4a2246d2917d3ad4e3111240 for 1 cars
-== APP - order-processor == INFO:UpdateInventoryActivity:There are now 9 cars left in stock
-== APP - order-processor == 2025-02-13 11:44:16.403 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
-== APP - order-processor == INFO:NotifyActivity:Order fc8a507e4a2246d2917d3ad4e3111240 has completed!
-== APP - order-processor == 2025-02-13 11:44:16.411 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestration completed with status: COMPLETED
-== APP - order-processor == 2025-02-13 11:44:16.425 durabletask-client INFO: Instance 'fc8a507e4a2246d2917d3ad4e3111240' completed.
-== APP - order-processor == 2025-02-13 11:44:16.425 durabletask-worker INFO: Stopping gRPC worker...
-== APP - order-processor == 2025-02-13 11:44:16.426 durabletask-worker INFO: Disconnected from dns:127.0.0.1:38891
-== APP - order-processor == 2025-02-13 11:44:16.426 durabletask-worker INFO: No longer listening for work items
-== APP - order-processor == 2025-02-13 11:44:16.426 durabletask-worker INFO: Worker shutdown completed
-== APP - order-processor == Workflow completed! Result: {"processed": true, "__durabletask_autoobject__": true}
+*** Welcome to the Dapr Workflow console app sample!
+*** Using this app, you can place orders that start workflows.
+2025-02-13 11:44:11.357 durabletask-worker INFO: Starting gRPC worker that connects to dns:127.0.0.1:38891
+2025-02-13 11:44:11.361 durabletask-worker INFO: Successfully connected to dns:127.0.0.1:38891. Waiting for work items...
+INFO:NotifyActivity:Received order 6830cb00174544a0b062ba818e14fddc for 1 cars at $5000 !
+2025-02-13 11:44:14.157 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:VerifyInventoryActivity:Verifying inventory for order 6830cb00174544a0b062ba818e14fddc of 1 cars
+INFO:VerifyInventoryActivity:There are 10 Cars available for purchase
+2025-02-13 11:44:14.171 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:ProcessPaymentActivity:Processing payment: 6830cb00174544a0b062ba818e14fddc for 1 cars at 5000 USD
+INFO:ProcessPaymentActivity:Payment for request ID 6830cb00174544a0b062ba818e14fddc processed successfully
+2025-02-13 11:44:14.177 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:UpdateInventoryActivity:Checking inventory for order 6830cb00174544a0b062ba818e14fddc for 1 cars
+INFO:UpdateInventoryActivity:There are now 9 cars left in stock
+2025-02-13 11:44:14.189 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:NotifyActivity:Order 6830cb00174544a0b062ba818e14fddc has completed!
+2025-02-13 11:44:14.195 durabletask-worker INFO: 6830cb00174544a0b062ba818e14fddc: Orchestration completed with status: COMPLETED
+item: InventoryItem(item_name=Paperclip, per_item_cost=5, quantity=100)
+item: InventoryItem(item_name=Cars, per_item_cost=5000, quantity=10)
+item: InventoryItem(item_name=Computers, per_item_cost=500, quantity=100)
+==========Begin the purchase of item:==========
+Starting order workflow, purchasing 1 of cars
+2025-02-13 11:44:16.363 durabletask-client INFO: Starting new 'order_processing_workflow' instance with ID = 'fc8a507e4a2246d2917d3ad4e3111240'.
+2025-02-13 11:44:16.366 durabletask-client INFO: Waiting 30s for instance 'fc8a507e4a2246d2917d3ad4e3111240' to complete.
+2025-02-13 11:44:16.366 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:NotifyActivity:Received order fc8a507e4a2246d2917d3ad4e3111240 for 1 cars at $5000 !
+2025-02-13 11:44:16.373 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:VerifyInventoryActivity:Verifying inventory for order fc8a507e4a2246d2917d3ad4e3111240 of 1 cars
+INFO:VerifyInventoryActivity:There are 10 Cars available for purchase
+2025-02-13 11:44:16.383 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:ProcessPaymentActivity:Processing payment: fc8a507e4a2246d2917d3ad4e3111240 for 1 cars at 5000 USD
+INFO:ProcessPaymentActivity:Payment for request ID fc8a507e4a2246d2917d3ad4e3111240 processed successfully
+2025-02-13 11:44:16.390 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:UpdateInventoryActivity:Checking inventory for order fc8a507e4a2246d2917d3ad4e3111240 for 1 cars
+INFO:UpdateInventoryActivity:There are now 9 cars left in stock
+2025-02-13 11:44:16.403 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestrator yielded with 1 task(s) and 0 event(s) outstanding.
+INFO:NotifyActivity:Order fc8a507e4a2246d2917d3ad4e3111240 has completed!
+2025-02-13 11:44:16.411 durabletask-worker INFO: fc8a507e4a2246d2917d3ad4e3111240: Orchestration completed with status: COMPLETED
+2025-02-13 11:44:16.425 durabletask-client INFO: Instance 'fc8a507e4a2246d2917d3ad4e3111240' completed.
+2025-02-13 11:44:16.425 durabletask-worker INFO: Stopping gRPC worker...
+2025-02-13 11:44:16.426 durabletask-worker INFO: Disconnected from dns:127.0.0.1:38891
+2025-02-13 11:44:16.426 durabletask-worker INFO: No longer listening for work items
+2025-02-13 11:44:16.426 durabletask-worker INFO: Worker shutdown completed
+Workflow completed! Result: {"processed": true, "__durabletask_autoobject__": true}
 ```
 
 4. Stop Dapr workflow with CTRL-C or:
