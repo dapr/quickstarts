@@ -8,19 +8,23 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindin
 
 This quickstart includes one service:
 
-- Javascript/Node.js service `bindings`
+* Javascript/Node.js service `bindings`
 
-### Prerequisites
+---
 
-- [Docker](https://docs.docker.com/get-docker/)
-- [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
-- Node.js 14+
-- npm
-- Initialize Dapr: `dapr init`
+## Prerequisites
 
-### Run and initialize PostgreSQL container
+* [Docker](https://docs.docker.com/get-docker/)
+* [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
+* Node.js 14+
+* npm
+* Initialize Dapr: `dapr init`
 
-1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/):
+---
+
+## Run and initialize PostgreSQL container
+
+1. Open a new terminal, change directories to `../../db`, and run the container with Docker Compose:
 
 <!-- STEP
 name: Run and initialize PostgreSQL container
@@ -37,9 +41,11 @@ docker compose up -d
 
 <!-- END_STEP -->
 
-### Run Javascript service with Dapr
+---
 
-2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run:
+## Run Javascript service with Dapr
+
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and install dependencies:
 
 <!-- STEP
 name: Install Javascript dependencies
@@ -53,15 +59,17 @@ cd ..
 
 <!-- END_STEP -->
 
-3. From the quickstart directory `bindings/javascript/http`, run the Javascript service app with Dapr:
+---
+
+3. From the quickstart directory `bindings/javascript/http`, run the Javascript service with Dapr:
 
 <!-- STEP
 name: Run batch-http service
 expected_stdout_lines:
-  - '== APP == insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
-  - '== APP == insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4)'
-  - '== APP == insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56)'
-  - '== APP == Finished processing batch'
+  - 'insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32);'
+  - 'insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4);'
+  - 'insert into orders (orderid, customer, price) values (3, ''Tony James'', 35.56);'
+  - 'Finished processing batch'
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11
@@ -74,11 +82,13 @@ dapr run -f .
 
 <!-- END_STEP -->
 
-The `-f` flag runs the application using the Multi-App Run configuration defined in `dapr.yaml`, automatically starting both the application and its Dapr sidecar.
+The `-f` flag runs the application using the **Multi-App Run configuration** defined in `dapr.yaml`, automatically starting both the application and its Dapr sidecar.
 
 The cron input binding triggers the service every 10 seconds, and the service writes records to PostgreSQL using the output binding.
 
-### Verify Data Persistence
+---
+
+## Verify Data Persistence
 
 4. Open a new terminal window and run the following command to check the rows in the database:
 
