@@ -63,11 +63,9 @@ flowchart LR
 
 ## Running the tutorial
 1. Use a terminal to navigate to the `tutorials/workflow/csharp/versioning/Versioning` directory
-2. Execute dapr with
+2. Use the Dapr CLI to run the multi-app run file:
 ```bash
-dapr run --app-id wfapp --dapr-grpc-port 50001 --dapr-http-port 3500 --resources-path "../..resources"
+dapr run -f .
 ```
-3. In another terminal, navigate again to the `tutorials/workflow/csharp/versioning/Versioning` directory
-4. Run your application with `dotnet run`
-5. In a browser, navigate to `http://localhost:5087/start` to start the workflow
-6. Close both terminals to close both your application and Dapr.
+3. In a browser, navigate to `http://localhost:5087/start` to start the workflow
+4. Stop the Dapr multi-app run process by pressing `Ctrl+C`.
