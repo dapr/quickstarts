@@ -15,7 +15,7 @@ app.MapGet("/dapr/subscribe", () => {
 
 // Dapr subscription in /dapr/subscribe sets up this route
 app.MapPost("/orders", (DaprData<Order> requestData) => {
-    Console.WriteLine("Subscriber received : " + requestData.Data.OrderId);
+    Console.WriteLine("Subscriber received : " + requestData.Data);
     return Results.Ok(requestData.Data);
 });
 

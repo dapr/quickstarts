@@ -1,0 +1,8 @@
+version: 1
+apps:
+  - appID: batch-http
+    appDirPath: ./batch
+    appPort: 8080
+    command:
+      ["java", "-jar", "target/BatchProcessingService-0.0.1-SNAPSHOT.jar"]
+    resourcesPath: ../../../components

@@ -23,7 +23,7 @@ logging.basicConfig(
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
 
-CONVERSATION_COMPONENT_NAME = 'echo'
+CONVERSATION_COMPONENT_NAME = 'ollama'
 
 input = {
     'inputs': [{
@@ -36,7 +36,15 @@ input = {
         }]
     }],
     'parameters': {},
-    'metadata': {}
+    'metadata': {},
+    'response_format': {
+        'type': 'object',
+        'properties': {
+            'answer': {'type': 'string'}
+        },
+        'required': ['answer']
+    },
+    'prompt_cache_retention': '86400s'
 }
 
 # Send input to conversation endpoint
@@ -51,8 +59,18 @@ logging.info('Conversation input sent: What is dapr?')
 data = result.json()
 try:
     if 'outputs' in data and len(data['outputs']) > 0:
-        output = data["outputs"][0]["choices"][0]["message"]["content"]
-        logging.info('Output response: ' + output)
+        out = data['outputs'][0]
+        if out.get('model'):
+            logging.info('Model: ' + out['model'])
+        if out.get('usage'):
+            u = out['usage']
+            logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
+                         u.get('promptTokens'), u.get('completionTokens'), u.get('totalTokens'))
+        if 'choices' in out and len(out['choices']) > 0:
+            output = out["choices"][0]["message"]["content"]
+            logging.info('Output response: ' + output)
+        else:
+            logging.error('No choices in output')
     else:
         logging.error('No outputs found in response')
         logging.error('Response data: ' + str(data))
@@ -89,6 +107,7 @@ tool_call_input = {
         'api_key': 'test-key',
         'version': '1.0'
     },
+    'prompt_cache_retention': '86400s',
     'scrubPii': False,
     'temperature': 0.7,
     'tools': [{
@@ -112,7 +131,7 @@ tool_call_input = {
             }
         }
     }],
-    'toolChoice': 'auto'
+    'toolChoice': 'required'
 }
 
 # Send input to conversation endpoint
@@ -127,6 +146,12 @@ logging.info('Tool calling input sent: What is the weather like in San Francisco
 data = tool_call_result.json()
 if 'outputs' in data and len(data['outputs']) > 0:
     output = data['outputs'][0]
+    if output.get('model'):
+        logging.info('Model: %s', output['model'])
+    if output.get('usage'):
+        u = output['usage']
+        logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
+                     u.get('promptTokens'), u.get('completionTokens'), u.get('totalTokens'))
     if 'choices' in output and len(output['choices']) > 0:
         choice = output['choices'][0]
         if 'message' in choice:
@@ -145,7 +170,7 @@ if 'outputs' in data and len(data['outputs']) > 0:
                         logging.info(f"Function name: {func_call.get('name', 'unknown')}")
                         logging.info(f"Function arguments: {func_call.get('arguments', 'none')}")
             else:
-                logging.info('No tool calls in response')
+                logging.info('Tool calls not found')
         else:
             logging.error('No message in choice')
     else:
