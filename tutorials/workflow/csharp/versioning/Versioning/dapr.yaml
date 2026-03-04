@@ -1,0 +1,10 @@
+﻿version: 1
+common:
+  resourcesPath:  ../../resources
+apps:
+  - appId: workflow-versioning
+    daprHTTPPort: 3500
+    daprGRPCPort: 50001
+    command: ["dotnet", "run"],
+    appLogDestination: console
+    daprdLogDestination: console
