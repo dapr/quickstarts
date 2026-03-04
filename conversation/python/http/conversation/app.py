@@ -10,15 +10,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------
-import logging
 import requests
 import os
-
-# Configure logging to only show the message without level/logger prefix
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(message)s'
-)
 
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
@@ -53,7 +46,7 @@ result = requests.post(
     json=input
 )
 
-logging.info('Conversation input sent: What is dapr?')
+print('Conversation input sent: What is dapr?')
 
 # Parse conversation output
 data = result.json()
@@ -61,26 +54,25 @@ try:
     if 'outputs' in data and len(data['outputs']) > 0:
         out = data['outputs'][0]
         if out.get('model'):
-            logging.info('Model: ' + out['model'])
+            print('Model: ' + out['model'])
         if out.get('usage'):
             u = out['usage']
-            logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
-                         u.get('promptTokens'), u.get('completionTokens'), u.get('totalTokens'))
+            print(f'Usage: prompt_tokens={u.get("promptTokens")} completion_tokens={u.get("completionTokens")} total_tokens={u.get("totalTokens")}')
         if 'choices' in out and len(out['choices']) > 0:
             output = out["choices"][0]["message"]["content"]
-            logging.info('Output response: ' + output)
+            print('Output response: ' + output)
         else:
-            logging.error('No choices in output')
+            print('No choices in output')
     else:
-        logging.error('No outputs found in response')
-        logging.error('Response data: ' + str(data))
+        print('No outputs found in response')
+        print('Response data: ' + str(data))
         
 except (KeyError, IndexError) as e:
-    logging.error(f'Error parsing response: {e}')
+    print(f'Error parsing response: {e}')
     if 'outputs' in data:
-        logging.info(f'Available outputs: {data["outputs"]}')
+        print(f'Available outputs: {data["outputs"]}')
     else:
-        logging.info(f'No outputs found in response')
+        print('No outputs found in response')
 
 tool_call_input = {
     'inputs': [{
@@ -140,41 +132,40 @@ tool_call_result = requests.post(
     json=tool_call_input
 )
 
-logging.info('Tool calling input sent: What is the weather like in San Francisco in celsius?')
+print('Tool calling input sent: What is the weather like in San Francisco in celsius?')
 
 # Parse conversation output
 data = tool_call_result.json()
 if 'outputs' in data and len(data['outputs']) > 0:
     output = data['outputs'][0]
     if output.get('model'):
-        logging.info('Model: %s', output['model'])
+        print('Model: ' + output['model'])
     if output.get('usage'):
         u = output['usage']
-        logging.info('Usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s',
-                     u.get('promptTokens'), u.get('completionTokens'), u.get('totalTokens'))
+        print(f'Usage: prompt_tokens={u.get("promptTokens")} completion_tokens={u.get("completionTokens")} total_tokens={u.get("totalTokens")}')
     if 'choices' in output and len(output['choices']) > 0:
         choice = output['choices'][0]
         if 'message' in choice:
             message = choice['message']
             
             if 'content' in message and message['content']:
-                logging.info('Output message: ' + message['content'])
+                print('Output message: ' + message['content'])
             
             if 'toolCalls' in message and message['toolCalls']:
-                logging.info('Tool calls detected:')
+                print('Tool calls detected:')
                 for tool_call in message['toolCalls']:
-                    logging.info('Tool call: ' + str(tool_call))
+                    print('Tool call: ' + str(tool_call))
                     
                     if 'function' in tool_call:
                         func_call = tool_call['function']
-                        logging.info(f"Function name: {func_call.get('name', 'unknown')}")
-                        logging.info(f"Function arguments: {func_call.get('arguments', 'none')}")
+                        print(f"Function name: {func_call.get('name', 'unknown')}")
+                        print(f"Function arguments: {func_call.get('arguments', 'none')}")
             else:
-                logging.info('Tool calls not found')
+                print('Tool calls not found')
         else:
-            logging.error('No message in choice')
+            print('No message in choice')
     else:
-        logging.error('No choices in output')
+        print('No choices in output')
 else:
-    logging.error('No outputs in response')
-    logging.error('Response data: ' + str(data)) 
+    print('No outputs in response')
+    print('Response data: ' + str(data))

@@ -1,4 +1,3 @@
-import logging
 from dapr.clients import DaprClient
 
 DAPR_SECRET_STORE = 'localsecretstore'
