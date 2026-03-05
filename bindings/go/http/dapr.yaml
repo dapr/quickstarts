@@ -2,6 +2,6 @@ version: 1
 apps:
   - appID: batch-http
     appDirPath: ./batch
-    appPort: 5004
-    command: ["node", "index.js"]
+    appPort: 6003
+    command: ["go", "run", "."]
     resourcesPath: ../../../components

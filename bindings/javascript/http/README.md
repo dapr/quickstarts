@@ -29,7 +29,6 @@ This quickstart includes one service:
 <!-- STEP
 name: Run and initialize PostgreSQL container
 expected_return_code:
-background: true
 sleep: 60
 timeout_seconds: 120
 -->
@@ -61,7 +60,7 @@ cd ..
 
 ---
 
-3. From the quickstart directory `bindings/javascript/http`, run the Javascript service with Dapr:
+3. Run the Javascript service app with Dapr:
 
 <!-- STEP
 name: Run batch-http service

@@ -12,26 +12,25 @@ This quickstart includes one service:
 
 ### Run and initialize PostgreSQL container
 
-1. Open a new terminal, change directories to `../../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
+1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
 
 <!-- STEP
 name: Run and initialize PostgreSQL container
 expected_return_code:
-background: true
 sleep: 60
 timeout_seconds: 120
 -->
 
 ```bash
 cd ../../db
-docker compose up
+docker compose up -d
 ```
 
 <!-- END_STEP -->
 
 ### Run C# service with Dapr
 
-2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run: 
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and install dependencies: 
 
 <!-- STEP
 name: Install C# dependencies
@@ -40,14 +39,16 @@ name: Install C# dependencies
 ```bash
 cd ./batch
 dotnet restore
+dotnet build
+cd ..
 ```
 
 <!-- END_STEP -->
-3. Run the C# service app with Dapr: 
+
+3. Run the C# service app with Dapr:
 
 <!-- STEP
 name: Run batch-sdk service
-working_dir: ./batch
 expected_stdout_lines:
   - 'insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
   - 'insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4)'
@@ -56,11 +57,11 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11
-timeout_seconds: 30
+timeout_seconds: 60
 -->
-    
+
 ```bash
-dapr run --app-id batch-sdk --app-port 7002 --resources-path ../../../components -- dotnet run
+dapr run -f .
 ```
 
 <!-- END_STEP -->

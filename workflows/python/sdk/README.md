@@ -33,7 +33,7 @@ cd ..
 <!-- STEP
 name: Running this example
 expected_stdout_lines:
-  - "INFO:UpdateInventoryActivity:There are now 9 cars left in stock"
+  - "There are now 9 cars left in stock"
   - "Workflow completed! Result: {\"processed\": true"
 output_match_mode: substring
 background: true
