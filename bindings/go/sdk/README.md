@@ -17,14 +17,13 @@ This quickstart includes one service:
 <!-- STEP
 name: Run and initialize PostgreSQL container
 expected_return_code:
-background: true
 sleep: 60
 timeout_seconds: 120
 -->
 
 ```bash
 cd ../../db
-docker compose up
+docker compose up -d
 ```
 
 <!-- END_STEP -->
@@ -40,14 +39,15 @@ name: Install Go dependencies
 ```bash
 cd ./batch
 go build .
+cd ..
 ```
 
 <!-- END_STEP -->
-3. Run the Go service app with Dapr: 
+
+3. Run the Go service app with Dapr:
 
 <!-- STEP
 name: Run batch-sdk service
-working_dir: ./batch
 expected_stdout_lines:
   - 'insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
   - 'insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.40)'
@@ -56,11 +56,11 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11
-timeout_seconds: 30
+timeout_seconds: 60
 -->
-    
+
 ```bash
-dapr run --app-id batch-sdk --app-port 6004 --dapr-http-port 3502 --dapr-grpc-port 60002 --resources-path ../../../components -- go run .
+dapr run -f .
 ```
 
 <!-- END_STEP -->

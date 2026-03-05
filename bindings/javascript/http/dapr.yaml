@@ -1,0 +1,7 @@
+version: 1
+apps:
+  - appID: batch-http
+    appDirPath: ./batch
+    appPort: 5004
+    command: ["node", "index.js"]
+    resourcesPath: ../../../components
