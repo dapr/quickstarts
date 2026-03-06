@@ -33,8 +33,8 @@ cd ..
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "INFO:root:Saving Order: {'orderId': '1'}"
-  - "INFO:root:Saving Order: {'orderId': '2'}"
+  - "Saving Order: {'orderId': '1'}"
+  - "Saving Order: {'orderId': '2'}"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -61,8 +61,8 @@ An alternative to running all or multiple applications at once is to run single 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "INFO:root:Saving Order: {'orderId': '1'}"
-  - "INFO:root:Saving Order: {'orderId': '2'}"
+  - "Saving Order: {'orderId': '1'}"
+  - "Saving Order: {'orderId': '2'}"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

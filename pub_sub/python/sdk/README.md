@@ -47,7 +47,7 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Validating config and starting app "order-processor-sdk"'
   - 'Validating config and starting app "checkout-sdk"'
-  - 'INFO:root:Published data: {"orderId": 1}'
+  - 'Published data: {"orderId": 1}'
   - 'Subscriber received : 1'
 expected_stderr_lines:
 output_match_mode: substring
@@ -64,31 +64,31 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-INFO:root:Published data: {"orderId": 1}
+Published data: {"orderId": 1}
 Subscriber received : 1
 127.0.0.1 - - [04/Sep/2023 11:15:19] "POST /orders HTTP/1.1" 200 -
-INFO:root:Published data: {"orderId": 2}
+Published data: {"orderId": 2}
 127.0.0.1 - - [04/Sep/2023 11:15:20] "POST /orders HTTP/1.1" 200 -
 Subscriber received : 2
-INFO:root:Published data: {"orderId": 3}
+Published data: {"orderId": 3}
 Subscriber received : 3
 127.0.0.1 - - [04/Sep/2023 11:15:21] "POST /orders HTTP/1.1" 200 -
-INFO:root:Published data: {"orderId": 4}
+Published data: {"orderId": 4}
 Subscriber received : 4
 127.0.0.1 - - [04/Sep/2023 11:15:22] "POST /orders HTTP/1.1" 200 -
-INFO:root:Published data: {"orderId": 5}
+Published data: {"orderId": 5}
 Subscriber received : 5
 127.0.0.1 - - [04/Sep/2023 11:15:23] "POST /orders HTTP/1.1" 200 -
-INFO:root:Published data: {"orderId": 6}
+Published data: {"orderId": 6}
 Subscriber received : 6
 127.0.0.1 - - [04/Sep/2023 11:15:24] "POST /orders HTTP/1.1" 200 -
-INFO:root:Published data: {"orderId": 7}
+Published data: {"orderId": 7}
 127.0.0.1 - - [04/Sep/2023 11:15:25] "POST /orders HTTP/1.1" 200 -
 Subscriber received : 7
-INFO:root:Published data: {"orderId": 8}
+Published data: {"orderId": 8}
 127.0.0.1 - - [04/Sep/2023 11:15:26] "POST /orders HTTP/1.1" 200 -
 Subscriber received : 8
-INFO:root:Published data: {"orderId": 9}
+Published data: {"orderId": 9}
 127.0.0.1 - - [04/Sep/2023 11:15:27] "POST /orders HTTP/1.1" 200 -
 Subscriber received : 9
 
