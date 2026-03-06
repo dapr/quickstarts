@@ -25,7 +25,7 @@ import (
 	"time"
 )
 
-const conversationComponentName = "echo"
+const conversationComponentName = "ollama"
 
 func main() {
 	daprHost := os.Getenv("DAPR_HOST")
@@ -38,10 +38,11 @@ func main() {
 	}
 
 	client := http.Client{
-		Timeout: 15 * time.Second,
+		Timeout: 60 * time.Second,
 	}
 
 	var inputBody = `{
+		"name": "ollama",
 		"inputs": [{
 			"messages": [{
 				"ofUser": {
@@ -52,8 +53,16 @@ func main() {
 			}]
 		}],
 		"parameters": {},
-		"metadata": {}
-	}`
+		"metadata": {},
+		"response_format": {
+			"type": "object",
+			"properties": {
+				"answer": {"type": "string"}
+			},
+			"required": ["answer"]
+		},
+		"prompt_cache_retention": "86400s"
+    }`
 
 	reqURL := daprHost + ":" + daprHttpPort + "/v1.0-alpha2/conversation/" + conversationComponentName + "/converse"
 
@@ -64,7 +73,7 @@ func main() {
 
 	req.Header.Set("Content-Type", "application/json")
 
-	// Send a request to the echo LLM component
+	// Send a request to the Ollama LLM component
 	res, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
@@ -79,20 +88,33 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Unmarshal the response
-	var data map[string]any
+	var data struct {
+		Outputs []struct {
+			Choices []struct {
+				Message struct {
+					Content string `json:"content"`
+				} `json:"message"`
+			} `json:"choices"`
+			Model  string `json:"model"`
+			Usage  any    `json:"usage"`
+			Result string `json:"result"`
+		} `json:"outputs"`
+	}
 	if err := json.Unmarshal(bodyBytes, &data); err != nil {
 		log.Fatal(err)
 	}
 
-	// Navigate the new response structure: outputs[0].choices[0].message.content
-	outputs := data["outputs"].([]any)
-	output := outputs[0].(map[string]any)
-	choices := output["choices"].([]any)
-	choice := choices[0].(map[string]any)
-	message := choice["message"].(map[string]any)
-	result := message["content"].(string)
-
+	if len(data.Outputs) == 0 {
+		log.Fatal("no outputs in response")
+	}
+	out := data.Outputs[0]
+	result := out.Result
+	if len(out.Choices) > 0 {
+		result = out.Choices[0].Message.Content
+	}
+	if out.Model != "" {
+		fmt.Println("Model:", out.Model)
+	}
 	fmt.Println("Output response:", result)
 
 	// Tool calling example
@@ -129,7 +151,7 @@ func main() {
 				}
 			}
 		}],
-		"toolChoice": "auto"
+		"toolChoice": "required"
 	}`
 
 	req2, err := http.NewRequest("POST", reqURL, strings.NewReader(toolCallBody))
@@ -159,8 +181,21 @@ func main() {
 	}
 
 	// Parse tool calling response
-	outputs2 := data2["outputs"].([]any)
+	outputs2, ok := data2["outputs"].([]any)
+	if !ok || len(outputs2) == 0 {
+		fmt.Println("No outputs in tool calling response")
+		return
+	}
 	output2 := outputs2[0].(map[string]any)
+
+	if model, ok := output2["model"].(string); ok && model != "" {
+		fmt.Println("Model:", model)
+	}
+	if usage, ok := output2["usage"].(map[string]any); ok {
+		fmt.Printf("Usage: prompt_tokens=%v completion_tokens=%v total_tokens=%v\n",
+			usage["promptTokens"], usage["completionTokens"], usage["totalTokens"])
+	}
+
 	choices2 := output2["choices"].([]any)
 	choice2 := choices2[0].(map[string]any)
 	message2 := choice2["message"].(map[string]any)
@@ -175,6 +210,6 @@ func main() {
 			fmt.Printf("Tool call: %v\n", tc)
 		}
 	} else {
-		fmt.Println("No tool calls in response")
+		fmt.Println("Tool calls not found")
 	}
 }

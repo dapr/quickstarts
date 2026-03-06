@@ -47,8 +47,8 @@ npm install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for orderId2: {"key":"orderId2","value":'
-  - '== APP == App unsubscribed to config changes'
+  - 'Configuration for orderId2: {"key":"orderId2","value":'
+  - 'App unsubscribed to config changes'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

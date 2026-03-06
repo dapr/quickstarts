@@ -64,11 +64,11 @@ graph LR
     The app logs should output the following:
 
     ```txt
-    == APP - resiliency == minus_one: Received input: 1.
-    == APP - resiliency == division: Received divisor: 0.
-    == APP - resiliency == division: Received divisor: 0.
-    == APP - resiliency == division: Received divisor: 0.
-    == APP - resiliency == plus_one: Received input: 0.
+    minus_one: Received input: 1.
+    division: Received divisor: 0.
+    division: Received divisor: 0.
+    division: Received divisor: 0.
+    plus_one: Received input: 0.
     ```
 
 5. Use the GET request in the [`resiliency-compensation.http`](./resiliency-compensation.http) file to get the status of the workflow, or use this cURL command:

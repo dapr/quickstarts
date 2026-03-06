@@ -40,8 +40,8 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
   - 'Started Dapr with app id "checkout-http"'
-  - '== APP - checkout-http == INFO:root:Published data: {"orderId": 1}'
-  - '== APP - order-processor-http == Subscriber received : 1'
+  - 'Published data: {"orderId": 1}'
+  - 'Subscriber received : 1'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -57,32 +57,32 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - order-processor-http == Subscriber received : 1
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:21] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-http == INFO:root:Published data: {"orderId": 2}
-== APP - order-processor-http == Subscriber received : 2
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:22] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-http == INFO:root:Published data: {"orderId": 3}
-== APP - order-processor-http == Subscriber received : 3
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:23] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-http == INFO:root:Published data: {"orderId": 4}
-== APP - order-processor-http == Subscriber received : 4
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:24] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-http == INFO:root:Published data: {"orderId": 5}
-== APP - order-processor-http == Subscriber received : 5
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:25] "POST /orders HTTP/1.1" 200 -
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:26] "POST /orders HTTP/1.1" 200 -
-== APP - order-processor-http == Subscriber received : 6
-== APP - checkout-http == INFO:root:Published data: {"orderId": 6}
-== APP - checkout-http == INFO:root:Published data: {"orderId": 7}
-== APP - order-processor-http == Subscriber received : 7
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:27] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-http == INFO:root:Published data: {"orderId": 8}
-== APP - order-processor-http == Subscriber received : 8
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:28] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-http == INFO:root:Published data: {"orderId": 9}
-== APP - order-processor-http == Subscriber received : 9
-== APP - order-processor-http == 127.0.0.1 - - [04/Sep/2023 11:33:29] "POST /orders HTTP/1.1" 200 -
+Subscriber received : 1
+127.0.0.1 - - [04/Sep/2023 11:33:21] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 2}
+Subscriber received : 2
+127.0.0.1 - - [04/Sep/2023 11:33:22] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 3}
+Subscriber received : 3
+127.0.0.1 - - [04/Sep/2023 11:33:23] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 4}
+Subscriber received : 4
+127.0.0.1 - - [04/Sep/2023 11:33:24] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 5}
+Subscriber received : 5
+127.0.0.1 - - [04/Sep/2023 11:33:25] "POST /orders HTTP/1.1" 200 -
+127.0.0.1 - - [04/Sep/2023 11:33:26] "POST /orders HTTP/1.1" 200 -
+Subscriber received : 6
+Published data: {"orderId": 6}
+Published data: {"orderId": 7}
+Subscriber received : 7
+127.0.0.1 - - [04/Sep/2023 11:33:27] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 8}
+Subscriber received : 8
+127.0.0.1 - - [04/Sep/2023 11:33:28] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 9}
+Subscriber received : 9
+127.0.0.1 - - [04/Sep/2023 11:33:29] "POST /orders HTTP/1.1" 200 -
 ```
 
 3. Stop and clean up application processes

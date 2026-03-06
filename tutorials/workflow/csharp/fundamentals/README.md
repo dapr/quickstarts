@@ -59,8 +59,8 @@ graph LR
     The input for the workflow is a string with the value `One`. The expected app logs are as follows:
 
     ```text
-    == APP - basic == Activity1: Received input: One.
-    == APP - basic == Activity2: Received input: One Two.
+    Activity1: Received input: One.
+    Activity2: Received input: One Two.
     ```
 
 5. Use the GET request in the [`fundamentals.http`](./fundamentals.http) file to get the status of the workflow, or use this cURL command:

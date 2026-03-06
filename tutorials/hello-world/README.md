@@ -134,20 +134,20 @@ This will install `express` and `body-parser`, dependencies that are shown in th
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Got a new order! Order ID: 42"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 42"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 1"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 2"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 3"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 4"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 5"
-  - "== APP == Successfully persisted state."
+  - "Got a new order! Order ID: 42"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 42"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 1"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 2"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 3"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 4"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 5"
+  - "Successfully persisted state."
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -258,8 +258,8 @@ Open Postman and create a POST request against `http://localhost:3500/v1.0/invok
 ![Postman Screenshot](./img/postman1.jpg)
 In your terminal, you should see logs indicating that the message was received and state was updated:
 ```bash
-== APP == Got a new order! Order ID: 42
-== APP == Successfully persisted state.
+Got a new order! Order ID: 42
+Successfully persisted state.
 ```
 
 ## Step 5 - Confirm successful persistence

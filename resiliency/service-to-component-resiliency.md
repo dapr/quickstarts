@@ -58,14 +58,14 @@ dapr run --app-id order-processor  --resources-path ../../../resources/ -- pytho
 ### Expected output:
 
 ```bash
-== APP == Saving Order:  { orderId: '1' }
-== APP == Getting Order:  { orderId: '1' }
-== APP == Saving Order:  { orderId: '2' }
-== APP == Getting Order:  { orderId: '2' }
-== APP == Saving Order:  { orderId: '3' }
-== APP == Getting Order:  { orderId: '3' }
-== APP == Saving Order:  { orderId: '4' }
-== APP == Getting Order:  { orderId: '4' }
+Saving Order:  { orderId: '1' }
+Getting Order:  { orderId: '1' }
+Saving Order:  { orderId: '2' }
+Getting Order:  { orderId: '2' }
+Saving Order:  { orderId: '3' }
+Getting Order:  { orderId: '3' }
+Saving Order:  { orderId: '4' }
+Getting Order:  { orderId: '4' }
 ```
 <!-- END_STEP -->
 
@@ -113,16 +113,16 @@ docker start dapr_redis
 
 ```bash
 INFO[0036] Recovered processing operation component[statestore] output.
-== APP == Saving Order:  { orderId: '5' }
-== APP == Getting Order:  { orderId: '5' }
-== APP == Saving Order:  { orderId: '6' }
-== APP == Getting Order:  { orderId: '6' }
-== APP == Saving Order:  { orderId: '7' }
-== APP == Getting Order:  { orderId: '7' }
-== APP == Saving Order:  { orderId: '8' }
-== APP == Getting Order:  { orderId: '8' }
-== APP == Saving Order:  { orderId: '9' }
-== APP == Getting Order:  { orderId: '9' }
+Saving Order:  { orderId: '5' }
+Getting Order:  { orderId: '5' }
+Saving Order:  { orderId: '6' }
+Getting Order:  { orderId: '6' }
+Saving Order:  { orderId: '7' }
+Getting Order:  { orderId: '7' }
+Saving Order:  { orderId: '8' }
+Getting Order:  { orderId: '8' }
+Saving Order:  { orderId: '9' }
+Getting Order:  { orderId: '9' }
 ```
 
 ### Stop the app with Dapr

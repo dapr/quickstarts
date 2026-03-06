@@ -67,30 +67,30 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - order-processor == Order received: 1
-== APP - checkout == Order passed: 1
-== APP - order-processor == Order received: 2
-== APP - checkout == Order passed: 2
-== APP - order-processor == Order received: 3
-== APP - checkout == Order passed: 3
-== APP - order-processor == Order received: 4
-== APP - checkout == Order passed: 4
-== APP - order-processor == Order received: 5
-== APP - checkout == Order passed: 5
-== APP - order-processor == Order received: 6
-== APP - checkout == Order passed: 6
-== APP - order-processor == Order received: 7
-== APP - checkout == Order passed: 7
-== APP - order-processor == Order received: 8
-== APP - checkout == Order passed: 8
-== APP - order-processor == Order received: 9
-== APP - checkout == Order passed: 9
-== APP - order-processor == Order received: 10
-== APP - checkout == Order passed: 10
-== APP - order-processor == Order received: 11
-== APP - checkout == Order passed: 11
-== APP - order-processor == Order received: 12
-== APP - checkout == Order passed: 12
+Order received: 1
+Order passed: 1
+Order received: 2
+Order passed: 2
+Order received: 3
+Order passed: 3
+Order received: 4
+Order passed: 4
+Order received: 5
+Order passed: 5
+Order received: 6
+Order passed: 6
+Order received: 7
+Order passed: 7
+Order received: 8
+Order passed: 8
+Order received: 9
+Order passed: 9
+Order received: 10
+Order passed: 10
+Order received: 11
+Order passed: 11
+Order received: 12
+Order passed: 12
 ```
 
 3. Stop and clean up application processes

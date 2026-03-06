@@ -55,7 +55,7 @@ working_dir: "./go"
 <!-- STEP
 expected_stdout_lines:
 - "You're up and running! Both Dapr and your app logs will appear here."
-- "== APP == Adding 52.000000 to 34.000000"
+- "Adding 52.000000 to 34.000000"
 - "Exited Dapr successfully"
 - "Exited App successfully"
 expected_stderr_lines:
@@ -101,7 +101,7 @@ working_dir: "./csharp"
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Subtracting 34 from 52"
+  - "Subtracting 34 from 52"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -139,7 +139,7 @@ working_dir: "./node"
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Dividing 52 by 34"
+  - "Dividing 52 by 34"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -183,7 +183,7 @@ working_dir: "./python"
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Calculating 52.0 * 34.0"
+  - "Calculating 52.0 * 34.0"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:

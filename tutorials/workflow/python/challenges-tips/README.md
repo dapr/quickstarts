@@ -6,5 +6,4 @@ This section provides some tips with code snippets to understand the limitations
 
 - [Deterministic workflows](deterministic_workflow.py)
 - [Idempotent activities](idempotent_activity.py)
-- [Versioning workflows](versioning_workflow.py)
 - [Workflow & activity payload size](payload_size_workflow.py)

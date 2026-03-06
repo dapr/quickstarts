@@ -1,6 +1,5 @@
 import os
 import json
-import logging
 from datetime import timedelta
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Response
@@ -15,10 +14,6 @@ except ImportError:
     PROTOBUF_AVAILABLE = False
     print('Warning: protobuf not available, jobs with data will be scheduled without data', flush=True)
 
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
 app = FastAPI(title="Dapr Jobs Service", version="1.0.0")

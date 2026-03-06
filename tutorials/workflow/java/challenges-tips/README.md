@@ -6,5 +6,4 @@ This section provides some tips with code snippets to understand the limitations
 
 - [Deterministic workflows](DeterministicWorkflow.java)
 - [Idempotent activities](IdempotentActivity.java)
-- [Versioning workflows](VersioningWorkflow.java)
 - [Workflow & activity payload size](PayloadSizeWorkflow.java)

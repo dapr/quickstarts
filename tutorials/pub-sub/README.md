@@ -71,8 +71,8 @@ npm install
 name: Run node subscriber
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == A:  Message on A"
-  - "== APP == B:  Message on B"
+  - "A:  Message on A"
+  - "B:  Message on B"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -123,8 +123,8 @@ python -m pip install -r requirements.txt
 name: Run python subscriber
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == Received message "Message on A" on topic "A"'
-  - '== APP == Received message "Message on C" on topic "C"'
+  - 'Received message "Message on A" on topic "A"'
+  - 'Received message "Message on C" on topic "C"'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -167,7 +167,7 @@ dotnet build
 name: Run csharp subscriber
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - '== APP == A: Message on A'
+  - 'A: Message on A'
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -219,8 +219,8 @@ name: Run react front end
 working_dir: ./react-form
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Publishing:  { messageType: 'B', message: 'Message on B' }"
-  - "== APP == Publishing:  { messageType: 'C', message: 'Message on C' }"
+  - "Publishing:  { messageType: 'B', message: 'Message on B' }"
+  - "Publishing:  { messageType: 'C', message: 'Message on C' }"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -237,7 +237,7 @@ dapr run --app-id react-form --app-port 8080 npm run start
 
 <!-- END_STEP -->
 
-This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `== APP == Listening on port 8080!` and several Dapr logs.
+This may take a minute, as it downloads dependencies and creates an optimized production build. You'll know that it's done when you see `Listening on port 8080!` and several Dapr logs.
 
 3. Open the browser and navigate to "http://localhost:8080/". You should see a form with a dropdown for message type and message text: 
 
@@ -255,7 +255,7 @@ manual_pause_message: "Pubsub APP running on http://localhost:8080. Please open 
 4. Pick a topic, enter some text and fire off a message! Observe the logs coming through your respective Dapr. Note that the Node.js subscriber receives messages of type "A" and "B", while the Python subscriber receives messages of type "A" and "C". Note that logs are showing up in the console window where you ran each one: 
 
 ```bash
-== APP == Listening on port 8080!
+Listening on port 8080!
 ```
 
 ### Use the CLI to publish messages to subscribers

@@ -1,11 +1,8 @@
 import threading
 import time
-import logging
 import requests
 import os
 from flask import Flask, request
-
-logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 APP_PORT = os.getenv('APP_PORT', '6001')
@@ -20,9 +17,9 @@ for item in CONFIGURATION_ITEMS:
         url='%s/v1.0/configuration/%s?key=%s' % (BASE_URL, DAPR_CONFIGURATION_STORE, item)
         )
     if config.status_code == 200:
-        logging.info('Configuration for ' +item+ ": " + str(config.json()))
+        print(f'Configuration for {item}: {config.json()}')
     else:
-        logging.info('Could not get config item, err: ' + str(config.json()))
+        print(f'Could not get config item, err: {config.json()}')
 
 def subscribe_config_updates():
     # Add delay to allow app channel to be ready
@@ -31,10 +28,10 @@ def subscribe_config_updates():
         url = '%s/v1.0/configuration/%s/subscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE)
             )
     if subscription.status_code == 200 and 'errCode' not in str(subscription.json()) :
-        logging.info('App subscribed to config changes with subscription id: ' + str(subscription.json()['id']))
+        print(f'App subscribed to config changes with subscription id: {subscription.json()['id']}')
         return subscription.json()['id']
     else:
-        logging.info('Error subscribing to config updates: ' + str(subscription.json()))
+        print(f'Error subscribing to config updates: {subscription.json()}')
         exit(1)
 
 # Create POST endpoint to receive config updates
@@ -54,6 +51,6 @@ unsubscribe = requests.get(
     url = '%s/v1.0/configuration/%s/%s/unsubscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE, subscription_id)
 )
 if unsubscribe.status_code == 200 and 'True' in str(unsubscribe.json()):
-    logging.info('App unsubscribed from config changes')
+    print('App unsubscribed from config changes')
 else:
-    logging.info('Error unsubscribing from config updates: ' + str(unsubscribe.json()))
+    print(f'Error unsubscribing from config updates: {unsubscribe.json()}')

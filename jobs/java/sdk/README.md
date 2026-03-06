@@ -48,21 +48,21 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - job-scheduler-sdk == Job Scheduled: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}'
-  - '== APP - job-service-sdk == Starting Droid: R2-D2'
-  - '== APP - job-service-sdk == Executing Maintenance: Oil Change'
-  - '== APP - job-scheduler-sdk == Getting Job: R2-D2'
-  - '== APP - job-scheduler-sdk == Job Details: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}'
-  - '== APP - job-scheduler-sdk == Scheduling a Job with name C-3PO'
-  - '== APP - job-scheduler-sdk == Job Scheduled: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}'
-  - '== APP - job-service-sdk == Starting Droid: C-3PO'
-  - '== APP - job-service-sdk == Executing Maintenance: Limb Calibration'
-  - '== APP - job-scheduler-sdk == Getting Job: C-3PO'
-  - '== APP - job-scheduler-sdk == Job Details: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}'
-  - '== APP - job-scheduler-sdk == Deleting Job: C-3PO'
-  - '== APP - job-scheduler-sdk == Deleted Job: C-3PO'
-  - '== APP - job-scheduler-sdk == Deleting Job: R2-D2'
-  - '== APP - job-scheduler-sdk == Deleted Job: R2-D2'
+  - 'Job Scheduled: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}'
+  - 'Starting Droid: R2-D2'
+  - 'Executing Maintenance: Oil Change'
+  - 'Getting Job: R2-D2'
+  - 'Job Details: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}'
+  - 'Scheduling a Job with name C-3PO'
+  - 'Job Scheduled: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}'
+  - 'Starting Droid: C-3PO'
+  - 'Executing Maintenance: Limb Calibration'
+  - 'Getting Job: C-3PO'
+  - 'Job Details: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}'
+  - 'Deleting Job: C-3PO'
+  - 'Deleted Job: C-3PO'
+  - 'Deleting Job: R2-D2'
+  - 'Deleted Job: R2-D2'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -89,21 +89,21 @@ The terminal console output should look similar to this, where:
 - The `R2-D2` job is deleted.
 
 ```text
-== APP - job-scheduler-sdk == Job Scheduled: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
-== APP - job-service-sdk == Starting Droid: R2-D2
-== APP - job-service-sdk == Executing Maintenance: Oil Change
-== APP - job-scheduler-sdk == Getting Job: R2-D2
-== APP - job-scheduler-sdk == Job Details: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}
-== APP - job-scheduler-sdk == Scheduling a Job with name C-3PO
-== APP - job-scheduler-sdk == Job Scheduled: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
-== APP - job-service-sdk == Starting Droid: C-3PO
-== APP - job-service-sdk == Executing Maintenance: Limb Calibration
-== APP - job-scheduler-sdk == Getting Job: C-3PO
-== APP - job-scheduler-sdk == Job Details: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}
-== APP - job-scheduler-sdk == Deleting Job: C-3PO
-== APP - job-scheduler-sdk == Deleted Job: C-3PO
-== APP - job-scheduler-sdk == Deleting Job: R2-D2
-== APP - job-scheduler-sdk == Deleted Job: R2-D2
+Job Scheduled: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
+Starting Droid: R2-D2
+Executing Maintenance: Oil Change
+Getting Job: R2-D2
+Job Details: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}
+Scheduling a Job with name C-3PO
+Job Scheduled: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
+Starting Droid: C-3PO
+Executing Maintenance: Limb Calibration
+Getting Job: C-3PO
+Job Details: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":{"maxRetries":3,"durationBetweenRetries":0.0,"failurePolicyType":"CONSTANT"}}
+Deleting Job: C-3PO
+Deleted Job: C-3PO
+Deleting Job: R2-D2
+Deleted Job: R2-D2
 ```
 <!-- END_STEP -->
 
@@ -153,22 +153,22 @@ This step is responsible for scheduling, getting and deleting jobs.
 In the `job-scheduler` terminal window, the output should be:
 
 ```text
-== APP - job-scheduler-sdk == Job Scheduled: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
-== APP - job-scheduler-sdk == Scheduling a Job with name C-3PO
-== APP - job-scheduler-sdk == Job Scheduled: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
-== APP - job-scheduler-sdk == Getting Job: C-3PO
-== APP - job-scheduler-sdk == Job Details: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
-== APP - job-scheduler-sdk == Deleting Job: C-3PO
-== APP - job-scheduler-sdk == Deleted Job: C-3PO
+Job Scheduled: {"name":"R2-D2","data":"T2lsIENoYW5nZQ==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
+Scheduling a Job with name C-3PO
+Job Scheduled: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
+Getting Job: C-3PO
+Job Details: {"name":"C-3PO","data":"TGltYiBDYWxpYnJhdGlvbg==","schedule":{"expression":"0/5 * * * * *"},"dueTime":null,"repeats":null,"ttl":null,"failurePolicy":null,"overwrite":false}
+Deleting Job: C-3PO
+Deleted Job: C-3PO
 ```
 
 In the `job-service` terminal window, the output should be:
 
 ```text
-== APP - job-service-sdk == Starting Droid: R2-D2
-== APP - job-service-sdk == Starting Droid: R2-D2
-== APP - job-service-sdk == Executing Maintenance: Oil Change
-== APP - job-service-sdk == Starting Droid: C-3PO
-== APP - job-service-sdk == Executing Maintenance: Limb Calibration
-== APP - job-service-sdk == Starting Droid: R2-D2
+Starting Droid: R2-D2
+Starting Droid: R2-D2
+Executing Maintenance: Oil Change
+Starting Droid: C-3PO
+Executing Maintenance: Limb Calibration
+Starting Droid: R2-D2
 ```

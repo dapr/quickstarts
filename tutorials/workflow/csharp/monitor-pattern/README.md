@@ -62,10 +62,10 @@ graph LR
     The expected app logs are as follows:
 
     ```text
-    == APP - monitor == CheckStatus: Received input: 0.
-    == APP - monitor == CheckStatus: Received input: 1.
-    == APP - monitor == CheckStatus: Received input: 2.
-    == APP - monitor == CheckStatus: Received input: 3.
+    CheckStatus: Received input: 0.
+    CheckStatus: Received input: 1.
+    CheckStatus: Received input: 2.
+    CheckStatus: Received input: 3.
     ```
 
     *Note that the number of app log statements can vary due to the randomization in the `CheckStatus` activity.*

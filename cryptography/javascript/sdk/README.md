@@ -51,17 +51,17 @@ openssl rand -out keys/symmetric-key-256 32
 <!-- STEP
 name: Run Node.js app
 expected_stdout_lines:
-  - "== APP == == Encrypting message using buffers"
-  - "== APP == Encrypted the message, got 856 bytes"
-  - "== APP == == Decrypting message using buffers"
-  - "== APP == Decrypted the message, got 24 bytes"
-  - '== APP == The secret is "passw0rd"'
-  - "== APP == == Encrypting message using streams"
-  - "== APP == Encrypting federico-di-dio-photography-Q4g0Q-eVVEg-unsplash.jpg to encrypted.out"
-  - "== APP == Encrypted the message to encrypted.out"
-  - "== APP == == Decrypting message using streams"
-  - "== APP == Decrypting encrypted.out to decrypted.out.jpg"
-  - "== APP == Decrypted the message to decrypted.out.jpg"
+  - "== Encrypting message using buffers"
+  - "Encrypted the message, got 856 bytes"
+  - "== Decrypting message using buffers"
+  - "Decrypted the message, got 24 bytes"
+  - 'The secret is "passw0rd"'
+  - "== Encrypting message using streams"
+  - "Encrypting federico-di-dio-photography-Q4g0Q-eVVEg-unsplash.jpg to encrypted.out"
+  - "Encrypted the message to encrypted.out"
+  - "== Decrypting message using streams"
+  - "Decrypting encrypted.out to decrypted.out.jpg"
+  - "Decrypted the message to decrypted.out.jpg"
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./crypto-quickstart

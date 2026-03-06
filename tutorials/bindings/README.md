@@ -103,13 +103,13 @@ sleep: 5
 output_match_mode: substring
 expected_stdout_lines: 
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Hello from Kafka!"
-  - "== APP == { orderId:"
-  - "== APP == Hello from Kafka!"
-  - "== APP == { orderId:"
-  - "== APP == Hello from Kafka!"
-  - "== APP == { orderId:"
-  - "== APP == Hello from Kafka!"
+  - "Hello from Kafka!"
+  - "{ orderId:"
+  - "Hello from Kafka!"
+  - "{ orderId:"
+  - "Hello from Kafka!"
+  - "{ orderId:"
+  - "Hello from Kafka!"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 -->
@@ -153,12 +153,12 @@ sleep: 25
 output_match_mode: substring
 expected_stdout_lines: 
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == {'data': {'orderId': 1}, 'operation': 'create'}"
-  - "== APP == Response for order 1: 204"
-  - "== APP == {'data': {'orderId': 2}, 'operation': 'create'}"
-  - "== APP == Response for order 2: 204"
-  - "== APP == {'data': {'orderId': 3}, 'operation': 'create'}"
-  - "== APP == Response for order 3: 204"
+  - "{'data': {'orderId': 1}, 'operation': 'create'}"
+  - "Response for order 1: 204"
+  - "{'data': {'orderId': 2}, 'operation': 'create'}"
+  - "Response for order 2: 204"
+  - "{'data': {'orderId': 3}, 'operation': 'create'}"
+  - "Response for order 3: 204"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 -->
@@ -174,23 +174,23 @@ dapr run --app-id bindings-pythonapp python3 app.py --resources-path ../componen
 1. Observe the Python logs, which show a successful output binding with Kafka:
 
 ```bash
-[0m?[94;1m== APP == {'data': {'orderId': 1}}
-[0m?[94;1m== APP == Response for order 1: 204
-[0m?[94;1m== APP == {'data': {'orderId': 2}}
-[0m?[94;1m== APP == Response for order 2: 204
-[0m?[94;1m== APP == {'data': {'orderId': 3}}
-[0m?[94;1m== APP == Response for order 3: 204
+[0m?[94;1m{'data': {'orderId': 1}}
+[0m?[94;1mResponse for order 1: 204
+[0m?[94;1m{'data': {'orderId': 2}}
+[0m?[94;1mResponse for order 2: 204
+[0m?[94;1m{'data': {'orderId': 3}}
+[0m?[94;1mResponse for order 3: 204
 ```
 
 2. Observe the Node logs, which show a successful input binding with Kafka: 
 
 ```bash
-[0m?[94;1m== APP == { orderId: 1 }
-[0m?[94;1m== APP == Hello from Kafka!
-[0m?[94;1m== APP == { orderId: 2 }
-[0m?[94;1m== APP == Hello from Kafka!
-[0m?[94;1m== APP == { orderId: 3 }
-[0m?[94;1m== APP == Hello from Kafka!
+[0m?[94;1m{ orderId: 1 }
+[0m?[94;1mHello from Kafka!
+[0m?[94;1m{ orderId: 2 }
+[0m?[94;1mHello from Kafka!
+[0m?[94;1m{ orderId: 3 }
+[0m?[94;1mHello from Kafka!
 ```
 
 ### Cleanup
