@@ -10,8 +10,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# dapr run --app-id batch-http --app-port 50051
-#   --resources-path ../../../components -- python3 app.py
+#
+# From the quickstart directory `bindings/python/http`, run the python service app with Dapr:
+#   dapr run -f .
 
 import json
 from flask import Flask
@@ -21,7 +22,7 @@ import os
 app = Flask(__name__)
 
 app_port = os.getenv('APP_PORT', '5001')
-dapr_port = os.getenv('DAPR_HTTP_PORT', '4001')
+dapr_port = os.getenv('DAPR_HTTP_PORT', '3500')
 base_url = os.getenv('BASE_URL', 'http://localhost')
 cron_binding_name = 'cron'
 sql_binding_name = 'sqldb'

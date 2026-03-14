@@ -1,18 +1,27 @@
 # Dapr Bindings (HTTP)
 
-In this quickstart, you'll create a microservice to demonstrate Dapr's bindings API to work with external systems as inputs and outputs. The service listens to input binding events from a system CRON and then outputs the contents of local data to a PostreSql output binding. 
+In this quickstart, you'll create a microservice to demonstrate Dapr's bindings API to work with external systems as inputs and outputs. The service listens to input binding events from a system CRON and then outputs the contents of local data to a PostgreSQL output binding.
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/bindings/) link for more information about Dapr and Bindings.
 
-> **Note:** This example leverages only HTTP REST.  If you are looking for the example using the Dapr SDK [click here](../sdk).
+> **Note:** This example leverages only HTTP REST. If you are looking for the example using the Dapr SDK [click here](../sdk).
 
 This quickstart includes one service:
- 
-- Python service `batch`
 
-### Run and initialize PostgreSQL container
+- Python service `batch-http`
 
-1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
+- Python 3.x
+- Initialize Dapr: `dapr init`
+
+---
+
+## Run and initialize PostgreSQL container
+
+1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/):
 
 <!-- STEP
 name: Run and initialize PostgreSQL container
@@ -28,9 +37,11 @@ docker compose up -d
 
 <!-- END_STEP -->
 
-### Run Python service with Dapr
+---
 
-2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run: 
+## Run Python service with Dapr
+
+2. Open a new terminal window, change directories to `./batch` in the quickstart directory and run:
 
 <!-- STEP
 name: Install python dependencies
@@ -44,7 +55,9 @@ cd ..
 
 <!-- END_STEP -->
 
-3. Run the Python service app with Dapr:
+---
+
+3. From the quickstart directory `bindings/python/http`, run the Python service app with Dapr:
 
 <!-- STEP
 name: Run batch-http service
@@ -61,6 +74,31 @@ timeout_seconds: 60
 
 ```bash
 dapr run -f .
+```
+
+<!-- END_STEP -->
+
+The `-f` flag runs the application using the **Multi-App Run configuration** defined in `dapr.yaml`, automatically starting both the application and its Dapr sidecar.
+
+The cron input binding triggers the service every 10 seconds, and the service writes records to PostgreSQL using the output binding.
+
+---
+
+## Verify Data Persistence
+
+4. Open a new terminal window and run the following command to check the rows in the database:
+
+<!-- STEP
+name: Verify Data Persistence
+expected_stdout_lines:
+  - 'orderid |  customer  | price'
+  - '---------+------------+--------'
+expected_stderr_lines:
+output_match_mode: substring
+-->
+
+```bash
+docker exec postgres psql -U postgres -d orders -c "SELECT * FROM orders;"
 ```
 
 <!-- END_STEP -->
