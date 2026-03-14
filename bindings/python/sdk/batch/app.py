@@ -10,8 +10,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# dapr run --app-id batch-sdk --app-port 50051
-#   --resources-path ../../../components -- python3 app.py
+#
+# From the quickstart directory `bindings/python/sdk`, run the python service app with Dapr:
+#   dapr run -f .
 
 import json
 from flask import Flask
