@@ -11,7 +11,7 @@
 # limitations under the License.
 #
 #
-# From the quickstart directory `bindings/python/http`, run the python service app with Dapr:
+# From the quickstart directory `bindings/python/http`, run the Python service app with Dapr:
 #   dapr run -f .
 
 import json
