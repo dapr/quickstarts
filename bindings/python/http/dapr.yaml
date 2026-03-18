@@ -2,6 +2,6 @@ version: 1
 apps:
   - appID: batch-http
     appDirPath: ./batch
-    appPort: 50051
+    appPort: 5001
     command: ["python3", "app.py"]
     resourcesPath: ../../../components
