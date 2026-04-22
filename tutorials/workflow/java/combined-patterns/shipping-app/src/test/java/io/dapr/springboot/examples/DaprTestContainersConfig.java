@@ -62,7 +62,7 @@ public class DaprTestContainersConfig {
             .withComponent(new Component(DAPR_PUBSUB_COMPONENT, "pubsub.redis", "v1", redisProps))
             .withAppPort(8081)
             .withNetwork(daprNetwork)
-            .withReuseScheduler(reuse)
+            .withReusableScheduler(reuse)
             .withReusablePlacement(reuse)
             .withAppHealthCheckPath("/actuator/health")
             .withAppChannelAddress("host.testcontainers.internal")

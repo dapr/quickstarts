@@ -77,7 +77,7 @@ public class OrderWorkflow implements Workflow {
       if (!shipmentRegistrationStatus.isSuccess())
       {
         // This is the compensation step in case the shipment registration event was not successful.
-        ctx.callActivity(ReimburseCustomerActivity.class.getName(), order);
+        ctx.callActivity(ReimburseCustomerActivity.class.getName(), order, ReimburseCustomerResult.class).await();
         var message = "ShipmentRegistrationStatus for {order.Id} failed. Customer is reimbursed.";
         ctx.complete(new OrderStatus(false, message));
       }

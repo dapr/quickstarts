@@ -72,7 +72,13 @@ graph LR
     mvn clean -Dspring-boot.run.arguments="--reuse=true" spring-boot:test-run
     ```
 
-**Note**: notice that you are using the `reuse=true` property to make sure that both applications connect to the same infrastructure instead of creating its own. This is using [Testcontainers](https://www.testcontainers.com), check the []`reuse` functionality documentation here](https://java.testcontainers.org/features/reuse/), as you might need to enable this feature. 
+**Note**: notice that you are using the `reuse=true` property to make sure that both applications connect to the same infrastructure instead of creating its own. This relies on [Testcontainers reuse](https://java.testcontainers.org/features/reuse/), which must also be enabled at the machine level. Add the following line to `~/.testcontainers.properties` (create the file if it does not exist):
+
+```properties
+testcontainers.reuse.enable=true
+```
+
+Without this, each application will start its own Redis, placement, and scheduler containers and the pub/sub messages between the two apps will not be delivered.
 
 4. Use the POST request in the [`order-workflow.http`](./order-workflow.http) file to start the workflow, or use this cURL command:
 

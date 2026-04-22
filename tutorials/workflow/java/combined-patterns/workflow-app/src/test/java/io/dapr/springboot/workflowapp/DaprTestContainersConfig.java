@@ -64,7 +64,7 @@ public class DaprTestContainersConfig {
             .withAppPort(8080)
             .withNetwork(daprNetwork)
             .withReusablePlacement(reuse)
-            .withReuseScheduler(reuse)
+            .withReusableScheduler(reuse)
             .withAppHealthCheckPath("/actuator/health")
             .withAppChannelAddress("host.testcontainers.internal")
             .withDaprLogLevel(DaprLogLevel.INFO)
