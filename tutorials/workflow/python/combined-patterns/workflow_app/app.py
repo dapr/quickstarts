@@ -1,8 +1,9 @@
+from typing import Any
 from fastapi import FastAPI, status
+from pydantic import BaseModel
 from contextlib import asynccontextmanager
 from order_workflow import wf_runtime, order_workflow, SHIPMENT_REGISTERED_EVENT
 from models import Order, ShipmentRegistrationStatus
-from fastapi_cloudevents import CloudEvent
 import inventory_management as im
 import dapr.ext.workflow as wf
 import uvicorn
@@ -14,6 +15,9 @@ async def lifespan(app: FastAPI):
     wf_runtime.shutdown()
 
 app = FastAPI(lifespan=lifespan)
+
+class CloudEvent(BaseModel):
+    data: Any
 
 @app.post("/start", status_code=status.HTTP_202_ACCEPTED)
 async def start_workflow(order: Order) -> None:

@@ -1,10 +1,14 @@
+from typing import Any
 from fastapi import FastAPI, status
+from pydantic import BaseModel
 from dapr.clients import DaprClient
 from models import Order, CustomerInfo, ShipmentRegistrationStatus, ShippingDestinationResult
-from fastapi_cloudevents import CloudEvent
 import uvicorn
 
 app = FastAPI()
+
+class CloudEvent(BaseModel):
+    data: Any
 
 DAPR_PUBSUB_COMPONENT = "shippingpubsub"
 DAPR_PUBSUB_CONFIRMED_TOPIC = "shipment-registration-confirmed-events"
