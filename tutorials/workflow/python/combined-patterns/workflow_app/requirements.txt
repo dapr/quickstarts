@@ -1,5 +1,5 @@
-dapr>=1.17.0
-dapr-ext-workflow>=1.17.0
+dapr==1.18.0rc0
+dapr-ext-workflow==1.18.0rc0
 fastapi>=0.115.0
 pydantic>=2.11.4
 uvicorn>=0.34.2
