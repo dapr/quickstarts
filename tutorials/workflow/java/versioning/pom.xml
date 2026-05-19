@@ -15,7 +15,7 @@
   <description>Workflow versioning Example</description>
 
   <properties>
-    <dapr.spring.version>1.17.0-rc-2</dapr.spring.version>
+    <dapr.spring.version>1.18.0-rc-1</dapr.spring.version>
     <testcontainers.version>1.21.4</testcontainers.version>
   </properties>
   <dependencies>
