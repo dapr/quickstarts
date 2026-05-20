@@ -36,6 +36,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
       fail-fast: false
+    env:
+      MAVEN_ARGS: "--no-transfer-progress"
     steps:
       - name: Check out code
         uses: actions/checkout@v4
