@@ -14,36 +14,42 @@
 namespace OrderProcessor;
 
 /// <summary>
-/// Payment request passed through the workflow hierarchy.
+/// Patient record propagated through the workflow hierarchy. In a real
+/// deployment the Name / DOB / MRN fields are protected health info and
+/// would be candidates for redaction when the record is propagated downstream.
 /// </summary>
-/// <param name="CardLast4">Last four digits of the payment card.</param>
-/// <param name="Amount">Amount to charge.</param>
-/// <param name="Currency">ISO 4217 currency code.</param>
-/// <param name="MerchantId">Merchant identifier.</param>
-/// <param name="Description">Human-readable payment description.</param>
-public sealed record PaymentRequest(
-    string CardLast4,
-    double Amount,
-    string Currency,
-    string MerchantId,
-    string Description);
+/// <param name="PatientId">Patient identifier.</param>
+/// <param name="Name">Patient name.</param>
+/// <param name="Dob">Date of birth (YYYY-MM-DD).</param>
+/// <param name="Mrn">Medical record number.</param>
+/// <param name="Condition">Diagnosis / indication.</param>
+/// <param name="Medication">Prescribed drug name.</param>
+/// <param name="Dosage">Dosage in milligrams.</param>
+public sealed record PatientRecord(
+    string PatientId,
+    string Name,
+    string Dob,
+    string Mrn,
+    string Condition,
+    string Medication,
+    double Dosage);
 
-/// <summary>Result produced by the FraudDetection workflow.</summary>
+/// <summary>Result produced by the ComplianceAudit workflow.</summary>
+/// <param name="Compliant">Whether the prescription cleared compliance.</param>
 /// <param name="RiskScore">Risk score in the range [0, 1].</param>
-/// <param name="Approved">Whether the transaction was approved.</param>
 /// <param name="Reason">Human-readable decision rationale.</param>
-/// <param name="EventCount">Number of propagated history events inspected.</param>
-public sealed record FraudCheckResult(
+/// <param name="EventCount">Number of propagated history segments inspected.</param>
+public sealed record ComplianceResult(
+    bool Compliant,
     double RiskScore,
-    bool Approved,
     string Reason,
     int EventCount);
 
-/// <summary>Result produced by the SettlePayment activity.</summary>
-/// <param name="TransactionId">Unique transaction reference.</param>
-/// <param name="Status">Settlement status string.</param>
+/// <summary>Result produced by the DispenseMedication activity.</summary>
+/// <param name="DispenseId">Pharmacy dispense identifier.</param>
+/// <param name="Status">Dispense status string.</param>
 /// <param name="EventCount">Number of propagated history events inspected.</param>
-public sealed record SettlementResult(
-    string TransactionId,
+public sealed record DispenseResult(
+    string DispenseId,
     string Status,
     int EventCount);

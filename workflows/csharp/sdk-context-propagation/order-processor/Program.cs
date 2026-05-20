@@ -13,18 +13,19 @@
 
 // Workflow History Propagation Quickstart (.NET SDK)
 //
-// Scenario: credit-card payment processing with fraud detection.
+// Scenario: patient intake / e-prescribing pipeline.
 //
 // Flow:
-//   MerchantCheckout (root)
-//     └─ ValidateMerchant     (activity, no propagation)
-//     └─ ProcessPayment       (child wf, HistoryPropagationScope.Lineage)
-//           └─ ValidateCard           (activity, no propagation)
-//           └─ CheckSpendingLimits    (activity, no propagation)
-//           └─ FraudDetection         (grandchild wf, HistoryPropagationScope.Lineage)
-//           |      reads: MerchantCheckout + ProcessPayment events
-//           └─ SettlePayment          (activity, HistoryPropagationScope.OwnHistory)
-//                  reads: ProcessPayment events only
+//   PatientIntake (root)
+//     └─ VerifyInsurance         (activity, no propagation)
+//     └─ PrescribeMedication     (child wf, HistoryPropagationScope.Lineage)
+//           └─ CheckAllergies                (activity, no propagation)
+//           └─ ScreenDrugInteractions        (activity, no propagation)
+//           └─ ComplianceAudit               (grandchild wf, HistoryPropagationScope.Lineage)
+//           |      reads: PatientIntake + PrescribeMedication events
+//           └─ DispenseMedicationWorkflow    (grandchild wf, HistoryPropagationScope.OwnHistory)
+//                  reads: PrescribeMedication events only
+//                  └─ DispenseMedication      (activity)
 //
 // Requires Dapr 1.18+ (dapr/dapr#9810) and Dapr.Workflow 1.18+ (dapr/dotnet-sdk#1802).
 // Against an older sidecar GetPropagatedHistory() returns null and the sample
@@ -37,9 +38,9 @@ using Microsoft.Extensions.Hosting;
 using OrderProcessor;
 
 const string Banner =
-    "============================================\n" +
-    "= WORKFLOW HISTORY PROPAGATION DEMO (.NET) =\n" +
-    "============================================";
+    "================================================================\n" +
+    "= WORKFLOW HISTORY PROPAGATION DEMO — PATIENT INTAKE (.NET)   =\n" +
+    "================================================================";
 
 // ---------------------------------------------------------------------------
 // Host setup — register workflows and activities
@@ -51,15 +52,15 @@ var builder = Host.CreateDefaultBuilder(args)
         services.AddDaprClient();
         services.AddDaprWorkflow(options =>
         {
-            options.RegisterWorkflow<MerchantCheckoutWorkflow>();
-            options.RegisterWorkflow<ProcessPaymentWorkflow>();
-            options.RegisterWorkflow<FraudDetectionWorkflow>();
-            options.RegisterWorkflow<SettlementWorkflow>();
+            options.RegisterWorkflow<PatientIntakeWorkflow>();
+            options.RegisterWorkflow<PrescribeMedicationWorkflow>();
+            options.RegisterWorkflow<ComplianceAuditWorkflow>();
+            options.RegisterWorkflow<DispenseMedicationWorkflow>();
 
-            options.RegisterActivity<ValidateMerchantActivity>();
-            options.RegisterActivity<ValidateCardActivity>();
-            options.RegisterActivity<CheckSpendingLimitsActivity>();
-            options.RegisterActivity<SettlePaymentActivity>();
+            options.RegisterActivity<VerifyInsuranceActivity>();
+            options.RegisterActivity<CheckAllergiesActivity>();
+            options.RegisterActivity<ScreenDrugInteractionsActivity>();
+            options.RegisterActivity<DispenseMedicationActivity>();
         });
     });
 
@@ -74,28 +75,30 @@ var workflowClient = host.Services.GetRequiredService<DaprWorkflowClient>();
 
 Console.WriteLine(Banner);
 Console.WriteLine();
-Console.WriteLine("  Flow: MerchantCheckout -> ValidateMerchant");
-Console.WriteLine("           -> ProcessPayment (child wf, Lineage)");
-Console.WriteLine("               -> ValidateCard -> CheckSpendingLimits");
-Console.WriteLine("               -> FraudDetection (child wf, Lineage)    <-- sees MerchantCheckout + ProcessPayment events");
-Console.WriteLine("               -> SettlePayment  (activity, OwnHistory)  <-- sees only ProcessPayment events");
+Console.WriteLine("  Flow: PatientIntake -> VerifyInsurance");
+Console.WriteLine("           -> PrescribeMedication (child wf, Lineage)");
+Console.WriteLine("               -> CheckAllergies -> ScreenDrugInteractions");
+Console.WriteLine("               -> ComplianceAudit              (child wf, Lineage)    <-- sees PatientIntake + PrescribeMedication events");
+Console.WriteLine("               -> DispenseMedicationWorkflow   (child wf, OwnHistory) <-- sees only PrescribeMedication events");
 Console.WriteLine();
 
-var request = new PaymentRequest(
-    CardLast4: "4242",
-    Amount: 149.99,
-    Currency: "USD",
-    MerchantId: "merchant-abc",
-    Description: "Online purchase");
+var record = new PatientRecord(
+    PatientId: "P-1042",
+    Name: "Jane Doe",
+    Dob: "1985-06-12",
+    Mrn: "MRN-77231",
+    Condition: "bacterial sinusitis",
+    Medication: "amoxicillin",
+    Dosage: 500);
 
-const string InstanceId = "checkout-001";
+const string InstanceId = "intake-001";
 
 Console.WriteLine($"  [main] Scheduling workflow instance: {InstanceId}");
 
 await workflowClient.ScheduleNewWorkflowAsync(
-    name: nameof(MerchantCheckoutWorkflow),
+    name: nameof(PatientIntakeWorkflow),
     instanceId: InstanceId,
-    input: request);
+    input: record);
 
 var state = await workflowClient.WaitForWorkflowCompletionAsync(
     instanceId: InstanceId,
@@ -115,6 +118,6 @@ else
 }
 
 Console.WriteLine();
-Console.WriteLine("============================================");
-Console.WriteLine("=               COMPLETE                  =");
-Console.WriteLine("============================================");
+Console.WriteLine("================================================================");
+Console.WriteLine("=                          COMPLETE                            =");
+Console.WriteLine("================================================================");

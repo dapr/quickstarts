@@ -16,56 +16,56 @@ namespace OrderProcessor;
 using Dapr.Workflow;
 
 /// <summary>
-/// Validates the merchant account. Called by MerchantCheckout without propagation.
+/// Verifies the patient's insurance coverage. Called by PatientIntake without
+/// propagation.
 /// </summary>
-public sealed class ValidateMerchantActivity : WorkflowActivity<PaymentRequest, bool>
+public sealed class VerifyInsuranceActivity : WorkflowActivity<PatientRecord, bool>
 {
-    public override Task<bool> RunAsync(WorkflowActivityContext ctx, PaymentRequest req)
+    public override Task<bool> RunAsync(WorkflowActivityContext ctx, PatientRecord rec)
     {
-        Console.WriteLine($"  [ValidateMerchant] Validating merchant {req.MerchantId}");
+        Console.WriteLine($"  [VerifyInsurance] Checking coverage for patient {rec.PatientId}");
         return Task.FromResult(true);
     }
 }
 
 /// <summary>
-/// Validates the payment card. Called by ProcessPayment without propagation.
+/// Screens the patient against their allergy list for the candidate drug.
+/// Called by PrescribeMedication without propagation.
 /// </summary>
-public sealed class ValidateCardActivity : WorkflowActivity<PaymentRequest, bool>
+public sealed class CheckAllergiesActivity : WorkflowActivity<PatientRecord, bool>
 {
-    public override Task<bool> RunAsync(WorkflowActivityContext ctx, PaymentRequest req)
+    public override Task<bool> RunAsync(WorkflowActivityContext ctx, PatientRecord rec)
     {
-        Console.WriteLine($"  [ValidateCard] Validating card ****{req.CardLast4}");
+        Console.WriteLine($"  [CheckAllergies] Screening {rec.PatientId} for {rec.Medication}");
         return Task.FromResult(true);
     }
 }
 
 /// <summary>
-/// Checks that the payment amount is within card spending limits.
-/// Called by ProcessPayment without propagation.
+/// Screens the candidate prescription against the patient's active medication
+/// list. Called by PrescribeMedication without propagation.
 /// </summary>
-public sealed class CheckSpendingLimitsActivity : WorkflowActivity<PaymentRequest, bool>
+public sealed class ScreenDrugInteractionsActivity : WorkflowActivity<PatientRecord, bool>
 {
-    public override Task<bool> RunAsync(WorkflowActivityContext ctx, PaymentRequest req)
+    public override Task<bool> RunAsync(WorkflowActivityContext ctx, PatientRecord rec)
     {
-        Console.WriteLine($"  [CheckSpendingLimits] Checking {req.Amount} {req.Currency}");
-        bool withinLimits = req.Amount <= 10_000;
-        Console.WriteLine($"  [CheckSpendingLimits] Within limits: {withinLimits}");
-        return Task.FromResult(withinLimits);
+        Console.WriteLine($"  [ScreenDrugInteractions] Screening {rec.Medication} {rec.Dosage:F0}mg for {rec.PatientId}");
+        return Task.FromResult(true);
     }
 }
 
 /// <summary>
-/// Executes the final payment settlement. Called by SettlementWorkflow.
+/// Dispenses the medication. Called by DispenseMedicationWorkflow.
 /// </summary>
-public sealed class SettlePaymentActivity : WorkflowActivity<PaymentRequest, SettlementResult>
+public sealed class DispenseMedicationActivity : WorkflowActivity<PatientRecord, DispenseResult>
 {
-    public override Task<SettlementResult> RunAsync(WorkflowActivityContext ctx, PaymentRequest req)
+    public override Task<DispenseResult> RunAsync(WorkflowActivityContext ctx, PatientRecord rec)
     {
-        var txnId = $"txn-{req.MerchantId}-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
-        Console.WriteLine($"  [SettlePayment] SETTLED: {txnId}");
-        return Task.FromResult(new SettlementResult(
-            TransactionId: txnId,
-            Status: "settled",
-            EventCount: 0)); // EventCount populated by SettlementWorkflow
+        var dispenseId = $"rx-{rec.PatientId}-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
+        Console.WriteLine($"  [DispenseMedication] DISPENSED: {dispenseId} ({rec.Medication} {rec.Dosage:F0}mg)");
+        return Task.FromResult(new DispenseResult(
+            DispenseId: dispenseId,
+            Status: "dispensed",
+            EventCount: 0)); // EventCount populated by DispenseMedicationWorkflow
     }
 }

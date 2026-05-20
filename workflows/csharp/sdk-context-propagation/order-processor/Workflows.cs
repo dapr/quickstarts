@@ -16,210 +16,246 @@ namespace OrderProcessor;
 using Dapr.Workflow;
 
 // ---------------------------------------------------------------------------
-// MerchantCheckout (root workflow)
+// PatientIntake (root workflow)
 // ---------------------------------------------------------------------------
 
 /// <summary>
-/// Root workflow — validates the merchant then delegates payment to a child
-/// workflow with full <see cref="HistoryPropagationScope.Lineage"/> propagation
-/// so the grandchild FraudDetection can inspect the complete ancestor chain.
+/// Root workflow — verifies the patient's insurance then delegates the
+/// prescription to a child workflow with full
+/// <see cref="HistoryPropagationScope.Lineage"/> propagation so the grandchild
+/// ComplianceAudit can inspect the complete ancestor chain.
 /// </summary>
-public sealed class MerchantCheckoutWorkflow : Workflow<PaymentRequest, string>
+public sealed class PatientIntakeWorkflow : Workflow<PatientRecord, string>
 {
-    public override async Task<string> RunAsync(WorkflowContext ctx, PaymentRequest req)
+    public override async Task<string> RunAsync(WorkflowContext ctx, PatientRecord rec)
     {
-        Console.WriteLine($"  [MerchantCheckout] Starting checkout for merchant {req.MerchantId}");
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [PatientIntake] Starting intake for patient {rec.PatientId}");
 
-        // Step 1: Validate merchant — no propagation (plain activity).
-        Console.WriteLine("  [MerchantCheckout] Step 1: ValidateMerchant (no propagation)");
-        await ctx.CallActivityAsync<bool>(
-            nameof(ValidateMerchantActivity),
-            req);
-        Console.WriteLine("  [MerchantCheckout] Step 1 complete: merchant valid");
+        // Step 1: Verify insurance — no propagation (plain activity).
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PatientIntake] Step 1: VerifyInsurance (no propagation)");
+        var insured = await ctx.CallActivityAsync<bool>(
+            nameof(VerifyInsuranceActivity),
+            rec);
+        if (!insured)
+            return "intake declined: insurance not on file";
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PatientIntake] Step 1 complete: insurance verified");
 
-        // Step 2: Delegate to ProcessPayment with Lineage propagation.
-        // ProcessPayment inherits this workflow's full history so that its own
-        // child FraudDetection can verify the complete ancestor chain.
-        Console.WriteLine("  [MerchantCheckout] Step 2: ProcessPayment child wf (HistoryPropagationScope.Lineage)");
+        // Step 2: Delegate to PrescribeMedication with Lineage propagation.
+        // PrescribeMedication inherits this workflow's full history so its own
+        // grandchild ComplianceAudit can verify the complete ancestor chain.
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PatientIntake] Step 2: PrescribeMedication child wf (HistoryPropagationScope.Lineage)");
         var result = await ctx.CallChildWorkflowAsync<string>(
-            nameof(ProcessPaymentWorkflow),
-            req,
+            nameof(PrescribeMedicationWorkflow),
+            rec,
             new ChildWorkflowTaskOptions(PropagationScope: HistoryPropagationScope.Lineage));
 
-        Console.WriteLine($"  [MerchantCheckout] COMPLETE: {result}");
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [PatientIntake] COMPLETE: {result}");
         return result;
     }
 }
 
 // ---------------------------------------------------------------------------
-// ProcessPayment (child workflow, level 2)
+// PrescribeMedication (child workflow, level 2)
 // ---------------------------------------------------------------------------
 
 /// <summary>
-/// Child workflow — orchestrates card validation, fraud detection, and
-/// settlement. Receives <see cref="HistoryPropagationScope.Lineage"/> from
-/// MerchantCheckout, so it holds the full ancestor chain when calling its
-/// own children.
+/// Child workflow — orchestrates allergy + interaction screening, compliance
+/// audit, and dispensing. Receives <see cref="HistoryPropagationScope.Lineage"/>
+/// from PatientIntake, so it holds the full ancestor chain when calling its
+/// own children. Calls ComplianceAudit with Lineage (audit needs to see the
+/// grandparent) and DispenseMedicationWorkflow with OwnHistory (pharmacy only
+/// sees the prescribing step, not the intake).
 /// </summary>
-public sealed class ProcessPaymentWorkflow : Workflow<PaymentRequest, string>
+public sealed class PrescribeMedicationWorkflow : Workflow<PatientRecord, string>
 {
-    public override async Task<string> RunAsync(WorkflowContext ctx, PaymentRequest req)
+    public override async Task<string> RunAsync(WorkflowContext ctx, PatientRecord rec)
     {
-        Console.WriteLine($"  [ProcessPayment] Starting payment ****{req.CardLast4} {req.Amount} {req.Currency}");
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [PrescribeMedication] Starting prescription: {rec.Medication} {rec.Dosage:F0}mg for {rec.Condition}");
 
-        // Step 1: Validate card (no propagation).
-        Console.WriteLine("  [ProcessPayment] Step 1: ValidateCard (no propagation)");
-        var cardValid = await ctx.CallActivityAsync<bool>(
-            nameof(ValidateCardActivity),
-            req);
-        if (!cardValid)
-            return "payment declined: invalid card";
-        Console.WriteLine("  [ProcessPayment] Step 1 complete: card valid");
+        // Step 1: Allergy check (no propagation).
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PrescribeMedication] Step 1: CheckAllergies (no propagation)");
+        var allergyClear = await ctx.CallActivityAsync<bool>(
+            nameof(CheckAllergiesActivity),
+            rec);
+        if (!allergyClear)
+            return "prescription declined: known allergy";
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PrescribeMedication] Step 1 complete: allergy clear");
 
-        // Step 2: Check spending limits (no propagation).
-        Console.WriteLine("  [ProcessPayment] Step 2: CheckSpendingLimits (no propagation)");
-        var withinLimits = await ctx.CallActivityAsync<bool>(
-            nameof(CheckSpendingLimitsActivity),
-            req);
-        if (!withinLimits)
-            return "payment declined: spending limit exceeded";
-        Console.WriteLine("  [ProcessPayment] Step 2 complete: within limits");
+        // Step 2: Drug interaction screen (no propagation).
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PrescribeMedication] Step 2: ScreenDrugInteractions (no propagation)");
+        var interactionsClear = await ctx.CallActivityAsync<bool>(
+            nameof(ScreenDrugInteractionsActivity),
+            rec);
+        if (!interactionsClear)
+            return "prescription declined: drug interaction risk";
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PrescribeMedication] Step 2 complete: no interactions");
 
-        // Step 3: Fraud detection grandchild workflow with Lineage propagation.
-        // FraudDetection will see both MerchantCheckout AND ProcessPayment events.
-        Console.WriteLine("  [ProcessPayment] Step 3: FraudDetection child wf (HistoryPropagationScope.Lineage)");
-        var fraudResult = await ctx.CallChildWorkflowAsync<FraudCheckResult>(
-            nameof(FraudDetectionWorkflow),
-            req,
+        // Step 3: Compliance audit grandchild workflow with Lineage propagation.
+        // ComplianceAudit will see both PatientIntake AND PrescribeMedication events.
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PrescribeMedication] Step 3: ComplianceAudit child wf (HistoryPropagationScope.Lineage)");
+        var audit = await ctx.CallChildWorkflowAsync<ComplianceResult>(
+            nameof(ComplianceAuditWorkflow),
+            rec,
             new ChildWorkflowTaskOptions(PropagationScope: HistoryPropagationScope.Lineage));
-        if (!fraudResult.Approved)
-            return $"payment declined: fraud check failed (risk={fraudResult.RiskScore:F2}, reason={fraudResult.Reason})";
-        Console.WriteLine($"  [ProcessPayment] Step 3 complete: fraud check passed (risk={fraudResult.RiskScore:F2})");
+        if (!audit.Compliant)
+            return $"prescription blocked: compliance audit failed (risk={audit.RiskScore:F2}, reason={audit.Reason})";
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [PrescribeMedication] Step 3 complete: compliance audit passed (risk={audit.RiskScore:F2})");
 
-        // Step 4: Settle payment as a child workflow with OwnHistory propagation.
-        // SettlementWorkflow only sees ProcessPayment's own events — not MerchantCheckout.
+        // Step 4: Dispense the medication as a child workflow with OwnHistory propagation.
+        // DispenseMedicationWorkflow only sees PrescribeMedication's own events — not PatientIntake.
         // Note: the .NET SDK propagation support is on ChildWorkflowTaskOptions only.
-        // For a trust-boundary demo equivalent to PropagationScope.OWN_HISTORY in Python,
-        // SettlePayment is implemented as a child workflow (not a bare activity).
-        Console.WriteLine("  [ProcessPayment] Step 4: SettlementWorkflow child wf (HistoryPropagationScope.OwnHistory)");
-        var settlement = await ctx.CallChildWorkflowAsync<SettlementResult>(
-            nameof(SettlementWorkflow),
-            req,
+        // For a trust-boundary demo equivalent to PropagationScope.OWN_HISTORY in Python/Go,
+        // DispenseMedication is implemented as a child workflow (not a bare activity).
+        if (!ctx.IsReplaying)
+            Console.WriteLine("  [PrescribeMedication] Step 4: DispenseMedicationWorkflow child wf (HistoryPropagationScope.OwnHistory)");
+        var dispense = await ctx.CallChildWorkflowAsync<DispenseResult>(
+            nameof(DispenseMedicationWorkflow),
+            rec,
             new ChildWorkflowTaskOptions(PropagationScope: HistoryPropagationScope.OwnHistory));
-        Console.WriteLine($"  [ProcessPayment] Step 4 complete: settled (txn={settlement.TransactionId})");
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [PrescribeMedication] Step 4 complete: dispensed (id={dispense.DispenseId})");
 
-        var summary = $"payment settled: txn={settlement.TransactionId}, " +
-                      $"card=****{req.CardLast4}, amount={req.Amount} {req.Currency}";
-        Console.WriteLine($"  [ProcessPayment] COMPLETE: {summary}");
+        var summary = $"dispensed: id={dispense.DispenseId}, patient={rec.PatientId}, drug={rec.Medication} {rec.Dosage:F0}mg";
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [PrescribeMedication] COMPLETE: {summary}");
         return summary;
     }
 }
 
 // ---------------------------------------------------------------------------
-// FraudDetection (grandchild workflow, level 3)
+// ComplianceAudit (grandchild workflow, level 3)
 // ---------------------------------------------------------------------------
 
 /// <summary>
 /// Grandchild workflow that inspects the full ancestor chain to make a
-/// trust-aware fraud decision. Receives <see cref="HistoryPropagationScope.Lineage"/>
-/// from ProcessPayment, so <see cref="WorkflowContext.GetPropagatedHistory"/> returns
-/// entries for both MerchantCheckout and ProcessPayment.
+/// trust-aware compliance decision. Receives <see cref="HistoryPropagationScope.Lineage"/>
+/// from PrescribeMedication, so <see cref="WorkflowContext.GetPropagatedHistory"/>
+/// returns entries for both PatientIntake and PrescribeMedication. Refuses to
+/// approve dispensing unless the required upstream steps (insurance, allergies,
+/// drug interactions) are all present and completed in the propagated history.
 /// </summary>
-public sealed class FraudDetectionWorkflow : Workflow<PaymentRequest, FraudCheckResult>
+public sealed class ComplianceAuditWorkflow : Workflow<PatientRecord, ComplianceResult>
 {
-    public override Task<FraudCheckResult> RunAsync(WorkflowContext ctx, PaymentRequest req)
+    public override Task<ComplianceResult> RunAsync(WorkflowContext ctx, PatientRecord rec)
     {
-        Console.WriteLine($"  [FraudDetection] Checking payment ****{req.CardLast4} {req.Amount} {req.Currency}");
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [ComplianceAudit] Auditing prescription for patient {rec.PatientId}");
 
         var history = ctx.GetPropagatedHistory();
         if (history is null)
         {
-            Console.WriteLine("  [FraudDetection] WARNING: no propagated history — sidecar may not support 1.18+");
-            return Task.FromResult(new FraudCheckResult(
+            if (!ctx.IsReplaying)
+            {
+                Console.WriteLine("  [ComplianceAudit] WARNING: no propagated history — sidecar may not support 1.18+");
+                Console.WriteLine("  [ComplianceAudit] BLOCKED — cannot verify upstream pipeline without history");
+            }
+            return Task.FromResult(new ComplianceResult(
+                Compliant: false,
                 RiskScore: 1.0,
-                Approved: false,
                 Reason: "no execution history provided — cannot verify caller pipeline",
                 EventCount: 0));
         }
 
-        Console.WriteLine($"  [FraudDetection] Received propagated history with {history.Entries.Count} segment(s):");
-        foreach (var entry in history.Entries)
-            Console.WriteLine($"  [FraudDetection]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
-
-        // Verify MerchantCheckout is present in the ancestor chain.
-        var merchantEntries = history.FilterByWorkflowName(nameof(MerchantCheckoutWorkflow));
-        if (merchantEntries.Entries.Count == 0)
+        if (!ctx.IsReplaying)
         {
-            return Task.FromResult(new FraudCheckResult(
+            Console.WriteLine($"  [ComplianceAudit] Received propagated history with {history.Entries.Count} segment(s):");
+            foreach (var entry in history.Entries)
+                Console.WriteLine($"  [ComplianceAudit]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
+        }
+
+        // Verify PatientIntake is present in the ancestor chain.
+        var intakeEntries = history.FilterByWorkflowName(nameof(PatientIntakeWorkflow));
+        if (intakeEntries.Entries.Count == 0)
+        {
+            return Task.FromResult(new ComplianceResult(
+                Compliant: false,
                 RiskScore: 0.9,
-                Approved: false,
-                Reason: $"{nameof(MerchantCheckoutWorkflow)} missing from propagated history",
+                Reason: $"{nameof(PatientIntakeWorkflow)} missing from propagated history",
                 EventCount: history.Entries.Count));
         }
 
-        // Verify ProcessPayment is present in the ancestor chain.
-        var processEntries = history.FilterByWorkflowName(nameof(ProcessPaymentWorkflow));
-        if (processEntries.Entries.Count == 0)
+        // Verify PrescribeMedication is present in the ancestor chain.
+        var prescribeEntries = history.FilterByWorkflowName(nameof(PrescribeMedicationWorkflow));
+        if (prescribeEntries.Entries.Count == 0)
         {
-            return Task.FromResult(new FraudCheckResult(
+            return Task.FromResult(new ComplianceResult(
+                Compliant: false,
                 RiskScore: 0.9,
-                Approved: false,
-                Reason: $"{nameof(ProcessPaymentWorkflow)} missing from propagated history",
+                Reason: $"{nameof(PrescribeMedicationWorkflow)} missing from propagated history",
                 EventCount: history.Entries.Count));
         }
 
         // Verify the required activity completions are recorded in history events.
-        var merchantEntry = merchantEntries.Entries[0];
-        var processEntry = processEntries.Entries[0];
+        var intakeEntry = intakeEntries.Entries[0];
+        var prescribeEntry = prescribeEntries.Entries[0];
 
-        int merchantCompletedCount = merchantEntry.Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
-        int processCompletedCount  = processEntry.Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
+        int intakeCompletedCount = intakeEntry.Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
+        int prescribeCompletedCount = prescribeEntry.Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
 
-        Console.WriteLine("  [FraudDetection] Verification:");
-        Console.WriteLine($"    MerchantCheckout TaskCompleted events: {merchantCompletedCount}");
-        Console.WriteLine($"    ProcessPayment   TaskCompleted events: {processCompletedCount}");
-
-        if (merchantCompletedCount == 0 || processCompletedCount == 0)
+        if (!ctx.IsReplaying)
         {
-            return Task.FromResult(new FraudCheckResult(
+            Console.WriteLine("  [ComplianceAudit] Verification:");
+            Console.WriteLine($"    PatientIntake       TaskCompleted events: {intakeCompletedCount} (expect >= 1: VerifyInsurance)");
+            Console.WriteLine($"    PrescribeMedication TaskCompleted events: {prescribeCompletedCount} (expect >= 2: CheckAllergies, ScreenDrugInteractions)");
+        }
+
+        if (intakeCompletedCount == 0 || prescribeCompletedCount < 2)
+        {
+            if (!ctx.IsReplaying)
+                Console.WriteLine("  [ComplianceAudit] BLOCKED — required upstream checks not completed");
+            return Task.FromResult(new ComplianceResult(
+                Compliant: false,
                 RiskScore: 0.9,
-                Approved: false,
                 Reason: "required upstream checks not completed in propagated history",
                 EventCount: history.Entries.Count));
         }
 
         int totalEventCount = history.Entries.Sum(e => e.Events.Count);
-        double riskScore = req.Amount > 1000 ? 0.3 : 0.1;
-        Console.WriteLine($"  [FraudDetection] APPROVED (risk={riskScore:F2}, total events inspected={totalEventCount})");
+        double riskScore = rec.Dosage > 1000 ? 0.3 : 0.1;
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [ComplianceAudit] APPROVED (risk={riskScore:F2}, total events inspected={totalEventCount})");
 
-        return Task.FromResult(new FraudCheckResult(
+        return Task.FromResult(new ComplianceResult(
+            Compliant: true,
             RiskScore: riskScore,
-            Approved: true,
             Reason: "all upstream checks verified in propagated history",
             EventCount: totalEventCount));
     }
 }
 
 // ---------------------------------------------------------------------------
-// SettlementWorkflow (grandchild workflow, level 3)
+// DispenseMedicationWorkflow (grandchild workflow, level 3)
 // ---------------------------------------------------------------------------
 
 /// <summary>
-/// Settlement workflow — receives <see cref="HistoryPropagationScope.OwnHistory"/>
-/// from ProcessPayment, so it can only see ProcessPayment's own events.
-/// This demonstrates the trust-boundary mode: the MerchantCheckout ancestor
-/// history is intentionally excluded.
+/// Dispense workflow — receives <see cref="HistoryPropagationScope.OwnHistory"/>
+/// from PrescribeMedication, so it can only see PrescribeMedication's own events.
+/// This demonstrates the trust-boundary mode: the PatientIntake ancestor history
+/// is intentionally excluded — the pharmacy system doesn't need (or get to see)
+/// the upstream patient-intake chain.
 /// </summary>
 /// <remarks>
-/// In the Python sibling this is implemented as a bare activity because the
-/// Python SDK supports <c>propagation=</c> on <c>call_activity()</c>. The .NET
-/// SDK's <see cref="HistoryPropagationScope"/> is currently scoped to child
-/// workflows only (<see cref="ChildWorkflowTaskOptions"/>), so we use a child
-/// workflow here to demonstrate the identical OwnHistory boundary.
+/// In the Python sibling and the Go reference this is implemented as a bare
+/// activity because those SDKs support a propagation argument on activity calls.
+/// The .NET SDK's <see cref="HistoryPropagationScope"/> is currently scoped to
+/// child workflows only (<see cref="ChildWorkflowTaskOptions"/>), so we use a
+/// child workflow here to demonstrate the identical OwnHistory boundary.
 /// </remarks>
-public sealed class SettlementWorkflow : Workflow<PaymentRequest, SettlementResult>
+public sealed class DispenseMedicationWorkflow : Workflow<PatientRecord, DispenseResult>
 {
-    public override async Task<SettlementResult> RunAsync(WorkflowContext ctx, PaymentRequest req)
+    public override async Task<DispenseResult> RunAsync(WorkflowContext ctx, PatientRecord rec)
     {
         var history = ctx.GetPropagatedHistory();
 
@@ -227,24 +263,32 @@ public sealed class SettlementWorkflow : Workflow<PaymentRequest, SettlementResu
         if (history is not null)
         {
             eventCount = history.Entries.Sum(e => e.Events.Count);
-            Console.WriteLine($"  [SettlementWorkflow] Propagated segments: {history.Entries.Count}");
-            foreach (var entry in history.Entries)
-                Console.WriteLine($"  [SettlementWorkflow]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
+            if (!ctx.IsReplaying)
+            {
+                Console.WriteLine($"  [DispenseMedicationWorkflow] Propagated segments: {history.Entries.Count}");
+                foreach (var entry in history.Entries)
+                {
+                    Console.WriteLine($"  [DispenseMedicationWorkflow]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
+                    foreach (var evt in entry.Events.Take(5))
+                        Console.WriteLine($"  [DispenseMedicationWorkflow]     event: kind={evt.Kind} id={evt.EventId}");
+                    if (entry.Events.Count > 5)
+                        Console.WriteLine($"  [DispenseMedicationWorkflow]     ... ({entry.Events.Count - 5} more events)");
+                }
 
-            // With OwnHistory, MerchantCheckout should NOT appear here.
-            var merchantEntries = history.FilterByWorkflowName(nameof(MerchantCheckoutWorkflow));
-            Console.WriteLine($"  [SettlementWorkflow] MerchantCheckout in history (expected 0): {merchantEntries.Entries.Count}");
+                // With OwnHistory, PatientIntake should NOT appear here.
+                var intakeEntries = history.FilterByWorkflowName(nameof(PatientIntakeWorkflow));
+                Console.WriteLine($"  [DispenseMedicationWorkflow] PatientIntake in history (expected 0): {intakeEntries.Entries.Count}");
+            }
         }
-        else
+        else if (!ctx.IsReplaying)
         {
-            Console.WriteLine("  [SettlementWorkflow] No propagated history received");
+            Console.WriteLine("  [DispenseMedicationWorkflow] No propagated history received");
         }
 
-        var result = await ctx.CallActivityAsync<SettlementResult>(
-            nameof(SettlePaymentActivity),
-            req);
+        var result = await ctx.CallActivityAsync<DispenseResult>(
+            nameof(DispenseMedicationActivity),
+            rec);
 
-        Console.WriteLine($"  [SettlementWorkflow] SETTLED: {result.TransactionId}");
         return result with { EventCount = eventCount };
     }
 }
