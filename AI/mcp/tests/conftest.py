@@ -89,17 +89,3 @@ def dapr_check() -> None:
         return
     if out.returncode != 0:
         pytest.skip(f"dapr --version failed: {out.stderr.strip() or out.stdout.strip()}")
-
-
-@pytest.fixture(scope="session")
-def ollama_check() -> None:
-    """Skip if Ollama is not running or the expected model isn't pulled."""
-    try:
-        out = subprocess.run(["ollama", "list"], capture_output=True, text=True, timeout=10)
-    except FileNotFoundError:
-        pytest.skip("ollama CLI not found on PATH")
-        return
-    if out.returncode != 0:
-        pytest.skip(f"`ollama list` failed: {out.stderr.strip() or out.stdout.strip()}")
-    if "llama3.2" not in out.stdout:
-        pytest.skip("llama3.2 model not available — run `ollama pull llama3.2:latest`")

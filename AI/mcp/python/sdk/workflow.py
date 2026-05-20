@@ -10,17 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Parent workflow for the sdk variant.
-
-Calls one tool from each of the three MCPServer resources to demonstrate
-that the calling code is identical across transports — only the
-``call_tool_workflow`` name (taken from the discovered ``MCPToolDef``)
-differs per server.
-"""
-
 from typing import Any
-
 from dapr.ext.workflow import DaprWorkflowContext
 
 

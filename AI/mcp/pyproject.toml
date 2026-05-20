@@ -1,15 +1,14 @@
 [project]
 name = "mcp-quickstart"
 version = "0.0.0"
-description = "Dapr MCPServer quickstart (sdk + dapr-agents variants)"
+description = "Dapr MCPServer quickstart (sdk variant)"
 requires-python = ">=3.11"
 
-# Pull in all three workspace members so a single `uv sync` installs
-# everything the quickstart needs to run (mcp-servers + both variants).
+# Pull in both workspace members so a single `uv sync` installs everything
+# the quickstart needs to run.
 dependencies = [
     "mcp-quickstart-servers",
     "mcp-quickstart-sdk",
-    "mcp-quickstart-dapr-agents",
 ]
 
 [dependency-groups]
@@ -24,13 +23,11 @@ dev = [
 members = [
     "mcp-servers",
     "python/sdk",
-    "python/dapr-agents",
 ]
 
 [tool.uv.sources]
 mcp-quickstart-servers = { workspace = true }
 mcp-quickstart-sdk = { workspace = true }
-mcp-quickstart-dapr-agents = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

@@ -2,16 +2,11 @@
 
 This quickstart shows how to declare MCP (Model Context Protocol) server connections as first-class Dapr resources. When daprd loads an `MCPServer`, it discovers the server's tools and registers a built-in durable workflow per tool — calling a tool becomes "start a workflow" and Dapr handles the connection, retries, credentials, observability, and crash recovery.
 
-Two **equal-weight** integration paths are shown side-by-side, sharing the same MCPServer resources, the same MCP server processes, and the same middleware workflows:
+The variant in [`python/sdk/`](./python/sdk/) demonstrates the SDK-driven path: explicit `DaprMCPClient` discovery + `call_child_workflow` per tool. Pick this if you want to see exactly what's happening end-to-end, or you're integrating with a framework other than dapr-agents.
 
-| Variant | When to use |
-|---|---|
-| [`python/sdk/`](./python/sdk/) | Explicit control via `DaprMCPClient`. Pick this if you're using a non-dapr-agents framework or want to see exactly what's happening. |
-| [`python/dapr-agents/`](./python/dapr-agents/) | Zero-config via `DurableAgent` auto-discovery. Pick this if you're already using dapr-agents and want the framework to do all the wiring. |
+> **Looking for the agent-driven path?** See [`dapr-agents/examples/10-mcpserver-all-transports/`](https://github.com/dapr/dapr-agents/tree/main/examples/10-mcpserver-all-transports) for a `DurableAgent` that uses these same MCPServer resources (and the same middleware shapes) via zero-config auto-discovery against the sidecar metadata API.
 
-Only the *calling* code differs between the two — same resources, same MCP servers, same middleware.
-
-## What you'll see across both variants
+## What you'll see
 
 - **Three MCP transports** working through the same calling code — only the YAML `spec.endpoint` differs:
 
@@ -41,8 +36,8 @@ Only the *calling* code differs between the two — same resources, same MCP ser
                                            │ + middleware:
                                            │   rate_limit
    ┌───────────┐    ┌──────────┐           │   redact_pii (mutate)
-   │   app /   │───▶│  daprd   │───────────┤   audit_log
-   │  agent    │    │          │           │  ┌─────────────────────────┐
+   │   app     │───▶│  daprd   │───────────┤   audit_log
+   │           │    │          │           │  ┌─────────────────────────┐
    └───────────┘    └──────────┘           ├─▶│  local_tools_server     │
                                            │  │  (stdio subprocess)     │
                                            │  └─────────────────────────┘
@@ -57,11 +52,10 @@ Only the *calling* code differs between the two — same resources, same MCP ser
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/) installed and `dapr init` completed. Runtime version >= 1.18.
 - Python 3.11+
 - Docker (used by `dapr init`)
-- For the `dapr-agents` variant: a local [Ollama](https://ollama.com) install with the `llama3.2:latest` model pulled (`ollama serve` + `ollama pull llama3.2:latest`). The agent calls Dapr's Conversation API via [`resources/ollama.yaml`](./resources/ollama.yaml) (`conversation.ollama` component) — no API key required. Dapr Agents version >= v1.0.4.
 
 ## Automated tests
 
-[`tests/`](./tests/) contains pytest-based end-to-end tests for both variants. The quickstart is a [uv workspace](https://docs.astral.sh/uv/concepts/workspaces/) — `mcp-servers/`, `python/sdk/`, and `python/dapr-agents/` are members declared in [`pyproject.toml`](./pyproject.toml) and pinned by [`uv.lock`](./uv.lock). CI runs these against an Ollama-backed Conversation API; locally:
+[`tests/`](./tests/) contains a pytest-based end-to-end test that spawns the three MCP server processes, runs the sdk variant under `dapr run`, and asserts on the workflow output (tool results, PII redaction, rate-limit trip). The quickstart is a [uv workspace](https://docs.astral.sh/uv/concepts/workspaces/) — `mcp-servers/` and `python/sdk/` are members declared in [`pyproject.toml`](./pyproject.toml) and pinned by [`uv.lock`](./uv.lock):
 
 ```bash
 cd quickstarts/AI/mcp
@@ -72,20 +66,14 @@ uv run --group dev pytest -v tests/
 
 ## Quick run
 
-Pick a variant and follow its README:
-
 ```bash
-# Variant 1
 cd python/sdk && cat README.md
-
-# Variant 2
-cd python/dapr-agents && cat README.md
 ```
 
 ## Cleanup
 
 ```bash
-dapr stop --app-id mcp-sdk     # or mcp-agent
+dapr stop --app-id mcp-sdk
 # Then Ctrl-C the long-running MCP servers in their terminals.
 # (The stdio MCP server is reaped by daprd automatically.)
 ```
@@ -99,3 +87,4 @@ Python only for now. Equivalent variants for the other SDKs will land shortly.
 - [MCPServer resource overview](https://docs.dapr.io/developing-ai/mcp/mcp-server-resource/) — full docs page covering deployment topologies (gateway / one-to-one / mixed), `WorkflowAccessPolicy`-based gating, cross-app middleware via `appID`, catalog metadata, and `ignoreErrors` for tolerant loading.
 - [How-To: Use MCPServer resources](https://docs.dapr.io/developing-ai/mcp/howto-use-mcpserver/)
 - [Workflow API reference](https://docs.dapr.io/reference/api/workflow_api/)
+- [`dapr-agents/examples/10-mcpserver-all-transports/`](https://github.com/dapr/dapr-agents/tree/main/examples/10-mcpserver-all-transports) — the agent-driven variant using these same patterns
