@@ -53,19 +53,23 @@ def test_sdk_variant_end_to_end(weather_server, notes_server, dapr_check) -> Non
     )
 
     combined = (proc.stdout or "") + (proc.stderr or "")
-    missing: list[str] = []
+
+    # Surface the real failure cause before checking markers — a non-zero
+    # `dapr run` exit otherwise gets reported as "missing markers".
+    assert proc.returncode == 0, (
+        f"`dapr run` exited with returncode={proc.returncode}\n"
+        f"--- last 4KB of combined output ---\n{combined[-4000:]}"
+    )
+
     expected_markers = [
         "Connected to MCPServer 'weather'",
         "Connected to MCPServer 'local-tools'",
         "Connected to MCPServer 'notes'",
         "Parent workflow status: COMPLETED",
-        "[REDACTED]",  # redact_pii_workflow strips the email argument
-        "Rate limit exceeded",  # rate_limit_workflow trips on the 11th call
+        "[REDACTED]",
+        "Rate limit exceeded",
     ]
-    for marker in expected_markers:
-        if marker not in combined:
-            missing.append(marker)
-
+    missing = [m for m in expected_markers if m not in combined]
     assert not missing, (
         f"sdk variant missing expected markers: {missing}\n"
         f"--- last 4KB of combined output ---\n{combined[-4000:]}"

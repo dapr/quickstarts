@@ -35,8 +35,7 @@ import uvicorn
 from mcp.server.fastmcp import FastMCP
 from mcp.server.sse import SseServerTransport
 from starlette.applications import Starlette
-from starlette.responses import Response
-from starlette.routing import Mount, Route
+from starlette.routing import Mount
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("notes-sse-server")
@@ -71,21 +70,18 @@ async def list_notes() -> str:
 def main(host: str, port: int) -> None:
     sse = SseServerTransport("/messages/")
 
-    async def handle_sse(request):
-        # Newer Starlette versions invoke the Route handler's return value as
-        # an ASGI Response. The SSE handshake already sends the response body
-        # via `sse.connect_sse`, so we return an empty Response() here to
-        # satisfy Starlette without writing another body.
-        async with sse.connect_sse(request.scope, request.receive, request._send) as streams:
+    # Raw ASGI callable so we receive the official (scope, receive, send) trio
+    # without reaching into Starlette's private `request._send`.
+    async def sse_endpoint(scope, receive, send) -> None:
+        async with sse.connect_sse(scope, receive, send) as streams:
             await mcp._mcp_server.run(
                 streams[0], streams[1], mcp._mcp_server.create_initialization_options()
             )
-        return Response()
 
     starlette_app = Starlette(
         debug=False,
         routes=[
-            Route("/sse", endpoint=handle_sse),
+            Mount("/sse", app=sse_endpoint),
             Mount("/messages/", app=sse.handle_post_message),
         ],
     )

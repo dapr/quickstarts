@@ -150,18 +150,16 @@ def audit_log_write(ctx: wf.WorkflowActivityContext, input: Any) -> None:
 
     server = input.get("name", "unknown")
     tool = input.get("toolName", "unknown")
-    timestamp = int(time.time())
-    key = f"audit:{server}:{tool}:{timestamp}"
+    # Nanosecond precision so back-to-back calls don't collide on the state key.
+    timestamp_ns = time.time_ns()
+    key = f"audit:{server}:{tool}:{timestamp_ns}"
 
-    # `result` is bytes on the proto, base64-encoded as a string in JSON.
-    # Decode it so audit records contain the structured CallToolResult,
-    # not a raw base64 blob.
+    # `result` is a base64-encoded JSON-encoded MCP CallToolResult on the wire.
     result_payload: Any = input.get("result")
     if isinstance(result_payload, str):
         try:
             result_payload = json.loads(b64decode(result_payload).decode("utf-8"))
-        except (ValueError, json.JSONDecodeError):
-            # Not base64+JSON — leave as-is for debuggability.
+        except (ValueError, UnicodeDecodeError):
             pass
 
     record = {
@@ -169,7 +167,7 @@ def audit_log_write(ctx: wf.WorkflowActivityContext, input: Any) -> None:
         "toolName": tool,
         "arguments": input.get("arguments"),
         "result": result_payload,
-        "timestamp": timestamp,
+        "timestamp_ns": timestamp_ns,
     }
 
     with DaprClient() as client:

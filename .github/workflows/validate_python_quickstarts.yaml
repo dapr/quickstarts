@@ -129,6 +129,15 @@ jobs:
           done
       - name: Setup uv
         uses: astral-sh/setup-uv@v7
+      # MCPServer needs Dapr >= 1.18; global.env still pins 1.17.
+      # TODO: drop this step once global.env bumps to a 1.18.x release.
+      - name: Reinstall Dapr at MCPServer-capable version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dapr uninstall
+          dapr init --runtime-version=1.18.0-rc.3
+          dapr --version
       - name: Validate AI/mcp quickstart
         working-directory: ./AI/mcp
         run: uv run --group dev pytest -v tests/
