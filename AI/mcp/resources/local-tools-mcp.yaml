@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v1alpha1
+kind: MCPServer
+metadata:
+  name: local-tools
+spec:
+  endpoint:
+    stdio:
+      command: python
+      args: ["mcp-servers/local_tools_server.py"]
+      env:
+        - name: LOG_LEVEL
+          value: INFO

@@ -1,0 +1,18 @@
+apiVersion: dapr.io/v1alpha1
+kind: MCPServer
+metadata:
+  name: weather
+spec:
+  endpoint:
+    streamableHTTP:
+      url: http://localhost:8081/mcp
+  middleware:
+    beforeCallTool:
+      - workflow:
+          workflowName: rate_limit_workflow
+      - workflow:
+          workflowName: redact_pii_workflow
+        mutate: true
+    afterCallTool:
+      - workflow:
+          workflowName: audit_log_workflow

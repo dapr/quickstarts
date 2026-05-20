@@ -127,6 +127,11 @@ jobs:
               fi
             done
           done
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+      - name: Validate AI/mcp quickstart
+        working-directory: ./AI/mcp
+        run: uv run --group dev pytest -v tests/
       - name: Linkcheck README.md
         run: |
           make validate

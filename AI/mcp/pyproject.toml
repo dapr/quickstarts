@@ -1,0 +1,41 @@
+[project]
+name = "mcp-quickstart"
+version = "0.0.0"
+description = "Dapr MCPServer quickstart (sdk + dapr-agents variants)"
+requires-python = ">=3.11"
+
+# Pull in all three workspace members so a single `uv sync` installs
+# everything the quickstart needs to run (mcp-servers + both variants).
+dependencies = [
+    "mcp-quickstart-servers",
+    "mcp-quickstart-sdk",
+    "mcp-quickstart-dapr-agents",
+]
+
+[dependency-groups]
+# Test deps live in a separate group so the runtime install is lean.
+# Activate with `uv sync --group dev`.
+dev = [
+    "pytest>=8.0.0",
+    "pytest-timeout>=2.3.0",
+]
+
+[tool.uv.workspace]
+members = [
+    "mcp-servers",
+    "python/sdk",
+    "python/dapr-agents",
+]
+
+[tool.uv.sources]
+mcp-quickstart-servers = { workspace = true }
+mcp-quickstart-sdk = { workspace = true }
+mcp-quickstart-dapr-agents = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# Root has no own importable code — packaging is a workspace-coordination shell.
+bypass-selection = true

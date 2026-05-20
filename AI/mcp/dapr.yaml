@@ -1,0 +1,10 @@
+version: 1
+common:
+  resourcesPath: ./resources
+apps:
+  - appID: mcp-sdk
+    appDirPath: ./python/sdk/
+    command: ["python3", "app.py"]
+  - appID: mcp-agent
+    appDirPath: ./python/dapr-agents/
+    command: ["python3", "agent.py"]
