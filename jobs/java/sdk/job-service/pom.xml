@@ -12,7 +12,6 @@
     <properties>
         <springframework.version>3.5.0</springframework.version>
         <springweb.version>6.2.7</springweb.version>
-        <dapr-sdk.version>1.17.0-rc-3</dapr-sdk.version>
     </properties>
 
     <dependencies>
@@ -42,8 +41,10 @@
         <dependencies>
             <dependency>
                 <groupId>io.dapr</groupId>
-                <artifactId>dapr-sdk</artifactId>
-                <version>1.17.0</version>
+                <artifactId>dapr-sdk-bom</artifactId>
+                <version>1.18.0-rc-1</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
