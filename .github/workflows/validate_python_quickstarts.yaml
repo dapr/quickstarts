@@ -136,7 +136,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dapr uninstall
-          dapr init --runtime-version=1.18.0-rc.3
+          dapr init --runtime-version=1.18.0-rc.4
           dapr --version
       - name: Validate AI/mcp quickstart
         working-directory: ./AI/mcp
