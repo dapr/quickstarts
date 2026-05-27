@@ -14,9 +14,18 @@
   <name>shipping-app</name>
   <description>Shipping App Example</description>
 
-  <properties>
-    <dapr.spring.version>1.17.0</dapr.spring.version>
-  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.dapr.spring</groupId>
+        <artifactId>dapr-spring-bom</artifactId>
+        <version>1.18.0-rc-1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -33,12 +42,10 @@
     <dependency>
       <groupId>io.dapr.spring</groupId>
       <artifactId>dapr-spring-boot-starter</artifactId>
-      <version>${dapr.spring.version}</version>
     </dependency>
     <dependency>
       <groupId>io.dapr.spring</groupId>
       <artifactId>dapr-spring-boot-starter-test</artifactId>
-      <version>${dapr.spring.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

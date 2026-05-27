@@ -1,4 +1,4 @@
 Flask
-dapr>=1.17.0
+dapr==1.18.0rc0
 cloudevents>=2.0.0
 typing-extensions

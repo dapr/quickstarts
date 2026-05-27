@@ -21,8 +21,10 @@
     <dependencies>
       <dependency>
         <groupId>io.dapr</groupId>
-        <artifactId>dapr-sdk</artifactId>
-        <version>1.17.0</version>
+        <artifactId>dapr-sdk-bom</artifactId>
+        <version>1.18.0-rc-1</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
