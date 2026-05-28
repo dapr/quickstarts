@@ -31,7 +31,6 @@
 // Against an older sidecar GetPropagatedHistory() returns null and the sample
 // exits gracefully.
 
-using Dapr.Client;
 using Dapr.Workflow;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -65,7 +64,8 @@ var builder = Host.CreateDefaultBuilder(args)
     });
 
 using var host = builder.Build();
-host.Start();
+
+await host.StartAsync();
 
 var workflowClient = host.Services.GetRequiredService<DaprWorkflowClient>();
 
@@ -91,18 +91,16 @@ var record = new PatientRecord(
     Medication: "amoxicillin",
     Dosage: 500);
 
-const string InstanceId = "intake-001";
+const string instanceId = "intake-001";
 
-Console.WriteLine($"  [main] Scheduling workflow instance: {InstanceId}");
+Console.WriteLine($"  [main] Scheduling workflow instance: {instanceId}");
 
 await workflowClient.ScheduleNewWorkflowAsync(
     name: nameof(PatientIntakeWorkflow),
-    instanceId: InstanceId,
+    instanceId: instanceId,
     input: record);
 
-var state = await workflowClient.WaitForWorkflowCompletionAsync(
-    instanceId: InstanceId,
-    cancellationToken: new CancellationTokenSource(TimeSpan.FromSeconds(30)).Token);
+var state = await workflowClient.WaitForWorkflowCompletionAsync(instanceId: instanceId);
 
 if (state is null)
 {
@@ -110,7 +108,7 @@ if (state is null)
 }
 else if (state.RuntimeStatus == WorkflowRuntimeStatus.Completed)
 {
-    Console.WriteLine($"  [main] Workflow completed! Output: {state.SerializedOutput}");
+    Console.WriteLine($"  [main] Workflow completed! Output: {state.ReadOutputAs<object>()}");
 }
 else
 {
@@ -121,3 +119,5 @@ Console.WriteLine();
 Console.WriteLine("================================================================");
 Console.WriteLine("=                          COMPLETE                            =");
 Console.WriteLine("================================================================");
+
+await host.StopAsync();
