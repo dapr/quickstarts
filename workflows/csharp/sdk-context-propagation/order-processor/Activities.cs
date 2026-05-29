@@ -55,14 +55,15 @@ public sealed class ScreenDrugInteractionsActivity : WorkflowActivity<PatientRec
 }
 
 /// <summary>
-/// Dispenses the medication. Called by DispenseMedicationWorkflow.
+/// Fills the prescription. Called by DispenseMedicationWorkflow only after it
+/// has verified the prescribing pipeline in the propagated history.
 /// </summary>
 public sealed class DispenseMedicationActivity : WorkflowActivity<PatientRecord, DispenseResult>
 {
     public override Task<DispenseResult> RunAsync(WorkflowActivityContext ctx, PatientRecord rec)
     {
         var dispenseId = $"rx-{rec.PatientId}-{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
-        Console.WriteLine($"  [DispenseMedication] DISPENSED: {dispenseId} ({rec.Medication} {rec.Dosage:F0}mg)");
+        Console.WriteLine($"  [DispenseMedication] DISPENSED: {dispenseId}");
         return Task.FromResult(new DispenseResult(
             DispenseId: dispenseId,
             Status: "dispensed",

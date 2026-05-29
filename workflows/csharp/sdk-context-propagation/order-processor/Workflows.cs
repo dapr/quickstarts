@@ -113,19 +113,41 @@ public sealed class PrescribeMedicationWorkflow : Workflow<PatientRecord, string
         if (!ctx.IsReplaying)
             Console.WriteLine($"  [PrescribeMedication] Step 3 complete: compliance audit passed (risk={audit.RiskScore:F2})");
 
-        // Step 4: Dispense the medication as a child workflow with OwnHistory propagation.
-        // DispenseMedicationWorkflow only sees PrescribeMedication's own events — not PatientIntake.
-        // Note: the .NET SDK propagation support is on ChildWorkflowTaskOptions only.
-        // For a trust-boundary demo equivalent to PropagationScope.OWN_HISTORY in Python/Go,
-        // DispenseMedication is implemented as a child workflow (not a bare activity).
+        // Step 4: Dispense the medication via a child workflow.
+        // In the happy path we attach OwnHistory propagation — the pharmacy
+        // receives PrescribeMedication's own events only (no ancestral chain)
+        // and can verify that the allergy and interaction screens ran. In the
+        // negative scenario (rec.ForwardLineage == false) we deliberately omit
+        // propagation, so the pharmacy receives no lineage and refuses.
+        //
+        // Note: the .NET SDK propagation support is on ChildWorkflowTaskOptions
+        // only. For a trust-boundary demo equivalent to PropagateOwnHistory() on
+        // the activity call in Python/Go, the dispense step is implemented as a
+        // child workflow (not a bare activity).
         if (!ctx.IsReplaying)
-            Console.WriteLine("  [PrescribeMedication] Step 4: DispenseMedicationWorkflow child wf (HistoryPropagationScope.OwnHistory)");
-        var dispense = await ctx.CallChildWorkflowAsync<DispenseResult>(
-            nameof(DispenseMedicationWorkflow),
-            rec,
-            new ChildWorkflowTaskOptions(PropagationScope: HistoryPropagationScope.OwnHistory));
+        {
+            Console.WriteLine("  [PrescribeMedication] Step 4: DispenseMedicationWorkflow child wf");
+            Console.WriteLine(rec.ForwardLineage
+                ? "                        -> HistoryPropagationScope.OwnHistory"
+                : "                        -> NO history propagation (negative scenario)");
+        }
+        var dispense = await (rec.ForwardLineage
+            ? ctx.CallChildWorkflowAsync<DispenseResult>(
+                nameof(DispenseMedicationWorkflow),
+                rec,
+                new ChildWorkflowTaskOptions(PropagationScope: HistoryPropagationScope.OwnHistory))
+            : ctx.CallChildWorkflowAsync<DispenseResult>(
+                nameof(DispenseMedicationWorkflow),
+                rec));
+
+        if (dispense.Status != "dispensed")
+        {
+            if (!ctx.IsReplaying)
+                Console.WriteLine($"  [PrescribeMedication] Step 4 BLOCKED: pharmacy refused to dispense ({dispense.Reason})");
+            return $"prescription not dispensed: pharmacy refused ({dispense.Reason})";
+        }
         if (!ctx.IsReplaying)
-            Console.WriteLine($"  [PrescribeMedication] Step 4 complete: dispensed (id={dispense.DispenseId})");
+            Console.WriteLine($"  [PrescribeMedication] Step 4 complete: dispensed (id={dispense.DispenseId}, {dispense.EventCount} events verified)");
 
         var summary = $"dispensed: id={dispense.DispenseId}, patient={rec.PatientId}, drug={rec.Medication} {rec.Dosage:F0}mg";
         if (!ctx.IsReplaying)
@@ -240,18 +262,21 @@ public sealed class ComplianceAuditWorkflow : Workflow<PatientRecord, Compliance
 // ---------------------------------------------------------------------------
 
 /// <summary>
-/// Dispense workflow — receives <see cref="HistoryPropagationScope.OwnHistory"/>
-/// from PrescribeMedication, so it can only see PrescribeMedication's own events.
-/// This demonstrates the trust-boundary mode: the PatientIntake ancestor history
-/// is intentionally excluded — the pharmacy system doesn't need (or get to see)
-/// the upstream patient-intake chain.
+/// Dispense workflow — the pharmacy. In the happy path it receives
+/// <see cref="HistoryPropagationScope.OwnHistory"/> from PrescribeMedication, so
+/// it can only see PrescribeMedication's own events (the PatientIntake ancestor
+/// history is intentionally excluded — the pharmacy doesn't need, or get to see,
+/// the upstream patient-intake chain). It refuses to dispense unless the
+/// propagated history proves the prescriber ran the required allergy and
+/// drug-interaction screens. In the negative scenario PrescribeMedication omits
+/// propagation entirely, so this workflow sees no history and refuses.
 /// </summary>
 /// <remarks>
-/// In the Python sibling and the Go reference this is implemented as a bare
-/// activity because those SDKs support a propagation argument on activity calls.
-/// The .NET SDK's <see cref="HistoryPropagationScope"/> is currently scoped to
-/// child workflows only (<see cref="ChildWorkflowTaskOptions"/>), so we use a
-/// child workflow here to demonstrate the identical OwnHistory boundary.
+/// In the Python sibling and the Go reference the pharmacy is a bare activity
+/// because those SDKs support a propagation argument on activity calls. The
+/// .NET SDK's <see cref="HistoryPropagationScope"/> is currently scoped to child
+/// workflows only (<see cref="ChildWorkflowTaskOptions"/>), so the dispense step
+/// is a child workflow here to demonstrate the identical OwnHistory boundary.
 /// </remarks>
 public sealed class DispenseMedicationWorkflow : Workflow<PatientRecord, DispenseResult>
 {
@@ -259,30 +284,55 @@ public sealed class DispenseMedicationWorkflow : Workflow<PatientRecord, Dispens
     {
         var history = ctx.GetPropagatedHistory();
 
-        int eventCount = 0;
-        if (history is not null)
-        {
-            eventCount = history.Entries.Sum(e => e.Events.Count);
-            if (!ctx.IsReplaying)
-            {
-                Console.WriteLine($"  [DispenseMedicationWorkflow] Propagated segments: {history.Entries.Count}");
-                foreach (var entry in history.Entries)
-                {
-                    Console.WriteLine($"  [DispenseMedicationWorkflow]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
-                    foreach (var evt in entry.Events.Take(5))
-                        Console.WriteLine($"  [DispenseMedicationWorkflow]     event: kind={evt.Kind} id={evt.EventId}");
-                    if (entry.Events.Count > 5)
-                        Console.WriteLine($"  [DispenseMedicationWorkflow]     ... ({entry.Events.Count - 5} more events)");
-                }
+        if (!ctx.IsReplaying)
+            Console.WriteLine($"  [DispenseMedication] Dispense request: {rec.Medication} {rec.Dosage:F0}mg for {rec.PatientId} (propagated history: {DescribeHistory(history)})");
 
-                // With OwnHistory, PatientIntake should NOT appear here.
-                var intakeEntries = history.FilterByWorkflowName(nameof(PatientIntakeWorkflow));
-                Console.WriteLine($"  [DispenseMedicationWorkflow] PatientIntake in history (expected 0): {intakeEntries.Entries.Count}");
-            }
-        }
-        else if (!ctx.IsReplaying)
+        // Pharmacy policy: no lineage, no dispense. Without propagated history the
+        // pharmacy cannot prove the prescription was screened, so it refuses.
+        if (history is null)
         {
-            Console.WriteLine("  [DispenseMedicationWorkflow] No propagated history received");
+            if (!ctx.IsReplaying)
+                Console.WriteLine($"  [DispenseMedication] REFUSED — no propagated history; cannot verify screening for {rec.PatientId}");
+            return new DispenseResult(
+                DispenseId: "",
+                Status: "refused",
+                EventCount: 0,
+                Reason: "missing lineage: no propagated history received from prescriber");
+        }
+
+        int eventCount = history.Entries.Sum(e => e.Events.Count);
+
+        if (!ctx.IsReplaying)
+        {
+            // With OwnHistory only PrescribeMedication appears here — not PatientIntake.
+            foreach (var entry in history.Entries)
+                Console.WriteLine($"  [DispenseMedication]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
+        }
+
+        // Verify the prescriber's own history is present and shows both screens
+        // completed (CheckAllergies + ScreenDrugInteractions == 2 TaskCompleted).
+        var prescribeEntries = history.FilterByWorkflowName(nameof(PrescribeMedicationWorkflow));
+        if (prescribeEntries.Entries.Count == 0)
+        {
+            if (!ctx.IsReplaying)
+                Console.WriteLine($"  [DispenseMedication] REFUSED — propagated history is missing the PrescribeMedication lineage for {rec.PatientId}");
+            return new DispenseResult(
+                DispenseId: "",
+                Status: "refused",
+                EventCount: eventCount,
+                Reason: "missing lineage: PrescribeMedication not present in propagated history");
+        }
+
+        int screensCompleted = prescribeEntries.Entries[0].Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
+        if (screensCompleted < 2)
+        {
+            if (!ctx.IsReplaying)
+                Console.WriteLine($"  [DispenseMedication] REFUSED — required screening not verified in propagated history for {rec.PatientId}");
+            return new DispenseResult(
+                DispenseId: "",
+                Status: "refused",
+                EventCount: eventCount,
+                Reason: "missing lineage: allergy/interaction screening not verified in propagated history");
         }
 
         var result = await ctx.CallActivityAsync<DispenseResult>(
@@ -291,4 +341,7 @@ public sealed class DispenseMedicationWorkflow : Workflow<PatientRecord, Dispens
 
         return result with { EventCount = eventCount };
     }
+
+    private static string DescribeHistory(PropagatedHistory? history) =>
+        history is null ? "none" : $"{history.Entries.Sum(e => e.Events.Count)} events";
 }

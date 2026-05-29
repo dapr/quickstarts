@@ -1,50 +1,81 @@
-# Dapr Workflow — Context Propagation (.NET SDK)
+# Dapr Workflow History Propagation — Patient Intake (.NET SDK)
 
-This quickstart demonstrates **workflow history propagation**, a new feature in Dapr 1.18 that lets a parent workflow share its execution history with child workflows. Downstream services can inspect that history to make trust-aware decisions — without any external state store or custom messaging.
+This quickstart demonstrates **workflow history propagation**, a Dapr 1.18
+feature that lets a workflow propagate its execution history to child workflows
+so downstream consumers can inspect the full (or partial) execution context of
+their caller — without any external state store or custom messaging.
+
+The scenario is a patient intake / e-prescribing pipeline: a compliance audit
+and a pharmacy dispense step refuse to act unless they can see proof — in the
+propagated history — that the required upstream checks (insurance, allergies,
+drug interactions) actually ran.
 
 > **Runtime requirement**: Dapr 1.18+ ([dapr/dapr#9810](https://github.com/dapr/dapr/pull/9810))
 > **SDK requirement**: `Dapr.Workflow >= 1.18.0-rc01` ([dapr/dotnet-sdk#1802](https://github.com/dapr/dotnet-sdk/pull/1802))
 > **Proposal**: [dapr/proposals#102](https://github.com/dapr/proposals/issues/102)
 
-## What is workflow context propagation?
-
-When a parent workflow calls a child workflow it can optionally attach a tamper-evident snapshot of its own execution history. The receiver reads that snapshot via `ctx.GetPropagatedHistory()` and inspects the returned `PropagatedHistory` entries — letting it verify that the correct upstream steps ran before it proceeds.
-
-### Two propagation modes
-
-| Mode | Enum value | What the receiver sees |
-|------|-----------|----------------------|
-| **Own history** | `HistoryPropagationScope.OwnHistory` | Only the direct caller's events |
-| **Lineage** | `HistoryPropagationScope.Lineage` | Caller's events **plus** any ancestor history the caller itself received |
-
-## Scenario: Patient intake / e-prescribing
-
-A compliance audit and a pharmacy dispense step refuse to act unless the propagated history proves the required upstream checks (insurance, allergies, drug interactions) actually ran.
+## Workflow architecture
 
 ```
-PatientIntake (root)
-  └─ VerifyInsurance         (activity, no propagation)
-  └─ PrescribeMedication     (child wf, Lineage)
-        └─ CheckAllergies                 (activity, no propagation)
-        └─ ScreenDrugInteractions         (activity, no propagation)
-        └─ ComplianceAudit                (grandchild wf, Lineage)
-        |      reads PatientIntake/VerifyInsurance
-        |            PrescribeMedication/CheckAllergies
-        |            PrescribeMedication/ScreenDrugInteractions
-        └─ DispenseMedicationWorkflow     (grandchild wf, OwnHistory)
-               reads PrescribeMedication events only
-               └─ DispenseMedication       (activity)
+PatientIntake (workflow)
+├── VerifyInsurance (activity, no propagation)
+└── PrescribeMedication (child workflow, Lineage)
+    ├── CheckAllergies (activity, no propagation)
+    ├── ScreenDrugInteractions (activity, no propagation)
+    ├── ComplianceAudit (child workflow, Lineage)
+    │     → sees PatientIntake + PrescribeMedication events
+    └── DispenseMedicationWorkflow (child workflow, OwnHistory)
+          → sees PrescribeMedication events only
+          → refuses to dispense if the screening lineage is missing
 ```
 
-`ComplianceAudit` uses `HistoryPropagationScope.Lineage` to see the **full ancestor chain** — it can verify both the insurance check (performed by the grandparent `PatientIntake`) and the allergy/interaction checks (performed by the parent `PrescribeMedication`) before approving the prescription.
+### Propagation scope
 
-`DispenseMedicationWorkflow` uses `HistoryPropagationScope.OwnHistory` to see only the **direct caller's events** — a trust-boundary mode that limits visibility to what `PrescribeMedication` itself executed. The pharmacy dispense system doesn't need (or get to see) the upstream patient-intake chain.
+| Mode | Enum value | What it sends | Use case |
+|------|-----------|---------------|----------|
+| **Lineage** | `HistoryPropagationScope.Lineage` | Caller's own events + any ancestor events it received | Full chain-of-custody verification (compliance audits) |
+| **Own history** | `HistoryPropagationScope.OwnHistory` | Caller's own events only (no ancestor chain) | Trust boundary — downstream only sees the immediate caller (pharmacy dispense) |
 
-This sample mirrors the canonical Go reference [dapr/go-sdk#823](https://github.com/dapr/go-sdk/pull/823) and the [Go quickstart](https://github.com/dapr/quickstarts/pull/1315).
+### Key demonstration
 
-### .NET vs Python/Go difference
+- **ComplianceAudit** receives the full lineage via `HistoryPropagationScope.Lineage` —
+  it verifies that `VerifyInsurance` ran in the grandparent workflow
+  (PatientIntake), plus `CheckAllergies` and `ScreenDrugInteractions` ran in
+  PrescribeMedication.
 
-The Python sibling ([dapr/quickstarts#1309](https://github.com/dapr/quickstarts/pull/1309)) and the Go reference call the final dispense step as a bare activity with an `OwnHistory` propagation argument. In the .NET SDK (v1.18) `HistoryPropagationScope` is only available on `ChildWorkflowTaskOptions` — activity calls do not carry a propagation scope. To demonstrate the identical trust-boundary semantics, this sample wraps the `DispenseMedicationActivity` inside `DispenseMedicationWorkflow` (a child workflow).
+- **DispenseMedicationWorkflow** receives only PrescribeMedication's history via
+  `HistoryPropagationScope.OwnHistory`. The PatientIntake ancestral history is
+  excluded — the pharmacy system doesn't need (or get to see) the upstream
+  chain. Before dispensing, the pharmacy verifies that `CheckAllergies` and
+  `ScreenDrugInteractions` completed in the propagated history.
+
+### Scenarios
+
+The demo runs two scenarios back-to-back to show both the happy path and the
+pharmacy's safety check:
+
+1. **Lineage forwarded → pharmacy dispenses.** `PrescribeMedication` calls the
+   dispense step with `HistoryPropagationScope.OwnHistory`. The pharmacy sees
+   the completed allergy and interaction screens in the propagated history and
+   fills the prescription.
+
+2. **Lineage withheld → pharmacy refuses.** `PrescribeMedication` calls the
+   dispense step **without** history propagation (simulating an upstream system
+   that fails to forward its lineage). With no propagated history to prove the
+   prescription was screened, the pharmacy refuses to dispense and returns a
+   `refused` result explaining what was missing.
+
+## .NET note: dispense is a child workflow
+
+The Python sibling ([dapr/quickstarts#1309](https://github.com/dapr/quickstarts/pull/1309))
+and the Go reference call the final dispense step as a bare **activity** with an
+`OwnHistory` propagation argument. In the .NET SDK (v1.18)
+`HistoryPropagationScope` is only available on `ChildWorkflowTaskOptions` —
+activity calls do not carry a propagation scope. To demonstrate the identical
+trust-boundary semantics, this sample wraps the `DispenseMedicationActivity`
+inside `DispenseMedicationWorkflow` (a child workflow) which inspects the
+propagated history and only calls the activity once it has verified the
+screening lineage.
 
 ## .NET API surface
 
@@ -83,80 +114,90 @@ Key types in `Dapr.Workflow`:
 - `PropagatedHistoryEvent` — has `EventId`, `Kind` (`HistoryEventKind`), `Timestamp`
 - `HistoryEventKind` — enum including `TaskScheduled`, `TaskCompleted`, `TaskFailed`, etc.
 
-> **Replay safety**: workflow code runs many times during durable execution. Guard side-effecting calls — including `Console.WriteLine` — with `if (!ctx.IsReplaying)` so they only fire on the live execution, not on each replay.
+> **Replay safety**: workflow code runs many times during durable execution.
+> Guard side-effecting calls — including `Console.WriteLine` — with
+> `if (!ctx.IsReplaying)` so they only fire on the live execution, not on each
+> replay.
 
-## Prerequisites
+## Running this example
 
-- [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/) 1.18+
-- Dapr runtime 1.18+ initialized (`dapr init`)
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- Redis (started automatically by `dapr init`)
+Requires Dapr `1.18.0+` (workflow history propagation),
+`Dapr.Workflow 1.18.0-rc01+`, and the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+(or newer). Redis is started automatically by `dapr init`.
 
-## Run the sample
+Build the example:
 
-```sh
-cd workflows/csharp/sdk-context-propagation
+```bash
+dotnet build ./order-processor
+```
 
+Run the demo:
+
+<!-- STEP
+name: Run history-propagation demo
+expected_stdout_lines:
+  - "SCENARIO 1: lineage forwarded"
+  - "[ComplianceAudit] APPROVED"
+  - "[DispenseMedication] DISPENSED"
+  - "SCENARIO 2: lineage withheld"
+  - "[DispenseMedication] REFUSED"
+  - "pharmacy refused to dispense"
+  - "missing lineage: no propagated history received from prescriber"
+output_match_mode: substring
+background: false
+timeout_seconds: 180
+sleep: 15
+-->
+
+```bash
 dapr run -f .
 ```
 
-## Expected output
+<!-- END_STEP -->
+
+The app runs both scenarios once and exits on its own — no Ctrl+C needed.
+
+In scenario 1 (lineage forwarded) you'll see the pharmacy dispense:
 
 ```
-================================================================
-= WORKFLOW HISTORY PROPAGATION DEMO — PATIENT INTAKE (.NET)   =
-================================================================
+[ComplianceAudit] Received propagated history with 2 segment(s):
+[ComplianceAudit] APPROVED (risk=0.10, total events inspected=...)
+[DispenseMedication] Dispense request: amoxicillin 500mg for P-1042 (propagated history: ... events)
+[DispenseMedication] DISPENSED: rx-P-1042-...
+```
 
-  Flow: PatientIntake -> VerifyInsurance
-           -> PrescribeMedication (child wf, Lineage)
-               -> CheckAllergies -> ScreenDrugInteractions
-               -> ComplianceAudit              (child wf, Lineage)    <-- sees PatientIntake + PrescribeMedication events
-               -> DispenseMedicationWorkflow   (child wf, OwnHistory) <-- sees only PrescribeMedication events
+In scenario 2 (lineage withheld) the pharmacy refuses:
 
-  [main] Scheduling workflow instance: intake-001
-  [PatientIntake] Starting intake for patient P-1042
-  [PatientIntake] Step 1: VerifyInsurance (no propagation)
-  [VerifyInsurance] Checking coverage for patient P-1042
-  [PatientIntake] Step 1 complete: insurance verified
-  [PatientIntake] Step 2: PrescribeMedication child wf (HistoryPropagationScope.Lineage)
-  [PrescribeMedication] Starting prescription: amoxicillin 500mg for bacterial sinusitis
-  [PrescribeMedication] Step 1: CheckAllergies (no propagation)
-  [CheckAllergies] Screening P-1042 for amoxicillin
-  [PrescribeMedication] Step 1 complete: allergy clear
-  [PrescribeMedication] Step 2: ScreenDrugInteractions (no propagation)
-  [ScreenDrugInteractions] Screening amoxicillin 500mg for P-1042
-  [PrescribeMedication] Step 2 complete: no interactions
-  [PrescribeMedication] Step 3: ComplianceAudit child wf (HistoryPropagationScope.Lineage)
-  [ComplianceAudit] Auditing prescription for patient P-1042
-  [ComplianceAudit] Received propagated history with 2 segment(s):
-  [ComplianceAudit]   workflow: name=PatientIntakeWorkflow app=order-processor events=...
-  [ComplianceAudit]   workflow: name=PrescribeMedicationWorkflow app=order-processor events=...
-  [ComplianceAudit] Verification:
-    PatientIntake       TaskCompleted events: 1 (expect >= 1: VerifyInsurance)
-    PrescribeMedication TaskCompleted events: 2 (expect >= 2: CheckAllergies, ScreenDrugInteractions)
-  [ComplianceAudit] APPROVED (risk=0.10, total events inspected=...)
-  [PrescribeMedication] Step 3 complete: compliance audit passed (risk=0.10)
-  [PrescribeMedication] Step 4: DispenseMedicationWorkflow child wf (HistoryPropagationScope.OwnHistory)
-  [DispenseMedicationWorkflow] Propagated segments: 1
-  [DispenseMedicationWorkflow]   workflow: name=PrescribeMedicationWorkflow app=order-processor events=...
-  [DispenseMedicationWorkflow]     event: kind=ExecutionStarted id=...
-  [DispenseMedicationWorkflow]     event: kind=TaskScheduled id=...
-  [DispenseMedicationWorkflow]     event: kind=TaskCompleted id=...
-  [DispenseMedicationWorkflow] PatientIntake in history (expected 0): 0
-  [DispenseMedication] DISPENSED: rx-P-1042-... (amoxicillin 500mg)
-  [PrescribeMedication] Step 4 complete: dispensed (id=rx-P-1042-...)
-  [PrescribeMedication] COMPLETE: dispensed: id=rx-P-1042-..., patient=P-1042, drug=amoxicillin 500mg
-  [PatientIntake] COMPLETE: dispensed: id=rx-P-1042-..., patient=P-1042, drug=amoxicillin 500mg
-  [main] Workflow completed! Output: "dispensed: ..."
-
-================================================================
-=                          COMPLETE                            =
-================================================================
+```
+[PrescribeMedication] Step 4: DispenseMedicationWorkflow child wf
+                      -> NO history propagation (negative scenario)
+[DispenseMedication] Dispense request: penicillin 500mg for P-2087 (propagated history: none)
+[DispenseMedication] REFUSED — no propagated history; cannot verify screening for P-2087
+[PrescribeMedication] Step 4 BLOCKED: pharmacy refused to dispense (missing lineage: no propagated history received from prescriber)
 ```
 
 ## Standalone-mode note
 
-In standalone mode the sidecar will log `propagating unsigned workflow history to ...` warnings — these are expected. Without `WorkflowHistorySigning` enabled, propagated history chunks aren't cryptographically signed, which is fine for a local `dapr run` demo. Signing the chunks within an mTLS trust boundary is a production concern handled at the cluster/control-plane level and is out of scope for this quickstart.
+In standalone mode the sidecar will log `propagating unsigned workflow history
+to ...` warnings — these are expected. Without `WorkflowHistorySigning` enabled,
+propagated history chunks aren't cryptographically signed, which is fine for a
+local `dapr run` demo. Signing the chunks within an mTLS trust boundary is a
+production concern handled at the cluster/control-plane level and is out of
+scope for this quickstart.
+
+## Files
+
+```
+sdk-context-propagation/
+├── README.md                       # this file
+├── dapr.yaml                       # `dapr run -f .` config (appID, resources, command)
+└── order-processor/
+    ├── Program.cs                  # host setup; schedules both scenarios
+    ├── Models.cs                   # PatientRecord, ComplianceResult, DispenseResult
+    ├── Activities.cs               # VerifyInsurance, CheckAllergies, ScreenDrugInteractions, DispenseMedication
+    ├── Workflows.cs                # workflow definitions + history inspection
+    └── OrderProcessor.csproj       # project + Dapr.Workflow dependency
+```
 
 ## References
 
@@ -168,3 +209,4 @@ In standalone mode the sidecar will log `propagating unsigned workflow history t
 - Docs (.NET): [dapr/docs#5174](https://github.com/dapr/docs/pull/5174)
 - Proposal: [dapr/proposals#102](https://github.com/dapr/proposals/issues/102)
 - 1.18 endgame: [dapr/dapr#9856](https://github.com/dapr/dapr/issues/9856)
+```

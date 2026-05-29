@@ -27,6 +27,12 @@
 //                  reads: PrescribeMedication events only
 //                  └─ DispenseMedication      (activity)
 //
+// The demo runs two scenarios back-to-back:
+//   1. Lineage forwarded — PrescribeMedication propagates its own history to the
+//      pharmacy, which verifies the upstream screening and dispenses.
+//   2. Lineage withheld — PrescribeMedication omits propagation, so the pharmacy
+//      receives no lineage and refuses to dispense.
+//
 // Requires Dapr 1.18+ (dapr/dapr#9810) and Dapr.Workflow 1.18+ (dapr/dotnet-sdk#1802).
 // Against an older sidecar GetPropagatedHistory() returns null and the sample
 // exits gracefully.
@@ -35,11 +41,6 @@ using Dapr.Workflow;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OrderProcessor;
-
-const string Banner =
-    "================================================================\n" +
-    "= WORKFLOW HISTORY PROPAGATION DEMO — PATIENT INTAKE (.NET)   =\n" +
-    "================================================================";
 
 // ---------------------------------------------------------------------------
 // Host setup — register workflows and activities
@@ -70,54 +71,84 @@ await host.StartAsync();
 var workflowClient = host.Services.GetRequiredService<DaprWorkflowClient>();
 
 // ---------------------------------------------------------------------------
-// Kick off the root workflow
+// Run two scenarios back-to-back
 // ---------------------------------------------------------------------------
 
-Console.WriteLine(Banner);
+Console.WriteLine(Banner("WORKFLOW HISTORY PROPAGATION DEMO — PATIENT INTAKE (.NET)"));
 Console.WriteLine();
 Console.WriteLine("  Flow: PatientIntake -> VerifyInsurance");
 Console.WriteLine("           -> PrescribeMedication (child wf, Lineage)");
 Console.WriteLine("               -> CheckAllergies -> ScreenDrugInteractions");
 Console.WriteLine("               -> ComplianceAudit              (child wf, Lineage)    <-- sees PatientIntake + PrescribeMedication events");
 Console.WriteLine("               -> DispenseMedicationWorkflow   (child wf, OwnHistory) <-- sees only PrescribeMedication events");
-Console.WriteLine();
 
-var record = new PatientRecord(
-    PatientId: "P-1042",
-    Name: "Jane Doe",
-    Dob: "1985-06-12",
-    Mrn: "MRN-77231",
-    Condition: "bacterial sinusitis",
-    Medication: "amoxicillin",
-    Dosage: 500);
+// Scenario 1 (happy path): PrescribeMedication forwards its own history to the
+// pharmacy, which verifies the upstream screening and dispenses.
+await RunScenario(
+    "SCENARIO 1: lineage forwarded — pharmacy dispenses",
+    "intake-ok",
+    new PatientRecord(
+        PatientId: "P-1042",
+        Name: "Jane Doe",
+        Dob: "1985-06-12",
+        Mrn: "MRN-77231",
+        Condition: "bacterial sinusitis",
+        Medication: "amoxicillin",
+        Dosage: 500,
+        ForwardLineage: true));
 
-const string instanceId = "intake-001";
-
-Console.WriteLine($"  [main] Scheduling workflow instance: {instanceId}");
-
-await workflowClient.ScheduleNewWorkflowAsync(
-    name: nameof(PatientIntakeWorkflow),
-    instanceId: instanceId,
-    input: record);
-
-var state = await workflowClient.WaitForWorkflowCompletionAsync(instanceId: instanceId);
-
-if (state is null)
-{
-    Console.WriteLine("  [main] Workflow not found!");
-}
-else if (state.RuntimeStatus == WorkflowRuntimeStatus.Completed)
-{
-    Console.WriteLine($"  [main] Workflow completed! Output: {state.ReadOutputAs<object>()}");
-}
-else
-{
-    Console.WriteLine($"  [main] Workflow ended with status: {state.RuntimeStatus}");
-}
+// Scenario 2 (negative): PrescribeMedication dispenses WITHOUT propagating its
+// history, so the pharmacy receives no lineage and refuses to dispense.
+await RunScenario(
+    "SCENARIO 2: lineage withheld — pharmacy refuses",
+    "intake-missing-lineage",
+    new PatientRecord(
+        PatientId: "P-2087",
+        Name: "John Roe",
+        Dob: "1979-03-04",
+        Mrn: "MRN-55810",
+        Condition: "strep throat",
+        Medication: "penicillin",
+        Dosage: 500,
+        ForwardLineage: false));
 
 Console.WriteLine();
-Console.WriteLine("================================================================");
-Console.WriteLine("=                          COMPLETE                            =");
-Console.WriteLine("================================================================");
+Console.WriteLine(Banner("COMPLETE"));
 
 await host.StopAsync();
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+// Schedules one PatientIntake run, waits for it to finish, prints the final
+// result, and purges its state so the demo can exit cleanly.
+async Task RunScenario(string title, string instanceId, PatientRecord rec)
+{
+    Console.WriteLine();
+    Console.WriteLine(Banner(title));
+    Console.WriteLine($"  [main] Scheduling workflow instance: {instanceId}");
+
+    await workflowClient.ScheduleNewWorkflowAsync(
+        name: nameof(PatientIntakeWorkflow),
+        instanceId: instanceId,
+        input: rec);
+
+    var state = await workflowClient.WaitForWorkflowCompletionAsync(instanceId: instanceId);
+
+    if (state is null)
+        Console.WriteLine("  [main] Workflow not found!");
+    else if (state.RuntimeStatus == WorkflowRuntimeStatus.Completed)
+        Console.WriteLine($"  [main] Result: {state.ReadOutputAs<string>()}");
+    else
+        Console.WriteLine($"  [main] Workflow ended with status: {state.RuntimeStatus}");
+
+    await workflowClient.PurgeInstanceAsync(instanceId);
+}
+
+// Renders a "= TITLE =" box sized to the title, matching the Go reference.
+static string Banner(string msg)
+{
+    var line = new string('=', msg.Length + 4);
+    return $"{line}\n= {msg} =\n{line}";
+}
