@@ -1,7 +1,6 @@
 ﻿namespace WorkflowConsoleApp.Activities;
 
 using System.Threading.Tasks;
-using Dapr.Client;
 using Dapr.Workflow;
 using Microsoft.Extensions.Logging;
 using Models;
