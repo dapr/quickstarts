@@ -10,7 +10,7 @@ var host = Host.CreateApplicationBuilder(args);
 // Register the secrets 
 host.Services.AddDaprSecretsManagementClient();
 
-using var app = host.Build();
+var app = host.Build();
 
 await app.RunAsync();
 
