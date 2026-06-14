@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapr.SecretsManagement" Version="1.18.2" />
+    <PackageReference Include="Dapr.Common" Version="1.18.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.9" />
   </ItemGroup>
 
