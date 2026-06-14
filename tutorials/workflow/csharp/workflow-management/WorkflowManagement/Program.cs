@@ -1,18 +1,14 @@
 using Dapr.Workflow;
+using Microsoft.AspNetCore.Mvc;
 using WorkflowManagement;
-using WorkflowManagement.Activities;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprWorkflow(options =>
-{
-    options.RegisterWorkflow<NeverEndingWorkflow>();
-    options.RegisterActivity<SendNotification>();
-});
+builder.Services.AddDaprWorkflow();
 var app = builder.Build();
 
 app.MapPost("/start/{counter}", async (
     int counter,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(NeverEndingWorkflow),
@@ -23,7 +19,7 @@ app.MapPost("/start/{counter}", async (
 
 app.MapGet("/status/{instanceId}", async (
     string instanceId,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     try
     {
@@ -38,7 +34,7 @@ app.MapGet("/status/{instanceId}", async (
 
 app.MapPost("/suspend/{instanceId}", async (
     string instanceId,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     await workflowClient.SuspendWorkflowAsync(instanceId);
 
@@ -47,7 +43,7 @@ app.MapPost("/suspend/{instanceId}", async (
 
 app.MapPost("/resume/{instanceId}", async (
     string instanceId,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     await workflowClient.ResumeWorkflowAsync(instanceId);
 
@@ -56,7 +52,7 @@ app.MapPost("/resume/{instanceId}", async (
 
 app.MapPost("/terminate/{instanceId}", async (
     string instanceId,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     await workflowClient.TerminateWorkflowAsync(instanceId);
 
@@ -65,7 +61,7 @@ app.MapPost("/terminate/{instanceId}", async (
 
 app.MapDelete("/purge/{instanceId}", async (
     string instanceId,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     var result = await workflowClient.PurgeInstanceAsync(instanceId);
 
