@@ -1,12 +1,12 @@
-using Dapr;
 using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprClient();
 var app = builder.Build();
 app.UseCloudEvents();
 
-/// This endpoint is called by the CheckShippingDestination activity in the WorkflowApp.
+// This endpoint is called by the CheckShippingDestination activity in the WorkflowApp.
 app.MapPost("/checkDestination", (
     Order order) =>
 {
@@ -20,7 +20,7 @@ app.MapPost("/checkDestination", (
 // This method is publishing a message to the shipment-registration-confirmed-events topic.
 app.MapPost("/registerShipment", async (
     Order order,
-    DaprClient daprClient) =>
+    [FromServices] DaprClient daprClient) =>
 {
     Console.WriteLine($"registerShipment: Received input: {order}.");
     var status = new ShipmentRegistrationStatus(OrderId: order.Id, IsSuccess: true);

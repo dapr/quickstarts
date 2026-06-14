@@ -3,25 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PatientIntake;
 
-var builder = Host.CreateDefaultBuilder(args)
+using var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddDaprClient();
-        services.AddDaprWorkflow(options =>
-        {
-            options.RegisterWorkflow<PatientIntakeWorkflow>();
-            options.RegisterWorkflow<PrescribeMedicationWorkflow>();
-            options.RegisterWorkflow<ComplianceAuditWorkflow>();
-            options.RegisterWorkflow<DispenseMedicationWorkflow>();
-
-            options.RegisterActivity<VerifyInsuranceActivity>();
-            options.RegisterActivity<CheckAllergiesActivity>();
-            options.RegisterActivity<ScreenDrugInteractionsActivity>();
-            options.RegisterActivity<DispenseMedicationActivity>();
-        });
-    });
-
-using var host = builder.Build();
+        services.AddDaprWorkflow();
+    }).Build();
 
 await host.StartAsync();
 
@@ -93,7 +79,7 @@ async Task RunScenario(string title, string instanceId, PatientRecord rec)
 
     var state = await workflowClient.WaitForWorkflowCompletionAsync(instanceId: instanceId);
 
-    if (state is null)
+    if (!state.Exists)
         Console.WriteLine("  [main] Workflow not found!");
     else if (state.RuntimeStatus == WorkflowRuntimeStatus.Completed)
         Console.WriteLine($"  [main] Result: {state.ReadOutputAs<string>()}");

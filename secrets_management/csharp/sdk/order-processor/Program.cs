@@ -1,11 +1,25 @@
 ﻿using System;
-using Dapr.Client;
+using Dapr.SecretsManagement;
+using Dapr.SecretsManagement.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Secrets;
 
-const string DAPR_SECRET_STORE = "localsecretstore";
-const string SECRET_NAME = "secret";
-var client = new DaprClientBuilder().Build();
+var host = Host.CreateApplicationBuilder(args);
 
-// Get secret from a local secret store
-var secret = await client.GetSecretAsync(DAPR_SECRET_STORE, SECRET_NAME);
-var secretValue = string.Join(", ", secret);
-Console.WriteLine($"Fetched Secret: {secretValue}");
+// Register the secrets 
+host.Services.AddDaprSecretsManagementClient();
+
+using var app = host.Build();
+
+await app.RunAsync();
+
+
+// Option 1 - Use the secrets client
+var secretsClient = app.Services.GetRequiredService<DaprSecretsManagementClient>();
+var retrievedSecret = await secretsClient.GetSecretAsync(Constants.DAPR_SECRET_STORE, Constants.SECRET_NAME);
+Console.WriteLine($"Fetched secret via client: {string.Join(", ", retrievedSecret)}");
+
+// Option 2 - Use the secret store interface
+// var secretStore = app.Services.GetRequiredService<ISecretStore>();
+// Console.WriteLine($"Fetched secret via interface: {string.Join(", ", secretStore.Secret)}");

@@ -63,12 +63,12 @@ static DroidJob SetDroidJob(string droidStr)
 }
 
 // Classes for request and response models
-public class JobData
+public sealed class JobData
 {
   public string? Value { get; set; }
 }
 
-public class DroidJob
+public sealed class DroidJob
 {
   public string? Droid { get; set; }
   public string? Task { get; set; }

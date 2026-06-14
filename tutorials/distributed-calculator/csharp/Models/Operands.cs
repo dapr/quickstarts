@@ -11,9 +11,9 @@
 // limitations under the License.
 //
 
-namespace Subtract.Models {
-    public class Operands {
-        public string OperandOne { get; set;}
-        public string OperandTwo { get; set;}
-    }
+namespace Subtract.Models;
+
+public sealed class Operands {
+    public string OperandOne { get; set;}
+    public string OperandTwo { get; set;}
 }

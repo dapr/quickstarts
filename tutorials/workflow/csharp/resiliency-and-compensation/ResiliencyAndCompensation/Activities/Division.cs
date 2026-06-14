@@ -1,4 +1,3 @@
-using System;
 using Dapr.Workflow;
 
 namespace ResiliencyAndCompensation.Activities;

@@ -165,31 +165,31 @@ public sealed class ComplianceAuditWorkflow : Workflow<PatientRecord, Compliance
 
         if (!ctx.IsReplaying)
         {
-            Console.WriteLine($"  [ComplianceAudit] Received propagated history with {history.Entries.Count} segment(s):");
-            foreach (var entry in history.Entries)
-                Console.WriteLine($"  [ComplianceAudit]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
+            Console.WriteLine($"  [ComplianceAudit] Received propagated history with {history.Events.Count} segment(s):");
+            foreach (var entry in history.Events)
+                Console.WriteLine($"  [ComplianceAudit]   workflow: name={entry.Name} app={entry.AppId} activities={entry.Activities.Count}");
         }
 
         // Verify PatientIntake is present in the ancestor chain.
-        var intakeEntries = history.FilterByWorkflowName(nameof(PatientIntakeWorkflow));
-        if (intakeEntries.Entries.Count == 0)
+        var intakeEntries = history.GetEventsByWorkflowName(nameof(PatientIntakeWorkflow));
+        if (intakeEntries.Count == 0)
         {
             return Task.FromResult(new ComplianceResult(
                 Compliant: false,
                 RiskScore: 0.9,
                 Reason: $"{nameof(PatientIntakeWorkflow)} missing from propagated history",
-                EventCount: history.Entries.Count));
+                EventCount: history.Events.Count));
         }
 
         // Verify PrescribeMedication is present in the ancestor chain.
-        var prescribeEntries = history.FilterByWorkflowName(nameof(PrescribeMedicationWorkflow));
-        if (prescribeEntries.Entries.Count == 0)
+        var prescribeEntries = history.GetEventsByWorkflowName(nameof(PrescribeMedicationWorkflow));
+        if (prescribeEntries.Reverse().Count == 0)
         {
             return Task.FromResult(new ComplianceResult(
                 Compliant: false,
                 RiskScore: 0.9,
                 Reason: $"{nameof(PrescribeMedicationWorkflow)} missing from propagated history",
-                EventCount: history.Entries.Count));
+                EventCount: history.Events.Count));
         }
 
         // Verify the required activity completions are recorded in history events.

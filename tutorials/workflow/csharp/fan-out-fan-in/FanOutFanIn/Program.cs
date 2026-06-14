@@ -1,18 +1,14 @@
 using Dapr.Workflow;
 using FanOutFanIn;
-using FanOutFanIn.Activities;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprWorkflow(options =>
-{
-    options.RegisterWorkflow<FanOutFanInWorkflow>();
-    options.RegisterActivity<GetWordLength>();
-});
+builder.Services.AddDaprWorkflow();
 var app = builder.Build();
 
 app.MapPost("/start", async (
     string[] words,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(FanOutFanInWorkflow),

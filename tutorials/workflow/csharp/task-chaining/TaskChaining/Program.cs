@@ -1,18 +1,12 @@
 using Dapr.Workflow;
+using Microsoft.AspNetCore.Mvc;
 using TaskChaining;
-using TaskChaining.Activities;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprWorkflow(options =>
-{
-    options.RegisterWorkflow<ChainingWorkflow>();
-    options.RegisterActivity<Activity1>();
-    options.RegisterActivity<Activity2>();
-    options.RegisterActivity<Activity3>();
-});
+builder.Services.AddDaprWorkflow();
 var app = builder.Build();
 
-app.MapPost("/start", async (DaprWorkflowClient workflowClient) =>
+app.MapPost("/start", async ([FromServices] DaprWorkflowClient workflowClient) =>
 {
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(ChainingWorkflow),
