@@ -16,16 +16,14 @@ The quickstart contains 1 workflow (order_processing_workflow) which simulates p
 
 ### Run the order processor workflow
 
-1. Open a new terminal window and navigate to `order-processor` directory: 
+1. Open a new terminal window in this quickstart directory and install dependencies:
 
 <!-- STEP
 name: Install requirements
 -->
 
 ```sh
-cd ./order-processor
-pip3 install -r requirements.txt
-cd ..
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -42,7 +40,7 @@ sleep: 15
 -->
 
 ```sh
-dapr run -f .
+uv run dapr run -f .
 ```
 
 <!-- END_STEP -->

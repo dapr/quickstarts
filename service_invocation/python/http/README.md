@@ -19,15 +19,11 @@ This section shows how to run both applications at once using [multi-app run tem
 1. Open a new terminal window and install dependencies for `order-processor` and `checkout` apps:
 
 <!-- STEP
-name: Install Node dependencies for order-processor and checkout
+name: Install Python dependencies for order-processor and checkout
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt
-cd ../checkout
-pip3 install -r requirements.txt
-cd ..
+uv sync --all-packages
 ```
 
 <!-- END_STEP -->
@@ -51,7 +47,7 @@ timeout_seconds: 30
 -->
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 The terminal console output should look similar to this:
@@ -98,36 +94,32 @@ dapr stop -f .
 
 ## Run a single app at a time with Dapr (Optional)
 
-An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- python3 app.py` commands.  This next section covers how to do this. 
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- uv run python app.py` commands.  This next section covers how to do this. 
 
 ### Run Python order-processor with Dapr
 
-1. Install dependencies for `order-processor` app: 
+1. Install dependencies:
+
+```bash
+uv sync --all-packages
+```
+
+2. Run the Python order-processor app with Dapr:
 
 ```bash
 cd ./order-processor
-pip3 install -r requirements.txt
-```
-
-2. Run the Python order-processor app with Dapr: 
-
-```bash
-dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
 ### Run Python checkout with Dapr
 
-1. Open a new terminal window and install dependencies for `checkout` app: 
+1. Open a new terminal window. Dependencies are shared with order-processor (already installed via `uv sync --all-packages` above).
+
+2. Run the Python checkout app with Dapr:
 
 ```bash
 cd ./checkout
-pip3 install -r requirements.txt
-```
-
-2. Run the Python checkout app with Dapr: 
-   
-```bash
-dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- uv run python app.py
 ```
 
 ### Stop and clean up application processes

@@ -25,12 +25,7 @@ name: Install Python dependencies
 -->
 
 ```bash
-cd ./checkout
-pip3 install -r requirements.txt
-cd ..
-cd ./order-processor
-pip3 install -r requirements.txt
-cd ..
+uv sync --all-packages
 ```
 <!-- END_STEP -->
 2. Open a new terminal window and run the multi app run template:
@@ -51,7 +46,7 @@ timeout_seconds: 30
 -->
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 The terminal console output should look similar to this:
@@ -94,36 +89,36 @@ dapr stop -f .
 
 ## Run a single app at a time with Dapr (Optional)
 
-An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- python3 app.py` commands.  This next section covers how to do this. 
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- uv run python app.py` commands.  This next section covers how to do this. 
 
 ### Run Python message subscriber with Dapr
 
-1. Install dependencies: 
+1. Install dependencies:
+
+```bash
+uv sync --all-packages
+```
+
+2. Run the Python subscriber app with Dapr:
 
 ```bash
 cd ./order-processor
-pip3 install -r requirements.txt
-```
-
-2. Run the Python subscriber app with Dapr: 
-
-```bash
-dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 6021 -- uvicorn app:app --port 6002
+dapr run --app-id order-processor-http --resources-path ../../../components/ --app-port 6021 -- uv run uvicorn app:app --port 6002
 ```
 
 ### Run Python message publisher with Dapr
 
-1. Install dependencies: 
+1. Install dependencies:
+
+```bash
+uv sync --all-packages
+```
+
+2. Run the Python publisher app with Dapr:
 
 ```bash
 cd ./checkout
-pip3 install -r requirements.txt 
-```
-
-2. Run the Python publisher app with Dapr: 
-
-```bash
-dapr run --app-id checkout-http --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id checkout-http --resources-path ../../../components/ -- uv run python app.py
 ```
 
 ### Stop the apps and clean up

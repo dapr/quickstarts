@@ -339,12 +339,13 @@ Now open a **new** terminal and go to the `./hello-world/python` directory.
 
 <!-- STEP
 name: "Install python requirements"
+working_dir: python
 -->
 
 1. Install dependencies:
 
    ```bash
-   pip3 install requests
+   uv sync
    ```
 
 <!-- END_STEP -->
@@ -365,7 +366,7 @@ sleep: 30
 2. Start the Python App with Dapr:
 
    ```bash
-   dapr run --app-id pythonapp python3 app.py
+   dapr run --app-id pythonapp .venv/bin/python app.py
    ```
 
 <!-- END_STEP -->

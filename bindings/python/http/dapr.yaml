@@ -3,5 +3,5 @@ apps:
   - appID: batch-http
     appDirPath: ./batch
     appPort: 5001
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]
     resourcesPath: ../../../components

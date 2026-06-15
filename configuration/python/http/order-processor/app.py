@@ -28,7 +28,7 @@ def subscribe_config_updates():
         url = '%s/v1.0/configuration/%s/subscribe' % (BASE_URL, DAPR_CONFIGURATION_STORE)
             )
     if subscription.status_code == 200 and 'errCode' not in str(subscription.json()) :
-        print(f'App subscribed to config changes with subscription id: {subscription.json()['id']}')
+        print(f"App subscribed to config changes with subscription id: {subscription.json()['id']}")
         return subscription.json()['id']
     else:
         print(f'Error subscribing to config updates: {subscription.json()}')

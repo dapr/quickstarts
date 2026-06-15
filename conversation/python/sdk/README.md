@@ -24,44 +24,15 @@ This approach uses [Dapr's multi-app run template files](https://docs.dapr.io/de
 For more LLM options, see the [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/) documentation.
 
 1. **Install dependencies:**
-    
-    ```bash
-    cd ./conversation
-    ```
-    
-    <details open="true">
-    <summary>Option 1: Using uv (faster modern alternative to pip)</summary>
-
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    # If you do not have uv installed yet, install it first:
-    # pip install uv
-    uv pip install -r requirements.txt
-    ```
-
-    </details>
-   
-    <details>
-    <summary>Option 2: Using pip</summary>
 
     <!-- STEP
     name: Install Python dependencies
     -->
-    
+
     ```bash
-    cd conversation   
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    pip3 install -r requirements.txt
+    uv sync
     ```
-    
-    </details>
-    
-    ```bash
-    # Return to the parent directory
-    cd ..
-    ```
+
     <!-- END_STEP -->
 
 2. **Run the simple Conversation application:**
@@ -78,32 +49,31 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     sleep: 15
     timeout_seconds: 30
     -->
-    
+
     ```bash
-    source conversation/.venv/bin/activate
-    dapr run -f .    
+    uv run dapr run -f .
     ```
-    
+
     Expected output:
-    
+
     ```text
     Input sent: What is dapr?
     Output response: What is dapr?
     ```
-    
+
     <!-- END_STEP -->
 
 3. **Stop the application:**
 
     <!-- STEP
-    name: Stop multi-app run 
+    name: Stop multi-app run
     sleep: 5
     -->
-    
+
     ```bash
     dapr stop -f .
     ```
-    
+
     <!-- END_STEP -->
 
 4. **Run the tool Calling Conversation application:**
@@ -124,17 +94,16 @@ For more LLM options, see the [supported Conversation components](https://docs.d
     -->
 
     ```bash
-    source conversation/.venv/bin/activate
-    dapr run -f dapr-tool-calling.yaml    
+    uv run dapr run -f dapr-tool-calling.yaml
     ```
 
-   Expected output:
+    Expected output:
 
     ```text
     Input sent: calculate square root of 15
     Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='calculate square root of 15', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='calculate', arguments='expression'))]))
     Input sent: get weather in San Francisco in celsius
-    Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))   
+    Output response: ConversationResultAlpha2Choices(finish_reason='tool_calls', index=0, message=ConversationResultAlpha2Message(content='get weather in San Francisco in celsius', tool_calls=[ConversationToolCalls(id='0', function=ConversationToolCallsOfFunction(name='get_weather', arguments='location,unit'))]))
     ```
 
     <!-- END_STEP -->
@@ -142,12 +111,12 @@ For more LLM options, see the [supported Conversation components](https://docs.d
 5. **Stop the tool calling application:**
 
     <!-- STEP
-    name: Stop multi-app run 
+    name: Stop multi-app run
     sleep: 5
     -->
 
     ```bash
-    dapr stop -f dapr-tool-calling.yaml   
+    dapr stop -f dapr-tool-calling.yaml
     ```
 
     <!-- END_STEP -->
@@ -159,30 +128,28 @@ As an alternative to the multi-app template, you can run the application directl
 1. **Install dependencies:**
 
     ```bash
-    cd ./conversation
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    pip3 install -r requirements.txt
+    uv sync
     ```
 
 2. **Run the application:**
 
     ```bash
-    dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
+    cd ./conversation
+    dapr run --app-id conversation --resources-path ../../../components -- uv run python app.py
     ```
-    
+
     Expected output:
-    
+
     ```text
-Input sent: What is dapr?
-Output response: What is dapr?
+    Input sent: What is dapr?
+    Output response: What is dapr?
     ```
-    
+
 3. **Try the tool calling examples:**
 
     You can run the other example applications similarly:
-    
+
     ```bash
     # For tool calling example
-    dapr run --app-id conversation --resources-path ../../../components -- python3 tool_calling.py
+    dapr run --app-id conversation --resources-path ../../../components -- uv run python tool_calling.py
     ```

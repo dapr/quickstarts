@@ -1,0 +1,12 @@
+[project]
+name = "python-subscriber"
+version = "0"
+description = "Dapr pub-sub tutorial (Python subscriber)."
+requires-python = ">=3.11"
+dependencies = [
+    "Flask",
+    "Flask-Cors",
+]
+
+[tool.uv]
+package = false

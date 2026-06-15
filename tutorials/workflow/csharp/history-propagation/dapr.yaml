@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components
+apps:
+  - appID: patient-intake
+    appDirPath: ./patient-intake/
+    command: ["dotnet", "run"]

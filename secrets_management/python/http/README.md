@@ -19,8 +19,7 @@ name: Install python dependencies
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt 
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -37,7 +36,7 @@ output_match_mode: substring
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ -- uv run python app.py
 ```
 
 <!-- END_STEP -->

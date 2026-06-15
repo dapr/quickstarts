@@ -106,15 +106,10 @@ working_dir: ./python-subscriber
 -->
 
 ```bash
-pip3 install -r requirements.txt 
+uv sync
 ```
-or
 
 <!-- END_STEP -->
-
-```bash
-python -m pip install -r requirements.txt
-```
 
 
 3. Run the Python subscriber app with Dapr: 
@@ -135,7 +130,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id python-subscriber --app-port 5001 python3 app.py
+dapr run --app-id python-subscriber --app-port 5001 uv run python app.py
 ```
 
 <!-- END_STEP -->

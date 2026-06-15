@@ -50,9 +50,10 @@ dapr run --app-id order-processor  --resources-path ../../../resources/ -- npm s
 ### Python example:
 
 ```bash
-cd ../state_management/python/sdk/order-processor
-pip3 install -r requirements.txt
-dapr run --app-id order-processor  --resources-path ../../../resources/ -- python3
+cd ../state_management/python/sdk
+uv sync
+cd order-processor
+dapr run --app-id order-processor  --resources-path ../../../resources/ -- uv run python app.py
 ```
 
 ### Expected output:

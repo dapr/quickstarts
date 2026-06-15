@@ -138,7 +138,7 @@ working_dir: ./pythonapp
 -->
 
 ```bash
-pip3 install requests
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -164,7 +164,7 @@ expected_stdout_lines:
 -->
 
 ```bash
-dapr run --app-id bindings-pythonapp python3 app.py --resources-path ../components
+dapr run --app-id bindings-pythonapp uv run python app.py --resources-path ../components
 ```
 
 <!-- END_STEP -->

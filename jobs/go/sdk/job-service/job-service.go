@@ -137,7 +137,7 @@ func scheduleJob(ctx context.Context, in *common.InvocationEvent) (out *common.C
 		},
 	}
 
-	err = app.daprClient.ScheduleJobAlpha1(ctx, &job)
+	err = app.daprClient.ScheduleJob(ctx, &job)
 	if err != nil {
 		fmt.Println("failed to schedule job. err: ", err)
 		return nil, err
@@ -163,7 +163,7 @@ func getJob(ctx context.Context, in *common.InvocationEvent) (out *common.Conten
 		return nil, err
 	}
 
-	job, err := app.daprClient.GetJobAlpha1(ctx, string(in.Data))
+	job, err := app.daprClient.GetJob(ctx, string(in.Data))
 	if err != nil {
 		fmt.Println("failed to get job. err: ", err)
 	}
@@ -184,7 +184,7 @@ func deleteJob(ctx context.Context, in *common.InvocationEvent) (out *common.Con
 		return nil, err
 	}
 
-	err = app.daprClient.DeleteJobAlpha1(ctx, string(in.Data))
+	err = app.daprClient.DeleteJob(ctx, string(in.Data))
 	if err != nil {
 		fmt.Println("failed to delete job. err: ", err)
 	}

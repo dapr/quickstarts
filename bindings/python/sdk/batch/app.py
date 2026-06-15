@@ -22,7 +22,7 @@ import os
 app = Flask(__name__)
 cron_binding_name = 'cron'
 sql_binding = 'sqldb'
-app_port = os.getenv('APP_PORT', '5001')
+app_port = os.getenv('APP_PORT', '5002')
 
 
 # Triggered by Dapr input binding

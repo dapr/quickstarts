@@ -1,0 +1,14 @@
+[project]
+name = "distributed-calculator-python"
+version = "0"
+description = "Dapr distributed-calculator tutorial (Python multiply service)."
+requires-python = ">=3.11"
+dependencies = [
+    "wheel",
+    "python-dotenv",
+    "flask",
+    "flask_cors",
+]
+
+[tool.uv]
+package = false

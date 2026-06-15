@@ -26,8 +26,7 @@ expected_stderr_lines:
 -->
 
 ```bash
-cd ./crypto-quickstart
-pip3 install -r requirements.txt
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -68,7 +67,7 @@ output_match_mode: substring
 -->
 
 ```bash
-dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- uv run python app.py
 ```
 
 <!-- END_STEP -->

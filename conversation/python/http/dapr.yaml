@@ -4,4 +4,4 @@ common:
 apps:
   - appID: conversation
     appDirPath: ./conversation/
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]

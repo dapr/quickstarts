@@ -166,7 +166,7 @@ working_dir: "./python"
 
 - Install required packages
    ```bash
-   pip3 install wheel python-dotenv flask_cors flask
+   uv sync
    ```
 
 <!-- END_STEP -->
@@ -198,7 +198,7 @@ env:
 
 - Start dapr using the command:
    ```bash
-   dapr run --app-id multiplyapp --app-port 5001 --dapr-http-port 3501 flask run
+   dapr run --app-id multiplyapp --app-port 5001 --dapr-http-port 3501 uv run flask run
    ```
 
 <!-- END_STEP -->

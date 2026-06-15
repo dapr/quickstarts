@@ -1,0 +1,12 @@
+[project]
+name = "configuration-python-sdk"
+version = "0"
+description = "Dapr configuration API quickstart (Python SDK)."
+requires-python = ">=3.11"
+dependencies = [
+    "dapr>=1.18.0",
+    "typing-extensions",
+]
+
+[tool.uv]
+package = false

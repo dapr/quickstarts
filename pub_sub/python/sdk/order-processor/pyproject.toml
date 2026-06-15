@@ -1,0 +1,13 @@
+[project]
+name = "order-processor"
+version = "0"
+requires-python = ">=3.11"
+dependencies = [
+    "Flask",
+    "dapr>=1.18.0",
+    "cloudevents>=2.0.0",
+    "typing-extensions",
+]
+
+[tool.uv]
+package = false

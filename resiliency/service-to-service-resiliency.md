@@ -91,17 +91,17 @@ dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol 
 ##### Order Processor Service
 
 ```bash
-cd ../service_invocation/python/http/order-processor
-pip3 install -r requirements.txt
-dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
+cd ../service_invocation/python/http
+uv sync --all-packages
+cd order-processor
+dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
 ##### Checkout Service
 
 ```bash
 cd ../service_invocation/python/http/checkout
-pip3 install -r requirements.txt
-dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- uv run python app.py
 ```
 
 ### Expected output
@@ -191,7 +191,7 @@ dapr run --app-port 5001 --app-id order-processor --resources-path ../../../reso
 ##### Order Processor Service:
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
 ### Observe orders have resumed sequentially:

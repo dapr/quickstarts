@@ -1,0 +1,13 @@
+[project]
+name = "bindings-python-http"
+version = "0"
+description = "Dapr bindings quickstart (Python HTTP)."
+requires-python = ">=3.11"
+dependencies = [
+    "Flask",
+    "requests",
+    "uvicorn",
+]
+
+[tool.uv]
+package = false

@@ -1,2 +1,0 @@
-dapr==1.18.0rc0
-dapr-ext-workflow==1.18.0rc0

@@ -49,9 +49,10 @@ jobs:
         run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
       - name: Verify Python version
         run: python3 --version
-      - name: Upgrade pip and setuptools
-        if: matrix.os == 'macos-latest'
-        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
       - name: Install podman - MacOS
         timeout-minutes: 15
         if: matrix.os == 'macos-latest'
@@ -98,9 +99,7 @@ jobs:
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
-          pip3 install setuptools wheel
-          pip3 install mechanical-markdown
-          pip3 install fastapi uvicorn
+          uv tool install mechanical-markdown
       - name: Validate building blocks with Python
         run: |
           variants=("http" "sdk")
@@ -108,21 +107,20 @@ jobs:
           for building_block in $building_blocks; do
             for variant in "${variants[@]}"
             do
-              if [ ! -d "$building_block/python/$variant" ]; 
+              if [ ! -d "$building_block/python/$variant" ];
               then
                 echo "$building_block/python/$variant does not exist."
               else
                 pushd $building_block/python/$variant
                 echo "Validating $building_block/python/$variant quickstart"
 
-                python3 -m venv .venv
-                source .venv/bin/activate
-
-                make validate 
-                
-                deactivate
+                # uv-managed quickstart: sync from lockfile
+                if [ -f pyproject.toml ]; then
+                  uv sync
+                fi
+                make validate
                 rm -rf .venv
-                
+
                 popd
               fi
             done

@@ -48,9 +48,7 @@ name: Install python dependencies
 -->
 
 ```bash
-cd ./batch
-pip3 install -r requirements.txt
-cd ..
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -73,7 +71,7 @@ timeout_seconds: 60
 -->
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 <!-- END_STEP -->

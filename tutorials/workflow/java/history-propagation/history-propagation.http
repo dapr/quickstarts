@@ -1,0 +1,30 @@
+@apphost=http://localhost:8080
+
+### Scenario 1 (happy path): lineage forwarded - pharmacy dispenses
+POST {{ apphost }}/start
+Content-Type: application/json
+
+{
+  "patientId": "P-1042",
+  "name": "Jane Doe",
+  "condition": "bacterial sinusitis",
+  "medication": "amoxicillin",
+  "dosage": 500,
+  "propagateHistory": true
+}
+
+### Scenario 2 (failure): lineage withheld - ComplianceAudit refuses, dispensed=false
+POST {{ apphost }}/start
+Content-Type: application/json
+
+{
+  "patientId": "P-2087",
+  "name": "John Roe",
+  "condition": "strep throat",
+  "medication": "penicillin",
+  "dosage": 500,
+  "propagateHistory": false
+}
+
+### Get the workflow output (most recent /start)
+GET {{ apphost }}/output

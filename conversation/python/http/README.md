@@ -12,166 +12,102 @@ This quickstart includes one app:
 
 ## Run the app with the template file
 
-This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  
+This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.
 
 This example uses the Ollama LLM component for local inference. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `ollama` to `openai`. For other available integrations, see the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
 
-1.  Install dependencies:
+1. Install dependencies:
 
-    <details open="true">
-    <summary>Option 1: Using uv (faster modern alternative to pip)</summary>
-    
-    ```
-    cd conversation
-    
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    
-    # If you don't have uv installed yet, install it first:
-    # pip install uv
-    uv pip install -r requirements.txt
-    ```
-    
-    </details>
-     
-    <details>
-    <summary>Option 2: Using classic pip</summary>
+<!-- STEP
+name: Install Python dependencies
+-->
 
-    <!-- STEP
-    name: Install Python dependencies
-    -->
+```bash
+uv sync
+```
 
-    ```bash
-    cd conversation
-    
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    
-    pip install -r requirements.txt 
-    ```
-
-    <!-- END_STEP -->
-    
-    </details>
-    
-    ```bash
-    # Return to the parent directory
-    cd ..
-    ```
-
+<!-- END_STEP -->
 
 2. Open a new terminal window and run the multi app run template:
 
-    <!-- STEP
-    name: Run multi app run template
-    expected_stdout_lines:
-      - 'Conversation input sent: What is dapr?'
-      - 'Usage:'
-      - 'Output response:'
-      - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
-      - 'Tool calls'
-    expected_stderr_lines:
-    output_match_mode: substring
-    match_order: none
-    background: true
-    sleep: 30
-    timeout_seconds: 60
-    -->
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - 'Conversation input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool calls'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: true
+sleep: 30
+timeout_seconds: 60
+-->
 
-    ```bash
-    source conversation/.venv/bin/activate
-    dapr run -f .
-    ```
+```bash
+uv run dapr run -f .
+```
 
-    The terminal console output should look similar to this, where:
+The terminal console output should look similar to this, where:
 
-    - The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
-    - The LLM returns a JSON object with an `answer` field describing Dapr.
-    - The app then sends a weather request to the component with tools available to the LLM.
-    - The LLM responds with a tool call to `get_weather`.
+- The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request to the component with tools available to the LLM.
+- The LLM responds with a tool call to `get_weather`.
 
-    ```text
-    Conversation input sent: What is dapr?
-    Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-    Tool calling input sent: What is the weather like in San Francisco in celsius?
-    Tool calls detected:
-    Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
-    Function name: get_weather
-    Function arguments: ...
-    ```
-    
-    <!-- END_STEP -->
+```text
+Conversation input sent: What is dapr?
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
+Function name: get_weather
+Function arguments: ...
+```
+
+<!-- END_STEP -->
 
 3. Stop and clean up application processes.
 
-    <!-- STEP
-    name: Stop multi-app run 
-    sleep: 5
-    -->
+<!-- STEP
+name: Stop multi-app run
+sleep: 5
+-->
 
-    ```bash
-    dapr stop -f .
-    ```
-    
-    <!-- END_STEP -->
+```bash
+dapr stop -f .
+```
+
+<!-- END_STEP -->
 
 ## Run the app with the Dapr CLI
 
 1. Install dependencies:
 
-    Open a terminal and run:
-    
-    ```bash
-    cd ./conversation
-    ```
-    
-    <details open="true">
-    <summary>Option 1: Using uv (faster alternative to pip)</summary>
-    
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    # If you don't have uv installed yet, install it first:
-    # pip install uv
-    uv pip install -r requirements.txt
-    ```
-   
-    </details>
-    
-    <details>
-    <summary>Option 2: Using classic pip</summary>
-
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    pip3 install -r requirements.txt
-    ```    
-    
-    </details>
+```bash
+uv sync
+```
 
 2. Run the application:
 
-    ```bash
-    # Make sure your virtual environment is activated
-    # If not already activated, run:
-    # source .venv/bin/activate  # On Windows, use: .venv\Scripts\activate
-    
-    dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
-    ```
-    
-    The terminal console output should look similar to this, where:
+```bash
+cd ./conversation
+dapr run --app-id conversation --resources-path ../../../components -- uv run python app.py
+```
 
-    - The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
-    - The LLM returns a JSON object with an `answer` field describing Dapr.
-    - The app then sends a weather request with tools available to the LLM.
-    - The LLM responds with a tool call to `get_weather`.
+- The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request with tools available to the LLM.
+- The LLM responds with a tool call to `get_weather`.
 
-    ```text
-    Conversation input sent: What is dapr?
-    Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
-    Tool calling input sent: What is the weather like in San Francisco in celsius?
-    Tool calls detected:
-    Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
-    Function name: get_weather
-    Function arguments: ...
-    ```
+```text
+Conversation input sent: What is dapr?
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
+Function name: get_weather
+Function arguments: ...
+```

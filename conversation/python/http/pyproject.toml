@@ -1,0 +1,11 @@
+[project]
+name = "conversation-python-http"
+version = "0"
+description = "Dapr conversation API quickstart (Python HTTP)."
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.25.0",
+]
+
+[tool.uv]
+package = false

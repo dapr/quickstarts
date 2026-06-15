@@ -4,4 +4,4 @@ common:
 apps:
   - appID: conversation-tool-calling
     appDirPath: ./conversation/
-    command: ["python3", "tool_calling.py"]
+    command: ["uv", "run", "python", "tool_calling.py"]

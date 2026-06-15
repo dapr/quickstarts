@@ -1,0 +1,10 @@
+[project]
+name = "checkout"
+version = "0"
+requires-python = ">=3.11"
+dependencies = [
+    "requests",
+]
+
+[tool.uv]
+package = false

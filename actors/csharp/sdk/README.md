@@ -123,7 +123,7 @@ name: Shutdown dapr
 
 ```bash
 dapr stop --app-id actorservice
-(lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs  kill
+(lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs -r kill
 ```
 
 <!-- END_STEP -->

@@ -1,0 +1,14 @@
+[project]
+name = "order-processor"
+version = "0"
+requires-python = ">=3.11"
+dependencies = [
+    "Flask",
+    "uvicorn",
+    "dapr>=1.18.0",
+    "typing-extensions",
+    "werkzeug>=3.0.3",
+]
+
+[tool.uv]
+package = false

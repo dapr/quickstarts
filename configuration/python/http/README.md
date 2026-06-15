@@ -37,8 +37,7 @@ name: Install python dependencies
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -58,7 +57,7 @@ sleep: 15
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- uv run python app.py
 ```
 
 <!-- END_STEP -->

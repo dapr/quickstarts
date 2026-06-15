@@ -24,14 +24,14 @@ This quickstart includes two apps:
 
 This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`. This enables you to test the interactions between multiple applications and will `schedule`, `run`, `get`, and `delete` jobs within a single process.
 
-1. Build the apps:
+1. Install dependencies:
 
 <!-- STEP
 name: Install python dependencies
 -->
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -64,7 +64,7 @@ timeout_seconds: 120
 -->
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 The terminal console output should look similar to this, where:
@@ -114,15 +114,15 @@ dapr stop -f .
 
 ### Schedule jobs
 
-1. Open a terminal and run the `job-service` app. Build the dependencies if you haven't already.
+1. Open a terminal and run the `job-service` app. Install the dependencies if you haven't already.
 
 ```bash
-pip3 install -r requirements.txt
+uv sync
 ```
 
 ```bash
 cd job-service
-dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --dapr-grpc-port 6281 -- python app.py
+dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --dapr-grpc-port 6281 -- uv run python app.py
 ```
 
 2. In a new terminal window, schedule the `R2-D2` Job using the Jobs API:
