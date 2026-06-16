@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.AspNetCore" Version="1.18.2" />
-    <PackageReference Include="Dapr.StateManagement" Version="1.18.2" />
-    <PackageReference Include="Dapr.Workflow" Version="1.18.2" />
+    <PackageReference Include="Dapr.AspNetCore" Version="1.18.4" />
+    <PackageReference Include="Dapr.StateManagement" Version="1.18.4" />
+    <PackageReference Include="Dapr.Workflow" Version="1.18.4" />
   </ItemGroup>
 
 </Project>
