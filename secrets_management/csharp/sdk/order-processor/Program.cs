@@ -10,10 +10,7 @@ var host = Host.CreateApplicationBuilder(args);
 // Register the secrets 
 host.Services.AddDaprSecretsManagementClient();
 
-var app = host.Build();
-
-await app.RunAsync();
-
+using var app = host.Build();
 
 // Option 1 - Use the secrets client
 var secretsClient = app.Services.GetRequiredService<DaprSecretsManagementClient>();
