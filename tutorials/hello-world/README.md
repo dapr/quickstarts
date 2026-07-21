@@ -240,7 +240,7 @@ curl -XPOST -d @sample.json -H Content-Type:application/json http://localhost:35
 
 Or, using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
-[sample.http](sample.http)
+[sample.http](node/sample.http)
 ```http
 POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder HTTP/1.1
 Content-Type: application/json
@@ -298,7 +298,7 @@ dapr invoke --app-id nodeapp --method order --verb GET
 
 or use the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
-[sample.http](sample.http)
+[sample.http](node/sample.http)
 ```http
 GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
 ```
