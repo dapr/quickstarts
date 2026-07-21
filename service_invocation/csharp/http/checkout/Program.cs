@@ -14,7 +14,14 @@ for (int i = 1; i <= 20; i++) {
     // Invoking a service
     var response = await client.PostAsJsonAsync("/orders", order, cts.Token);
 
-    Console.WriteLine("Order passed: " + order);
+    if (!response.IsSuccessStatusCode)
+    {
+        Console.WriteLine(response.StatusCode);
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
+    }
+    else {
+        Console.WriteLine("Order passed: " + order);
+    }
 
     await Task.Delay(TimeSpan.FromSeconds(1));
 }
