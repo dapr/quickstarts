@@ -27,6 +27,6 @@ public class Activity1 implements WorkflowActivity {
     Logger logger = LoggerFactory.getLogger(Activity1.class);
     var input = ctx.getInput(String.class);
     logger.info("{} : Received input: {}.", ctx.getName(), input);
-    return input + "  is processed";
+    return input + " is processed";
   }
 }
