@@ -240,7 +240,7 @@ curl -XPOST -d @sample.json -H Content-Type:application/json http://localhost:35
 
 Or, using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
-[sample.http](sample.http)
+[sample.http](node/sample.http)
 ```http
 POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder HTTP/1.1
 Content-Type: application/json
@@ -298,7 +298,7 @@ dapr invoke --app-id nodeapp --method order --verb GET
 
 or use the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
-[sample.http](sample.http)
+[sample.http](node/sample.http)
 ```http
 GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
 ```
@@ -444,5 +444,5 @@ For more information on how to configure the files visit [How-To: Debug multiple
 Now that you've gotten Dapr running locally on your machine, consider these next steps:
 - Explore additional quickstarts such as [pub-sub](../pub-sub), [bindings](../bindings) or the [distributed calculator app](../distributed-calculator).
 - Run this hello world application in Kubernetes via the [Hello Kubernetes](../hello-kubernetes) quickstart.
-- Learn more about Dapr in the [Dapr overview](https://docs.dapr.io/concepts/overview/) documentation.
+- Learn more about Dapr in the [Dapr Concepts](https://docs.dapr.io/concepts/) documentation.
 - Explore [Dapr concepts](https://docs.dapr.io/concepts/) such as building blocks and components in the Dapr documentation.

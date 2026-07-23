@@ -6,5 +6,4 @@ This section provides some tips with code snippets to understand the limitations
 
 - [Deterministic workflows](DeterministicWorkflow.cs)
 - [Idempotent activities](IdempotentActivity.cs)
-- [Versioning workflows](VersioningWorkflow.cs)
 - [Workflow & activity payload size](PayloadSizeWorkflow.cs)
