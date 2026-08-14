@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Dapr.StateManagement;
 using Dapr.StateManagement.Extensions;
@@ -18,7 +19,7 @@ for (var i = 0; i <= 100; i++)
     var order = new Order(i);
     
     // Save state into the state store
-    await stateClient.SaveStateAsync(State.Constants.DAPR_STORE_NAME, order.OrderId.ToString(), order.ToString());
+    await stateClient.SaveStateAsync(State.Constants.DAPR_STORE_NAME, order.OrderId.ToString(), JsonSerializer.Serialize(order));
     Console.WriteLine("Saving Order: " + order);
 
     // Get state from the state store
@@ -39,7 +40,7 @@ for (var i = 0; i <= 100; i++)
 //     var order = new Order(i);
 //     
 //     // Save state into the state store
-//     await stateStore.SaveStateAsync(order.OrderId.ToString(), order.ToString());
+//     await stateStore.SaveStateAsync(order.OrderId.ToString(), JsonSerializer.Serialize(order));
 //     Console.WriteLine("Saving Order: " + order);
 //
 //     // Get state from the state store

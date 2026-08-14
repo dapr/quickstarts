@@ -10,7 +10,7 @@ var httpClient = new HttpClient();
 httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
 for (var i = 1; i <= 100; i++) {
-    const int orderId = i;
+    var orderId = i;
     var order = new Order(orderId);
     var orderJson = JsonSerializer.Serialize(
         new[] {
