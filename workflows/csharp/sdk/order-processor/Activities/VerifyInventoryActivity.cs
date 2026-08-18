@@ -1,24 +1,23 @@
-﻿namespace WorkflowConsoleApp.Activities;
+﻿using WorkflowConsoleApp.Models.State;
+
+namespace WorkflowConsoleApp.Activities;
 
 using System.Threading.Tasks;
-using Dapr.Client;
 using Dapr.Workflow;
 using Microsoft.Extensions.Logging;
 using Models;
 using System;
 
-internal sealed partial class VerifyInventoryActivity(ILogger<VerifyInventoryActivity> logger, DaprClient daprClient) : WorkflowActivity<InventoryRequest, InventoryResult>
+internal sealed partial class VerifyInventoryActivity(ILogger<VerifyInventoryActivity> logger, IInventoryStore inventoryStore) : WorkflowActivity<InventoryRequest, InventoryResult>
 {
-    private const string StoreName = "statestore";
-
     public override async Task<InventoryResult> RunAsync(WorkflowActivityContext context, InventoryRequest req)
     {
         LogVerifyInventory(logger, req.RequestId, req.Quantity, req.ItemName);
 
         // Ensure that the store has items
-        var (orderResult, _) = await daprClient.GetStateAndETagAsync<OrderPayload>(StoreName, req.ItemName);
+        var (orderResult, _) = await inventoryStore.GetStateAndETagAsync<OrderPayload>(req.ItemName);
 
-        // Catch for the case where the statestore isn't setup
+        // Catch for the case where the state store isn't setup
         if (orderResult is null)
         {
             // Not enough items.

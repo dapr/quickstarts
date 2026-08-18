@@ -140,7 +140,7 @@ app.UseRouting();
 app.Run($"http://*:{appPort}");
 
 // Classes for request and response models
-public class JobData
+public sealed class JobData
 {
   [JsonPropertyName("droid")]
   public string? Droid { get; set; }
@@ -149,7 +149,7 @@ public class JobData
   public string? Task { get; set; }
 }
 
-public class DroidJob
+public sealed class DroidJob
 {
   [JsonPropertyName("name")]
   public string? Name { get; set; }

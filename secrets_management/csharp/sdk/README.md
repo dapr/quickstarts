@@ -30,7 +30,7 @@ dotnet build
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - 'Fetched Secret: [secret, YourPasskeyHere]'
+  - 'Fetched secret via client: [secret, YourPasskeyHere]'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

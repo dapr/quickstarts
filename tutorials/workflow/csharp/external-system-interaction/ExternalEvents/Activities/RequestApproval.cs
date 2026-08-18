@@ -1,5 +1,4 @@
 using Dapr.Workflow;
-using ExternalEvents;
 
 namespace ExternalEvents.Activities;
 

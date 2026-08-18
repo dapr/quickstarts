@@ -87,7 +87,7 @@ async Task GetJobDetails(DroidJob job)
 
 await app.RunAsync($"http://*:{appPort}");
 
-public class DroidJob
+public sealed class DroidJob
 {
   [JsonPropertyName("name")]
   public string? Name { get; set; }

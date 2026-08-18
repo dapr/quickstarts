@@ -14,8 +14,8 @@ internal sealed class RegisterShipment(DaprClient daprClient) : WorkflowActivity
             Constants.DAPR_PUBSUB_REGISTRATION_TOPIC,
             order);
 
-        return new RegisterShipmentResult(IsSucces: true);
+        return new RegisterShipmentResult(IsSuccess: true);
     }
 }
 
-internal sealed record RegisterShipmentResult(bool IsSucces);
+internal sealed record RegisterShipmentResult(bool IsSuccess);

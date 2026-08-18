@@ -17,8 +17,8 @@ This section shows how to run applications at once using [multi-app run template
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - 'Getting Order: Order { orderId = 1 }'
-  - 'Getting Order: Order { orderId = 2 }'  
+  - 'Getting Order: {"orderId":1}'
+  - 'Getting Order: {"orderId":2}'  
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -45,8 +45,8 @@ An alternative to running all or multiple applications at once is to run single 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - 'Getting Order: Order { orderId = 1 }'
-  - 'Getting Order: Order { orderId = 2 }'
+  - 'Getting Order: {"orderId":1}'
+  - 'Getting Order: {"orderId":2}'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -65,15 +65,15 @@ The Terminal console output should look similar to this:
 ```text
 You're up and running! Both Dapr and your app logs will appear here.
 
-Saving Order: Order { orderId = 1 }
-Getting Order: Order { orderId = 1 }
-Deleting Order: Order { orderId = 1 }
-Saving Order: Order { orderId = 2 }
-Getting Order: Order { orderId = 2 }
-Deleting Order: Order { orderId = 2 }
-Saving Order: Order { orderId = 3 }
-Getting Order: Order { orderId = 3 }
-Deleting Order: Order { orderId = 3 }
+Saving Order: Order { OrderId = 1 }
+Getting Order: {"orderId":1}
+Deleting Order: Order { OrderId = 1 }
+Saving Order: Order { OrderId = 2 }
+Getting Order: {"orderId":2}
+Deleting Order: Order { OrderId = 2 }
+Saving Order: Order { OrderId = 3 }
+Getting Order: {"orderId":3}
+Deleting Order: Order { OrderId = 3 }
 ```
 
 2. Stop and clean up application processes

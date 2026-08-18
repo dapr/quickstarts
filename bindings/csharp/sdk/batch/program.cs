@@ -19,8 +19,8 @@ using Dapr.Client;
 
 // dapr run --app-id batch-sdk --app-port 7002 --resources-path ../../../components -- dotnet run
 
-var cronBindingName = "cron";
-var sqlBindingName = "sqldb";
+const string cronBindingName = "cron";
+const string sqlBindingName = "sqldb";
 
 var builder = WebApplication.CreateBuilder(args);
 

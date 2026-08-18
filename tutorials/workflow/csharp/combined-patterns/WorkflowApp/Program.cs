@@ -1,22 +1,14 @@
-using Dapr.Client;
+using Dapr.StateManagement.Extensions;
 using Dapr.Workflow;
 using WorkflowApp;
-using WorkflowApp.Activities;
+using WorkflowApp.State;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSingleton<HttpClient>(DaprClient.CreateInvokeHttpClient(appId: "shipping"));
 builder.Services.AddSingleton<InventoryManagement>();
 builder.Services.AddDaprClient();
-builder.Services.AddDaprWorkflow(options =>
-{
-    options.RegisterWorkflow<OrderWorkflow>();
-    options.RegisterActivity<CheckInventory>();
-    options.RegisterActivity<CheckShippingDestination>();
-    options.RegisterActivity<UpdateInventory>();
-    options.RegisterActivity<ProcessPayment>();
-    options.RegisterActivity<ReimburseCustomer>();
-    options.RegisterActivity<RegisterShipment>();
-});
+builder.Services.AddDaprStateManagementClient()
+    .WithInventoryStore();
+builder.Services.AddDaprWorkflow();
 var app = builder.Build();
 app.UseCloudEvents();
 
@@ -25,7 +17,6 @@ app.MapPost("/start", async (
     InventoryManagement inventory,
     DaprWorkflowClient workflowClient) =>
 {
-
     // This is to ensure to have enough inventory for the order.
     // So the manual restock endpoint is not needed in this sample.
     await inventory.CreateDefaultInventoryAsync();
@@ -58,11 +49,9 @@ app.MapPost("/shipmentRegistered", async (
 // This endpoint is a manual helper method to restock the inventory.
 app.MapPost("/inventory/restock", async (
     ProductInventory productInventory,
-    DaprClient daprClient
-    ) =>
+    IInventoryStore inventoryStore) =>
 {
-    await daprClient.SaveStateAsync(
-            Constants.DAPR_INVENTORY_COMPONENT,
+    await inventoryStore.SaveStateAsync(
             productInventory.ProductId,
             productInventory);
 
@@ -72,19 +61,10 @@ app.MapPost("/inventory/restock", async (
 // This endpoint is a manual helper method to check the inventory.
 app.MapGet("/inventory/{productId}", async (
     string productId,
-    DaprClient daprClient
-    ) =>
+    IInventoryStore inventoryStore) =>
 {
-    var productInventory = await daprClient.GetStateAsync<ProductInventory>(
-            Constants.DAPR_INVENTORY_COMPONENT,
-            productId);
-
-    if (productInventory == null)
-    {
-        return Results.NotFound();
-    }
-
-    return Results.Ok(productInventory);
+    var productInventory = await inventoryStore.GetStateAsync<ProductInventory>(productId);
+    return productInventory == null ? Results.NotFound() : Results.Ok(productInventory);
 });
 
 app.Run();

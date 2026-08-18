@@ -1,20 +1,14 @@
 using Dapr.Workflow;
+using Microsoft.AspNetCore.Mvc;
 using ResiliencyAndCompensation;
-using ResiliencyAndCompensation.Activities;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDaprWorkflow(options =>
-{
-    options.RegisterWorkflow<ResiliencyAndCompensationWorkflow>();
-    options.RegisterActivity<MinusOne>();
-    options.RegisterActivity<Division>();
-    options.RegisterActivity<PlusOne>();
-});
+builder.Services.AddDaprWorkflow();
 var app = builder.Build();
 
 app.MapPost("/start/{input}", async (
     int input,
-    DaprWorkflowClient workflowClient) =>
+    [FromServices] DaprWorkflowClient workflowClient) =>
 {
     var instanceId = await workflowClient.ScheduleNewWorkflowAsync(
         name: nameof(ResiliencyAndCompensationWorkflow),

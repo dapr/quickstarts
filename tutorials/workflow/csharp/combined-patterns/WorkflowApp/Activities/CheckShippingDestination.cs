@@ -1,14 +1,15 @@
-using System.Net;
+using Dapr.Client;
 using Dapr.Workflow;
 
 namespace WorkflowApp.Activities;
 
-internal sealed class CheckShippingDestination(HttpClient httpClient) : WorkflowActivity<Order, ActivityResult>
+internal sealed class CheckShippingDestination(DaprClient daprClient) : WorkflowActivity<Order, ActivityResult>
 {
     public override async Task<ActivityResult> RunAsync(WorkflowActivityContext context, Order order)
     {
         Console.WriteLine($"{nameof(CheckShippingDestination)}: Received input: {order}.");
 
+        using var httpClient = daprClient.CreateInvokableHttpClient(Constants.SHIPPING_APP_ID);
         var response = await httpClient.PostAsJsonAsync("/checkDestination", order);
         if (!response.IsSuccessStatusCode)
         {
