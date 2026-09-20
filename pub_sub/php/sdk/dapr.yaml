@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: order-processor-sdk
+    appDirPath: ./order-processor/
+    appPort: 6002
+    command: ["php", "app.php"]
+  - appID: checkout-sdk
+    appDirPath: ./checkout/
+    command: ["php", "app.php"]
