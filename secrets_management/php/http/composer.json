@@ -1,0 +1,9 @@
+{
+    "name": "dapr-quickstarts/secrets-management-php-http",
+    "description": "Dapr secrets management quickstart (PHP, plain HTTP).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "ext-curl": "*"
+    }
+}
