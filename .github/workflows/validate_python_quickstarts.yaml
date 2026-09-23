@@ -38,7 +38,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code 
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
