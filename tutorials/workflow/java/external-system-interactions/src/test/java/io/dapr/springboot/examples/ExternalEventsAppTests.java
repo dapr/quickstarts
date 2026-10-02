@@ -28,6 +28,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import java.time.Duration;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static io.dapr.springboot.examples.StringMatchesUUIDPattern.matchesThePatternOfAUUID;
@@ -53,7 +54,8 @@ class ExternalEventsAppTests {
   @Test
   void testExternalEventsWorkflow() throws InterruptedException {
 
-    var order = new Order("123", "Rubber ducks", 100, 500);
+    var orderId = UUID.randomUUID().toString();
+    var order = new Order(orderId, "Rubber ducks", 100, 500);
     given().contentType(ContentType.JSON)
             .body(order)
             .when()
@@ -70,7 +72,7 @@ class ExternalEventsAppTests {
 
     assertTrue(status.contains("RUNNING"));
 
-    ApprovalStatus approvalStatus = new ApprovalStatus("123", true);
+    ApprovalStatus approvalStatus = new ApprovalStatus(orderId, true);
     given().contentType(ContentType.JSON)
             .body(approvalStatus)
             .when()

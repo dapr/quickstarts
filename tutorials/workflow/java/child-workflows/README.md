@@ -73,9 +73,9 @@ graph LR
 
     ```text
     io.dapr.springboot.examples.child.Activity1 : Received input: Item 1.
-    io.dapr.springboot.examples.child.Activity2 : Received input: Item 1  is processed.
+    io.dapr.springboot.examples.child.Activity2 : Received input: Item 1 is processed.
     io.dapr.springboot.examples.child.Activity1 : Received input: Item 2.
-    io.dapr.springboot.examples.child.Activity2 : Received input: Item 2  is processed.
+    io.dapr.springboot.examples.child.Activity2 : Received input: Item 2 is processed.
     ```
 
 4. Use the GET request in the [`childworkflows.http`](./childworkflows.http) file to get the status of the workflow, or use this cURL command:
@@ -87,7 +87,7 @@ graph LR
 5. The expected serialized output of the workflow is an array with two strings:
 
     ```txt
-    "["Item 1  is processed as a child workflow.","Item 2  is processed as a child workflow."]"
+    "["Item 1 is processed as a child workflow.","Item 2 is processed as a child workflow."]"
     ```
 
 6. Stop the application by pressing `Ctrl+C`.

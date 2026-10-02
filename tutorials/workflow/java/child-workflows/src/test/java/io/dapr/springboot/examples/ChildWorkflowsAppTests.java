@@ -59,7 +59,7 @@ class ChildWorkflowsAppTests {
             .then()
             .statusCode(200).extract().asString();
 
-    assertEquals("[\"Item 1  is processed as a child workflow.\",\"Item 2  is processed as a child workflow.\"]", output);
+    assertEquals("[\"Item 1 is processed as a child workflow.\",\"Item 2 is processed as a child workflow.\"]", output);
   }
 
 }
