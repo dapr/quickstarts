@@ -16,6 +16,7 @@ package io.dapr.springboot.examples;
 import io.dapr.client.DaprClient;
 import io.dapr.springboot.DaprAutoConfiguration;
 
+import io.dapr.client.domain.CloudEvent;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,8 +69,11 @@ class ShippingAppTests {
     ShippingAppRestController.OrderItem orderItem = new ShippingAppRestController.OrderItem("ABC-123", "The Mars Volta EP", 1, BigDecimal.valueOf(100));
     ShippingAppRestController.CustomerInfo customerInfo = new ShippingAppRestController.CustomerInfo("CUST-456", "UK");
     var order = new ShippingAppRestController.Order("123", orderItem, customerInfo);
+    // registerShipment is a pub/sub subscriber, so Dapr delivers the order wrapped in a CloudEvent.
+    var event = new CloudEvent<ShippingAppRestController.Order>();
+    event.setData(order);
     ShippingAppRestController.ShipmentRegistrationStatus status = given().contentType(ContentType.JSON)
-            .body(order)
+            .body(event)
             .when()
             .post("/registerShipment")
             .then()
