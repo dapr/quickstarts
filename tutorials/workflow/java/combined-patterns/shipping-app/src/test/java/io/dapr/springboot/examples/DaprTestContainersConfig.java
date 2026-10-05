@@ -18,8 +18,6 @@ import io.dapr.testcontainers.Component;
 import io.dapr.testcontainers.DaprContainer;
 import io.dapr.testcontainers.DaprLogLevel;
 import io.dapr.testcontainers.Subscription;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -84,11 +82,6 @@ public class DaprTestContainersConfig {
         @Override
         public void close() {
 
-        }
-
-        @Override
-        public Statement apply(Statement base, Description description) {
-          return null;
         }
       };
 
