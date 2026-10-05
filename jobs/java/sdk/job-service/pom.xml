@@ -10,8 +10,8 @@
     <name>JobsService</name>
     <description>Demo for Dapr Jobs component</description>
     <properties>
-        <springframework.version>3.5.0</springframework.version>
-        <springweb.version>6.2.7</springweb.version>
+        <springframework.version>4.0.8</springframework.version>
+        <springweb.version>7.0.9</springweb.version>
     </properties>
 
     <dependencies>
@@ -42,7 +42,7 @@
             <dependency>
                 <groupId>io.dapr</groupId>
                 <artifactId>dapr-sdk-bom</artifactId>
-                <version>1.18.0</version>
+                <version>1.19.0-rc-1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -74,7 +74,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>4.0.8</version>
                 <executions>
                     <execution>
                         <goals>

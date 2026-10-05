@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
+		<version>4.0.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.service</groupId>
@@ -22,7 +22,7 @@
 			<dependency>
 				<groupId>io.dapr.spring</groupId>
 				<artifactId>dapr-spring-bom</artifactId>
-				<version>1.18.0</version>
+				<version>1.19.0-rc-1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -55,7 +55,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>4.0.8</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
