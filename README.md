@@ -29,6 +29,7 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | [Cryptography](./cryptography) | Perform cryptographic operations without exposing keys to your application |
 | [Resiliency](./resiliency) | Define and apply fault-tolerant policies (retries/back-offs, timeouts and circuit breakers) to your Dapr API requests |
 | [Jobs](./jobs) | Dapr Jobs enable you to manage and schedule tasks |
+| [MCP](./mcp) | Give AI agents Dapr's building blocks as tools through the Dapr MCP server |
 
 ### Tutorials
 
