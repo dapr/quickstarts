@@ -1,0 +1,9 @@
+{
+    "name": "dapr-quickstarts/pub-sub-php-http",
+    "description": "Dapr pub/sub quickstart (PHP, plain HTTP).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "react/http": "^1.11"
+    }
+}

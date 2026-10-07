@@ -62,6 +62,7 @@ To run the samples, you need to have Dapr installed. Follow the [Getting Started
 - Java: `make test_java_quickstarts`
 - JS: `make test_javascript_quickstarts`
 - C#: `make test_csharp_quickstarts`
+- PHP: `make test_php_quickstarts`
 - All quickstarts: `make test_all_quickstarts`
 
 ### Validating a single quickstart
