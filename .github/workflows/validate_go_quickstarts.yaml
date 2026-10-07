@@ -38,7 +38,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
@@ -68,7 +68,7 @@ jobs:
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Set up Go ${{ env.GOVER }}
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ env.GOVER }}
       - name: Set up Dapr CLI - Mac/Linux
