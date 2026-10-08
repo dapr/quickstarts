@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPaths:
+    - ../../components/
+    - ../../mcpserver-resources/
+apps:
+  - appID: preference-agent-openai-agents-mcpserver
+    appDirPath: ./agent/
+    # Fixed so the MCPServer resource can point dapr-mcp-server at this sidecar.
+    daprGRPCPort: 50101
+    command: ["uv", "run", "python", "app.py"]
