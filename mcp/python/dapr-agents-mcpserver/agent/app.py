@@ -48,9 +48,18 @@ async def verify_preference() -> None:
         f"dapr.internal.mcp.{MCP_SERVER_NAME}.CallTool.get_state",
         input={"arguments": {"storeName": STATE_STORE, "key": PREFERENCE_KEY}},
     )
-    state = await wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=TOOL_CALL_TIMEOUT_SECONDS)
-    output = state.serialized_output if state and state.runtime_status == WorkflowStatus.COMPLETED else ""
-    if PREFERENCE_VALUE in (output or ""):
+    try:
+        state = await wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=TOOL_CALL_TIMEOUT_SECONDS)
+    except TimeoutError:
+        print(f"get_state did not finish within {TOOL_CALL_TIMEOUT_SECONDS}s", flush=True)
+        return
+    if state is None or state.runtime_status != WorkflowStatus.COMPLETED:
+        status = state.runtime_status.name if state else "unknown"
+        reason = state.failure_details.message if state and state.failure_details else "no failure details"
+        print(f"get_state ended as {status}: {reason}", flush=True)
+        return
+    output = state.serialized_output or ""
+    if PREFERENCE_VALUE in output:
         print(f"Verified in state store: {PREFERENCE_KEY} = {PREFERENCE_VALUE}", flush=True)
     else:
         print(f"Preference not found in state store: {output}", flush=True)

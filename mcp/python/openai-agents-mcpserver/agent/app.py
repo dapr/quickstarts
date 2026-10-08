@@ -57,9 +57,14 @@ def result_text(result: dict[str, Any]) -> str:
 async def call_tool(wf_client: DaprWorkflowClient, tool: MCPToolDef, arguments: dict[str, Any]) -> str:
     """Call an MCP tool by starting its CallTool workflow on the sidecar and waiting for the result."""
     instance_id = await wf_client.schedule_new_workflow(tool.call_tool_workflow, input={"arguments": arguments})
-    state = await wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=TOOL_CALL_TIMEOUT_SECONDS)
+    try:
+        state = await wf_client.wait_for_workflow_completion(instance_id, timeout_in_seconds=TOOL_CALL_TIMEOUT_SECONDS)
+    except TimeoutError as err:
+        raise RuntimeError(f"{tool.call_tool_workflow} did not finish within {TOOL_CALL_TIMEOUT_SECONDS}s") from err
     if state is None or state.runtime_status != WorkflowStatus.COMPLETED:
-        raise RuntimeError(f"Workflow {tool.call_tool_workflow} did not complete")
+        status = state.runtime_status.name if state else "unknown"
+        reason = state.failure_details.message if state and state.failure_details else "no failure details"
+        raise RuntimeError(f"{tool.call_tool_workflow} ended as {status}: {reason}")
     return result_text(json.loads(state.serialized_output))
 
 
