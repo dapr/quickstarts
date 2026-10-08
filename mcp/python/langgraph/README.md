@@ -80,6 +80,10 @@ The agent's reply is written by the LLM, so its wording changes from run to run.
 
 ```text
 == APP - preference-agent-langgraph == Loaded 11 tools from the Dapr MCP server
+== APP - preference-agent-langgraph == Tool call: get_components {}
+== APP - preference-agent-langgraph == Tool call: save_state {'storeName': 'statestore', 'key': 'favorite-color', 'value': 'blue'}
+== APP - preference-agent-langgraph == Tool call: get_state {'storeName': 'statestore', 'key': 'favorite-color'}
+== APP - preference-agent-langgraph == Tool call: publish_event {'pubsubName': 'pubsub', 'topic': 'user-preferences', 'message': "User's favorite color is blue."}
 == APP - preference-agent-langgraph == Agent reply: I saved your favorite color, blue, to the statestore under 'favorite-color', confirmed it, and announced it on the 'user-preferences' topic.
 == APP - preference-agent-langgraph == Verified in state store: favorite-color = blue
 ```
