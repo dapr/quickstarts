@@ -67,8 +67,13 @@ async def main() -> None:
         tools = await load_mcp_tools(session)
         print(f"Loaded {len(tools)} tools from the Dapr MCP server", flush=True)
 
-        agent = create_agent(ChatOpenAI(model=MODEL), tools, system_prompt=INSTRUCTIONS)
+        # Parallel tool calls could run get_state before save_state has finished.
+        model = ChatOpenAI(model=MODEL, model_kwargs={"parallel_tool_calls": False})
+        agent = create_agent(model, tools, system_prompt=INSTRUCTIONS)
         result = await agent.ainvoke({"messages": [{"role": "user", "content": TASK}]})
+        for message in result["messages"]:
+            for call in getattr(message, "tool_calls", None) or []:
+                print(f"Tool call: {call['name']} {call['args']}", flush=True)
         print(f"Agent reply: {result['messages'][-1].content}", flush=True)
 
         # Read the key back without the LLM to confirm the agent really saved it.

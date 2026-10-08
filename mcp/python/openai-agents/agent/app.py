@@ -15,7 +15,7 @@
 import asyncio
 import os
 
-from agents import Agent, Runner
+from agents import Agent, ModelSettings, Runner
 from agents.mcp import MCPServerStdio
 
 MCP_SERVER_NAME = "dapr"
@@ -59,7 +59,14 @@ async def main() -> None:
         tools = await server.list_tools()
         print(f"Loaded {len(tools)} tools from the Dapr MCP server", flush=True)
 
-        agent = Agent(name="PreferenceAgent", instructions=INSTRUCTIONS, model=MODEL, mcp_servers=[server])
+        # Parallel tool calls could run get_state before save_state has finished.
+        agent = Agent(
+            name="PreferenceAgent",
+            instructions=INSTRUCTIONS,
+            model=MODEL,
+            model_settings=ModelSettings(parallel_tool_calls=False),
+            mcp_servers=[server],
+        )
         result = await Runner.run(agent, TASK)
         print(f"Agent reply: {result.final_output}", flush=True)
 
