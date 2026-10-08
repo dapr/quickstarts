@@ -4,13 +4,18 @@ The [Dapr MCP server](https://github.com/dapr/dapr-mcp-server) is a [Model Conte
 
 These quickstarts run the same scenario in three agent frameworks, so you can compare them side by side. Each agent is asked to remember a user preference: it calls `get_components` to discover the component names, saves the preference with `save_state`, reads it back with `get_state` and announces it with `publish_event`.
 
-| Quickstart | Framework | MCP client |
-|:--|:--|:--|
-| [python/langgraph](./python/langgraph) | [LangGraph](https://langchain-ai.github.io/langgraph/) | `langchain-mcp-adapters` |
-| [python/dapr-agents](./python/dapr-agents) | [Dapr Agents](https://docs.dapr.io/developing-ai/dapr-agents/) | `dapr_agents.tool.mcp.MCPClient` |
-| [python/openai-agents](./python/openai-agents) | [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) | `agents.mcp.MCPServerStdio` |
+Each framework reaches the MCP server in one of two ways:
 
-All three load the Dapr components in [`components`](./components): a Redis state store, Redis pub/sub and a local file secret store with one dummy secret. With those loaded, the MCP server exposes 11 tools.
+- **MCP client in the app.** The app runs an MCP client, as it would for any MCP server, and starts `dapr-mcp-server` itself over stdio. Nothing changes for an existing agent, and it works with any framework and any Dapr version.
+- **Dapr's `MCPServer` resource.** The app has no MCP client. Its sidecar loads an [`MCPServer` resource](https://docs.dapr.io/developing-ai/mcp/mcp-server-resource/), connects to the MCP server and registers a Dapr workflow per tool, and the app calls a tool by starting that workflow. Each tool call is then a durable workflow, with Dapr's retries, per-tool tracing and access policies, and optional middleware hooks for audit or redaction. It needs Dapr 1.18 or later.
+
+| Framework | MCP client in the app | `MCPServer` resource |
+|:--|:--|:--|
+| [LangGraph](https://langchain-ai.github.io/langgraph/) | [python/langgraph](./python/langgraph), with `langchain-mcp-adapters` | [python/langgraph-mcpserver](./python/langgraph-mcpserver), with a short adapter over `DaprMCPClient` |
+| [Dapr Agents](https://docs.dapr.io/developing-ai/dapr-agents/) | [python/dapr-agents](./python/dapr-agents), with `dapr_agents.tool.mcp.MCPClient` | [python/dapr-agents-mcpserver](./python/dapr-agents-mcpserver), built in: `DurableAgent` finds the resource itself |
+| [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) | [python/openai-agents](./python/openai-agents), with `agents.mcp.MCPServerStdio` | [python/openai-agents-mcpserver](./python/openai-agents-mcpserver), with a short adapter over `DaprMCPClient` |
+
+Start with the MCP client path unless you want what the workflows add. All six quickstarts load the Dapr components in [`components`](./components): a Redis state store, Redis pub/sub and a local file secret store with one dummy secret. With those loaded, the MCP server exposes 11 tools. The `MCPServer` quickstarts also load [`mcpserver-resources`](./mcpserver-resources), which is scoped to their app IDs.
 
 Visit the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/) for the full tool reference and configuration options.
 
@@ -29,7 +34,9 @@ The agents call an OpenAI model, so set `OPENAI_API_KEY` before running them.
 
 The Dapr MCP server speaks MCP over **stdio** by default, or over **streamable HTTP** when started with `--http <addr>`.
 
-These quickstarts use **stdio**. Each agent runs under `dapr run` and starts `dapr-mcp-server` as a child process, passing on its sidecar's `DAPR_GRPC_PORT` so the server talks to the same sidecar. There is one app per quickstart, no port to pick and no start-up race between the agent and the server.
+These quickstarts use **stdio**. In the MCP client quickstarts, each agent runs under `dapr run` and starts `dapr-mcp-server` as a child process, passing on its sidecar's `DAPR_GRPC_PORT` so the server talks to the same sidecar. There is one app per quickstart, no port to pick and no start-up race between the agent and the server.
+
+In the `MCPServer` quickstarts, the sidecar starts `dapr-mcp-server` as its own child process, using the `stdio` endpoint in [`mcpserver-resources/mcpserver.yaml`](./mcpserver-resources/mcpserver.yaml). The resource sets `DAPR_GRPC_PORT` so the server calls back into the same sidecar, and each quickstart's `dapr.yaml` fixes that port at `50101`. The sidecar's API is already serving when it loads the resource, so there is still one app and no start-up race. An `MCPServer` can use `streamableHTTP` instead, but the sidecar connects once when it loads the resource and, unless `ignoreErrors` is set, stops if the server isn't up yet, so the MCP server must be running first.
 
 Streamable HTTP suits a server shared by several agents, or one that runs remotely. Run the server as its own Dapr app. Start it from one of the `agent` folders, because the secret store finds its file relative to the directory the sidecar starts in:
 

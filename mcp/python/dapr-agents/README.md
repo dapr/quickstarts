@@ -43,7 +43,7 @@ The agent starts `dapr-mcp-server` itself, as a child process that speaks MCP ov
 
 `MCPClient` lists the server's tools once at startup. After that, each tool call starts a short-lived `dapr-mcp-server` process, so a tool call never depends on a connection held open by another workflow step. Dapr Agents names each tool after its server, so the agent sees `dapr_get_components`, `dapr_save_state` and so on.
 
-Recent Dapr Agents releases mark `MCPClient` as deprecated in favor of Dapr's `MCPServer` resource, where the Dapr sidecar connects to the MCP server for the agent. That resource needs a Dapr runtime that supports it. Until then, `MCPClient` is the way to connect a Dapr Agents agent to the Dapr MCP server.
+Recent Dapr Agents releases mark `MCPClient` as deprecated in favor of Dapr's `MCPServer` resource, where the Dapr sidecar connects to the MCP server for the agent. The [`dapr-agents-mcpserver`](../dapr-agents-mcpserver) quickstart runs this scenario that way.
 
 The agent's workflow state is kept in the `statestore` component, which is marked as the actor state store.
 
