@@ -43,6 +43,14 @@ TASK = (
 )
 
 
+def reply_text(result: str) -> str:
+    """Return the text of the agent's final message, which the runner returns serialized as JSON."""
+    try:
+        return json.loads(result).get("content", result)
+    except (ValueError, AttributeError):
+        return result
+
+
 async def verify_preference() -> None:
     """Read the key back without the LLM, by starting the get_state tool's workflow directly."""
     wf_client = DaprWorkflowClient()
@@ -86,9 +94,9 @@ async def main() -> None:
     runner = AgentRunner()
     try:
         result = await runner.run(agent, payload={"task": TASK})
-        # The runner returns the agent's final message serialized as JSON.
-        reply = json.loads(result)["content"] if result else ""
-        print(f"Agent reply: {reply}", flush=True)
+        if result is None:
+            raise RuntimeError("The agent run did not finish")
+        print(f"Agent reply: {reply_text(result)}", flush=True)
     finally:
         runner.shutdown(agent)
 

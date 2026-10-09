@@ -39,7 +39,7 @@ The agent uses `gpt-4o-mini` by default. Set `OPENAI_MODEL` to use a different m
 
 The sidecar loads the components in [`../../components`](../../components) and the `MCPServer` resource in [`../../mcpserver-resources`](../../mcpserver-resources). The resource tells the sidecar to start `dapr-mcp-server` as a child process and speak MCP to it over stdio, with `DAPR_GRPC_PORT` pointing back at the same sidecar. That is why [`dapr.yaml`](./dapr.yaml) fixes the sidecar's gRPC port at `50101`. The three `MCPServer` quickstarts all use that port, so run only one at a time.
 
-The sidecar's API is already serving when it loads the `MCPServer` resource, so the MCP server finds the state store, pub/sub and secret store and registers 11 tools. The sidecar then registers these workflows:
+The MCP server finds the state store, pub/sub and secret store and registers 11 tools. The sidecar then registers these workflows:
 
 - `dapr.internal.mcp.dapr.ListTools`, which returns the tool list,
 - `dapr.internal.mcp.dapr.CallTool.<tool>`, one per tool, which takes `{"arguments": {...}}` and returns the MCP `CallToolResult`.
@@ -138,4 +138,4 @@ curl http://localhost:<dapr-http-port>/v1.0-beta1/workflows/dapr/<instanceID>
 
 ## About CI
 
-This quickstart needs an OpenAI API key and the `dapr-mcp-server` binary, so the repository's CI does not run it. Run `make validate` locally, with both in place, to execute the steps above.
+This quickstart needs an OpenAI API key and the `dapr-mcp-server` binary, so it isn't part of the automated validation. Run `make validate` locally, with both in place, to execute the steps above.
