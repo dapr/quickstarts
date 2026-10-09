@@ -24,7 +24,7 @@ Visit the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp
 The quickstarts expect the `dapr-mcp-server` binary on your `PATH`. Install it with Go 1.26.6 or later:
 
 ```bash
-go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@v0.0.1
+go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@latest
 export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 
