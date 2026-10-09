@@ -13,6 +13,7 @@
 """A Dapr Agents agent that reaches the Dapr MCP server through Dapr's MCPServer resource."""
 
 import asyncio
+import json
 import os
 
 from dapr.ext.workflow import WorkflowStatus
@@ -82,7 +83,9 @@ async def main() -> None:
     runner = AgentRunner()
     try:
         result = await runner.run(agent, payload={"task": TASK})
-        print(f"Agent reply: {result}", flush=True)
+        # The runner returns the agent's final message serialized as JSON.
+        reply = json.loads(result)["content"] if result else ""
+        print(f"Agent reply: {reply}", flush=True)
     finally:
         runner.shutdown(agent)
 
