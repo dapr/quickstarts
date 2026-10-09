@@ -19,6 +19,7 @@ import os
 from dapr.ext.workflow import WorkflowStatus
 from dapr.ext.workflow.aio import DaprWorkflowClient
 from dapr_agents import DurableAgent
+from dapr_agents.agents.configs import AgentExecutionConfig, ToolExecutionMode
 from dapr_agents.llm.openai import OpenAIChatClient
 from dapr_agents.workflow.runners import AgentRunner
 
@@ -74,6 +75,8 @@ async def main() -> None:
         role="Preference assistant",
         instructions=[INSTRUCTIONS],
         llm=OpenAIChatClient(model=MODEL),
+        # Run the tool calls of one LLM turn one after another, in the order the model made them.
+        execution=AgentExecutionConfig(tool_execution_mode=ToolExecutionMode.SEQUENTIAL),
     )
 
     # AgentRunner would discover the tools on the first run; doing it here lets us report them.
