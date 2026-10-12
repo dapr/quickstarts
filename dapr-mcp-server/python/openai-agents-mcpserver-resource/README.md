@@ -9,9 +9,9 @@ In this quickstart, an [OpenAI Agents SDK](https://openai.github.io/openai-agent
 
 The app has no MCP client. Its Dapr sidecar connects to the MCP server and registers a workflow for each tool, and the app calls a tool by starting that workflow. The Agents SDK has no built-in support for the `MCPServer` resource, so [`agent/app.py`](./agent/app.py) has a short adapter: `DaprMCPClient` from `dapr-ext-workflow` lists the tools, and each one becomes a `FunctionTool` whose JSON Schema comes from the MCP server and whose handler starts the tool's workflow and waits for the result.
 
-Visit the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/) for more information.
+To learn more, see [How-To: Use MCPServer resources](https://docs.dapr.io/developing-ai/mcp/howto-use-mcpserver/) for the resource, and the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/) for the tools it serves.
 
-> **Note:** The [stdio version of this quickstart](../openai-agents) runs the same scenario with an MCP client in the app. The same scenario through the `MCPServer` resource is also implemented with [LangGraph](../langgraph-mcpserver-resource) and [Dapr Agents](../dapr-agents-mcpserver-resource). See the [MCP quickstarts overview](../../README.md) for how they compare.
+> **Note:** The [MCP client version of this quickstart](../openai-agents) runs the same scenario with an MCP client in the app. The same scenario through the `MCPServer` resource is also implemented with [LangGraph](../langgraph-mcpserver-resource) and [Dapr Agents](../dapr-agents-mcpserver-resource). See the [Dapr MCP server quickstarts overview](../../README.md#the-dapr-mcp-server-and-the-mcpserver-resource) for how they compare.
 
 ## Prerequisites
 

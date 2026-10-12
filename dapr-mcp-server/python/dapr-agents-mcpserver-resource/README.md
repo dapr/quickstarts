@@ -9,9 +9,9 @@ In this quickstart, a [Dapr Agents](https://docs.dapr.io/developing-ai/dapr-agen
 
 The app has no MCP client. Its Dapr sidecar connects to the MCP server and registers a workflow for each tool, and the app calls a tool by starting that workflow. Dapr Agents supports the `MCPServer` resource natively: the `DurableAgent` is created without any tools, finds the `MCPServer` in its sidecar's metadata, and loads the tools itself. Each run of the agent is a Dapr workflow, and each tool call runs as a child workflow of it, so the tool calls are durable steps of the agent's run.
 
-Visit the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/) for more information.
+To learn more, see [How-To: Use MCPServer resources](https://docs.dapr.io/developing-ai/mcp/howto-use-mcpserver/) for the resource, and the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/) for the tools it serves.
 
-> **Note:** The [stdio version of this quickstart](../dapr-agents) runs the same scenario with an MCP client in the app. The same scenario through the `MCPServer` resource is also implemented with [LangGraph](../langgraph-mcpserver-resource) and the [OpenAI Agents SDK](../openai-agents-mcpserver-resource). See the [MCP quickstarts overview](../../README.md) for how they compare.
+> **Note:** The [MCP client version of this quickstart](../dapr-agents) runs the same scenario with an MCP client in the app. The same scenario through the `MCPServer` resource is also implemented with [LangGraph](../langgraph-mcpserver-resource) and the [OpenAI Agents SDK](../openai-agents-mcpserver-resource). See the [Dapr MCP server quickstarts overview](../../README.md#the-dapr-mcp-server-and-the-mcpserver-resource) for how they compare.
 
 ## Prerequisites
 

@@ -9,9 +9,9 @@ In this quickstart, a [Dapr Agents](https://docs.dapr.io/developing-ai/dapr-agen
 
 The agent is a `DurableAgent`, so each run is a Dapr workflow and every LLM and tool call is a durable step. It connects to the MCP tools with the `MCPClient` from `dapr_agents.tool.mcp`.
 
-Visit the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/) for more information.
+To learn more, see the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/) and its [tool reference](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/dapr-mcp-server-tool-reference/).
 
-> **Note:** The same scenario is implemented with [LangGraph](../langgraph) and the [OpenAI Agents SDK](../openai-agents). See the [MCP quickstarts overview](../../README.md) for how they compare.
+> **Note:** The same scenario is implemented with [LangGraph](../langgraph) and the [OpenAI Agents SDK](../openai-agents). See the [Dapr MCP server quickstarts overview](../../README.md#the-dapr-mcp-server-and-the-mcpserver-resource) for how they compare.
 
 ## Prerequisites
 
@@ -121,7 +121,7 @@ To share one MCP server between several agents, run `dapr-mcp-server` as its own
 await client.connect_streamable_http(server_name="dapr", url="http://localhost:8080/")
 ```
 
-See the [MCP quickstarts overview](../../README.md#transports) for the full command.
+See the [Dapr MCP server quickstarts overview](../../README.md#through-an-mcp-client-in-the-app) for the full command.
 
 ## About CI
 

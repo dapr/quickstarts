@@ -9,9 +9,9 @@ In this quickstart, an [OpenAI Agents SDK](https://openai.github.io/openai-agent
 
 The agent connects to the MCP tools with the SDK's built-in `MCPServerStdio` and lists the server in its `mcp_servers`, so the SDK fetches the tool list and routes every tool call to the server.
 
-Visit the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/) for more information.
+To learn more, see the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/) and its [tool reference](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/dapr-mcp-server-tool-reference/).
 
-> **Note:** The same scenario is implemented with [LangGraph](../langgraph) and [Dapr Agents](../dapr-agents). See the [MCP quickstarts overview](../../README.md) for how they compare.
+> **Note:** The same scenario is implemented with [LangGraph](../langgraph) and [Dapr Agents](../dapr-agents). See the [Dapr MCP server quickstarts overview](../../README.md#the-dapr-mcp-server-and-the-mcpserver-resource) for how they compare.
 
 ## Prerequisites
 
@@ -115,7 +115,7 @@ from agents.mcp import MCPServerStreamableHttp
 server = MCPServerStreamableHttp(name="dapr", params={"url": "http://localhost:8080/"})
 ```
 
-See the [MCP quickstarts overview](../../README.md#transports) for the full command.
+See the [Dapr MCP server quickstarts overview](../../README.md#through-an-mcp-client-in-the-app) for the full command.
 
 ## About CI
 

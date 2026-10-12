@@ -9,9 +9,9 @@ In this quickstart, a [LangGraph](https://langchain-ai.github.io/langgraph/) age
 
 The agent connects to the MCP tools with [`langchain-mcp-adapters`](https://github.com/langchain-ai/langchain-mcp-adapters) and runs as a ReAct agent built by `create_agent` (the successor to LangGraph's prebuilt `create_react_agent`, which runs on LangGraph).
 
-Visit the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/) for more information.
+To learn more, see the [Dapr MCP server documentation](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/) and its [tool reference](https://docs.dapr.io/developing-ai/mcp/dapr-mcp-server/dapr-mcp-server-tool-reference/).
 
-> **Note:** The same scenario is implemented with [Dapr Agents](../dapr-agents) and the [OpenAI Agents SDK](../openai-agents). See the [MCP quickstarts overview](../../README.md) for how they compare.
+> **Note:** The same scenario is implemented with [Dapr Agents](../dapr-agents) and the [OpenAI Agents SDK](../openai-agents). See the [Dapr MCP server quickstarts overview](../../README.md#the-dapr-mcp-server-and-the-mcpserver-resource) for how they compare.
 
 ## Prerequisites
 
@@ -117,7 +117,7 @@ To share one MCP server between several agents, run `dapr-mcp-server` as its own
 client = MultiServerMCPClient({"dapr": {"transport": "streamable_http", "url": "http://localhost:8080/"}})
 ```
 
-See the [MCP quickstarts overview](../../README.md#transports) for the full command.
+See the [Dapr MCP server quickstarts overview](../../README.md#through-an-mcp-client-in-the-app) for the full command.
 
 ## About CI
 
