@@ -138,6 +138,33 @@ production concern handled at the cluster/control-plane level and is out
 of scope for this quickstart. 
 
 
+## Run without Docker
+
+The steps above use Redis, and the Dapr Placement and Scheduler services, in Docker. You can run the example without Docker and Redis instead. The commands are for Linux and macOS.
+
+1. Install the Dapr binaries with `dapr init --slim`. This command installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin`. It does not start them.
+2. Open a terminal in this folder and start the Scheduler service:
+
+    ```bash
+    $HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data
+    ```
+
+3. Open a second terminal in this folder and start the Placement service. It uses other ports than the Scheduler service, which uses ports 8080 and 9090 by default:
+
+    ```bash
+    $HOME/.dapr/bin/placement --healthz-port 8081 --metrics-port 9091
+    ```
+
+    On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2.
+
+4. Open a third terminal in this folder and run the example with the run file `dapr-sqlite.yaml`:
+
+    ```bash
+    dapr run -f dapr-sqlite.yaml
+    ```
+
+`dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`resources-sqlite`](../../resources-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`.
+
 ## Files
 
 ```

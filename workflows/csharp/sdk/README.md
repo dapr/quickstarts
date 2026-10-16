@@ -212,6 +212,44 @@ Workflow Status: Completed
 dapr stop -f .
 ```
 
+### Run without Docker
+
+The steps above use Redis, and the Dapr Placement and Scheduler services, in Docker. You can run the sample without Docker and Redis instead. The Dapr services then run as processes, and a SQLite file keeps the workflow state. The commands are for Linux and macOS. You need the [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/), the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) and the [.NET 8 runtime](https://dotnet.microsoft.com/download/dotnet/8.0). The build needs the .NET 10 SDK, because the Dapr state management source generator needs a newer compiler than the .NET 8 and .NET 9 SDKs have. The app targets `net8.0`, so it needs the .NET 8 runtime to run.
+
+1. Install the Dapr binaries. This command installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin`. It does not start them.
+
+    ```sh
+    dapr init --slim
+    ```
+
+2. Open a terminal in this quickstart directory and start the Scheduler service:
+
+    ```sh
+    $HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data
+    ```
+
+3. Open a second terminal in the same directory and start the Placement service. The Placement service and the Scheduler service both use ports 8080 and 9090 by default, so this command sets other ports:
+
+    ```sh
+    $HOME/.dapr/bin/placement --healthz-port 8081 --metrics-port 9091
+    ```
+
+    On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2. The Scheduler service then serves actor placement.
+
+4. Open a third terminal in the same directory, build the app, and run it with the run file `dapr-sqlite.yaml`:
+
+    ```sh
+    cd ./order-processor
+    dotnet restore
+    dotnet build
+    cd ..
+    dapr run -f dapr-sqlite.yaml
+    ```
+
+`dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`components-sqlite`](../../components-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. The expected output is the same as in the steps above.
+
+To start again with no workflow state, stop all processes and delete the `scheduler-data` folder and the `workflows.db` file in the `order-processor` folder.
+
 ### View workflow output with Zipkin
 
 For a more detailed view of the workflow activities (duration, progress etc.), try using Zipkin.
