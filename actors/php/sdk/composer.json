@@ -1,0 +1,15 @@
+{
+    "name": "dapr-quickstarts/actors-php-sdk",
+    "description": "Dapr actors quickstart (PHP SDK).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "dapr/php-sdk": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "SmartDevice\\Interfaces\\": "interfaces/",
+            "SmartDevice\\": "service/"
+        }
+    }
+}
