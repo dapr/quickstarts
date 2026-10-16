@@ -1,0 +1,9 @@
+{
+    "name": "dapr-quickstarts/state-management-php-sdk",
+    "description": "Dapr state management quickstart (PHP SDK).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "dapr/php-sdk": "dev-main"
+    }
+}

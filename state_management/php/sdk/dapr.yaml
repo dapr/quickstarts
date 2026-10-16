@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../resources/
+apps:
+  - appID: order-processor
+    appDirPath: ./order-processor/
+    command: ["php", "app.php"]
