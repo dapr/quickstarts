@@ -1,0 +1,10 @@
+{
+    "name": "dapr-quickstarts/pub-sub-php-sdk",
+    "description": "Dapr pub/sub quickstart (PHP SDK).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "dapr/php-sdk": "dev-main",
+        "react/http": "^1.11"
+    }
+}
