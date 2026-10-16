@@ -50,8 +50,12 @@ The [Combined Patterns](./combined-patterns/README.md) tutorial also uses Redis 
 
     On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2. The Scheduler service then serves actor placement.
 
-4. In the folder of the tutorial, open `dapr.yaml` and change `resourcesPath: ../../resources` to `resourcesPath: ../../resources-sqlite`. The [`resources-sqlite`](../resources-sqlite/) folder has a SQLite state store with `actorStateStore` set to `"true"`.
+4. Follow the steps in the README of the tutorial, but start the app with the run file `dapr-sqlite.yaml` instead of `dapr.yaml`. For example, in the `fundamentals` folder:
 
-5. Follow the steps in the README of the tutorial. `dapr run -f .` connects to the Placement and Scheduler services on their default ports, 50005 and 50006.
+    ```bash
+    dapr run -f dapr-sqlite.yaml
+    ```
+
+    `dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`resources-sqlite`](../resources-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. `dapr run` connects to the Placement and Scheduler services on their default ports, 50005 and 50006.
 
 To start again with no workflow state, stop all processes and delete the `scheduler-data` folder and the `workflows.db` files in the app folders.
