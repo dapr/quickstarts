@@ -214,7 +214,7 @@ dapr stop -f .
 
 ### Run without Docker
 
-The steps above use Redis, and the Dapr Placement and Scheduler services, in Docker. You can run the sample without Docker and Redis instead. The Dapr services then run as processes, and a SQLite file keeps the workflow state. The commands are for Linux and macOS. You need the [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/) and the [.NET 10 SDK](https://dotnet.microsoft.com/download). The build needs this version, because the Dapr state management source generator needs a newer compiler than the .NET 8 and .NET 9 SDKs have.
+The steps above use Redis, and the Dapr Placement and Scheduler services, in Docker. You can run the sample without Docker and Redis instead. The Dapr services then run as processes, and a SQLite file keeps the workflow state. The commands are for Linux and macOS. You need the [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/), the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) and the [.NET 8 runtime](https://dotnet.microsoft.com/download/dotnet/8.0). The build needs the .NET 10 SDK, because the Dapr state management source generator needs a newer compiler than the .NET 8 and .NET 9 SDKs have. The app targets `net8.0`, so it needs the .NET 8 runtime to run.
 
 1. Install the Dapr binaries. This command installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin`. It does not start them.
 
