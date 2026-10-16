@@ -9,7 +9,7 @@ MM_SHELL ?= bash -c
 all: install_mm validat
 
 # Run all tests at once
-test_all_quickstarts: test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts
+test_all_quickstarts: test_go_quickstarts test_python_quickstarts test_csharp_quickstarts test_java_quickstarts test_javascript_quickstarts test_php_quickstarts
 	@echo "All quickstart tests complete!"
 
 ##################################################
@@ -324,3 +324,20 @@ test_javascript_quickstarts:
 		done; \
 	done
 	@echo "JavaScript quickstart testing complete!"
+
+# Test PHP quickstarts
+.PHONY: test_php_quickstarts
+test_php_quickstarts:
+	@echo "Testing all PHP quickstarts..."
+	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
+	for building_block in $$building_blocks; do \
+		for variant in "http" "sdk"; do \
+			if [ ! -d "$$building_block/php/$$variant" ]; then \
+				echo "$$building_block/php/$$variant does not exist."; \
+			else \
+				echo "Validating $$building_block/php/$$variant quickstart"; \
+				(cd $$building_block/php/$$variant && make validate) || echo "Validation failed for $$building_block/php/$$variant"; \
+			fi; \
+		done; \
+	done
+	@echo "PHP quickstart testing complete!"

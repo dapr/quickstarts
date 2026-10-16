@@ -1,0 +1,9 @@
+{
+    "name": "dapr-quickstarts/secrets-management-php-sdk",
+    "description": "Dapr secrets management quickstart (PHP SDK).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "dapr/php-sdk": "dev-main"
+    }
+}
