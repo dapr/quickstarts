@@ -26,7 +26,7 @@ func main() {
 	for _, key := range CONFIGURATION_KEYS {
 		config, err := client.GetConfigurationItem(ctx, DAPR_CONFIGURATION_STORE, key)
 		if err != nil {
-			fmt.Printf("Could not get config item, err:" + err.Error())
+			fmt.Print("Could not get config item, err:" + err.Error())
 			os.Exit(1)
 		}
 		c, _ := json.Marshal(config)
