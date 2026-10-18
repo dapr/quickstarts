@@ -1,0 +1,9 @@
+version: 1
+common:
+  resourcesPath: ../../../resources
+apps:
+  - appID: smart-device-next-sdk
+    appDirPath: ./service/
+    appPort: 5056
+    appProtocol: grpc
+    command: ["dotnet", "run"]
