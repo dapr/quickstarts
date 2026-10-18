@@ -280,7 +280,7 @@ test_csharp_quickstarts:
 	@echo "Testing all C# quickstarts..."
 	@building_blocks=$$(find . -maxdepth 1 -mindepth 1 -type d); \
 	for building_block in $$building_blocks; do \
-		for variant in "http" "sdk"; do \
+		for variant in "http" "sdk" "sdk-declarative" "sdk-programmatic" "sdk-streaming"; do \
 			if [ ! -d "$$building_block/csharp/$$variant" ]; then \
 				echo "$$building_block/csharp/$$variant does not exist."; \
 			else \

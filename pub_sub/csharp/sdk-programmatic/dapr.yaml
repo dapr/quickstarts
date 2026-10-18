@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: order-processor-programmatic-sdk
+    appDirPath: ./order-processor/
+    appPort: 7008
+    command: ["dotnet", "run", "--no-build", "--no-launch-profile", "--urls", "http://localhost:7008"]
+  - appID: checkout-programmatic-sdk
+    appDirPath: ./checkout/
+    command: ["dotnet", "run", "--no-build"]
