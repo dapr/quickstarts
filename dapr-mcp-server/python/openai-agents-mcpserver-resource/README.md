@@ -23,7 +23,7 @@ To learn more, see [How-To: Use MCPServer resources](https://docs.dapr.io/develo
 Install the Dapr MCP server and make sure it is on your `PATH`:
 
 ```bash
-go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@latest
+go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@v0.0.1
 export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 
@@ -116,21 +116,29 @@ dapr run --app-id preference-agent-openai-agents-mcpserver --dapr-grpc-port 5010
 
 ## Call the tools without an agent
 
-Any app can call the tools through the sidecar's workflow API, with no SDK. With the app running individually as above, list the tools from another terminal:
+Any app can call the tools through the sidecar's workflow API, with no SDK. The agent exits once it finishes, and its sidecar stops with it, so start a sidecar with no app instead. It keeps the same app ID, because the `MCPServer` resource is scoped to these quickstarts' app IDs:
 
 ```bash
-curl -X POST http://localhost:<dapr-http-port>/v1.0-beta1/workflows/dapr/dapr.internal.mcp.dapr.ListTools/start -d '{}'
+cd agent
+dapr run --app-id preference-agent-openai-agents-mcpserver --dapr-grpc-port 50101 --dapr-http-port 3500 \
+  --resources-path ../../../components/ --resources-path ../../../resources/
+```
+
+From another terminal, list the tools:
+
+```bash
+curl -X POST http://localhost:3500/v1.0-beta1/workflows/dapr/dapr.internal.mcp.dapr.ListTools/start -d '{}'
 ```
 
 Then call one, and read the result from the workflow's `dapr.workflow.output` property:
 
 ```bash
-curl -X POST http://localhost:<dapr-http-port>/v1.0-beta1/workflows/dapr/dapr.internal.mcp.dapr.CallTool.get_state/start \
+curl -X POST http://localhost:3500/v1.0-beta1/workflows/dapr/dapr.internal.mcp.dapr.CallTool.get_state/start \
   -d '{"arguments": {"storeName": "statestore", "key": "favorite-color"}}'
-curl http://localhost:<dapr-http-port>/v1.0-beta1/workflows/dapr/<instanceID>
+curl http://localhost:3500/v1.0-beta1/workflows/dapr/<instanceID>
 ```
 
-`dapr list` shows the sidecar's HTTP port.
+Press `Ctrl+C` in the first terminal to stop the sidecar.
 
 ## About CI
 
