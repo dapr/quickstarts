@@ -23,7 +23,7 @@ To learn more, see the [Dapr MCP server documentation](https://docs.dapr.io/deve
 Install the Dapr MCP server and make sure it is on your `PATH`:
 
 ```bash
-go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@latest
+go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@v0.0.1
 export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 

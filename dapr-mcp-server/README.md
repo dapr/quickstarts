@@ -26,7 +26,7 @@ Start with the MCP client path unless you want what the workflows add. All six q
 The quickstarts expect the `dapr-mcp-server` binary on your `PATH`. Install it with Go 1.26.6 or later:
 
 ```bash
-go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@latest
+go install github.com/dapr/dapr-mcp-server/cmd/dapr-mcp-server@v0.0.1
 export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 
