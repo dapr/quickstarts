@@ -4,7 +4,7 @@ In this quickstart, you'll store, download, overwrite, and delete a file using D
 
 The Binary Store building block is available in Dapr runtime 1.19.0-rc.3 and later. This example uses the in-memory binary store component, so it does not require an external storage service and its files are discarded when the Dapr sidecar stops.
 
-> **Note:** This example uses Node.js's built-in `fetch` to call the HTTP API directly, not the Dapr JavaScript SDK. The SDK example will be added once a supporting SDK release candidate is available.
+> **Note:** This example uses Node.js's built-in `fetch` to call the HTTP API directly. If you are looking for the example using the Dapr JavaScript SDK, [click here](../sdk/).
 
 This quickstart includes one app, `binary-store`, responsible for storing and retrieving a small text file as binary data. It requires Node.js 18 or later and has no npm dependencies to install.
 
