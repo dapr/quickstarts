@@ -1,5 +1,4 @@
-dapr==1.18.0
-dapr-ext-workflow==1.18.0
+dapr[workflow] @ git+https://github.com/dapr/python-sdk.git@e49480ce8252cd05dd625fa4e0c67fa1c43be45f
 fastapi>=0.115.0
 pydantic>=2.11.4
 uvicorn>=0.34.2
