@@ -2,9 +2,9 @@ version: 1
 common:
   resourcesPath: ../../components
 apps:
-  - appID: order-processor
-    appDirPath: ./order-processor/
+  - appID: order-processor-sdk
+    appDirPath: .
     appPort: 3000
     daprHTTPPort: 3500
     daprGRPCPort: 50001
-    command: ["npm", "run", "start:order-process-with-dapr-server"]
+    command: ["node", "dist/appWithDaprServer.js"]
