@@ -1,4 +1,4 @@
-import { DaprServer } from "@dapr/dapr";
+import { DaprPubSubStatusEnum, DaprServer } from "@dapr/dapr";
 
 const daprHost = process.env.DAPR_HOST || "http://localhost";
 const daprPort = process.env.DAPR_HTTP_PORT || "3501";
@@ -18,11 +18,15 @@ async function main() {
   });
 
   // Dapr subscription routes orders topic to this route
-  server.pubsub.subscribe(pubSubName, pubSubTopic, data =>
-    console.log("Subscriber received: " + JSON.stringify(data))
-  );
+  await server.pubsub.subscribe(pubSubName, pubSubTopic, data => {
+    console.log("Subscriber received: " + JSON.stringify(data));
+    return DaprPubSubStatusEnum.SUCCESS;
+  });
 
   await server.start();
 }
 
-main().catch(e => console.error(e));
+main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});

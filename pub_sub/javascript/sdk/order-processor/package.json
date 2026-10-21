@@ -6,12 +6,12 @@
     "type": "module",
     "scripts": {
         "start": "node index.js",
-        "start:dapr": "dapr run --app-port 5001 --app-id order-processing --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start"
+        "start:dapr": "dapr run --app-port 5002 --app-id order-processor-sdk --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@dapr/dapr": "^3.18.0"
+        "@dapr/dapr": "3.19.0-rc.3"
     }
 }
