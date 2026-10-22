@@ -38,7 +38,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
@@ -112,9 +112,10 @@ jobs:
                     -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
           echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
       - name: Set up Go ${{ env.GOVER }}
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ env.GOVER }}
+          cache: false
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}

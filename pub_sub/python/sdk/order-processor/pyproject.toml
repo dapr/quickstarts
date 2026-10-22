@@ -4,7 +4,7 @@ version = "0"
 requires-python = ">=3.11"
 dependencies = [
     "Flask",
-    "dapr>=1.18.0",
+    "dapr>=1.19.0",
     "cloudevents>=2.0.0",
     "typing-extensions",
 ]
