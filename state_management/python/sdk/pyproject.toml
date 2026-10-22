@@ -4,7 +4,7 @@ version = "0"
 description = "Dapr state management quickstart (Python SDK)."
 requires-python = ">=3.11"
 dependencies = [
-    "dapr>=1.18.0",
+    "dapr>=1.19.0",
     "typing-extensions",
 ]
 
