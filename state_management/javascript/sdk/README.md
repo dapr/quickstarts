@@ -6,7 +6,7 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-
 
 > **Note:** This example uses the Dapr Client SDK. For the equivalent example using only HTTP requests, [click here](../http/).
 
-This quickstart includes one Node.js service, `order-processor`, and pins `@dapr/dapr` to `3.19.0-rc.3`.
+This quickstart includes one Node.js service, `order-processor`, and pins `@dapr/dapr` to `3.19.0`.
 
 The service saves, gets, and deletes 100 individual orders. It then saves two orders, `bulk-1` and `bulk-2`, checks that they exist, and passes their keys to `client.state.deleteBulk`. Finally, it reads both keys again and checks that they are absent before printing `Bulk orders deleted: bulk-1, bulk-2`. Any failed operation or check makes the app exit with an error.
 
