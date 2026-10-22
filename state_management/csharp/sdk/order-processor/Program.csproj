@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapr.StateManagement" Version="1.19.0-rc.4" />
+    <PackageReference Include="Dapr.StateManagement" Version="1.19.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.9" />
   </ItemGroup>
 
