@@ -4,7 +4,7 @@ In this quickstart, you'll send an input to a Large Language Model (LLM) using D
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conversation/conversation-overview/) link for more information about Dapr and the Conversation API.
 
-> **Note:** This example uses the Dapr JavaScript SDK, pinned to `3.19.0-rc.4`. For the HTTP-only version, see [this example](../http/README.md).
+> **Note:** This example uses the Dapr JavaScript SDK, pinned to `3.19.0`. For the HTTP-only version, see [this example](../http/README.md).
 
 This quickstart includes one app:
 
