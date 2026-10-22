@@ -18,6 +18,8 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 
 ### Run the order processor workflow with multi-app-run
 
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.3`; `npm ci` installs that version from the checked-in lockfile. Run the commands below from this README's directory (`workflows/javascript/sdk`).
+
 1. Open a new terminal window and install the dependencies: 
 
 <!-- STEP
@@ -25,13 +27,12 @@ name: build order-process app
 -->
 
 ```bash
-cd ./javascript/sdk
-npm install
+npm ci
 npm run build
 ```
 
 <!-- END_STEP -->
-2. Run the app 
+2. Run the app. Choose one entry point at a time; stop it with `dapr stop -f .` before starting another.
 
 - Entry point 1 : JavaScript console app
 <!-- STEP
@@ -39,7 +40,7 @@ name: Run order-processor service
 expected_stdout_lines:
   - 'Payment of 5000 for 1 car processed successfully'
   - 'there are now 9 car in stock'
-  - 'processed successfully!'
+  - 'Orchestration completed! Result: {"processed":true}'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -142,9 +143,15 @@ Orchestration completed! Result: {"processed":true}
 
 4. Stop Dapr workflow with CTRL-C or:
 
-```sh
+<!-- STEP
+name: Stop order-processor workflow
+-->
+
+```bash
 dapr stop -f .
 ```
+
+<!-- END_STEP -->
 
 ### View workflow output with Zipkin
 

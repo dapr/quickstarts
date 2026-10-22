@@ -10,6 +10,10 @@ This quickstart includes one service:
  
 - Javascript/Node.js service `bindings`
 
+### Prerequisites
+
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.3`; `npm ci` installs that version from the checked-in lockfile.
+
 ### Run and initialize PostgreSQL container
 
 1. Open a new terminal, change directories to `../../db`, and run the container with [Docker Compose](https://docs.docker.com/compose/): 
@@ -38,7 +42,7 @@ name: Install Javascript dependencies
 
 ```bash
 cd ./batch
-npm install
+npm ci
 cd ..
 ```
 
@@ -55,12 +59,25 @@ expected_stdout_lines:
   - 'Finished processing batch'
 expected_stderr_lines:
 output_match_mode: substring
-sleep: 11
+background: true
+sleep: 20
 timeout_seconds: 60
 -->
 
 ```bash
 dapr run -f .
+```
+
+<!-- END_STEP -->
+
+4. Stop the service:
+
+<!-- STEP
+name: Stop batch-sdk service
+-->
+
+```bash
+dapr stop -f .
 ```
 
 <!-- END_STEP -->
