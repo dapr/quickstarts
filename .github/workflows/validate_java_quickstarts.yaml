@@ -38,7 +38,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code 
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
@@ -68,9 +68,9 @@ jobs:
           sudo ln -s $(which podman) /usr/local/bin/docker
           sudo ln -s $(which podman-compose) /usr/local/bin/docker-compose
       - name: Set up OpenJDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v6
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: 17
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'

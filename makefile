@@ -64,27 +64,22 @@ update_gosdk_version:
 	@echo "go-sdk update complete! Please verify changes and run tests before committing."
 
 # Update Python SDK version in all quickstarts
-# Usage: make update_python_sdk_version [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]
+# Usage: make update_python_sdk_version DAPR_VERSION=1.19.0
+# Edits the dapr line in each requirements.txt: dapr or dapr[extra], pinned with == or >=,
+# or pinned to a python-sdk commit (dapr @ git+https://...). A commit pin becomes ==DAPR_VERSION.
+# uv projects pin dapr in pyproject.toml. Edit that line, remove the dapr entry under
+# [tool.uv.sources] if there is one, then run `uv lock` in the project.
 .PHONY: update_python_sdk_version
 update_python_sdk_version:
 	@echo "Updating Python dependencies in all quickstarts..."
-	@find . -path '*/python/*' -name "requirements.txt" | while read -r REQ_FILE; do \
+	@find . -name "requirements.txt" | while read -r REQ_FILE; do \
 		echo "Processing: $$REQ_FILE"; \
 		PROJECT_DIR=$$(dirname "$$REQ_FILE"); \
-		if [ -n "$(DAPR_VERSION)" ] && grep -q "dapr>=" "$$REQ_FILE"; then \
+		if [ -n "$(DAPR_VERSION)" ] && grep -q -E "^dapr(\[[A-Za-z0-9_,.-]+\])?(>=|==| @ git\+)" "$$REQ_FILE"; then \
 			echo "  Updating dapr package to $(DAPR_VERSION)"; \
-			sed -i.bak "s/dapr>=.*$$/dapr>=$(DAPR_VERSION)/g" "$$REQ_FILE" && rm -f "$$REQ_FILE.bak" || \
+			sed -E -i.bak -e "s/^(dapr(\[[A-Za-z0-9_,.-]+\])?)(>=|==).*$$/\1\3$(DAPR_VERSION)/" \
+				-e "s/^(dapr(\[[A-Za-z0-9_,.-]+\])?) @ git\+.*$$/\1==$(DAPR_VERSION)/" "$$REQ_FILE" && rm -f "$$REQ_FILE.bak" || \
 			echo "  Failed to update dapr in $$REQ_FILE"; \
-		fi; \
-		if [ -n "$(FASTAPI_VERSION)" ] && grep -q "dapr-ext-fastapi>=" "$$REQ_FILE"; then \
-			echo "  Updating dapr-ext-fastapi to $(FASTAPI_VERSION)"; \
-			sed -i.bak "s/dapr-ext-fastapi>=.*$$/dapr-ext-fastapi>=$(FASTAPI_VERSION)/g" "$$REQ_FILE" && rm -f "$$REQ_FILE.bak" || \
-			echo "  Failed to update dapr-ext-fastapi in $$REQ_FILE"; \
-		fi; \
-		if [ -n "$(WORKFLOW_VERSION)" ] && grep -q "dapr-ext-workflow>=" "$$REQ_FILE"; then \
-			echo "  Updating dapr-ext-workflow to $(WORKFLOW_VERSION)"; \
-			sed -i.bak "s/dapr-ext-workflow>=.*$$/dapr-ext-workflow>=$(WORKFLOW_VERSION)/g" "$$REQ_FILE" && rm -f "$$REQ_FILE.bak" || \
-			echo "  Failed to update dapr-ext-workflow in $$REQ_FILE"; \
 		fi; \
 	done
 	@echo "Python dependency update complete! Please verify changes and run tests before committing."
