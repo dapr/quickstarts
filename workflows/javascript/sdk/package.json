@@ -22,7 +22,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@dapr/dapr": "3.19.0-rc.3",
+    "@dapr/dapr": "3.19.0-rc.4",
     "@types/node": "^18.16.3",
     "express": "^4.19.2"
   }
