@@ -4,8 +4,7 @@ version = "0"
 description = "Dapr workflows quickstart (Python SDK)."
 requires-python = ">=3.11"
 dependencies = [
-    "dapr>=1.18.0",
-    "dapr-ext-workflow>=1.18.0",
+    "dapr[workflow]>=1.19.0",
 ]
 
 [tool.uv]

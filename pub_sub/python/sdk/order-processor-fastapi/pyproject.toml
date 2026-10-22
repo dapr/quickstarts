@@ -4,7 +4,7 @@ version = "0"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi",
-    "dapr-ext-fastapi>=1.18.0",
+    "dapr[fastapi]>=1.19.0",
     "cloudevents>=2.0.0",
     "uvicorn",
     "anyio>=4.4.0",
