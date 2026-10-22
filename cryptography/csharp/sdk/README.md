@@ -7,6 +7,14 @@ Our application will perform two operations using an RSA asymmetric key:
 
 Visit [this link](https://docs.dapr.io/developing-applications/building-blocks/cryptography/cryptography-overview/) for more information about the Dapr Cryptography API.
 
+## Prerequisites
+
+- .NET 10 SDK
+- Dapr CLI and an initialized local Dapr runtime
+
+The cryptography APIs in Dapr .NET SDK 1.19 are experimental and may change in future releases.
+This sample explicitly opts in by suppressing the `DAPR_CRYPTOGRAPHY` diagnostic in its project file.
+
 ## Generating the key
 This sample requires a private RSA key to be generated and placed in the `/keys` directory within the project.
 While a key has been generated and distributed with this sample, the following command can be used to generate

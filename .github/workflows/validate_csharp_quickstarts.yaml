@@ -73,6 +73,7 @@ jobs:
           dotnet-version: |
             6.0.x
             8.0.x
+            10.0.x
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
