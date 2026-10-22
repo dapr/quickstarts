@@ -22,29 +22,31 @@ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out keys/rsa-priva
 > - Generating and using your own secure keys is essential for maintaining security in your projects.
 
 ## Run the quickstart
-1. Open a new terminal window. Change the directory to that of the `cryptography` .NET project, then launch Dapr and 
-2. the service with the following command:
+1. Open a new terminal window in this quickstart's `sdk` directory, then launch Dapr and
+   the service with the following commands:
 
 <!-- STEP
 name: Run crypto service
-expected-stdout_lines:
+expected_stdout_lines:
   - 'Starting Dapr with id crypto. HTTP Port:'
-  - '== APP ==       Encrypting string with key rsa-private-key.pem with plaintext value ''P@assw0rd'''
-  - '== APP ==       Decrypted string with key rsa-private-key.pem with plaintext value ''P@assw0rd'''
-  - '== APP ==       Encrypted string from plaintext value ''P@assw0rd'' and decrypted to ''P@assw0rd'''
-  - '== APP ==       Encrypted file '
-  - '== APP ==       Decrypting in-memory bytes to file '
-  - '== APP ==       and the validation check returns ''True'
+  - 'Encrypting string with key rsa-private-key.pem with plaintext value ''P@assw0rd'''
+  - 'Decrypted string with key rsa-private-key.pem with plaintext value ''P@assw0rd'''
+  - 'Encrypted string from plaintext value ''P@assw0rd'' and decrypted to ''P@assw0rd'''
+  - 'Encrypted file '
+  - 'Decrypting in-memory bytes to file '
+  - 'and the validation check returns ''True'''
+  - 'Exited App successfully'
 output_match_mode: substring
 match_order: none
-background: true
-sleep: 15
 timeout_seconds: 60
 -->
 
 ```bash
+cd ./cryptography
 dapr run --app-id crypto --resources-path "../../../components/" -- dotnet run
 ```
+
+<!-- END_STEP -->
 
 The terminal console should show standard Dapr startup logs, and then start your application showing the
 output similar to the following:
