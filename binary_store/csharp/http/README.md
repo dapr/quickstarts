@@ -2,7 +2,7 @@
 
 In this quickstart, you'll store, download, overwrite, and delete a file using Dapr's Binary Store HTTP API.
 
-The Binary Store building block is available in Dapr runtime 1.19.0-rc.3 and later. This example uses the in-memory binary store component, so it does not require an external storage service and its files are discarded when the Dapr sidecar stops.
+The Binary Store building block is available in Dapr runtime 1.19.0 and later. This example uses the in-memory binary store component, so it does not require an external storage service and its files are discarded when the Dapr sidecar stops.
 
 > **Note:** This example uses the HTTP API directly. If you are looking for the example using the Dapr .NET SDK (recommended), [click here](../sdk/).
 
