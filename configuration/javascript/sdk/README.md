@@ -12,7 +12,7 @@ This quickstart includes one service:
 
 ### Prerequisite
 
-Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.3`; `npm ci` installs that version from the checked-in lockfile.
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.4`; `npm ci` installs that version from the checked-in lockfile.
 
 - Locally running redis container - a redis container named `dapr_redis` is automatically created when you run `dapr init`
 - Open a new terminal and set values for config items `orderId1` and `orderId2` by using the command below

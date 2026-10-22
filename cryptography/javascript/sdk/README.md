@@ -15,7 +15,7 @@ This quickstart includes one application:
 
 ### Prerequisites
 
-Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.3`; `npm ci` installs that version from the checked-in lockfile. OpenSSL must also be available to generate the keys below.
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.4`; `npm ci` installs that version from the checked-in lockfile. OpenSSL must also be available to generate the keys below.
 
 ### Run Node.js app with Dapr
 

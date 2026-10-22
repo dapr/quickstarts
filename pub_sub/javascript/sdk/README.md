@@ -16,7 +16,7 @@ And one subscriber:
 
 ## Prerequisites
 
-Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). Both apps pin `@dapr/dapr` to `3.19.0-rc.3`; `npm ci` installs that version from the checked-in lockfiles.
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). Both apps pin `@dapr/dapr` to `3.19.0-rc.4`; `npm ci` installs that version from the checked-in lockfiles.
 
 ## Run all apps with multi-app run template file:
 
