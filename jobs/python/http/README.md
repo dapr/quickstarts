@@ -18,9 +18,13 @@ This quickstart includes two apps:
 
 ## Install dependencies
 
+<!-- STEP
+name: Install python dependencies
+-->
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
+<!-- END_STEP -->
 
 ## Run all apps with multi-app run template file
 

@@ -34,7 +34,7 @@ class Program
     var inputBody = new
     {
       name = "echo",
-      inputs = new[] { new { message = "What is dapr?" } },
+      inputs = new[] { new { content = "What is dapr?" } },
       parameters = new { },
       metadata = new { }
     };
@@ -49,7 +49,7 @@ class Program
       var response = await client.PostAsync(daprUrl, content);
       response.EnsureSuccessStatusCode();
 
-      Console.WriteLine("Input sent: " + inputBody.inputs[0].message);
+      Console.WriteLine("Input sent: " + inputBody.inputs[0].content);
 
       var responseBody = await response.Content.ReadAsStringAsync();
 

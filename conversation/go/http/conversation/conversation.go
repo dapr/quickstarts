@@ -43,7 +43,7 @@ func main() {
 
 	var inputBody = `{
 		"name": "echo",
-		"inputs": [{"message":"What is dapr?"}],
+		"inputs": [{"content":"What is dapr?"}],
 		"parameters": {},
 		"metadata": {}
     }`
