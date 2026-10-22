@@ -70,7 +70,7 @@ These iterate the top-level building-block directories and run `make validate` i
 
 Bump SDK versions across all quickstarts (then verify + re-validate before committing):
 ```sh
-make update_python_sdk_version DAPR_VERSION=1.16.0 FASTAPI_VERSION=1.16.0 WORKFLOW_VERSION=1.16.0
+make update_python_sdk_version DAPR_VERSION=1.19.0
 make update_gosdk_version VERSION=v1.16.0          # Go version MUST start with 'v'
 make update_dotnet_sdk_version VERSION=1.15.0
 make update_java_sdk_version VERSION=1.12.0
@@ -87,7 +87,7 @@ make update_javascript_sdk_version VERSION=3.4.0
 
 ## Per-language toolchain notes
 
-- **Python**: nearly all building-block quickstarts are uv-managed — `pyproject.toml` + `uv.lock` + `.python-version`, deps installed with `uv sync`, commands run via `uv run` (e.g. `uv run dapr run -f .`); `mise.local.toml` pins Python + uv. The migration isn't 100%: a few samples still use `requirements.txt` with `dapr>=` / `dapr-ext-fastapi>=` / `dapr-ext-workflow>=` pins — currently `jobs/python/sdk` and the `tutorials/workflow/python/*` tutorials. The Python version-bump target edits that legacy style. Match whichever style the sibling samples use.
+- **Python**: nearly all building-block quickstarts are uv-managed — `pyproject.toml` + `uv.lock` + `.python-version`, deps installed with `uv sync`, commands run via `uv run` (e.g. `uv run dapr run -f .`); `mise.local.toml` pins Python + uv. The migration isn't 100%: a few samples still use `requirements.txt` with `dapr==` / `dapr[workflow]==` pins — currently `jobs/python/sdk`, the `tutorials/workflow/python/*` tutorials, and `AI/workflows/external_system_interaction/*`. The Python version-bump target edits that legacy style. For a uv project, edit the `dapr` line in `pyproject.toml`, then run `uv lock`. Before an SDK release is on PyPI, the pins can point at a python-sdk commit: `dapr[workflow] @ git+https://github.com/dapr/python-sdk.git@<sha>` in `requirements.txt`, and a `dapr` git entry under `[tool.uv.sources]` in `pyproject.toml`. The version-bump target replaces the `requirements.txt` form. Remove the `[tool.uv.sources]` entry by hand. Since SDK 1.19, the extension packages are extras of `dapr` (`dapr[workflow]`, `dapr[fastapi]`). There are no separate `dapr-ext-*` pins. Match whichever style the sibling samples use.
 - **Go**: `go.mod` per app, depends on `github.com/dapr/go-sdk`. SDK versions are `v`-prefixed.
 - **JavaScript**: npm per app (`npm install`, `npm run start`), `@dapr/dapr` SDK.
 - **Java**: Maven `pom.xml`, `io.dapr:dapr-sdk`.
