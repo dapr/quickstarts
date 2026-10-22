@@ -4,7 +4,7 @@ Run an order-processing workflow using the Dapr JavaScript SDK. Like the [C# qui
 
 See the [Dapr workflow overview](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) for background.
 
-This sample pins `@dapr/dapr` to **3.19.0-rc.3**. Use Node.js 20 or newer (required by the SDK's transport dependency) and an initialized Dapr installation (`dapr init`) with Redis running on `localhost:6379`. It is validated with Dapr runtime **1.19.0-rc.3**.
+This sample pins `@dapr/dapr` to 3.19.0. Use Node.js 20 or newer (required by the SDK's transport dependency) and an initialized Dapr installation (`dapr init`) with Redis running on `localhost:6379`. It is validated with Dapr runtime 1.19.0.
 
 The workflow uses five activities:
 
