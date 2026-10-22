@@ -1,6 +1,6 @@
 # Dapr cryptography (JavaScript SDK)
 
-In this quickstart, you'll encrypt and then decrypt data using the high-level Dapr cryptography APIs and JavaScript SDK **3.19.0-rc.3**. The `crypto-quickstart` application demonstrates the same operations first over gRPC, then over HTTP:
+In this quickstart, you'll encrypt and then decrypt data using the high-level Dapr cryptography APIs and JavaScript SDK 3.19.0. The `crypto-quickstart` application demonstrates the same operations first over gRPC, then over HTTP:
 
 - Encrypt and decrypt a short message in a Buffer using an RSA key.
 - Encrypt and decrypt the bundled photo using Node.js streams and a 256-bit symmetric key.
