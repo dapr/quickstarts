@@ -2,6 +2,7 @@ using Dapr.Actors.Next.Abstractions;
 using Dapr.Actors.Next.Abstractions.Options;
 using Dapr.Actors.Next.Core.Client;
 using SmartDevice;
+using SmartDevice.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

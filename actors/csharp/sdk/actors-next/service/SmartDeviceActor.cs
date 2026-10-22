@@ -3,34 +3,17 @@ using Dapr.Actors.Next.Abstractions.Attributes;
 using Dapr.Actors.Next.Abstractions.State;
 using Dapr.Actors.Next.Core.Activation;
 using Dapr.Actors.Next.Core.Client;
+using SmartDevice.Interfaces;
 
 namespace SmartDevice;
 
 [GenerateActorClient]
-public interface ISmartDeviceActor : IActor
-{
-    Task SetData(SmartDeviceData data, CancellationToken cancellationToken = default);
-
-    Task<SmartDeviceData> GetData(CancellationToken cancellationToken = default);
-
-    Task DetectSmoke(CancellationToken cancellationToken = default);
-
-    Task SoundAlarm(CancellationToken cancellationToken = default);
-
-    Task ClearAlarm(CancellationToken cancellationToken = default);
-}
-
-public sealed class SmartDeviceData
-{
-    public string Location { get; set; } = string.Empty;
-
-    public string Status { get; set; } = string.Empty;
-}
+public interface IHostedSmartDeviceActor : ISmartDeviceActor;
 
 [DaprActor("SmokeDetector")]
 public sealed class SmartDeviceActor(
     ActorActivationContext context,
-    IActorProxyFactory proxies) : Actor, ISmartDeviceActor
+    IActorProxyFactory proxies) : Actor, IHostedSmartDeviceActor
 {
     private const string DeviceStateName = "device";
 

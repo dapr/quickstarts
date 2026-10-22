@@ -4,24 +4,12 @@ using Dapr.Actors.Next.Abstractions.State;
 using Dapr.Actors.Next.Core.Activation;
 using Dapr.Actors.Next.Core.Client;
 using Dapr.Actors.Next.Core.Timers;
+using SmartDevice.Interfaces;
 
 namespace SmartDevice;
 
 [GenerateActorClient]
-public interface IControllerActor : IActor
-{
-    Task RegisterDevices(string[] deviceIds, CancellationToken cancellationToken = default);
-
-    Task<string[]> GetRegisteredDevices(CancellationToken cancellationToken = default);
-
-    Task<SmartDeviceView[]> GetDevices(CancellationToken cancellationToken = default);
-
-    Task TriggerAlarm(string detectingDeviceId, CancellationToken cancellationToken = default);
-
-    Task ClearAlarms(CancellationToken cancellationToken = default);
-}
-
-public sealed record SmartDeviceView(string Id, string Location, string Status);
+public interface IHostedControllerActor : IControllerActor;
 
 public sealed class ControllerState
 {
@@ -32,7 +20,7 @@ public sealed class ControllerState
 public sealed class ControllerActor(
     ActorActivationContext context,
     IActorProxyFactory proxies,
-    IActorReminderScheduler reminders) : Actor, IControllerActor
+    IActorReminderScheduler reminders) : Actor, IHostedControllerActor
 {
     private const string ControllerStateName = "controller";
 
