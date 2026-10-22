@@ -1,6 +1,6 @@
 # Dapr pub/sub with the JavaScript SDK
 
-Publish orders from `checkout` and receive them in `order-processor` using Dapr and `@dapr/dapr` **3.19.0-rc.3**.
+Publish orders from `checkout` and receive them in `order-processor` using Dapr and `@dapr/dapr` 3.19.0.
 
 Learn more about [Dapr pub/sub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/).
 
