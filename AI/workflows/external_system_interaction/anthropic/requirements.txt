@@ -1,3 +1,3 @@
-dapr[workflow] @ git+https://github.com/dapr/python-sdk.git@e49480ce8252cd05dd625fa4e0c67fa1c43be45f
+dapr[workflow]==1.19.0
 anthropic
 uvicorn

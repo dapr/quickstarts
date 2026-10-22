@@ -2,12 +2,12 @@ module order_processor_sdk_example
 
 go 1.26.10
 
-require github.com/dapr/go-sdk v1.16.0-rc.2
+require github.com/dapr/go-sdk v1.16.0
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dapr/dapr v1.19.0-rc.5 // indirect
+	github.com/dapr/dapr v1.19.0 // indirect
 	github.com/dapr/durabletask-go v0.15.1 // indirect
 	github.com/dapr/kit v0.19.0 // indirect
 	github.com/go-chi/chi/v5 v5.3.2 // indirect

@@ -3,7 +3,7 @@ module conversation
 go 1.26.10
 
 require (
-	github.com/dapr/go-sdk v1.16.0-rc.2
+	github.com/dapr/go-sdk v1.16.0
 	github.com/invopop/jsonschema v0.13.0
 	google.golang.org/protobuf v1.36.11
 )
@@ -13,7 +13,7 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dapr/dapr v1.19.0-rc.5 // indirect
+	github.com/dapr/dapr v1.19.0 // indirect
 	github.com/dapr/durabletask-go v0.15.1 // indirect
 	github.com/dapr/kit v0.19.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
