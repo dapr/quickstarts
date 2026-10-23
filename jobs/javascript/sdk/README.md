@@ -16,7 +16,7 @@ Jobs are scoped to an app ID. The scheduler connects to the **job-service sideca
 ## Prerequisites
 
 - Node.js 22 or later and npm.
-- Dapr CLI and runtime 1.16 or later, initialized with `dapr init`. The local Dapr Scheduler must be running on port 6060.
+- Dapr CLI and runtime 1.16 or later, initialized with `dapr init`. The local Dapr Scheduler must be running. Use `localhost` without an explicit port so the CLI selects the platform default (`50006` on Linux/macOS, `6060` on Windows).
 
 No additional Dapr components are required. Run the following commands from `jobs/javascript/sdk`.
 
@@ -99,7 +99,7 @@ The STEP annotations above let `make validate` install dependencies, check sched
 After installing dependencies, open a terminal in `jobs/javascript/sdk/job-service` and start the service:
 
 ```bash
-dapr run --app-id job-service-sdk --app-port 6200 --dapr-http-port 6280 --scheduler-host-address localhost:6060 -- npm run start
+dapr run --app-id job-service-sdk --app-port 6200 --dapr-http-port 6280 --scheduler-host-address localhost -- npm run start
 ```
 
 In another terminal in `jobs/javascript/sdk/job-scheduler`, start the scheduler:
