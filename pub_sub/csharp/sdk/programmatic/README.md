@@ -4,7 +4,7 @@ Publish orders one at a time and in bulk with the Dapr .NET SDK, and receive the
 
 See the [Dapr pub/sub overview](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/) and [programmatic subscriptions](https://docs.dapr.io/developing-applications/building-blocks/pubsub/subscription-methods/#programmatic-subscriptions) for more information.
 
-> **Note:** This example implements `/dapr/subscribe` explicitly to show the subscription-discovery contract. For other subscription methods, see the [declarative](../sdk-declarative) and [streaming](../sdk-streaming) examples. For plain HTTP publishing, see the [HTTP example](../http).
+> **Note:** This example implements `/dapr/subscribe` explicitly to show the subscription-discovery contract. For other subscription methods, see the [declarative](../declarative) and [streaming](../streaming) examples. For plain HTTP publishing, see the [HTTP example](../../http).
 
 ## How it works
 
@@ -17,19 +17,19 @@ At startup, Dapr calls the `order-processor` application's `GET /dapr/subscribe`
 | `orderpubsub` | `orders-programmatic` | `/orders` |
 | `orderpubsub` | `orders-bulk-programmatic` | `/orders-bulk` |
 
-Both apps reuse the shared Redis [pub/sub component](../../components/pubsub.yaml). No subscription YAML is needed for these topics, and no streaming subscriptions are opened. The declarative subscription files in the shared components directory are scoped to a different app ID and do not apply here.
+Both apps reuse the shared Redis [pub/sub component](../../../components/pubsub.yaml). No subscription YAML is needed for these topics, and no streaming subscriptions are opened. The declarative subscription files in the shared components directory are scoped to a different app ID and do not apply here.
 
 **Bulk publishing is independent of bulk subscription delivery.** This example batches the publish request, not the subscriber callback: both subscriptions deliver one CloudEvent per HTTP request. The subscriber reads the order from `CloudEvent<Order>.Data` and acknowledges it with HTTP 200.
 
 ## Prerequisites
 
 - .NET 10 SDK.
-- Dapr CLI and initialized runtime matching [the repository's pinned versions](../../../.github/env/global.env).
+- Dapr CLI and initialized runtime matching [the repository's pinned versions](../../../../.github/env/global.env).
 - A container runtime with the Redis instance started by `dapr init`, reachable at `localhost:6379`.
 
 ## Run with the multi-app template (`dapr run -f .`)
 
-Run these commands from `pub_sub/csharp/sdk-programmatic`.
+Run these commands from `pub_sub/csharp/sdk/programmatic`.
 
 1. Build both applications. The template uses `--no-build` to keep compilation outside the timed example.
 
@@ -107,13 +107,3 @@ dapr stop -f .
 ```
 
 <!-- END_STEP -->
-
-## Validate the quickstart
-
-Run `make validate` from this directory. Mechanical-markdown executes the STEP blocks above and checks that all six orders are published and received, without assuming delivery order.
-
-On Windows without Make, use the same validator with PowerShell 7:
-
-```powershell
-python -m mechanical_markdown -l -s "pwsh -NoProfile -Command" README.md
-```

@@ -4,7 +4,7 @@ Publish orders one at a time and in bulk with the Dapr .NET SDK, and receive the
 
 See the [Dapr pub/sub overview](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/) and [streaming subscriptions](https://docs.dapr.io/developing-applications/building-blocks/pubsub/subscription-methods/#streaming-subscriptions) for more information.
 
-> **Note:** This example has no HTTP subscriber routes, `/dapr/subscribe` endpoint, subscription attributes, or subscription YAML. Compare it with the [programmatic](../sdk-programmatic) and [declarative](../sdk-declarative) examples. For plain HTTP publishing, see the [HTTP example](../http).
+> **Note:** This example has no HTTP subscriber routes, `/dapr/subscribe` endpoint, subscription attributes, or subscription YAML. Compare it with the [programmatic](../programmatic) and [declarative](../declarative) examples. For plain HTTP publishing, see the [HTTP example](../../http).
 
 ## How it works
 
@@ -19,22 +19,21 @@ Each call opens a dynamic subscription and returns an asynchronously disposable 
 
 The `checkout` publisher uses `PublishEventAsync` for orders 1-3 and `BulkPublishEventAsync` for orders 4-6, checking the bulk response for failures before reporting success.
 
-A running sidecar does not guarantee that the subscriber has opened its streams. To avoid publishing before registration, the publisher first checks the subscriber sidecar's [metadata API](https://docs.dapr.io/reference/api/metadata_api/) at `localhost:3509`. It waits up to 30 seconds for both topics to appear as `STREAMING` subscriptions. This port belongs to Dapr, not to the application; the subscriber has no `appPort`. Publishing and message delivery still use the SDK's gRPC client.
+A running sidecar does not guarantee that the subscriber has opened its streams. The publisher repeats the same six sample orders every five seconds, so the subscriber can receive a complete set even if publishing starts before its subscriptions are ready. Both applications keep running until stopped. The subscriber needs no `appPort` or fixed Dapr HTTP port.
 
-Both apps reuse the shared Redis [pub/sub component](../../components/pubsub.yaml). The declarative subscription files in that directory are scoped to a different app ID and do not apply here.
+Both apps reuse the shared Redis [pub/sub component](../../../components/pubsub.yaml). The declarative subscription files in that directory are scoped to a different app ID and do not apply here.
 
 **Bulk publishing does not change streaming delivery:** the publish request is batched, but the handler processes and acknowledges each order separately.
 
 ## Prerequisites
 
 - .NET 10 SDK.
-- Dapr CLI and initialized runtime matching [the repository's pinned versions](../../../.github/env/global.env).
+- Dapr CLI and initialized runtime matching [the repository's pinned versions](../../../../.github/env/global.env).
 - A container runtime with the Redis instance started by `dapr init`, reachable at `localhost:6379`.
-- Port `3509` available for the subscriber's Dapr HTTP API.
 
 ## Run with the multi-app template (`dapr run -f .`)
 
-Run these commands from `pub_sub/csharp/sdk-streaming`.
+Run these commands from `pub_sub/csharp/sdk/streaming`.
 
 1. Build both applications. The template uses `--no-build` to keep compilation outside the timed example.
 
@@ -63,7 +62,6 @@ expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-streaming-sdk"'
   - 'Started Dapr with app id "checkout-streaming-sdk"'
   - 'Streaming subscriptions opened.'
-  - 'Streaming subscriptions are ready.'
   - 'Published single order: Order { OrderId = 1 }'
   - 'Published single order: Order { OrderId = 2 }'
   - 'Published single order: Order { OrderId = 3 }'
@@ -90,11 +88,10 @@ dapr run -f .
 
 <!-- END_STEP -->
 
-The publisher exits after sending all six orders. The subscriber keeps running. Output includes these lines; delivery order may vary, and Dapr's at-least-once delivery can produce duplicates.
+Output includes these lines for each round of orders after the subscriptions open. Delivery order may vary, and Dapr's at-least-once delivery can produce additional duplicates.
 
 ```text
 Streaming subscriptions opened.
-Streaming subscriptions are ready.
 Published single order: Order { OrderId = 1 }
 Subscriber received single order: Order { OrderId = 1 }
 Bulk published order: Order { OrderId = 4 }
@@ -116,13 +113,3 @@ dapr stop -f .
 ```
 
 <!-- END_STEP -->
-
-## Validate the quickstart
-
-Run `make validate` from this directory. Mechanical-markdown executes the STEP blocks above and checks stream registration plus publication and receipt of all six orders, without assuming delivery order.
-
-On Windows without Make, use the same validator with PowerShell 7:
-
-```powershell
-python -m mechanical_markdown -l -s "pwsh -NoProfile -Command" README.md
-```

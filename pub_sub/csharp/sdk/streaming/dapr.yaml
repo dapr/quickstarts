@@ -1,10 +1,9 @@
 version: 1
 common:
-  resourcesPath: ../../components/
+  resourcesPath: ../../../components/
 apps:
   - appID: order-processor-streaming-sdk
     appDirPath: ./order-processor/
-    daprHTTPPort: 3509
     command: ["dotnet", "run", "--no-build"]
   - appID: checkout-streaming-sdk
     appDirPath: ./checkout/

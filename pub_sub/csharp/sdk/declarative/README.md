@@ -4,20 +4,20 @@ Publish orders one at a time and in bulk with the Dapr .NET SDK, and receive the
 
 See the [Dapr pub/sub overview](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/) and [declarative subscriptions](https://docs.dapr.io/developing-applications/building-blocks/pubsub/subscription-methods/#declarative-subscriptions) for more information.
 
-> **Note:** This example has no subscription attributes, `/dapr/subscribe` endpoint, or streaming subscriptions. For plain HTTP publishing, see the [HTTP example](../http).
+> **Note:** This example has no subscription attributes, `/dapr/subscribe` endpoint, or streaming subscriptions. For plain HTTP publishing, see the [HTTP example](../../http).
 
-For subscriptions defined in application code, compare the [programmatic](../sdk-programmatic) and [streaming](../sdk-streaming) examples.
+For subscriptions defined in application code, compare the [programmatic](../programmatic) and [streaming](../streaming) examples.
 
 ## How it works
 
 The `checkout` publisher uses `Dapr.Messaging` to publish orders 1-3 with individual `PublishEventAsync` calls, then orders 4-6 with one `BulkPublishEventAsync` call. It checks the bulk response for failed entries before reporting success.
 
-The `order-processor` subscriber exposes two HTTP routes. Dapr loads the shared Redis [pub/sub component](../../components/pubsub.yaml) and these subscription resources:
+The `order-processor` subscriber exposes two HTTP routes. Dapr loads the shared Redis [pub/sub component](../../../components/pubsub.yaml) and these subscription resources:
 
 | Subscription | Topic | Subscriber route |
 | --- | --- | --- |
-| [Single orders](../../components/orders-declarative.yaml) | `orders-declarative` | `/orders` |
-| [Bulk-published orders](../../components/orders-bulk-declarative.yaml) | `orders-bulk-declarative` | `/orders-bulk` |
+| [Single orders](../../../components/orders-declarative.yaml) | `orders-declarative` | `/orders` |
+| [Bulk-published orders](../../../components/orders-bulk-declarative.yaml) | `orders-bulk-declarative` | `/orders-bulk` |
 
 Each subscription's `scopes` limits delivery to `order-processor-declarative-sdk`, so other quickstarts do not subscribe to these topics. The publisher does not register subscriptions.
 
@@ -26,12 +26,12 @@ Each subscription's `scopes` limits delivery to `order-processor-declarative-sdk
 ## Prerequisites
 
 - .NET 10 SDK.
-- Dapr CLI and initialized runtime matching [the repository's pinned versions](../../../.github/env/global.env).
+- Dapr CLI and initialized runtime matching [the repository's pinned versions](../../../../.github/env/global.env).
 - A container runtime with the Redis instance started by `dapr init`, reachable at `localhost:6379`.
 
 ## Run with the multi-app template (`dapr run -f .`)
 
-Run these commands from `pub_sub/csharp/sdk-declarative`.
+Run these commands from `pub_sub/csharp/sdk/declarative`.
 
 1. Build both applications. The template uses `--no-build` so package restore and compilation are completed before the timed example begins.
 
