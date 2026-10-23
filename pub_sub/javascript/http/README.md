@@ -4,7 +4,7 @@ Publish orders from `checkout` and receive them in `order-processor` using Dapr'
 
 Learn more about [Dapr pub/sub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/).
 
-> **Note:** For the SDK equivalents and the new features in `@dapr/dapr` 3.19.0-rc.3, see the [SDK quickstart](../sdk).
+> **Note:** For the SDK equivalents and the new features in `@dapr/dapr` 3.19.0, see the [SDK quickstart](../sdk).
 
 ## What this example demonstrates
 
@@ -26,7 +26,7 @@ State cleanup does not delete broker messages or confirm subscriber processing. 
 
 Run the following commands from this directory.
 
-The JavaScript SDK version **3.19.0-rc.3** adds SDK access to existing runtime capabilities; it does not require a matching runtime version. This HTTP example does not depend on the SDK.
+The JavaScript SDK version **3.19.0** adds SDK access to existing runtime capabilities; it does not require a matching runtime version. This HTTP example does not depend on the SDK.
 
 ## Run with multi-app template (`dapr run -f .`)
 

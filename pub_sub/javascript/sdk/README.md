@@ -24,7 +24,7 @@ The [streaming example](#dynamic-streaming-subscriptions) below demonstrates the
 - Dapr CLI and an initialized Dapr runtime **1.17 or newer** to use the stable bulk publish API shown here.
 - Redis at `localhost:6379`, normally provisioned by `dapr init`.
 
-The SDK and runtime versions are independent: **3.19.0-rc.3** is the JavaScript package version, not a runtime requirement.
+The SDK and runtime versions are independent: **3.19.0** is the JavaScript package version, not a runtime requirement.
 
 | Capability used | Runtime API availability |
 | --- | --- |
