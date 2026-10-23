@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npx tsc --outDir ./dist/",
     "start:order-process": "npm run build && node dist/app.js",
-    "start:dapr:order-process": "dapr run --app-id order-processor-sdk --resources-path ../../components -- npm run start:order-process"
+    "start:dapr:order-process": "dapr run --app-id order-processor --resources-path ../../components -- npm run start:order-process"
   },
   "author": "",
   "license": "ISC",

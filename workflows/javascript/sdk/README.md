@@ -122,7 +122,7 @@ timeout_seconds: 90
 -->
 
 ```bash
-curl --fail --silent --show-error --request POST http://localhost:3500/v1.0/invoke/order-processor-sdk/method/start-workflow
+curl --fail --silent --show-error --request POST http://localhost:3500/v1.0/invoke/order-processor/method/start-workflow
 ```
 
 <!-- END_STEP -->
@@ -173,7 +173,7 @@ timeout_seconds: 90
 -->
 
 ```bash
-curl --fail --silent --show-error --request POST http://localhost:3500/v1.0/invoke/order-processor-sdk/method/start-workflow
+curl --fail --silent --show-error --request POST http://localhost:3500/v1.0/invoke/order-processor/method/start-workflow
 ```
 
 <!-- END_STEP -->
@@ -217,4 +217,4 @@ You can also call `DaprWorkflowClient.raiseEvent(instanceId, "ApprovalEvent", { 
 
 ### View workflow traces
 
-If the Zipkin container installed by `dapr init` is running, open http://localhost:9411 and find the `order-processor-sdk` traces to inspect workflow and activity execution.
+If the Zipkin container installed by `dapr init` is running, open http://localhost:9411 and find the `order-processor` traces to inspect workflow and activity execution.

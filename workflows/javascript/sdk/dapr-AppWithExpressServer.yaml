@@ -2,7 +2,7 @@ version: 1
 common:
   resourcesPath: ../../components
 apps:
-  - appID: order-processor-sdk
+  - appID: order-processor
     appDirPath: .
     appPort: 3000
     daprHTTPPort: 3500
