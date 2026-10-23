@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components-sqlite
+apps:
+  - appID: order-processor
+    appDirPath: ./order-processor/target
+    command: ["java", "-jar", "OrderProcessingService-0.0.1-SNAPSHOT.jar", "io.dapr.quickstarts.workflows.WorkflowConsoleApp"]
