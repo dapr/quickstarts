@@ -109,13 +109,3 @@ dapr stop -f .
 ```
 
 <!-- END_STEP -->
-
-## Validate the quickstart
-
-Run `make validate` from this directory. Mechanical-markdown executes the STEP blocks above and checks that all six orders are published and received, without assuming delivery order.
-
-On Windows without Make, use the same validator with PowerShell 7:
-
-```powershell
-python -m mechanical_markdown -l -s "pwsh -NoProfile -Command" README.md
-```
