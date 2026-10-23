@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components-sqlite
+apps:
+  - appID: order-processor
+    appDirPath: ./order-processor/
+    command: ["npm", "run", "start:order-process"]
