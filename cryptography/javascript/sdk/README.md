@@ -13,6 +13,10 @@ This quickstart includes one application:
 
 - Node.js application `crypto-quickstart`
 
+### Prerequisites
+
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile. OpenSSL must also be available to generate the keys below.
+
 ### Run Node.js app with Dapr
 
 1. Navigate into the folder with the source and install dependencies:
@@ -23,7 +27,7 @@ name: Install Node dependencies
 
 ```bash
 cd ./crypto-quickstart
-npm install
+npm ci
 ```
 <!-- END_STEP -->
 
@@ -66,8 +70,7 @@ expected_stdout_lines:
 expected_stderr_lines:
 working_dir: ./crypto-quickstart
 output_match_mode: substring
-background: true
-sleep: 10
+timeout_seconds: 60
 -->
 
 ```bash
