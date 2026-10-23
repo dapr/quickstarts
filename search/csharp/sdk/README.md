@@ -1,4 +1,4 @@
-# Dapr Search API (C# SDK)
+# Dapr Search API (Dotnet SDK)
 
 In this quickstart, you'll index, retrieve, search, and delete product documents using Dapr's Search API and the .NET SDK.
 
