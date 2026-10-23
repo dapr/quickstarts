@@ -1,0 +1,14 @@
+{
+  "name": "search-http",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dapr Search HTTP API quickstart",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "Apache-2.0"
+}
