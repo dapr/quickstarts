@@ -101,6 +101,19 @@ After 20 seconds, the terminal output should present the `C-3PO` job being proce
 
 <!-- END_STEP -->
 
+3. Stop and clean up the application processes before running another quickstart:
+
+<!-- STEP
+name: Stop multi-app run
+sleep: 5
+-->
+
+```bash
+dapr stop -f .
+```
+
+<!-- END_STEP -->
+
 ## Run apps individually
 
 ### Schedule Jobs
