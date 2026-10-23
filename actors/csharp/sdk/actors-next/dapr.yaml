@@ -7,3 +7,6 @@ apps:
     appPort: 5056
     appProtocol: grpc
     command: ["dotnet", "run"]
+  - appID: smart-device-client-next-sdk
+    appDirPath: ./client/
+    command: ["dotnet", "run"]

@@ -30,6 +30,7 @@ public sealed class ControllerActor(
 
     public async Task RegisterDevices(string[] deviceIds, CancellationToken cancellationToken = default)
     {
+        // Reset a pending reminder from an earlier run so it cannot clear this run's alarms.
         await reminders.CancelAsync("Controller", Id, nameof(ClearAlarms), cancellationToken);
 
         var state = await GetControllerState(cancellationToken);
@@ -71,7 +72,7 @@ public sealed class ControllerActor(
             "Controller",
             Id,
             nameof(ClearAlarms),
-            TimeSpan.FromSeconds(5),
+            TimeSpan.FromSeconds(15),
             TimeSpan.Zero,
             arguments: Array.Empty<byte>(),
             ttl: TimeSpan.FromMinutes(1),
