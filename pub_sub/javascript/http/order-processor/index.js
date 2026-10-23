@@ -18,8 +18,16 @@ app.get('/dapr/subscribe', (_req, res) => {
 
 // Dapr subscription routes orders topic to this route
 app.post('/orders', (req, res) => {
-    console.log("Subscriber received:", req.body.data);
-    res.sendStatus(200);
+    try {
+        console.log("Subscriber received: " + JSON.stringify(req.body.data));
+        res.json({ status: "SUCCESS" });
+    } catch (error) {
+        console.error("Order processing failed:", error);
+        res.json({ status: "RETRY" });
+    }
 });
 
-app.listen(APP_PORT);
+app.listen(APP_PORT).on('error', error => {
+    console.error(error);
+    process.exitCode = 1;
+});
