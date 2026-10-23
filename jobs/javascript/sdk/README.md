@@ -92,8 +92,6 @@ dapr stop -f .
 
 <!-- END_STEP -->
 
-The STEP annotations above let `make validate` install dependencies, check scheduling, retrieval, deletion, and callback output, and stop the apps.
-
 ## Run the apps individually
 
 After installing dependencies, open a terminal in `jobs/javascript/sdk/job-service` and start the service:
