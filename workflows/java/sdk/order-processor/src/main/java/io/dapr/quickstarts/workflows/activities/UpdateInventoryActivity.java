@@ -10,8 +10,8 @@ import io.dapr.quickstarts.workflows.models.InventoryItem;
 import io.dapr.quickstarts.workflows.models.InventoryRequest;
 import io.dapr.quickstarts.workflows.models.InventoryResult;
 import io.dapr.quickstarts.workflows.models.OrderPayload;
-import io.dapr.workflows.runtime.WorkflowActivity;
-import io.dapr.workflows.runtime.WorkflowActivityContext;
+import io.dapr.workflows.WorkflowActivity;
+import io.dapr.workflows.WorkflowActivityContext;
 
 public class UpdateInventoryActivity implements WorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(UpdateInventoryActivity.class);

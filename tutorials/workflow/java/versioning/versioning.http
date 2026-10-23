@@ -1,0 +1,15 @@
+@apphost=http://localhost:8080
+
+### Start the Named workflow
+POST {{ apphost }}/start
+Content-Type: application/json
+
+### Get the workflow status
+GET {{ apphost }}/output
+
+### Start the Patchd workflow
+POST {{ apphost }}/start-patch
+Content-Type: application/json
+
+### Get the workflow status
+GET {{ apphost }}/output-patch

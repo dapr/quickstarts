@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: conversation-tool-calling
+    appDirPath: ./conversation/
+    command: ["uv", "run", "python", "tool_calling.py"]

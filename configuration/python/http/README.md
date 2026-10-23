@@ -37,8 +37,7 @@ name: Install python dependencies
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -48,8 +47,8 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP == INFO:root:Configuration for orderId2: {'orderId2': {'value': '102'}}"
-  - "== APP == INFO:root:App subscribed to config changes with subscription id:"
+  - "Configuration for orderId2: {'orderId2': {'value': '102'}}"
+  - "App subscribed to config changes with subscription id:"
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -58,7 +57,7 @@ sleep: 15
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ --app-port 6001 -- uv run python app.py
 ```
 
 <!-- END_STEP -->

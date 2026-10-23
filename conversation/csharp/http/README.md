@@ -14,21 +14,24 @@ This quickstart includes one app:
 
 This section shows how to run the application using the [multi-app run template file](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and Dapr CLI with `dapr run -f .`.  
 
-This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Integrate with popular LLM models by using one of the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the Ollama LLM component for local inference. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `ollama` to `openai`. For other available integrations, see the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
 
 Open a new terminal window and run the multi app run template:
 
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Input sent: What is dapr?'
-  - '== APP - conversation == Output response: What is dapr?'
+  - 'Conversation input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: true
-sleep: 15
-timeout_seconds: 15
+background: false
+sleep: 30
+timeout_seconds: 120
 -->
 
 ```bash
@@ -37,17 +40,24 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is dapr?`.
+- The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request with a `get_weather` tool available; the LLM calls the tool.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+Conversation input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {"id":0,"function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}
+Function name: get_weather
+Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
 ```
 
 <!-- END_STEP -->
 
-2. Stop and clean up application processes.
+Stop and clean up application processes.
 
 <!-- STEP
 name: Stop multi-app run
@@ -76,10 +86,17 @@ dapr run --app-id conversation --resources-path ../../../components/ -- dotnet r
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is dapr?`.
+- The app sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request with a `get_weather` tool available; the LLM calls the tool.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+Conversation input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {"id":0,"function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}
+Function name: get_weather
+Function arguments: {"location":"San Francisco, CA","unit":"celsius"}
 ```

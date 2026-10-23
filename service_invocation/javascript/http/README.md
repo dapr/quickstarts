@@ -58,30 +58,30 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - order-processor == Order received: { orderId: 1 }
-== APP - checkout == Order passed: {"orderId":1}
-== APP - order-processor == Order received: { orderId: 2 }
-== APP - checkout == Order passed: {"orderId":2}
-== APP - order-processor == Order received: { orderId: 3 }
-== APP - checkout == Order passed: {"orderId":3}
-== APP - order-processor == Order received: { orderId: 4 }
-== APP - checkout == Order passed: {"orderId":4}
-== APP - order-processor == Order received: { orderId: 5 }
-== APP - checkout == Order passed: {"orderId":5}
-== APP - order-processor == Order received: { orderId: 6 }
-== APP - checkout == Order passed: {"orderId":6}
-== APP - order-processor == Order received: { orderId: 7 }
-== APP - checkout == Order passed: {"orderId":7}
-== APP - order-processor == Order received: { orderId: 8 }
-== APP - checkout == Order passed: {"orderId":8}
-== APP - order-processor == Order received: { orderId: 9 }
-== APP - checkout == Order passed: {"orderId":9}
-== APP - order-processor == Order received: { orderId: 10 }
-== APP - checkout == Order passed: {"orderId":10}
-== APP - order-processor == Order received: { orderId: 11 }
-== APP - checkout == Order passed: {"orderId":11}
-== APP - order-processor == Order received: { orderId: 12 }
-== APP - checkout == Order passed: {"orderId":12}
+Order received: { orderId: 1 }
+Order passed: {"orderId":1}
+Order received: { orderId: 2 }
+Order passed: {"orderId":2}
+Order received: { orderId: 3 }
+Order passed: {"orderId":3}
+Order received: { orderId: 4 }
+Order passed: {"orderId":4}
+Order received: { orderId: 5 }
+Order passed: {"orderId":5}
+Order received: { orderId: 6 }
+Order passed: {"orderId":6}
+Order received: { orderId: 7 }
+Order passed: {"orderId":7}
+Order received: { orderId: 8 }
+Order passed: {"orderId":8}
+Order received: { orderId: 9 }
+Order passed: {"orderId":9}
+Order received: { orderId: 10 }
+Order passed: {"orderId":10}
+Order received: { orderId: 11 }
+Order passed: {"orderId":11}
+Order received: { orderId: 12 }
+Order passed: {"orderId":12}
 ```
 
 3. Stop and clean up application processes

@@ -5,7 +5,7 @@ common:
 apps:
   - appID: job-service-sdk
     appDirPath: ./job-service/
-    appPort: 6400
+    appPort: 6600
     daprGRPCPort: 6481
     appProtocol: grpc
     command: ["go", "run", "."]

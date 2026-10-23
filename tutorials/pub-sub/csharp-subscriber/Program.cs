@@ -26,4 +26,4 @@ app.MapPost("/C", [Topic("pubsub", "C")] (ILogger<Program> logger, Dictionary<st
 
 app.Run();
 
-internal record MessageEvent(string MessageType, string Message);
+internal sealed record MessageEvent(string MessageType, string Message);

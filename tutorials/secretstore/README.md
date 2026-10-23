@@ -129,8 +129,8 @@ Run Node.js app with Dapr with the local secret store component:
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Fetching URL: http://localhost:3500/v1.0/secrets/localsecretstore/mysecret?metadata.namespace=default"
-  - "== APP == Base64 encoded secret is: YWJjZA=="
+  - "Fetching URL: http://localhost:3500/v1.0/secrets/localsecretstore/mysecret?metadata.namespace=default"
+  - "Base64 encoded secret is: YWJjZA=="
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -178,9 +178,9 @@ The output should be your base64 encoded secret `YWJjZA==`
 
 The application logs should be similar to the following: 
 ```
-== APP == Fetching URL: http://localhost:3500/v1.0/secrets/localsecretstore/mysecret?metadata.namespace=default
+Fetching URL: http://localhost:3500/v1.0/secrets/localsecretstore/mysecret?metadata.namespace=default
 
-== APP == Base64 encoded secret is: YWJjZA==
+Base64 encoded secret is: YWJjZA==
 ```
 
 ### Step 6 - Cleanup

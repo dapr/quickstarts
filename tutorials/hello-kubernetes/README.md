@@ -96,7 +96,7 @@ kubectl apply -f ./deploy/redis.yaml
 
 <!-- STEP
 name: Deploy Node App
-sleep: 70
+sleep: 90
 expected_stdout_lines:
   - "service/nodeapp created"
   - "deployment.apps/nodeapp created"
@@ -246,7 +246,7 @@ while True:
 
 <!-- STEP
 name: Deploy Python App
-sleep: 11
+sleep: 50
 expected_stdout_lines:
   - deployment.apps/pythonapp created
   - 'deployment "pythonapp" successfully rolled out'
@@ -273,8 +273,6 @@ kubectl rollout status deploy/pythonapp
 Now that the Node.js and Python applications are deployed, watch messages come through:
 
 Get the logs of the Node.js app:
-
-<!-- TODO(artursouza): Add "Successfully persisted state for Order ID: X" once the new image is published -->
 
 <!-- STEP
 expected_stdout_lines:

@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: resiliency
+    appDirPath: ResiliencyAndCompensation
+    appPort: 5264
+    daprHTTPPort: 3564
+    command: ["dotnet", "run"]
+    appLogDestination: console
+    daprdLogDestination: console

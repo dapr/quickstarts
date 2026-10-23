@@ -1,0 +1,3 @@
+dapr[workflow]==1.19.0
+anthropic
+uvicorn

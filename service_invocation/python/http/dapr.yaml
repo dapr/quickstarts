@@ -3,7 +3,7 @@ apps:
   - appID: order-processor
     appDirPath: ./order-processor/
     appPort: 8001
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]
   - appID: checkout
     appDirPath: ./checkout/
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]

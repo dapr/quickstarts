@@ -1,9 +1,6 @@
 import time
-import logging
 import requests
 import os
-
-logging.basicConfig(level=logging.INFO)
 
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')
@@ -22,19 +19,19 @@ for i in range(1, 100):
         url='%s/v1.0/state/%s' % (base_url, DAPR_STATE_STORE),
         json=state
     )
-    logging.info('Saving Order: %s', order)
+    print(f'Saving Order: {order}')
 
     # Get state from a state store
     result = requests.get(
         url='%s/v1.0/state/%s/%s' % (base_url, DAPR_STATE_STORE, orderId)
     )
-    logging.info('Getting Order: ' + str(result.json()))
+    print(f'Getting Order: {result.json()}')
 
     # Delete state from the state store
     result = requests.delete(
         url='%s/v1.0/state/%s' % (base_url, DAPR_STATE_STORE),
         json=state
     )
-    logging.info('Deleted Order: %s', order)
+    print(f'Deleted Order: {order}')
     
     time.sleep(1)

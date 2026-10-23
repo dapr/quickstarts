@@ -18,7 +18,7 @@ import io.dapr.quickstarts.workflows.models.PaymentRequest;
 import io.dapr.workflows.Workflow;
 import io.dapr.workflows.WorkflowStub;
 
-public class OrderProcessingWorkflow extends Workflow {
+public class OrderProcessingWorkflow implements Workflow {
 
   @Override
   public WorkflowStub create() {

@@ -19,8 +19,7 @@ name: Install python dependencies
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -29,7 +28,7 @@ pip3 install -r requirements.txt
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP == INFO:root:Fetched Secret: {'secret': 'YourPasskeyHere'}"
+  - "Fetched Secret: {'secret': 'YourPasskeyHere'}"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -39,7 +38,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../components/ -- uv run python app.py
 ```
 
 <!-- END_STEP -->

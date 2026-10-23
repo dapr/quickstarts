@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.dapr.quickstarts.workflows.models.OrderPayload;
-import io.dapr.workflows.runtime.WorkflowActivity;
-import io.dapr.workflows.runtime.WorkflowActivityContext;
+import io.dapr.workflows.WorkflowActivity;
+import io.dapr.workflows.WorkflowActivityContext;
 
 public class RequestApprovalActivity implements WorkflowActivity {
   private static Logger logger = LoggerFactory.getLogger(RequestApprovalActivity.class);

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from cloudevents.http import from_http
+from cloudevents.core.bindings.http import from_http_event, HTTPMessage
 import json
 import os
 
@@ -22,8 +22,8 @@ def subscribe():
 # Dapr subscription in /dapr/subscribe sets up this route
 @app.route('/orders', methods=['POST'])
 def orders_subscriber():
-    event = from_http(request.headers, request.get_data())
-    print('Subscriber received : %s' % event.data['orderId'], flush=True)
+    event = from_http_event(HTTPMessage(dict(request.headers), request.get_data()))
+    print('Subscriber received : %s' % event.get_data()['orderId'], flush=True)
     return json.dumps({'success': True}), 200, {
         'ContentType': 'application/json'}
 

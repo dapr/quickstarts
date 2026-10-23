@@ -1,4 +1,5 @@
 #pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable DAPR_JOBS
 using Dapr.Jobs;
 using Dapr.Jobs.Extensions;
 using Dapr.Jobs.Models;
@@ -11,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDaprJobsClient();
 var app = builder.Build();
 
-var appPort = Environment.GetEnvironmentVariable("APP_PORT") ?? "6200";
+var appPort = Environment.GetEnvironmentVariable("APP_PORT") ?? "6201";
 var jobsClient = app.Services.GetRequiredService<DaprJobsClient>();
 
 app.MapPost("/scheduleJob", async (HttpContext context) =>
@@ -139,7 +140,7 @@ app.UseRouting();
 app.Run($"http://*:{appPort}");
 
 // Classes for request and response models
-public class JobData
+public sealed class JobData
 {
   [JsonPropertyName("droid")]
   public string? Droid { get; set; }
@@ -148,7 +149,7 @@ public class JobData
   public string? Task { get; set; }
 }
 
-public class DroidJob
+public sealed class DroidJob
 {
   [JsonPropertyName("name")]
   public string? Name { get; set; }
@@ -161,3 +162,4 @@ public class DroidJob
 }
 
 #pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore DAPR_JOBS

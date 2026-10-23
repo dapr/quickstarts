@@ -6,7 +6,7 @@ const DAPR_HOST = process.env.DAPR_HOST ?? "localhost"
 let port  
 switch (protocol) {
   case "http": {
-    port = process.env.DAPR_HTTP_PORT
+    port = process.env.DAPR_HTTP_PORT ?? 3500
     break
   }
   case "grpc": {

@@ -91,32 +91,32 @@ dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol 
 ##### Order Processor Service
 
 ```bash
-cd ../service_invocation/python/http/order-processor
-pip3 install -r requirements.txt
-dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- python3 app.py
+cd ../service_invocation/python/http
+uv sync --all-packages
+cd order-processor
+dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
 ##### Checkout Service
 
 ```bash
 cd ../service_invocation/python/http/checkout
-pip3 install -r requirements.txt
-dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- python3 app.py
+dapr run  --app-id checkout --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3500 -- uv run python app.py
 ```
 
 ### Expected output
 
-Once both services are running, the `order-processor` service will recieve orders from the `checkout`service continuously using Dapr's service invoke API.
+Once both services are running, the `order-processor` service will receive orders from the `checkout` service continuously using Dapr's service invoke API.
 
 ##### `order-processor` output
 
 ```bash
-== APP == Order received: { orderId: 1 }
-== APP == Order received: { orderId: 2 }
-== APP == Order received: { orderId: 3 }
+Order received: { orderId: 1 }
+Order received: { orderId: 2 }
+Order received: { orderId: 3 }
 ```
 
-### Simulate ann application failure by stopping the `order-processor` service
+### Simulate an application failure by stopping the `order-processor` service
 
 Simulate a system failure by stopping the `order-processor` service running in your second terminal window.
 
@@ -159,7 +159,7 @@ Simulate the `order-processor` service recovering by restarting the application 
 ##### Order Processor Service
 
 ```bash
-dapr run --app-port 7001 --app-id order-processor --resources-path --app-protocol http --dapr-http-port 3501 -- dotnet run
+dapr run --app-port 7001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- dotnet run
 ```
 
 ### Go example
@@ -167,7 +167,7 @@ dapr run --app-port 7001 --app-id order-processor --resources-path --app-protoco
 ##### Order Processor Service
 
 ```bash
-dapr run --app-port 6001 --app-id order-processor --resources-path --app-protocol http --dapr-http-port 3501 -- go run .
+dapr run --app-port 6001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- go run .
 ```
 
 ### Java example
@@ -175,7 +175,7 @@ dapr run --app-port 6001 --app-id order-processor --resources-path --app-protoco
 ##### Order Processor Service
 
 ```bash
-dapr run --app-id order-processor --resources-path --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
+dapr run --app-id order-processor --resources-path ../../../resources/ --app-port 9001 --app-protocol http --dapr-http-port 3501 -- java -jar target/OrderProcessingService-0.0.1-SNAPSHOT.jar
 ```
 
 ### JavaScript example
@@ -183,7 +183,7 @@ dapr run --app-id order-processor --resources-path --app-port 9001 --app-protoco
 ##### Order Processor Service
 
 ```bash
-dapr run --app-port 5001 --app-id order-processor --resources-path --app-protocol http --dapr-http-port 3501 -- npm start
+dapr run --app-port 5001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- npm start
 ```
 
 ### Python example
@@ -191,7 +191,7 @@ dapr run --app-port 5001 --app-id order-processor --resources-path --app-protoco
 ##### Order Processor Service:
 
 ```bash
-dapr run --app-port 8001 --app-id order-processor --resources-path --app-protocol http --dapr-http-port 3501 -- python3 app.py
+dapr run --app-port 8001 --app-id order-processor --resources-path ../../../resources/ --app-protocol http --dapr-http-port 3501 -- uv run python app.py
 ```
 
 ### Observe orders have resumed sequentially:
@@ -199,10 +199,10 @@ dapr run --app-port 8001 --app-id order-processor --resources-path --app-protoco
 ##### `order-processor` output:
 
 ```bash
-== APP == Order received: { orderId: 4 }
-== APP == Order received: { orderId: 5 }
-== APP == Order received: { orderId: 6 }
-== APP == Order received: { orderId: 7 }
+Order received: { orderId: 4 }
+Order received: { orderId: 5 }
+Order received: { orderId: 6 }
+Order received: { orderId: 7 }
 ```
 
 ### Stop the apps with Dapr

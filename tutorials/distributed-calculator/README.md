@@ -8,7 +8,7 @@ This quickstart shows method invocation and state persistent capabilities of Dap
 - **Subtraction**: [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/) application
 
 The front-end application consists of a server and a client written in [React](https://reactjs.org/).
-Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator)
+Kudos to `ahfarmer` whose [React calculator](https://github.com/ahfarmer/calculator) was used as a starting point for the frontend implementation.
 
 The following architecture diagram illustrates the components that make up this quickstart:
 
@@ -55,7 +55,7 @@ working_dir: "./go"
 <!-- STEP
 expected_stdout_lines:
 - "You're up and running! Both Dapr and your app logs will appear here."
-- "== APP == Adding 52.000000 to 34.000000"
+- "Adding 52.000000 to 34.000000"
 - "Exited Dapr successfully"
 - "Exited App successfully"
 expected_stderr_lines:
@@ -101,7 +101,7 @@ working_dir: "./csharp"
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Subtracting 34 from 52"
+  - "Subtracting 34 from 52"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -139,7 +139,7 @@ working_dir: "./node"
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Dividing 52 by 34"
+  - "Dividing 52 by 34"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -160,13 +160,13 @@ sleep: 2
 4. Multiply App - Open a terminal window and navigate to the python directory and follow the steps below:
 
 <!-- STEP
-name: "Build ptyhon app"
+name: "Build python app"
 working_dir: "./python"
 -->
 
 - Install required packages
    ```bash
-   pip3 install wheel python-dotenv flask_cors flask
+   uv sync
    ```
 
 <!-- END_STEP -->
@@ -183,7 +183,7 @@ working_dir: "./python"
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Calculating 52.0 * 34.0"
+  - "Calculating 52.0 * 34.0"
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -198,7 +198,7 @@ env:
 
 - Start dapr using the command:
    ```bash
-   dapr run --app-id multiplyapp --app-port 5001 --dapr-http-port 3501 flask run
+   dapr run --app-id multiplyapp --app-port 5001 --dapr-http-port 3501 uv run flask run
    ```
 
 <!-- END_STEP -->
@@ -227,7 +227,7 @@ expected_stdout_lines:
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
-name: "Run frontent app"
+name: "Run frontend app"
 working_dir: "./react-calculator"
 background: true
 sleep: 15
@@ -393,7 +393,7 @@ kubectl apply -f .
 
 Each of the services will spin up a pod with two containers: one for your service and one for the Dapr sidecar. It will also configure a service for each sidecar and an external IP for the front-end, which allows us to connect to it externally.
 
-4. Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following commands:
+4. Kubernetes deployments are asynchronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following commands:
 
 <!-- STEP
 name: "Deploy Kubernetes"

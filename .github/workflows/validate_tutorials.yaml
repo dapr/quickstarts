@@ -38,7 +38,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
@@ -49,9 +49,10 @@ jobs:
         run: brew install python@${{ env.MACOS_PYTHON_VERSION }} && brew unlink python@${{ env.MACOS_PYTHON_VERSION }} && brew link --overwrite python@${{ env.MACOS_PYTHON_VERSION }}
       - name: Verify Python version
         run: python3 --version
-      - name: Upgrade pip and setuptools
-        if: matrix.os == 'macos-latest'
-        run: pip3 install --upgrade pip && python3 -m pip install --upgrade setuptools
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
       - name: Show .Net version
         run: dotnet --version
       - name: Install Docker - MacOS
@@ -111,9 +112,10 @@ jobs:
                     -ojsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
           echo "SERVICE_IP=$NODE_IP" >> $GITHUB_ENV
       - name: Set up Go ${{ env.GOVER }}
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ env.GOVER }}
+          cache: false
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
@@ -135,8 +137,7 @@ jobs:
       - name: Install utilities dependencies
         run: |
           echo "PATH=$PATH:$HOME/.local/bin" >> $GITHUB_ENV
-          pip3 install setuptools wheel
-          pip3 install mechanical-markdown
+          uv tool install mechanical-markdown
       - name: Validate hello-world
         run: |
           pushd tutorials/hello-world
@@ -184,6 +185,64 @@ jobs:
       #     pushd tutorials/observability
       #     make validate
       #     popd
-      - name: Linkcheck README.md
-        run: |
-          make validate
+      # Validation for workflows is intentionally commented out.
+      # Mechanical markdown is not able to invoke the workflow services.
+      # Once this feature has been added to Mechanical Markdown the 
+      # workflow validations can be enabled.
+      #- name: Validate workflow/csharp/child-workflows
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/child-workflows
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/combined-patterns
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/combined-patterns
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/external-system-interaction
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/external-system-interaction
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/fan-out-fan-in
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/fan-out-fan-in
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/fundamentals
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/fundamentals
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/monitor-pattern
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/monitor-pattern
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/resiliency-and-compensation
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/resiliency-and-compensation
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/task-chaining
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/task-chaining
+      #    make validate
+      #    popd
+      #- name: Validate workflow/csharp/workflow-management
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: |
+      #    pushd tutorials/workflow/csharp/workflow-management
+      #    make validate
+      #    popd
+      #- name: Linkcheck README.md
+      #  run: |
+      #    make validate

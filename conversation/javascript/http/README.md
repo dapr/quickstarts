@@ -14,7 +14,7 @@ This quickstart includes one app:
 
 This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.
 
-This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Here are other [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the Ollama LLM component for local inference. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `ollama` to `openai`. For other available integrations, see the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
 
 1. Install dependencies:
 
@@ -34,14 +34,17 @@ npm install
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == Input sent: What is dapr?'
-  - '== APP - conversation == Output response: What is dapr?'
+  - 'Conversation input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
-background: true
-sleep: 15
-timeout_seconds: 30
+background: false
+sleep: 30
+timeout_seconds: 120
 -->
 
 ```bash
@@ -50,12 +53,16 @@ dapr run -f .
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is dapr?`.
+- The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request with a `get_weather` tool available; the LLM calls the tool.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+Conversation input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected: [{"id":"call_xxxx","function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}]
 ```
 
 <!-- END_STEP -->
@@ -90,10 +97,14 @@ dapr run --app-id conversation --resources-path ../../../components/ -- npm run 
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is dapr?`.
+- The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request with a `get_weather` tool available; the LLM calls the tool.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+Conversation input sent: What is dapr?
+Usage: prompt_tokens=30 completion_tokens=64 total_tokens=94
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected: [{"id":"call_xxxx","function":{"name":"get_weather","arguments":"{\"location\":\"San Francisco, CA\",\"unit\":\"celsius\"}"}}]
 ```

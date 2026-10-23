@@ -10,7 +10,7 @@ public interface ISmartDevice : IActor
     Task ClearAlarm();
 }
 
-public class SmartDeviceData
+public sealed class SmartDeviceData
 {   
     public string Status { get; set; } = default!;
     public string Location { get; set; } = default!;

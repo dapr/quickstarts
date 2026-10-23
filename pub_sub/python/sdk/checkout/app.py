@@ -1,9 +1,6 @@
 from dapr.clients import DaprClient
 import json
 import time
-import logging
-
-logging.basicConfig(level=logging.INFO)
 
 with DaprClient() as client:
     for i in range(1, 10):
@@ -15,5 +12,5 @@ with DaprClient() as client:
             data=json.dumps(order),
             data_content_type='application/json',
         )
-        logging.info('Published data: ' + json.dumps(order))
+        print('Published data: ' + json.dumps(order))
         time.sleep(1)

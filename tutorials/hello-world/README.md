@@ -134,20 +134,20 @@ This will install `express` and `body-parser`, dependencies that are shown in th
 <!-- STEP
 expected_stdout_lines:
   - "You're up and running! Both Dapr and your app logs will appear here."
-  - "== APP == Got a new order! Order ID: 42"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 42"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 1"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 2"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 3"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 4"
-  - "== APP == Successfully persisted state."
-  - "== APP == Got a new order! Order ID: 5"
-  - "== APP == Successfully persisted state."
+  - "Got a new order! Order ID: 42"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 42"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 1"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 2"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 3"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 4"
+  - "Successfully persisted state."
+  - "Got a new order! Order ID: 5"
+  - "Successfully persisted state."
   - "Exited Dapr successfully"
   - "Exited App successfully"
 expected_stderr_lines:
@@ -240,7 +240,7 @@ curl -XPOST -d @sample.json -H Content-Type:application/json http://localhost:35
 
 Or, using the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
-[sample.http](sample.http)
+[sample.http](node/sample.http)
 ```http
 POST http://localhost:3500/v1.0/invoke/nodeapp/method/neworder HTTP/1.1
 Content-Type: application/json
@@ -258,8 +258,8 @@ Open Postman and create a POST request against `http://localhost:3500/v1.0/invok
 ![Postman Screenshot](./img/postman1.jpg)
 In your terminal, you should see logs indicating that the message was received and state was updated:
 ```bash
-== APP == Got a new order! Order ID: 42
-== APP == Successfully persisted state.
+Got a new order! Order ID: 42
+Successfully persisted state.
 ```
 
 ## Step 5 - Confirm successful persistence
@@ -298,7 +298,7 @@ dapr invoke --app-id nodeapp --method order --verb GET
 
 or use the Visual Studio Code [Rest Client Plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
-[sample.http](sample.http)
+[sample.http](node/sample.http)
 ```http
 GET http://localhost:3500/v1.0/invoke/nodeapp/method/order
 ```
@@ -339,12 +339,13 @@ Now open a **new** terminal and go to the `./hello-world/python` directory.
 
 <!-- STEP
 name: "Install python requirements"
+working_dir: python
 -->
 
 1. Install dependencies:
 
    ```bash
-   pip3 install requests
+   uv sync
    ```
 
 <!-- END_STEP -->
@@ -365,7 +366,7 @@ sleep: 30
 2. Start the Python App with Dapr:
 
    ```bash
-   dapr run --app-id pythonapp python3 app.py
+   dapr run --app-id pythonapp .venv/bin/python app.py
    ```
 
 <!-- END_STEP -->
@@ -443,5 +444,5 @@ For more information on how to configure the files visit [How-To: Debug multiple
 Now that you've gotten Dapr running locally on your machine, consider these next steps:
 - Explore additional quickstarts such as [pub-sub](../pub-sub), [bindings](../bindings) or the [distributed calculator app](../distributed-calculator).
 - Run this hello world application in Kubernetes via the [Hello Kubernetes](../hello-kubernetes) quickstart.
-- Learn more about Dapr in the [Dapr overview](https://docs.dapr.io/concepts/overview/) documentation.
+- Learn more about Dapr in the [Dapr Concepts](https://docs.dapr.io/concepts/) documentation.
 - Explore [Dapr concepts](https://docs.dapr.io/concepts/) such as building blocks and components in the Dapr documentation.

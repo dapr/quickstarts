@@ -1,0 +1,11 @@
+[project]
+name = "checkout"
+version = "0"
+requires-python = ">=3.11"
+dependencies = [
+    "requests",
+    "typing-extensions",
+]
+
+[tool.uv]
+package = false

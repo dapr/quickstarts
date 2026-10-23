@@ -19,8 +19,8 @@ using System.Text.Json.Serialization;
 
 //dapr run --app-id batch-http --app-port 7001 --resources-path ../../../components -- dotnet run
 
-var cronBindingName = "cron";
-var sqlBindingName = "sqldb";
+const string cronBindingName = "cron";
+const string sqlBindingName = "sqldb";
 
 var baseURL = Environment.GetEnvironmentVariable("BASE_URL") ?? "http://localhost";
 var daprPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3500";
@@ -81,7 +81,7 @@ app.MapPost("/" + cronBindingName, async () =>
 
 await app.RunAsync();
 
-public record DaprPostgresBindingMetadata([property: JsonPropertyName("sql")] string cmd);
-public record DaprPayload([property: JsonPropertyName("metadata")] DaprPostgresBindingMetadata sql, [property: JsonPropertyName("operation")] string operation);
-public record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
-public record Orders([property: JsonPropertyName("orders")] Order[] orders);
+public sealed record DaprPostgresBindingMetadata([property: JsonPropertyName("sql")] string cmd);
+public sealed record DaprPayload([property: JsonPropertyName("metadata")] DaprPostgresBindingMetadata sql, [property: JsonPropertyName("operation")] string operation);
+public sealed record Order([property: JsonPropertyName("orderid")] int OrderId, [property: JsonPropertyName("customer")] string Customer, [property: JsonPropertyName("price")] float Price);
+public sealed record Orders([property: JsonPropertyName("orders")] Order[] orders);

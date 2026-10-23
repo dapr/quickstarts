@@ -12,6 +12,8 @@ This quickstart includes one service:
 
 ### Prerequisite
 
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile.
+
 - Locally running redis container - a redis container named `dapr_redis` is automatically created when you run `dapr init`
 - Open a new terminal and set values for config items `orderId1` and `orderId2` by using the command below
 
@@ -37,7 +39,7 @@ name: Install Node dependencies
 
 ```bash
 cd ./order-processor
-npm install
+npm ci
 ```
 
 <!-- END_STEP -->
@@ -47,17 +49,17 @@ npm install
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Configuration for orderId2: {"key":"orderId2","value":'
-  - '== APP == App unsubscribed to config changes'
+  - 'Configuration for orderId2: {"key":"orderId2","value":'
+  - 'App unsubscribed to config changes'
   - "Exited App successfully"
 expected_stderr_lines:
+working_dir: ./order-processor
 output_match_mode: substring
 match_order: none
-sleep: 120
+timeout_seconds: 60
 -->
 
 ```bash
-cd ./order-processor
 dapr run --app-id order-processor --resources-path ../../../components/ --app-protocol grpc --dapr-grpc-port 3500 -- node index.js
 ```
 

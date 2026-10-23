@@ -5,7 +5,7 @@ In this quickstart, you'll create an application that encrypts, and then decrypt
 - Encrypt and then decrypt a short string, reading the result in-memory
 - Encrypt and then decrypt a large file, storing the encrypted and decrypted data to files
 
-Visit the documentation to learn more about the [Cryptography building block](https://v1-11.docs.dapr.io/developing-applications/building-blocks/cryptography/) in Dapr.
+Visit the documentation to learn more about the [Cryptography building block](https://docs.dapr.io/developing-applications/building-blocks/cryptography/) in Dapr.
 
 > **Note:** This example uses the Dapr SDK. Using the Dapr SDK, which leverages gRPC internally, is **strongly** recommended when using the high-level cryptography APIs (to encrypt and decrypt messages).
 
@@ -26,8 +26,7 @@ expected_stderr_lines:
 -->
 
 ```bash
-cd ./crypto-quickstart
-pip3 install -r requirements.txt
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -57,18 +56,18 @@ openssl rand -out keys/symmetric-key-256 32
 name: Run order-processor service
 working_dir: crypto-quickstart
 expected_stdout_lines:
-  - '== APP == Encrypted the message, got 856 bytes'
-  - '== APP == Decrypted the message, got 24 bytes'
-  - '== APP == The secret is "passw0rd"'
-  - '== APP == Wrote encrypted data to encrypted.out'
-  - '== APP == Wrote decrypted data to decrypted.out.jpg'
+  - 'Encrypted the message, got 856 bytes'
+  - 'Decrypted the message, got 24 bytes'
+  - 'The secret is "passw0rd"'
+  - 'Wrote encrypted data to encrypted.out'
+  - 'Wrote decrypted data to decrypted.out.jpg'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
 -->
 
 ```bash
-dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id crypto-quickstart --resources-path ../../../components/ -- uv run python app.py
 ```
 
 <!-- END_STEP -->

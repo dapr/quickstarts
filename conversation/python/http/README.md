@@ -8,13 +8,13 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/conver
 
 This quickstart includes one app:
 
-- `app.py`, responsible for sending an input to the underlying LLM and retrieving an output.
+- `app.py`, responsible for sending an input to the underlying LLM and retrieving an output. It includes a secondary conversation request to showcase tool calling to the underlying LLM.
 
 ## Run the app with the template file
 
-This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  
+This section shows how to run the application using the [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.
 
-This example uses the default LLM Component provided by Dapr which simply echoes the input provided, for testing purposes. Here are other [supported Conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
+This example uses the Ollama LLM component for local inference. You can switch to the OpenAI component by adding your API token in the provided OpenAI component file and changing the component name from `ollama` to `openai`. For other available integrations, see the other [supported conversation components](https://docs.dapr.io/reference/components-reference/supported-conversation/).
 
 1. Install dependencies:
 
@@ -23,9 +23,7 @@ name: Install Python dependencies
 -->
 
 ```bash
-cd ./conversation
-pip3 install -r requirements.txt
-cd ..
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -35,36 +33,46 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - '== APP - conversation == INFO:root:Input sent: What is dapr?'
-  - '== APP - conversation == INFO:root:Output response: What is dapr?'
+  - 'Conversation input sent: What is dapr?'
+  - 'Usage:'
+  - 'Output response:'
+  - 'Tool calling input sent: What is the weather like in San Francisco in celsius?'
+  - 'Tool calls'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
-timeout_seconds: 30
+sleep: 30
+timeout_seconds: 60
 -->
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 The terminal console output should look similar to this, where:
 
-- The app sends an input `What is dapr?` to the `echo` Component mock LLM.
-- The mock LLM echoes `What is dapr?`.
+- The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request to the component with tools available to the LLM.
+- The LLM responds with a tool call to `get_weather`.
 
 ```text
-== APP - conversation == Input sent: What is dapr?
-== APP - conversation == Output response: What is dapr?
+Conversation input sent: What is dapr?
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
+Function name: get_weather
+Function arguments: ...
 ```
 
 <!-- END_STEP -->
 
-2. Stop and clean up application processes.
+3. Stop and clean up application processes.
 
 <!-- STEP
-name: Stop multi-app run 
+name: Stop multi-app run
 sleep: 5
 -->
 
@@ -78,22 +86,28 @@ dapr stop -f .
 
 1. Install dependencies:
 
-Open a terminal and run:
-
 ```bash
-cd ./conversation
-pip3 install -r requirements.txt
+uv sync
 ```
 
 2. Run the application:
 
 ```bash
-dapr run --app-id conversation --resources-path ../../../components -- python3 app.py
+cd ./conversation
+dapr run --app-id conversation --resources-path ../../../components -- uv run python app.py
 ```
 
-You should see the output:
+- The app first sends an input `What is dapr?` to the Ollama LLM component with a structured JSON response format.
+- The LLM returns a JSON object with an `answer` field describing Dapr.
+- The app then sends a weather request with tools available to the LLM.
+- The LLM responds with a tool call to `get_weather`.
 
-```bash
-== APP == INFO:root:Input sent: What is dapr?
-== APP == INFO:root:Output response: What is dapr?
+```text
+Conversation input sent: What is dapr?
+Output response: { "answer": "Dapr is an open-source, cross-platform microservices framework..." }
+Tool calling input sent: What is the weather like in San Francisco in celsius?
+Tool calls detected:
+Tool call: {'id': 'call_xxxx', 'function': {'name': 'get_weather', 'arguments': '...'}}
+Function name: get_weather
+Function arguments: ...
 ```
