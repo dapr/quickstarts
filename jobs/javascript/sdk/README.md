@@ -11,7 +11,7 @@ This quickstart includes two apps:
 - `job-scheduler` uses `DaprClient.jobs.schedule`, `get`, and `delete` to manage droid maintenance jobs.
 - `job-service` uses `DaprServer.jobs.listen` to handle triggered jobs.
 
-Jobs are scoped to an app ID. The scheduler connects to the **job-service sidecar on port 6280**, not its own sidecar, so callbacks are delivered to `job-service-sdk`. Handlers are registered before the server starts, and the scheduler waits for the service's sidecar using `client.start()`.
+Jobs are scoped to an app ID. The scheduler connects to the **job-service sidecar on port 6280**, not its own sidecar, so callbacks are delivered to `job-service`. Handlers are registered before the server starts, and the scheduler waits for the service's sidecar using `client.start()`.
 
 ## Prerequisites
 
@@ -97,17 +97,17 @@ dapr stop -f .
 After installing dependencies, open a terminal in `jobs/javascript/sdk/job-service` and start the service:
 
 ```bash
-dapr run --app-id job-service-sdk --app-port 6200 --dapr-http-port 6280 --scheduler-host-address localhost -- npm run start
+dapr run --app-id job-service --app-port 6200 --dapr-http-port 6280 --scheduler-host-address localhost -- npm run start
 ```
 
 In another terminal in `jobs/javascript/sdk/job-scheduler`, start the scheduler:
 
 ```bash
-dapr run --app-id job-scheduler-sdk --dapr-http-port 6380 -- npm run start
+dapr run --app-id job-scheduler --dapr-http-port 6380 -- npm run start
 ```
 
 The output is the same as the multi-app example. When finished, stop the remaining service:
 
 ```bash
-dapr stop --app-id job-service-sdk
+dapr stop --app-id job-service
 ```
