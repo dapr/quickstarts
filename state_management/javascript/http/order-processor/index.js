@@ -1,3 +1,4 @@
+import assert from "node:assert/strict"
 import axios from "axios"
 
 const protocol = process.env.DAPR_PROTOCOL ?? "http"
@@ -41,15 +42,39 @@ async function main() {
     console.log("Getting Order: ", orderResponse.data)
 
     // Delete state from the state store
-    await axios.delete(`${stateStoreBaseUrl}/${order.orderId}`, state)
+    await axios.delete(`${stateStoreBaseUrl}/${order.orderId}`)
     console.log("Deleting Order: ", order)
 
     await sleep(500)
   }
+
+  const orders = [{ orderId: "bulk-1" }, { orderId: "bulk-2" }]
+  const state = orders.map(order => ({ key: order.orderId, value: order }))
+  await axios.post(stateStoreBaseUrl, state)
+
+  for (const order of orders) {
+    const response = await axios.get(`${stateStoreBaseUrl}/${order.orderId}`)
+    assert.deepEqual(response.data, order, `Order ${order.orderId} was not saved`)
+  }
+  console.log("Saving bulk orders: bulk-1, bulk-2")
+
+  // Dapr has no HTTP bulk-delete endpoint; delete each key in parallel.
+  await Promise.all(orders.map(order =>
+    axios.delete(`${stateStoreBaseUrl}/${encodeURIComponent(order.orderId)}`)
+  ))
+
+  for (const order of orders) {
+    const response = await axios.get(`${stateStoreBaseUrl}/${order.orderId}`)
+    assert.equal(response.status, 204, `Order ${order.orderId} was not deleted`)
+  }
+  console.log("Bulk orders deleted: bulk-1, bulk-2")
 }
 
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-main().catch(e => console.error(e))
+main().catch(e => {
+  console.error(e)
+  process.exitCode = 1
+})
