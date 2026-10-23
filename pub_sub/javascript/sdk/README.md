@@ -102,6 +102,10 @@ Remaining temporary orders: 0
 name: Stop multi app run template
 -->
 
+<!-- STEP
+name: Stop pub-sub services
+-->
+
 ```bash
 dapr stop -f .
 ```
