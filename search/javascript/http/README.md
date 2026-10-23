@@ -2,7 +2,7 @@
 
 In this quickstart, you'll index, retrieve, search, and delete product documents using Dapr's Search HTTP API.
 
-This example targets Dapr runtime **1.19.0** and requires **Node.js 20 or later** and npm. Search is an alpha API. It uses an in-memory search store, so it does not require an external search service and its indexes are discarded when the Dapr sidecar stops.
+This example targets Dapr runtime 1.19.0 and requires **Node.js 22 or later** and npm, matching the SDK quickstart. Search is an alpha API. It uses an in-memory search store, so it does not require an external search service and its indexes are discarded when the Dapr sidecar stops.
 
 The Search API finds documents by their indexed content, unlike retrieving a document by its exact ID. See the [Search building block contract](https://github.com/dapr/components-contrib/blob/master/search/README.md) for more information.
 
@@ -14,10 +14,10 @@ This quickstart includes one app, `search`, responsible for indexing two product
 
 This section uses the [multi-app run template](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and Dapr CLI with `dapr run -f .`.
 
-If needed, initialize the Dapr runtime before running the quickstart. Slim mode is sufficient because this sample does not need containers:
+If needed, initialize the Dapr runtime before running the quickstart, using the standard setup shared by other quickstarts (requires Docker or Podman):
 
 ```bash
-dapr init --slim --runtime-version 1.19.0
+dapr init --runtime-version 1.19.0
 ```
 
 Open a terminal in this directory (`search/javascript/http`). The HTTP port `3593` must be available. The app reads `DAPR_HTTP_PORT`, which the CLI sets from the run template. Stop other samples using the app ID `search-http` before running this one.

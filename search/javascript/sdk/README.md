@@ -6,7 +6,7 @@ This example targets Dapr runtime **1.19.0** and the stable Dapr JavaScript SDK 
 
 The Search API finds documents by their indexed content, unlike retrieving a document by its exact ID. See the [Search building block contract](https://github.com/dapr/components-contrib/blob/master/search/README.md) for more information.
 
-> **Note:** This example uses the Dapr JavaScript SDK over gRPC. For direct HTTP requests without the SDK, see the [HTTP quickstart](../http/).
+> **Note:** This example uses the Dapr JavaScript SDK over gRPC to demonstrate the Search API's gRPC transport alongside the [HTTP quickstart](../http/), which makes direct HTTP requests without the SDK. SDK samples can choose either transport; they do not need to use the same one across building blocks.
 
 This quickstart includes one app, `search`, responsible for indexing two products and finding the one whose title contains `Dapr`.
 
@@ -14,10 +14,10 @@ This quickstart includes one app, `search`, responsible for indexing two product
 
 This section uses the [multi-app run template](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and Dapr CLI with `dapr run -f .`.
 
-If needed, initialize the Dapr runtime before running the quickstart. Slim mode is sufficient because this sample does not need containers:
+If needed, initialize the Dapr runtime before running the quickstart, using the standard setup shared by other quickstarts (requires Docker or Podman):
 
 ```bash
-dapr init --slim --runtime-version 1.19.0
+dapr init --runtime-version 1.19.0
 ```
 
 Open a terminal in this directory (`search/javascript/sdk`). The SDK connects to the sidecar's gRPC port using `DAPR_GRPC_PORT`, which the Dapr CLI sets. Stop other samples using the app ID `search-sdk` before running this one.
