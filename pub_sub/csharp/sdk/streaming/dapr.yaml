@@ -1,0 +1,10 @@
+version: 1
+common:
+  resourcesPath: ../../../components/
+apps:
+  - appID: order-processor-streaming-sdk
+    appDirPath: ./order-processor/
+    command: ["dotnet", "run", "--no-build"]
+  - appID: checkout-streaming-sdk
+    appDirPath: ./checkout/
+    command: ["dotnet", "run", "--no-build"]

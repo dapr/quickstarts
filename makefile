@@ -279,8 +279,11 @@ test_csharp_quickstarts:
 			if [ ! -d "$$building_block/csharp/$$variant" ]; then \
 				echo "$$building_block/csharp/$$variant does not exist."; \
 			else \
-				echo "Validating $$building_block/csharp/$$variant quickstart"; \
-				(cd $$building_block/csharp/$$variant && make validate) || echo "Validation failed for $$building_block/csharp/$$variant"; \
+				QUICKSTART_DIRS=$$(find "$$building_block/csharp/$$variant" -name makefile -exec dirname {} \;); \
+				for quickstart_dir in $$QUICKSTART_DIRS; do \
+					echo "Validating $$quickstart_dir quickstart"; \
+					(cd "$$quickstart_dir" && $(MAKE) validate) || exit $$?; \
+				done; \
 			fi; \
 		done; \
 	done

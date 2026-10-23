@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../../components/
+apps:
+  - appID: order-processor-declarative-sdk
+    appDirPath: ./order-processor/
+    appPort: 7007
+    command: ["dotnet", "run", "--no-build", "--no-launch-profile", "--urls", "http://localhost:7007"]
+  - appID: checkout-declarative-sdk
+    appDirPath: ./checkout/
+    command: ["dotnet", "run", "--no-build"]
