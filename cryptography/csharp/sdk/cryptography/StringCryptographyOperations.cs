@@ -8,8 +8,8 @@ internal sealed partial class StringCryptographyOperations(DaprClient daprClient
     public async Task<string> EncryptAsync(string plaintextValue, CancellationToken cancellationToken)
     {
         var plaintextBytes = Encoding.UTF8.GetBytes(plaintextValue);
-        var encryptedBytes = await daprClient.EncryptAsync(Constants.ComponentName, plaintextBytes, Constants.KeyName, new EncryptionOptions(KeyWrapAlgorithm.Rsa), cancellationToken);
-        LogEncryptionOperation(logger, Constants.KeyName, plaintextValue);
+        var encryptedBytes = await daprClient.EncryptAsync(Constants.ComponentName, plaintextBytes, Constants.RsaKeyName, new EncryptionOptions(KeyWrapAlgorithm.Rsa), cancellationToken);
+        LogEncryptionOperation(logger, Constants.RsaKeyName, plaintextValue);
         return Convert.ToBase64String(encryptedBytes.Span);
     }
 
@@ -17,9 +17,9 @@ internal sealed partial class StringCryptographyOperations(DaprClient daprClient
     {
         var ciphertextBytes = Convert.FromBase64String(base64EncryptedValue);
         var decryptedBytes =
-            await daprClient.DecryptAsync(Constants.ComponentName, ciphertextBytes, Constants.KeyName, cancellationToken);
+            await daprClient.DecryptAsync(Constants.ComponentName, ciphertextBytes, Constants.RsaKeyName, cancellationToken);
         var plaintextValue = Encoding.UTF8.GetString(decryptedBytes.Span);
-        LogDecryptionOperation(logger, Constants.KeyName, plaintextValue);
+        LogDecryptionOperation(logger, Constants.RsaKeyName, plaintextValue);
         return plaintextValue;
     }
     

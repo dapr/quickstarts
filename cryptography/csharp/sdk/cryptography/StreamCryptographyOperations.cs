@@ -12,7 +12,7 @@ internal sealed partial class StreamCryptographyOperations(DaprClient daprClient
         await using var sourceFile = new FileStream(filePath, FileMode.Open);
         var bufferedEncryptedBytes = new ArrayBufferWriter<byte>();
         await foreach (var bytes in daprClient.EncryptAsync(Constants.ComponentName, sourceFile,
-                           Constants.KeyName, new EncryptionOptions(KeyWrapAlgorithm.Rsa), cancellationToken)
+                           Constants.SymmetricKeyName, new EncryptionOptions(KeyWrapAlgorithm.Aes), cancellationToken)
                        .WithCancellation(cancellationToken))
         {
             bufferedEncryptedBytes.Write(bytes.Span);
@@ -30,7 +30,7 @@ internal sealed partial class StreamCryptographyOperations(DaprClient daprClient
     {
         await using var decryptedFile = new FileStream(decryptedFilePath, FileMode.Create);
         await foreach (var bytes in daprClient.DecryptAsync(Constants.ComponentName, encryptedBytes,
-                           Constants.KeyName, cancellationToken)
+                           Constants.SymmetricKeyName, cancellationToken)
                        .WithCancellation(cancellationToken))
         {
             await decryptedFile.WriteAsync(bytes, cancellationToken);

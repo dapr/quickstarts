@@ -19,6 +19,10 @@ const string plaintextValue = "P@assw0rd";
 var encryptedBase64String = await stringOps.EncryptAsync(plaintextValue, cancellationTokenSource.Token);
 var decryptedBase64String = await stringOps.DecryptAsync(encryptedBase64String, cancellationTokenSource.Token);
 Log.LogStringEncryption(logger, plaintextValue, decryptedBase64String);
+if (plaintextValue != decryptedBase64String)
+{
+    throw new InvalidOperationException("The decrypted string does not match the original plaintext.");
+}
 
 //Encrypt a file
 var testFilePath = await FileGenerator.GenerateSmallTestFileAsync(cancellationTokenSource.Token);
@@ -34,6 +38,10 @@ Log.LogStreamEncryption(logger, testFilePath, decryptedFilePath, areIdentical);
 //Clean up the created files
 File.Delete(testFilePath);
 File.Delete(decryptedFilePath);
+if (!areIdentical)
+{
+    throw new InvalidOperationException("The decrypted file does not match the original file.");
+}
 
 static partial class Log
 {
@@ -49,7 +57,8 @@ static partial class Log
 static class Constants
 {
     public const string ComponentName = "localstorage";
-    public const string KeyName = "rsa-private-key.pem";
+    public const string RsaKeyName = "rsa-private-key.pem";
+    public const string SymmetricKeyName = "symmetric-key-256";
 }
 
 static class FileGenerator
