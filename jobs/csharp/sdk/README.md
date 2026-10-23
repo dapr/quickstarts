@@ -113,6 +113,19 @@ dapr stop -f .
 
 <!-- END_STEP -->
 
+3. Stop and clean up the application processes before running another quickstart:
+
+<!-- STEP
+name: Stop multi-app run
+sleep: 5
+-->
+
+```bash
+dapr stop -f .
+```
+
+<!-- END_STEP -->
+
 ## Run apps individually
 
 ### Schedule Jobs
