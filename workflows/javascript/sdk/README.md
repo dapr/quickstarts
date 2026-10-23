@@ -18,7 +18,7 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 
 ### Run the order processor workflow with multi-app-run
 
-Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.4`; `npm ci` installs that version from the checked-in lockfile. Run the commands below from this README's directory (`workflows/javascript/sdk`).
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile. Run the commands below from this README's directory (`workflows/javascript/sdk`).
 
 1. Open a new terminal window and install the dependencies: 
 

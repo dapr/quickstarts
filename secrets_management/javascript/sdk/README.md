@@ -12,7 +12,7 @@ This quickstart includes one service:
 
 ### Run Node service with Dapr
 
-Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0-rc.4`; `npm ci` installs that version from the checked-in lockfile.
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile.
 
 1. Navigate to folder and install dependencies: 
 
