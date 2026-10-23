@@ -1,0 +1,2 @@
+This file demonstrates a round trip through Dapr's cryptography API.
+The application streams the file to Dapr without reading the encryption keys.
