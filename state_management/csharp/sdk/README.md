@@ -4,7 +4,7 @@ In this quickstart, you'll create a microservice to demonstrate Dapr's state man
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-management/) link for more information about Dapr and State Management.
 
-> **Note:** This example leverages the Dapr client SDK.  If you are looking for the example using only HTTP [click here](../http).
+> **Note:** This example uses the `Dapr.StateManagement` SDK and its source-generated state store implementation. If you are looking for the example using only HTTP [click here](../http).
 
 This quickstart includes one service: Dotnet client service `order-processor`
 
