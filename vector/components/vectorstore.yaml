@@ -1,0 +1,7 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: vectorstore
+spec:
+  type: vector.in-memory
+  version: v1
