@@ -9,8 +9,6 @@
   "scripts": {
     "build": "npx tsc --outDir ./dist/",
     "start:order-process": "npm run build && node dist/app.js",
-    "start:order-process-with-dapr-server": "npm run build && node dist/appWithDaprServer.js",
-    "start:order-process-with-express-server": "npm run build && node dist/appWithExpressServer.js",
     "start:dapr:order-process": "dapr run --app-id order-processor-sdk --resources-path ../../components -- npm run start:order-process"
   },
   "author": "",
