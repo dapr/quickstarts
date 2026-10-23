@@ -14,8 +14,6 @@ Checkout uses a gRPC client and the `DAPR_GRPC_PORT` supplied by the CLI; order-
 
 Bulk publishing can partially fail. The publisher checks `failedMessages` before reporting success. The subscriber explicitly returns `DaprPubSubStatusEnum.SUCCESS`; return `RETRY` for a recoverable failure or `DROP` to discard a message. In this SDK release, thrown callback errors are logged and retried rather than acknowledged as successful. Delivery is at least once, so real handlers must tolerate duplicates.
 
-To also demonstrate the new JavaScript SDK **state** method `client.state.deleteBulk`, checkout temporarily saves orders 6-10 in the shared `orderstate` Redis component, verifies their values, publishes them, deletes their keys in one `DeleteBulkState` RPC, and verifies they are gone. The underlying runtime API already existed before this SDK release. This is not pub/sub message deletion, subscriber acknowledgement, or a transactional outbox. Publication and state cleanup are separate operations; a publish failure retains the state for inspection, but this sample does not implement recovery. Bulk deletion is not atomic. Missing state is returned as an empty string by the gRPC SDK's `getBulk`; an HTTP SDK client instead performs individual DELETE requests.
-
 The [streaming example](#dynamic-streaming-subscriptions) below demonstrates the new gRPC-only `client.pubsub.subscribeStream` API separately, without replacing the normal HTTP callback example.
 
 ## Prerequisites
@@ -30,7 +28,6 @@ The SDK and runtime versions are independent: **3.19.0** is the JavaScript packa
 | --- | --- |
 | Stable bulk publishing (`BulkPublishEvent`) | [Dapr 1.17+](https://github.com/dapr/dapr/releases/tag/v1.17.0). The SDK falls back to the older alpha API on earlier runtimes. |
 | Dynamic streaming subscriptions (`SubscribeTopicEventsAlpha1`) | [Dapr 1.14+](https://github.com/dapr/dapr/releases/tag/v1.14.0), as an alpha API. |
-| Bulk state deletion (`DeleteBulkState`) | Already available in [Dapr 1.0](https://github.com/dapr/dapr/blob/v1.0.0/dapr/proto/runtime/v1/dapr.proto); newly exposed by this JavaScript SDK release. |
 
 Run the following commands from this directory.
 
@@ -57,7 +54,6 @@ expected_stdout_lines:
   - 'Started Dapr with app id "checkout-sdk"'
   - 'Published data: {"orderId":1}'
   - 'Published data: {"orderId":5}'
-  - 'Saved temporary orders: 5'
   - 'Bulk published orders: 6,7,8,9,10'
   - 'Subscriber received: {"orderId":1}'
   - 'Subscriber received: {"orderId":2}'
@@ -69,8 +65,6 @@ expected_stdout_lines:
   - 'Subscriber received: {"orderId":8}'
   - 'Subscriber received: {"orderId":9}'
   - 'Subscriber received: {"orderId":10}'
-  - 'Deleted temporary orders: 5'
-  - 'Remaining temporary orders: 0'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -89,21 +83,14 @@ Output includes the following lines. Message ordering and duplicate deliveries c
 ```text
 Published data: {"orderId":1}
 Subscriber received: {"orderId":1}
-Saved temporary orders: 5
 Bulk published orders: 6,7,8,9,10
 Subscriber received: {"orderId":10}
-Deleted temporary orders: 5
-Remaining temporary orders: 0
 ```
 
 3. Stop the applications:
 
 <!-- STEP
 name: Stop multi app run template
--->
-
-<!-- STEP
-name: Stop pub-sub services
 -->
 
 ```bash

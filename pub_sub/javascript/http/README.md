@@ -12,16 +12,12 @@ Checkout publishes orders 1-5 individually to `POST /v1.0/publish/orderpubsub/or
 
 Bulk publishing can partially fail. HTTP errors, including partial-failure responses, terminate the publisher with a nonzero exit code and include the response details. Bulk publishing does not require bulk subscribing: the subscriber advertises its `orders` route at `/dapr/subscribe` and receives individual CloudEvents. It responds with `SUCCESS` after handling each event or `RETRY` on a processing exception. Delivery is at least once; real handlers must tolerate duplicates.
 
-To demonstrate the HTTP equivalent of the SDK's new **state** `deleteBulk` operation, checkout temporarily saves orders 6-10 to the shared `orderstate` Redis component, verifies their values, publishes them, deletes their keys, and verifies they are gone. **There is no HTTP bulk-state-delete endpoint**: this example waits for all individual `DELETE /v1.0/state/orderstate/{key}` requests and reports failures. Bulk deletion is not atomic.
-
-State cleanup does not delete broker messages or confirm subscriber processing. Publication and cleanup are separate operations, not a transactional outbox. A publish failure retains the temporary state for inspection; recovery is outside this sample's scope.
-
 **Dynamic streaming subscriptions are gRPC-only.** The SDK's new `subscribeStream` API has no HTTP equivalent, and changing `/dapr/subscribe` after startup does not create a streaming subscription. Try the [SDK streaming example](../sdk#dynamic-streaming-subscriptions) for runtime subscribe/close behavior without an application server.
 
 ## Prerequisites
 
 - Node.js 20 or newer and npm.
-- Dapr CLI and an initialized Dapr runtime **1.17 or newer**, which provides the [stable bulk publish API](https://github.com/dapr/dapr/releases/tag/v1.17.0). The state APIs used here predate that release.
+- Dapr CLI and an initialized Dapr runtime **1.17 or newer**, which provides the [stable bulk publish API](https://github.com/dapr/dapr/releases/tag/v1.17.0).
 - Redis at `localhost:6379`, normally provisioned by `dapr init`.
 
 Run the following commands from this directory.
@@ -51,7 +47,6 @@ expected_stdout_lines:
   - 'Started Dapr with app id "checkout-http"'
   - 'Published data: {"orderId":1}'
   - 'Published data: {"orderId":5}'
-  - 'Saved temporary orders: 5'
   - 'Bulk published orders: 6,7,8,9,10'
   - 'Subscriber received: {"orderId":1}'
   - 'Subscriber received: {"orderId":2}'
@@ -63,8 +58,6 @@ expected_stdout_lines:
   - 'Subscriber received: {"orderId":8}'
   - 'Subscriber received: {"orderId":9}'
   - 'Subscriber received: {"orderId":10}'
-  - 'Deleted temporary orders: 5'
-  - 'Remaining temporary orders: 0'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -83,11 +76,8 @@ Output includes the following lines. Message ordering and duplicate deliveries c
 ```text
 Published data: {"orderId":1}
 Subscriber received: {"orderId":1}
-Saved temporary orders: 5
 Bulk published orders: 6,7,8,9,10
 Subscriber received: {"orderId":10}
-Deleted temporary orders: 5
-Remaining temporary orders: 0
 ```
 
 3. Stop the applications:
