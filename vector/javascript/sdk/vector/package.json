@@ -1,0 +1,16 @@
+{
+  "name": "vector-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@dapr/dapr": "3.19.0"
+  },
+  "license": "Apache-2.0"
+}

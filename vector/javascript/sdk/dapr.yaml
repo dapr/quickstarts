@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: vector-sdk
+    appDirPath: ./vector/
+    command: ["npm", "run", "start"]
