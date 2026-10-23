@@ -39,6 +39,10 @@ jobs:
     steps:
       - name: Check out code 
         uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
       - name: Load environment variables
         uses: artursouza/export-env-action@v2
         with:
