@@ -2,6 +2,6 @@ version: 1
 common:
   resourcesPath: ../../components/
 apps:
-  - appID: crypto-sdk
+  - appID: crypto
     appDirPath: ./crypto-quickstart/
     command: ["npm", "start"]

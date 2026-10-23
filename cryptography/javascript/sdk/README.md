@@ -100,7 +100,7 @@ After installing dependencies and generating keys above, run from the applicatio
 
 ```bash
 cd crypto-quickstart
-dapr run --app-id crypto-sdk --resources-path ../../../components/ -- npm start
+dapr run --app-id crypto --resources-path ../../../components/ -- npm start
 ```
 
 The Dapr CLI supplies `DAPR_GRPC_PORT` and `DAPR_HTTP_PORT` to the app. Both transports run against the same sidecar.
