@@ -1,0 +1,8 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: searchstore
+spec:
+  type: search.in-memory
+  version: v1
+  metadata: []
