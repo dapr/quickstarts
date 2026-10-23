@@ -3,5 +3,5 @@ common:
   resourcesPath: ../../components
 apps:
   - appID: order-processor
-    appDirPath: ./order-processor/
-    command: ["npm", "run", "start:order-process"]
+    appDirPath: .
+    command: ["node", "dist/app.js"]

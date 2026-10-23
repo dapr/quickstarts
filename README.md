@@ -23,6 +23,7 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | [Service Invocation](./service_invocation) | Synchronous communication between two services using HTTP |
 | [State Management](./state_management/) | Store a service's data as key/value pairs in supported state stores |
 | [Binary Store](./binary_store/) | Store, download, overwrite, and delete binary files |
+| [Search](./search/) | Index documents and search their content |
 | [Bindings](./bindings/) | Work with external systems using input bindings to respond to events and output bindings to call operations |
 | [Secrets Management](./secrets_management/) | Securely fetch secrets |
 | [Actors](./actors) | Create stateful, long running objects with identity |
@@ -52,7 +53,7 @@ Go deeper into a topic or scenario, oftentimes using building block APIs togethe
 ### Updating sdk versions
 - Python: `make update_python_sdk_version [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]`
 - Go: `make update_gosdk_version VERSION=v1.16.0`
-- C#: `make update_dotnet_sdk_version VERSION=1.15.0`
+- C#: `make update_dotnet_sdk_version VERSION=1.19.0`
 - Java: `make update_java_sdk_version VERSION=1.12.0`
 - Javascript: `make update_javascript_sdk_version VERSION=3.19.0`
 
