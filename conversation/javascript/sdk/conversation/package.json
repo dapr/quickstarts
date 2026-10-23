@@ -1,0 +1,20 @@
+{
+  "name": "conversation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "start:dapr": "dapr run --app-id conversation-sdk --resources-path ../../../components/ -- npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@dapr/dapr": "3.19.0"
+  }
+}

@@ -22,6 +22,7 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | [AI](./AI) | Agentic building blocks including durable workflows, eventing, authentication and state persistence |
 | [Service Invocation](./service_invocation) | Synchronous communication between two services using HTTP |
 | [State Management](./state_management/) | Store a service's data as key/value pairs in supported state stores |
+| [Search](./search/) | Index documents and search their content |
 | [Bindings](./bindings/) | Work with external systems using input bindings to respond to events and output bindings to call operations |
 | [Secrets Management](./secrets_management/) | Securely fetch secrets |
 | [Actors](./actors) | Create stateful, long running objects with identity |
@@ -29,6 +30,7 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | [Cryptography](./cryptography) | Perform cryptographic operations without exposing keys to your application |
 | [Resiliency](./resiliency) | Define and apply fault-tolerant policies (retries/back-offs, timeouts and circuit breakers) to your Dapr API requests |
 | [Jobs](./jobs) | Dapr Jobs enable you to manage and schedule tasks |
+| [Search](./search/csharp/http/) | Index documents and search their content using the Search API |
 
 ### Tutorials
 
@@ -50,9 +52,9 @@ Go deeper into a topic or scenario, oftentimes using building block APIs togethe
 ### Updating sdk versions
 - Python: `make update_python_sdk_version [DAPR_VERSION=1.16.0] [FASTAPI_VERSION=1.16.0] [WORKFLOW_VERSION=1.16.0]`
 - Go: `make update_gosdk_version VERSION=v1.16.0`
-- C#: `make update_dotnet_sdk_version VERSION=1.15.0`
+- C#: `make update_dotnet_sdk_version VERSION=1.19.0`
 - Java: `make update_java_sdk_version VERSION=1.12.0`
-- Javascript: `make update_javascript_sdk_version VERSION=3.4.0`
+- Javascript: `make update_javascript_sdk_version VERSION=3.19.0`
 
 ### Validating all the quickstarts
 To run the samples, you need to have Dapr installed. Follow the [Getting Started](https://docs.dapr.io/getting-started/install-dapr-cli/) guide to install Dapr.
