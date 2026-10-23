@@ -78,17 +78,17 @@ After installing dependencies, you can launch the app without the multi-app temp
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor-sdk --resources-path ../../../resources/ -- npm start
+dapr run --app-id order-processor --resources-path ../../../resources/ -- npm start
 ```
 
 To use the gRPC transport instead, set `DAPR_PROTOCOL=grpc` in your shell before running the app. For example, in Bash:
 
 ```bash
-DAPR_PROTOCOL=grpc dapr run --app-id order-processor-sdk --resources-path ../../../resources/ -- npm start
+DAPR_PROTOCOL=grpc dapr run --app-id order-processor --resources-path ../../../resources/ -- npm start
 ```
 
 Stop the app from another terminal if it is still running:
 
 ```bash
-dapr stop --app-id order-processor-sdk
+dapr stop --app-id order-processor
 ```

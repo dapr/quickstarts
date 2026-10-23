@@ -73,7 +73,7 @@ After installing dependencies, you can launch the app without the multi-app temp
 
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor-http --resources-path ../../../resources/ -- npm start
+dapr run --app-id order-processor --resources-path ../../../resources/ -- npm start
 ```
 
 Stop the app from another terminal if it is still running:

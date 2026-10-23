@@ -3,6 +3,6 @@ version: 1
 common:
   resourcesPath: ../../resources/
 apps:
-  - appID: order-processor-http
+  - appID: order-processor
     appDirPath: ./order-processor/
     command: ["npm", "run", "start"]
