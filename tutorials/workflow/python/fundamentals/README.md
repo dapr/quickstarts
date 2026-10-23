@@ -23,7 +23,7 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/fundamentals/basics` folder.
+1. Use a terminal to navigate to the `tutorials/workflow/python/fundamentals/basic` folder.
 2. Install the dependencies using pip:
 
     ```bash
