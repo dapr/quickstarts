@@ -1,0 +1,8 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appDirPath: ./binary-store/
+    appID: binary-store-sdk
+    daprGRPCPort: 50091
+    command: ["npm", "start"]

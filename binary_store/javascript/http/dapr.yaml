@@ -1,0 +1,8 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appDirPath: ./binary-store/
+    appID: binary-store-http
+    daprHTTPPort: 3590
+    command: ["npm", "start"]
