@@ -1,29 +1,27 @@
 # Dapr workflows
 
-In this quickstart, you'll run a console application to demonstrate Dapr's workflow programming model and the workflow management API. The console app starts and manages the lifecycle of a workflow that stores and retrieves data in a state store.
+Run an order-processing workflow using the Dapr JavaScript SDK. Like the [C# quickstart](../../csharp/sdk/README.md), this sample seeds a state store, schedules an order, waits for it to start, and checks its completion and result.
 
-This quickstart includes 3 entry points demonstrating different ways to host a workflow:
+See the [Dapr workflow overview](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) for background.
 
-1. JavaScript console app `order-processor` 
-2. Express app `order-process-with-express-server`
-3. Express app via Dapr Server `order-process-with-dapr-server`
+This sample pins `@dapr/dapr` to 3.19.0. Use Node.js 20 or newer (required by the SDK's transport dependency) and an initialized Dapr installation (`dapr init`) with Redis running on `localhost:6379`. It is validated with Dapr runtime 1.19.0.
 
-The quickstart contains 1 workflow to simulate purchasing items from a store, and 5 unique activities within the workflow. These 5 activities are as follows:
+The workflow uses five activities:
 
-- notifyActivity: This activity utilizes a logger to print out messages throughout the workflow. These messages notify the user when there is insufficient inventory, their payment couldn't be processed, and more.
-- verifyInventoryActivity: This activity checks the state store to ensure that there is enough inventory present for purchase.
-- requestApprovalActivity: This activity requests approval for orders over a certain threshold.
-- processPaymentActivity: This activity is responsible for processing and authorizing the payment.
-- updateInventoryActivity: This activity updates the state store with the new remaining inventory value.
+- `notifyActivity` prints order notifications.
+- `verifyInventoryActivity` checks whether the state store contains enough inventory.
+- `requestApprovalActivity` requests approval for orders costing more than 5000.
+- `processPaymentActivity` simulates a successful payment.
+- `updateInventoryActivity` removes purchased items from the inventory.
 
-### Run the order processor workflow with multi-app-run
+### Run with the multi-app template (`dapr run -f .`)
 
-Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile. Run the commands below from this README's directory (`workflows/javascript/sdk`).
+Open a terminal in `workflows/javascript/sdk`. Run all the following commands from that directory.
 
-1. Open a new terminal window and install the dependencies: 
+1. Install the pinned dependencies and build the TypeScript app:
 
 <!-- STEP
-name: build order-process app
+name: Build order processor
 -->
 
 ```bash
@@ -32,119 +30,50 @@ npm run build
 ```
 
 <!-- END_STEP -->
-2. Run the app. Choose one entry point at a time; stop it with `dapr stop -f .` before starting another.
 
-- Entry point 1 : JavaScript console app
+2. Run the console app with Dapr:
+
 <!-- STEP
-name: Run order-processor service
+name: Run order processor
 expected_stdout_lines:
+  - 'Workflow runtime started successfully'
+  - 'Workflow started with the expected order'
+  - 'There are 10 car in stock'
   - 'Payment of 5000 for 1 car processed successfully'
   - 'there are now 9 car in stock'
-  - 'Orchestration completed! Result: {"processed":true}'
+  - 'processed successfully!'
+  - 'Workflow Status: COMPLETED'
+  - 'Workflow result: {"processed":true}'
 expected_stderr_lines:
 output_match_mode: substring
+match_order: none
 background: true
-sleep: 15
+sleep: 30
 timeout_seconds: 120
 -->
 
 ```bash
 dapr run -f .
 ```
+
 <!-- END_STEP -->
 
-- Entry point 2 : Express app
+The app purchases one car for 5000 from an initial stock of ten. The order does not require approval. The output includes:
 
-```bash
-dapr run -f dapr-AppWithExpressServer.yaml
-```
-
-```bash
-curl --request POST \
-  --url http://localhost:3500/v1.0/invoke/order-processor/method/start-workflow
-```
-
-- Entry point 3 : Express app via Dapr Server
-
-```bash
-dapr run -f dapr-AppWithDaprServer.yaml
-```
-```bash
-curl --request POST \
-  --url http://localhost:3500/v1.0/invoke/order-processor/method/start-workflow
-```
-
-3. Expected output
-
-
-```
-Starting new orderProcessingWorkflow instance with ID = f5087775-779c-4e73-ac77-08edfcb375f4
-Orchestration scheduled with ID: f5087775-779c-4e73-ac77-08edfcb375f4
-Waiting 30 seconds for instance f5087775-779c-4e73-ac77-08edfcb375f4 to complete...
-Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
-f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 0 history event...
-f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, EXECUTIONSTARTED=1]
-Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
-f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
-f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
-Received "Activity Request" work item
-Received order f5087775-779c-4e73-ac77-08edfcb375f4 for 1 car at a total cost of 5000
-Activity notifyActivity completed with output undefined (0 chars)
-Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
-f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 3 history event...
-Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
-f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
-f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
-Received "Activity Request" work item
-Verifying inventory for f5087775-779c-4e73-ac77-08edfcb375f4 of 1 car
-2025-02-13T10:33:21.622Z INFO [HTTPClient, HTTPClient] Sidecar Started
+```text
+Workflow started with the expected order
 There are 10 car in stock
-Activity verifyInventoryActivity completed with output {"success":true,"inventoryItem":{"itemName":"car","perItemCost":5000,"quantity":10}} (84 chars)
-Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
-f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 6 history event...
-Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
-f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
-f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
-Received "Activity Request" work item
-Processing payment for order car
 Payment of 5000 for 1 car processed successfully
-Activity processPaymentActivity completed with output true (4 chars)
-Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
-f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 9 history event...
-Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
-f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
-f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
-Received "Activity Request" work item
-Updating inventory for f5087775-779c-4e73-ac77-08edfcb375f4 of 1 car
-Inventory updated for f5087775-779c-4e73-ac77-08edfcb375f4, there are now 9 car in stock
-Activity updateInventoryActivity completed with output {"success":true,"inventoryItem":{"itemName":"car","perItemCost":5000,"quantity":9}} (83 chars)
-Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
-f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 12 history event...
-Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
-f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-f5087775-779c-4e73-ac77-08edfcb375f4: Waiting for 1 task(s) and 0 event(s) to complete...
-f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
-Received "Activity Request" work item
-order f5087775-779c-4e73-ac77-08edfcb375f4 processed successfully!
-Activity notifyActivity completed with output undefined (0 chars)
-Received "Orchestrator Request" work item with instance id 'f5087775-779c-4e73-ac77-08edfcb375f4'
-f5087775-779c-4e73-ac77-08edfcb375f4: Rebuilding local state with 15 history event...
-Processing order f5087775-779c-4e73-ac77-08edfcb375f4...
-f5087775-779c-4e73-ac77-08edfcb375f4: Processing 2 new history event(s): [ORCHESTRATORSTARTED=1, TASKCOMPLETED=1]
-Order f5087775-779c-4e73-ac77-08edfcb375f4 processed successfully!
-f5087775-779c-4e73-ac77-08edfcb375f4: Orchestration completed with status COMPLETED
-f5087775-779c-4e73-ac77-08edfcb375f4: Returning 1 action(s)
-Instance f5087775-779c-4e73-ac77-08edfcb375f4 completed
-Orchestration completed! Result: {"processed":true}
+Workflow Status: COMPLETED
+Workflow result: {"processed":true}
 ```
 
-4. Stop Dapr workflow with CTRL-C or:
+Order IDs and SDK logs vary. The README validation checks stable messages, including the remaining stock of nine and the deserialized workflow result, rather than a particular ID or log format. The app rejects missing states, unsuccessful terminal statuses, mismatched input, and an unprocessed result instead of reporting them as success.
+
+3. Stop the multi-app runner:
 
 <!-- STEP
-name: Stop order-processor workflow
+name: Stop order processor
 -->
 
 ```bash
@@ -152,6 +81,139 @@ dapr stop -f .
 ```
 
 <!-- END_STEP -->
+
+The console app closes its worker and clients after completion. To run the executable README checks yourself, use `make validate` in this directory.
+
+### Run as a service
+
+The same workflow can also be hosted by Express, either directly or through `DaprServer`. Both entry points share the console app's workflow registration and order lifecycle. Install and build as above first; the templates run the compiled app directly so Dapr manages the Node.js process without an intervening npm process. Run only one template at a time because the service templates use the same ports and app ID.
+
+#### Express
+
+<!-- STEP
+name: Run Express order processor
+expected_stdout_lines:
+  - 'Workflow runtime started successfully'
+  - 'There are 10 car in stock'
+  - 'there are now 9 car in stock'
+  - 'Workflow Status: COMPLETED'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: true
+sleep: 15
+timeout_seconds: 120
+-->
+
+```bash
+dapr run -f dapr-AppWithExpressServer.yaml
+```
+
+<!-- END_STEP -->
+
+After `Workflow runtime started successfully` appears, send a request from a second terminal. Each request resets the demo inventory to ten cars, so send requests sequentially. These are alternative hosting examples, not a concurrent inventory-management service.
+
+<!-- STEP
+name: Invoke Express order processor
+expected_stdout_lines:
+  - 'Workflow result: {"processed":true}'
+output_match_mode: substring
+timeout_seconds: 90
+-->
+
+```bash
+curl --fail --silent --show-error --request POST http://localhost:3500/v1.0/invoke/order-processor/method/start-workflow
+```
+
+<!-- END_STEP -->
+
+Stop the Express template before trying the other hosting option:
+
+<!-- STEP
+name: Stop Express order processor
+-->
+
+```bash
+dapr stop -f dapr-AppWithExpressServer.yaml
+```
+
+<!-- END_STEP -->
+
+#### Express hosted by DaprServer
+
+<!-- STEP
+name: Run DaprServer order processor
+expected_stdout_lines:
+  - 'Workflow runtime started successfully'
+  - 'There are 10 car in stock'
+  - 'there are now 9 car in stock'
+  - 'Workflow Status: COMPLETED'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: true
+sleep: 15
+timeout_seconds: 120
+-->
+
+```bash
+dapr run -f dapr-AppWithDaprServer.yaml
+```
+
+<!-- END_STEP -->
+
+After the worker is ready, invoke it from a second terminal:
+
+<!-- STEP
+name: Invoke DaprServer order processor
+expected_stdout_lines:
+  - 'Workflow result: {"processed":true}'
+output_match_mode: substring
+timeout_seconds: 90
+-->
+
+```bash
+curl --fail --silent --show-error --request POST http://localhost:3500/v1.0/invoke/order-processor/method/start-workflow
+```
+
+<!-- END_STEP -->
+
+Stop the DaprServer template:
+
+<!-- STEP
+name: Stop DaprServer order processor
+-->
+
+```bash
+dapr stop -f dapr-AppWithDaprServer.yaml
+```
+
+<!-- END_STEP -->
+### What happened?
+
+1. The worker connects to Dapr before the app schedules the workflow.
+2. The app saves ten cars in `statestore`, then schedules an order for one car.
+3. The app waits for the workflow to start and reads its typed input with `getInput<OrderPayload>()`.
+4. The workflow notifies the user, verifies inventory, processes payment, updates inventory, and sends a completion notification.
+5. The app waits for completion, compares `runtimeStatus` with `WorkflowRuntimeStatus.COMPLETED`, and reads the typed result with `getOutput<OrderResult>()`.
+
+Workflow code is a generator that yields durable tasks, not ordinary JavaScript promises. It uses `ctx.logger` for replay-safe logging; activity logs use `console.log` because activities are not replayed with the workflow history.
+
+As in the C# sample, insufficient inventory or a rejected approval returns `{ "processed": false }`. If updating inventory fails after payment, the workflow reports that a refund is needed and returns an unprocessed result. Payment and refund notifications are simulations, not real financial transactions.
+
+### Approval events
+
+The default order and README checks exercise the successful purchase without approval, matching the C# quickstart. To explore approval, change the order in `orderProcessor.ts` to two cars costing 10000. The workflow then waits for **`ApprovalEvent`** with an **`{ "isApproved": true }`** or **`{ "isApproved": false }`** payload.
+
+This uses the SDK's durable `waitForExternalEvent` timeout (`timeoutInSeconds: 30`), rather than manually racing a timer. As in C#, an unanswered approval times out and fails the workflow. A rejection completes the workflow with an unprocessed result, which the sample app reports as an error.
+
+With either service template, use the logged workflow instance ID to send approval from another terminal within 30 seconds:
+
+```bash
+curl --fail --request POST --header "Content-Type: application/json" --data '{"isApproved":true}' http://localhost:3500/v1.0/workflows/dapr/INSTANCE_ID/raiseEvent/ApprovalEvent
+```
+
+You can also call `DaprWorkflowClient.raiseEvent(instanceId, "ApprovalEvent", { isApproved: true })` from a client connected to the same sidecar. See the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request).
 
 ### Run without Docker
 
@@ -217,32 +279,6 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
 
 To start again with no workflow state, stop all processes and delete the `scheduler-data` folder and the `workflows.db` file in the `order-processor` folder.
 
-### View workflow output with Zipkin
+### View workflow traces
 
-For a more detailed view of the workflow activities (duration, progress etc.), try using Zipkin.
-
-1. Launch Zipkin container - The [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched on running `dapr init`. Check to make sure the container is running. If it's not, launch the Zipkin docker container with the following command.
-
-```bash
-docker run -d -p 9411:9411 openzipkin/zipkin
-```
-
-2. View Traces in Zipkin UI - In your browser go to http://localhost:9411 to view the workflow trace spans in the Zipkin web UI. The order-processor workflow should be viewable with the following output in the Zipkin web UI. 
-
-<img src="img/workflow-trace-spans-zipkin.png">
-
-### What happened? 
-
-When you ran `dapr run -f .`
-
-1. A unique order ID for the workflow is generated (in the above example, `f5087775-779c-4e73-ac77-08edfcb375f4`) and the workflow is scheduled.
-2. The `notifyActivity` workflow activity sends a notification saying an order for 1 car has been received.
-3. The `verifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock.
-4. Your workflow starts and notifies you of its status.
-5. The `requestApprovalActivity` workflow activity requests approval for order `f5087775-779c-4e73-ac77-08edfcb375f4`
-6. The `processPaymentActivity` workflow activity begins processing payment for order `f5087775-779c-4e73-ac77-08edfcb375f4` and confirms if successful.
-7. The `updateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `notifyActivity` workflow activity sends a notification saying that order `f5087775-779c-4e73-ac77-08edfcb375f4` has completed and processed.
-9. The workflow terminates as completed and processed.
-
-> **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `requestApprovalActivity` activity nor wait for an approval event. The dapr.yaml multi-app run file starts a console application and can't accept incoming events easily. The dapr-AppWithDaprServer.yaml and dapr-AppWithExpressServer.yaml files start a service that can accept incoming events. Use the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request) via HTTP/gRPC or via the Dapr Workflow client in the server apps to send an event to the workflow.
+If the Zipkin container installed by `dapr init` is running, open http://localhost:9411 and find the `order-processor` traces to inspect workflow and activity execution.
