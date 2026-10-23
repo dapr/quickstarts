@@ -1,0 +1,11 @@
+[project]
+name = "hello-world-python"
+version = "0"
+description = "Dapr hello-world tutorial (Python publisher)."
+requires-python = ">=3.11"
+dependencies = [
+    "requests",
+]
+
+[tool.uv]
+package = false

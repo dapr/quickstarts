@@ -34,8 +34,8 @@ cd ..
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - order-processor == Getting Order: {"orderId":1}'
-  - '== APP - order-processor == Getting Order: {"orderId":2}'
+  - 'Getting Order: {"orderId":1}'
+  - 'Getting Order: {"orderId":2}'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -61,8 +61,8 @@ An alternative to running all or multiple applications at once is to run single 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Getting Order: {"orderId":1}'
-  - '== APP == Getting Order: {"orderId":2}'
+  - 'Getting Order: {"orderId":1}'
+  - 'Getting Order: {"orderId":2}'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring

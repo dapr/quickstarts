@@ -36,8 +36,8 @@ type App struct {
 var app App
 
 func main() {
-	// Waiting 15 seconds for the job-service to start
-	time.Sleep(15 * time.Second)
+	// Waiting 30 seconds for the job-service to start
+	time.Sleep(30 * time.Second)
 
 	droidJobs := []DroidJob{
 		{Name: "R2-D2", Job: "Oil Change", DueTime: "5s"},
@@ -129,7 +129,7 @@ func get(droidJob DroidJob) (string, error) {
 	}
 
 	//get job
-	resp, err := app.daprClient.InvokeMethodWithContent(context.Background(), "job-service", "getJob", "GET", content)
+	resp, err := app.daprClient.InvokeMethodWithContent(context.Background(), "job-service-sdk", "getJob", "GET", content)
 	if err != nil {
 		fmt.Println("Error invoking method: ", err)
 		return "", err
@@ -145,7 +145,7 @@ func delete(droidJob DroidJob) error {
 		Data:        []byte(droidJob.Name),
 	}
 
-	_, err := app.daprClient.InvokeMethodWithContent(context.Background(), "job-service", "deleteJob", "DELETE", content)
+	_, err := app.daprClient.InvokeMethodWithContent(context.Background(), "job-service-sdk", "deleteJob", "DELETE", content)
 	if err != nil {
 		fmt.Println("Error invoking method: ", err)
 		return err

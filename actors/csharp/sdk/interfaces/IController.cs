@@ -8,7 +8,7 @@ public interface IController : IActor
     Task TriggerAlarmForAllDetectors();
 }
 
-public class ControllerData
+public sealed class ControllerData
 {
     public string[] DeviceIds { get; set; } = default!;
 }

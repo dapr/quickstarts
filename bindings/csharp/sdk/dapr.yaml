@@ -1,0 +1,7 @@
+version: 1
+apps:
+  - appID: batch-sdk
+    appDirPath: ./batch
+    appPort: 7002
+    command: ["dotnet", "run"]
+    resourcesPath: ../../../components

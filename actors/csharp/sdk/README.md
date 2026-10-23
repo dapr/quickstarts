@@ -1,7 +1,7 @@
 # Dapr Actors (Dapr SDK)
 
 Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/developing-applications/building-blocks/actors/actors-overview/). In this Quickstart, you will run a SmartDevice.Service microservice and a simple console client to demonstrate the stateful object patterns in Dapr Actors.  
-1. Using a SmartDevice.Service microservice, developers can host two SmartDectectorActor smoke alarm objects, and a third ControllerActor object that command and controls the smart devices.  
+1. Using a SmartDevice.Service microservice, developers can host two SmartDetectorActor smoke alarm objects, and a third ControllerActor object that command and controls the smart devices.  
 2. Using a SmartDevice.Client console app, developers have a client app to interact with each actor, or the controller to perform actions in aggregate. 
 3. The SmartDevice.Interfaces contains the shared interfaces and data types used by both service and client apps
 
@@ -18,7 +18,7 @@ For this example, you will need:
 
 ### Step 2: Set up the environment
 
-Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/workflows).
+Clone the [sample provided in the Quickstarts repo](https://github.com/dapr/quickstarts/tree/master/actors).
 
 ```bash
 git clone https://github.com/dapr/quickstarts.git
@@ -50,23 +50,23 @@ dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-p
 Expected output:
 
 ```bash
-== APP == info: Microsoft.Hosting.Lifetime[14]
-== APP ==       Now listening on: http://localhost:5001
-== APP == info: Microsoft.Hosting.Lifetime[0]
-== APP ==       Application started. Press Ctrl+C to shut down.
-== APP == info: Microsoft.Hosting.Lifetime[0]
-== APP ==       Hosting environment: Production
-== APP == info: Microsoft.Hosting.Lifetime[0]
-== APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
-== APP ==       Request starting HTTP/1.1 GET http://127.0.0.1:5001/dapr/config - application/json -
-== APP == warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
-== APP ==       Failed to determine the https port for redirect.
-== APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-== APP ==       Executing endpoint 'Dapr Actors Config'
-== APP == info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-== APP ==       Executed endpoint 'Dapr Actors Config'
-== APP == info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-== APP ==       Request finished HTTP/1.1 GET http://127.0.0.1:5001/dapr/config - 200 - application/json 30.6175ms
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5001
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://127.0.0.1:5001/dapr/config - application/json -
+warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+      Failed to determine the https port for redirect.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Dapr Actors Config'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Dapr Actors Config'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://127.0.0.1:5001/dapr/config - 200 - application/json 30.6175ms
 ```
 
 ### Step 4: Run the client app
@@ -93,23 +93,23 @@ dapr run --app-id actorclient -- dotnet run
 Expected output:
 
 ```bash
-== APP == Startup up...
-== APP == Calling SetDataAsync on SmokeDetectorActor:1...
-== APP == Got response: Success
-== APP == Calling GetDataAsync on SmokeDetectorActor:1...
-== APP == Device 1 state: Location: First Floor, Status: Ready
-== APP == Calling SetDataAsync on SmokeDetectorActor:2...
-== APP == Got response: Success
-== APP == Calling GetDataAsync on SmokeDetectorActor:2...
-== APP == Device 2 state: Location: Second Floor, Status: Ready
-== APP == Registering the IDs of both Devices...
-== APP == Registered devices: 1, 2
-== APP == Detecting smoke on Device 1...
-== APP == Device 1 state: Location: First Floor, Status: Alarm
-== APP == Device 2 state: Location: Second Floor, Status: Alarm
-== APP == Sleeping for 16 seconds before checking status again to see reminders fire and clear alarms
-== APP == Device 1 state: Location: First Floor, Status: Ready
-== APP == Device 2 state: Location: Second Floor, Status: Ready
+Startup up...
+Calling SetDataAsync on SmokeDetectorActor:1...
+Got response: Success
+Calling GetDataAsync on SmokeDetectorActor:1...
+Device 1 state: Location: First Floor, Status: Ready
+Calling SetDataAsync on SmokeDetectorActor:2...
+Got response: Success
+Calling GetDataAsync on SmokeDetectorActor:2...
+Device 2 state: Location: Second Floor, Status: Ready
+Registering the IDs of both Devices...
+Registered devices: 1, 2
+Detecting smoke on Device 1...
+Device 1 state: Location: First Floor, Status: Alarm
+Device 2 state: Location: Second Floor, Status: Alarm
+Sleeping for 16 seconds before checking status again to see reminders fire and clear alarms
+Device 1 state: Location: First Floor, Status: Ready
+Device 2 state: Location: Second Floor, Status: Ready
 ```
 
 ### Cleanup
@@ -122,8 +122,8 @@ name: Shutdown dapr
 -->
 
 ```bash
-dapr stop --app-id  actorservice
-(lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs  kill
+dapr stop --app-id actorservice
+(lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs -r kill
 ```
 
 <!-- END_STEP -->

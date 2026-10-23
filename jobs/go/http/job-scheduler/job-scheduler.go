@@ -35,7 +35,7 @@ func main() {
 		daprHost = "http://localhost"
 	}
 
-	schedulerDaprHttpPort := "6280"
+	jobServiceDaprHttpPort := "6280"
 
 	client := http.Client{
 		Timeout: 15 * time.Second,
@@ -43,7 +43,7 @@ func main() {
 
 	// Schedule a job using the Dapr Jobs API with short dueTime
 	jobName := "R2-D2"
-	reqURL := daprHost + ":" + schedulerDaprHttpPort + "/v1.0-alpha1/jobs/" + jobName
+	reqURL := daprHost + ":" + jobServiceDaprHttpPort + "/v1.0-alpha1/jobs/" + jobName
 
 	req, err := http.NewRequest("POST", reqURL, strings.NewReader(r2d2JobBody))
 	if err != nil {
@@ -71,7 +71,7 @@ func main() {
 	// Schedule a job using the Dapr Jobs API with long dueTime
 	jobName = "C-3PO"
 
-	reqURL = daprHost + ":" + schedulerDaprHttpPort + "/v1.0-alpha1/jobs/" + jobName
+	reqURL = daprHost + ":" + jobServiceDaprHttpPort + "/v1.0-alpha1/jobs/" + jobName
 
 	req, err = http.NewRequest("POST", reqURL, strings.NewReader(c3poJobBody))
 	if err != nil {
@@ -93,7 +93,7 @@ func main() {
 
 	// Gets a job using the Dapr Jobs API
 	jobName = "C-3PO"
-	reqURL = daprHost + ":" + schedulerDaprHttpPort + "/v1.0-alpha1/jobs/" + jobName
+	reqURL = daprHost + ":" + jobServiceDaprHttpPort + "/v1.0-alpha1/jobs/" + jobName
 
 	res, err = http.Get(reqURL)
 	if err != nil {

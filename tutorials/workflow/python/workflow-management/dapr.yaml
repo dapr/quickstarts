@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: neverendingworkflow
+    appDirPath: workflow_management
+    appPort: 5262
+    daprHTTPPort: 3562
+    command: ["python3", "app.py"]
+    appLogDestination: console
+    daprdLogDestination: console

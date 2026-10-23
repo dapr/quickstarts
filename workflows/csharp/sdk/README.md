@@ -35,8 +35,8 @@ dotnet build
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP - order-processor ==       There are: 10 Cars available for purchase"
-  - "== APP - order-processor == Workflow Status: Completed"
+  - "      There are: 10 Cars available for purchase"
+  - "Workflow Status: Completed"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -53,157 +53,157 @@ dapr run -f .
 3. Expected output
 
 ```
-== APP - order-processor == Starting workflow 571a6e25 purchasing 1 Cars
-== APP - order-processor == info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[40]
-== APP - order-processor ==       Scheduling new OrderProcessingWorkflow orchestration with instance ID '571a6e25' and 45 bytes of input data.
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/StartInstance
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/StartInstance
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 3045.9209ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 3046.0945ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 3016.1346ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 3016.3572ms - 200
-== APP - order-processor == info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[42]
-== APP - order-processor ==       Waiting for instance '571a6e25' to start.
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceStart
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceStart
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 2.9095ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 3.0445ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 99.446ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 99.5407ms - 200
-== APP - order-processor == Your workflow has started. Here is the status of the workflow: Running
-== APP - order-processor == info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[43]
-== APP - order-processor ==       Waiting for instance '571a6e25' to complete, fail, or terminate.
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceCompletion
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceCompletion
-== APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
-== APP - order-processor ==       Presenting notification Notification { Message = Received order 571a6e25 for 1 Cars at $5000 }
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 1.6785ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 1.7869ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[2013970020]
-== APP - order-processor ==       Received request ID '571a6e25' for 1 Cars at $5000
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 1.1947ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 1.3293ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1478802116]
-== APP - order-processor ==       Reserving inventory for order request ID '571a6e25' of 1 Cars
-== APP - order-processor == info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1130866279]
-== APP - order-processor ==       There are: 10 Cars available for purchase
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 1.8534ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 2.0077ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[1162731597]
-== APP - order-processor ==       Checked inventory for request ID 'InventoryRequest { RequestId = 571a6e25, ItemName = Cars, Quantity = 1 }'
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 1.1851ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 1.3742ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[340284070]
-== APP - order-processor ==       Processing payment: request ID '571a6e25' for 1 Cars at $5000
-== APP - order-processor == info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[1851315765]
-== APP - order-processor ==       Payment for request ID '571a6e25' processed successfully
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 0.8249ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 0.9595ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[340284070]
-== APP - order-processor ==       Processed payment request as there's sufficient inventory to proceed: PaymentRequest { RequestId = 571a6e25, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 0.4457ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 0.5267ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[2144991393]
-== APP - order-processor ==       Checking inventory for request ID '571a6e25' for 1 Cars
-== APP - order-processor == info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[1901852920]
-== APP - order-processor ==       There are now 9 Cars left in stock
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 0.6012ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 0.7097ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[96138418]
-== APP - order-processor ==       Updating available inventory for PaymentRequest { RequestId = 571a6e25, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 0.469ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 0.5431ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
-== APP - order-processor ==       Presenting notification Notification { Message = Order 571a6e25 has completed! }
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 0.494ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 0.5685ms - 200
-== APP - order-processor == info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[510392223]
-== APP - order-processor ==       Order 571a6e25 has completed
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-== APP - order-processor ==       Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-== APP - order-processor ==       Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 1.6353ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 1.7546ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-== APP - order-processor ==       Received HTTP response headers after 15807.213ms - 200
-== APP - order-processor == info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-== APP - order-processor ==       End processing HTTP request after 15807.3675ms - 200
-== APP - order-processor == Workflow Status: Completed
+Starting workflow 571a6e25 purchasing 1 Cars
+info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[40]
+      Scheduling new OrderProcessingWorkflow orchestration with instance ID '571a6e25' and 45 bytes of input data.
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/StartInstance
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/StartInstance
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 3045.9209ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 3046.0945ms - 200
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 3016.1346ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 3016.3572ms - 200
+info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[42]
+      Waiting for instance '571a6e25' to start.
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceStart
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceStart
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 2.9095ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 3.0445ms - 200
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 99.446ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 99.5407ms - 200
+Your workflow has started. Here is the status of the workflow: Running
+info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[43]
+      Waiting for instance '571a6e25' to complete, fail, or terminate.
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceCompletion
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceCompletion
+info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
+      Presenting notification Notification { Message = Received order 571a6e25 for 1 Cars at $5000 }
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1.6785ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1.7869ms - 200
+info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[2013970020]
+      Received request ID '571a6e25' for 1 Cars at $5000
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1.1947ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1.3293ms - 200
+info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1478802116]
+      Reserving inventory for order request ID '571a6e25' of 1 Cars
+info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1130866279]
+      There are: 10 Cars available for purchase
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1.8534ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 2.0077ms - 200
+info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[1162731597]
+      Checked inventory for request ID 'InventoryRequest { RequestId = 571a6e25, ItemName = Cars, Quantity = 1 }'
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1.1851ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1.3742ms - 200
+info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[340284070]
+      Processing payment: request ID '571a6e25' for 1 Cars at $5000
+info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[1851315765]
+      Payment for request ID '571a6e25' processed successfully
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 0.8249ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 0.9595ms - 200
+info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[340284070]
+      Processed payment request as there's sufficient inventory to proceed: PaymentRequest { RequestId = 571a6e25, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 0.4457ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 0.5267ms - 200
+info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[2144991393]
+      Checking inventory for request ID '571a6e25' for 1 Cars
+info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[1901852920]
+      There are now 9 Cars left in stock
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 0.6012ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 0.7097ms - 200
+info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[96138418]
+      Updating available inventory for PaymentRequest { RequestId = 571a6e25, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 0.469ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 0.5431ms - 200
+info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
+      Presenting notification Notification { Message = Order 571a6e25 has completed! }
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 0.494ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 0.5685ms - 200
+info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[510392223]
+      Order 571a6e25 has completed
+info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
+      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[100]
+      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 1.6353ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 1.7546ms - 200
+info: System.Net.Http.HttpClient.Default.ClientHandler[101]
+      Received HTTP response headers after 15807.213ms - 200
+info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
+      End processing HTTP request after 15807.3675ms - 200
+Workflow Status: Completed
 ```
 
 4. Stop Dapr workflow with CTRL-C or:
@@ -211,6 +211,72 @@ dapr run -f .
 ```sh
 dapr stop -f .
 ```
+
+### Run without Docker
+
+By default, the quickstart uses Redis in Docker as the workflow state store, and the Dapr Placement and Scheduler services in Docker. You can run the quickstart without Docker and Redis and instead run the Dapr binaries as processes, and use an SQLite file to keep the workflow state.
+
+Use this option when Docker is not available or not allowed, for example on a locked-down laptop, in a CI job, or in a dev container without Docker. It also starts faster, because it has fewer moving parts.
+
+The commands are for Linux and macOS, and for Windows (PowerShell).
+
+#### Prerequisites without Docker and Redis
+
+- [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/). You do not need `dapr init` with Docker. Step 1 installs the binaries.
+- The [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) and the [.NET 8 runtime](https://dotnet.microsoft.com/download/dotnet/8.0). The build needs the .NET 10 SDK, because the Dapr state management source generator needs a newer compiler than the .NET 8 and .NET 9 SDKs have. The app targets `net8.0`, so it needs the .NET 8 runtime to run.
+- SQLite needs no install. `daprd` includes the SQLite state store.
+
+1. Install the Dapr binaries. This command installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin` (`$env:USERPROFILE\.dapr\bin` on Windows, with the `.exe` extension). It does not start them.
+
+    ```sh
+    dapr init --slim
+    ```
+
+2. Open a terminal in this quickstart directory and start the Scheduler service.
+
+    Linux and macOS:
+
+    ```sh
+    $HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    & "$env:USERPROFILE\.dapr\bin\scheduler.exe" --etcd-data-dir .\scheduler-data --port 6060
+    ```
+
+    On Windows, `dapr run` connects to the Scheduler service on port 6060 and to the Placement service on port 6050. On Linux and macOS, it uses ports 50006 and 50005. For this reason, the Windows commands set `--port`.
+
+3. Open a second terminal in the same directory and start the Placement service. The Placement service and the Scheduler service both use ports 8080 and 9090 by default, so this command sets other ports.
+
+    Linux and macOS:
+
+    ```sh
+    $HOME/.dapr/bin/placement --healthz-port 8081 --metrics-port 9091
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    & "$env:USERPROFILE\.dapr\bin\placement.exe" --healthz-port 8081 --metrics-port 9091 --port 6050
+    ```
+
+    On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2. The Scheduler service then serves actor placement.
+
+4. Open a third terminal in the same directory, build the app, and run it with the run file `dapr-sqlite.yaml`:
+
+    ```sh
+    cd ./order-processor
+    dotnet restore
+    dotnet build
+    cd ..
+    dapr run -f dapr-sqlite.yaml
+    ```
+
+`dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`components-sqlite`](../../components-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. The expected output is the same as in the steps above.
+
+To start again with no workflow state, stop all processes and delete the `scheduler-data` folder and the `workflows.db` file in the `order-processor` folder.
 
 ### View workflow output with Zipkin
 

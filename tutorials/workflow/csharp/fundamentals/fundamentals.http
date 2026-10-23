@@ -1,0 +1,12 @@
+@apphost=http://localhost:5254
+
+### Start the Basic workflow
+# @name startWorkflowRequest
+@input=One
+POST {{ apphost }}/start/{{ input }}
+
+
+@instanceId={{startWorkflowRequest.response.headers.Location}}
+@daprHost=http://localhost:3554
+### Get the workflow status
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}

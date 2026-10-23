@@ -1,0 +1,7 @@
+version: 1
+apps:
+  - appID: batch-sdk
+    appDirPath: ./batch
+    appPort: 5002
+    command: ["uv", "run", "python", "app.py"]
+    resourcesPath: ../../../components

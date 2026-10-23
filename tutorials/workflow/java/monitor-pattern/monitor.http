@@ -1,0 +1,9 @@
+@apphost=http://localhost:8080
+
+### Start the Monitor workflow
+@counter=0
+POST {{ apphost }}/start/{{counter}}
+
+### Get the workflow status
+GET {{ apphost }}/output
+

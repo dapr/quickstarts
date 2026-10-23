@@ -27,15 +27,7 @@ name: Install Python dependencies
 -->
 
 ```bash
-cd ./checkout
-pip3 install -r requirements.txt
-cd ..
-cd ./order-processor
-pip3 install -r requirements.txt
-cd ..
-cd ./order-processor-fastapi
-pip3 install -r requirements.txt
-cd ..
+uv sync --all-packages
 ```
 <!-- END_STEP -->
 
@@ -45,10 +37,10 @@ cd ..
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
-  - 'Started Dapr with app id "order-processor-sdk"'
-  - 'Started Dapr with app id "checkout-sdk"'
-  - '== APP - checkout-sdk == INFO:root:Published data: {"orderId": 1}'
-  - '== APP - order-processor-sdk == Subscriber received : 1'
+  - 'Validating config and starting app "order-processor-sdk"'
+  - 'Validating config and starting app "checkout-sdk"'
+  - 'Published data: {"orderId": 1}'
+  - 'Subscriber received : 1'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -58,39 +50,39 @@ timeout_seconds: 30
 -->
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 The terminal console output should look similar to this:
 
 ```text
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 1}
-== APP - order-processor-sdk == Subscriber received : 1
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:19] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 2}
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:20] "POST /orders HTTP/1.1" 200 -
-== APP - order-processor-sdk == Subscriber received : 2
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 3}
-== APP - order-processor-sdk == Subscriber received : 3
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:21] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 4}
-== APP - order-processor-sdk == Subscriber received : 4
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:22] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 5}
-== APP - order-processor-sdk == Subscriber received : 5
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:23] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 6}
-== APP - order-processor-sdk == Subscriber received : 6
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:24] "POST /orders HTTP/1.1" 200 -
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 7}
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:25] "POST /orders HTTP/1.1" 200 -
-== APP - order-processor-sdk == Subscriber received : 7
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 8}
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:26] "POST /orders HTTP/1.1" 200 -
-== APP - order-processor-sdk == Subscriber received : 8
-== APP - checkout-sdk == INFO:root:Published data: {"orderId": 9}
-== APP - order-processor-sdk == 127.0.0.1 - - [04/Sep/2023 11:15:27] "POST /orders HTTP/1.1" 200 -
-== APP - order-processor-sdk == Subscriber received : 9
+Published data: {"orderId": 1}
+Subscriber received : 1
+127.0.0.1 - - [04/Sep/2023 11:15:19] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 2}
+127.0.0.1 - - [04/Sep/2023 11:15:20] "POST /orders HTTP/1.1" 200 -
+Subscriber received : 2
+Published data: {"orderId": 3}
+Subscriber received : 3
+127.0.0.1 - - [04/Sep/2023 11:15:21] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 4}
+Subscriber received : 4
+127.0.0.1 - - [04/Sep/2023 11:15:22] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 5}
+Subscriber received : 5
+127.0.0.1 - - [04/Sep/2023 11:15:23] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 6}
+Subscriber received : 6
+127.0.0.1 - - [04/Sep/2023 11:15:24] "POST /orders HTTP/1.1" 200 -
+Published data: {"orderId": 7}
+127.0.0.1 - - [04/Sep/2023 11:15:25] "POST /orders HTTP/1.1" 200 -
+Subscriber received : 7
+Published data: {"orderId": 8}
+127.0.0.1 - - [04/Sep/2023 11:15:26] "POST /orders HTTP/1.1" 200 -
+Subscriber received : 8
+Published data: {"orderId": 9}
+127.0.0.1 - - [04/Sep/2023 11:15:27] "POST /orders HTTP/1.1" 200 -
+Subscriber received : 9
 
 ```
 
@@ -103,36 +95,36 @@ dapr stop -f .
 
 ## Run a single app at a time with Dapr (Optional)
 
-An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- python3 app.py` commands.  This next section covers how to do this. 
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- uv run python app.py` commands.  This next section covers how to do this. 
 
 ### Run Python message subscriber with Dapr
 
-1. Install dependencies: 
+1. Install dependencies:
+
+```bash
+uv sync --all-packages
+```
+
+2. Run the Python subscriber app with Dapr:
 
 ```bash
 cd ./order-processor
-pip3 install -r requirements.txt
-```
-
-2. Run the Python subscriber app with Dapr: 
-
-```bash
-dapr run --app-id order-processor-sdk --resources-path ../../../components/ --app-port 6001 -- uvicorn app:app --port 6002
+dapr run --app-id order-processor-sdk --resources-path ../../../components/ --app-port 6002 -- uv run python app.py
 ```
 
 ### Run Python message publisher with Dapr
 
-1. Install dependencies: 
+1. Install dependencies:
+
+```bash
+uv sync --all-packages
+```
+
+2. Run the Python publisher app with Dapr:
 
 ```bash
 cd ./checkout
-pip3 install -r requirements.txt 
-```
-
-2. Run the Python publisher app with Dapr: 
-
-```bash
-dapr run --app-id checkout-sdk --resources-path ../../../components/ -- python3 app.py
+dapr run --app-id checkout-sdk --resources-path ../../../components/ -- uv run python app.py
 ```
 
 ### Stop the apps and clean up

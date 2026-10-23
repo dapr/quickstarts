@@ -10,6 +10,7 @@ await Task.Delay(5000); // Allow time for the job-service-sdk to start
 
 // Instantiate an HTTP client for invoking the job-service-sdk application
 var httpClient = DaprClient.CreateInvokeHttpClient(appId: "job-service-sdk");
+var appPort = Environment.GetEnvironmentVariable("APP_PORT") ?? "6301";
 
 // Job details
 var r2d2Job = new DroidJob
@@ -25,8 +26,6 @@ var c3poJob = new DroidJob
   Job = "Limb Calibration",
   DueTime = 20
 };
-
-await Task.Delay(50);
 
 try
 {
@@ -86,9 +85,9 @@ async Task GetJobDetails(DroidJob job)
   }
 }
 
-await app.RunAsync();
+await app.RunAsync($"http://*:{appPort}");
 
-public class DroidJob
+public sealed class DroidJob
 {
   [JsonPropertyName("name")]
   public string? Name { get; set; }

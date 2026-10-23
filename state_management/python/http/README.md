@@ -21,9 +21,7 @@ name: Install python dependencies
 -->
 
 ```bash
-cd ./order-processor
-pip3 install -r requirements.txt 
-cd ..
+uv sync
 ```
 
 <!-- END_STEP -->
@@ -33,8 +31,8 @@ cd ..
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP - order-processor == INFO:root:Saving Order: {'orderId': '1'}"
-  - "== APP - order-processor == INFO:root:Saving Order: {'orderId': '2'}"
+  - "Saving Order: {'orderId': '1'}"
+  - "Saving Order: {'orderId': '2'}"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -43,7 +41,7 @@ sleep: 15
 -->
     
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 <!-- END_STEP -->
@@ -54,15 +52,15 @@ dapr stop -f .
 
 ## Run a single app at a time with Dapr (Optional)
 
-An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- python3 app.py` commands.  This next section covers how to do this.
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- uv run python app.py` commands.  This next section covers how to do this.
 
 1. Run the Python service app with Dapr: 
 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "== APP == INFO:root:Saving Order: {'orderId': '1'}"
-  - "== APP == INFO:root:Saving Order: {'orderId': '2'}"
+  - "Saving Order: {'orderId': '1'}"
+  - "Saving Order: {'orderId': '2'}"
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -72,7 +70,7 @@ sleep: 15
     
 ```bash
 cd ./order-processor
-dapr run --app-id order-processor --resources-path ../../../resources/ -- python3 app.py
+dapr run --app-id order-processor --resources-path ../../../resources/ -- uv run python app.py
 ```
 
 <!-- END_STEP -->

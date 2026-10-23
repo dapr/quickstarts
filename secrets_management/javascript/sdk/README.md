@@ -10,11 +10,9 @@ This quickstart includes one service:
 
 - Node client service `order-processor` 
 
-This quickstart includes one service:
-
-- Node client service `order-processor` 
-
 ### Run Node service with Dapr
+
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile.
 
 1. Navigate to folder and install dependencies: 
 
@@ -24,7 +22,7 @@ name: Install Node dependencies
 
 ```bash
 cd ./order-processor
-npm install
+npm ci
 ```
 <!-- END_STEP -->
 
@@ -33,7 +31,7 @@ npm install
 <!-- STEP
 name: Run Node publisher
 expected_stdout_lines:
-  - '== APP == Fetched Secret: {"secret":"YourPasskeyHere"}'
+  - 'Fetched Secret: {"secret":"YourPasskeyHere"}'
   - "Exited App successfully"
 expected_stderr_lines:
 working_dir: ./order-processor

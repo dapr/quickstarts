@@ -4,7 +4,7 @@ In this quickstart, you'll create a microservice to demonstrate Dapr's state man
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-management/) link for more information about Dapr and State Management.
 
-> **Note:** This example leverages the Dapr client SDK.  If you are looking for the example using only HTTP [click here](../http).
+> **Note:** This example uses the `Dapr.StateManagement` SDK and its source-generated state store implementation. If you are looking for the example using only HTTP [click here](../http).
 
 This quickstart includes one service: Dotnet client service `order-processor`
 
@@ -17,8 +17,8 @@ This section shows how to run applications at once using [multi-app run template
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP - order-processor == Getting Order: Order { orderId = 1 }'
-  - '== APP - order-processor == Getting Order: Order { orderId = 2 }'  
+  - 'Getting Order: {"orderId":1}'
+  - 'Getting Order: {"orderId":2}'  
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -45,8 +45,8 @@ An alternative to running all or multiple applications at once is to run single 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - '== APP == Getting Order: Order { orderId = 1 }'
-  - '== APP == Getting Order: Order { orderId = 2 }'
+  - 'Getting Order: {"orderId":1}'
+  - 'Getting Order: {"orderId":2}'
   - "Exited App successfully"
 expected_stderr_lines:
 output_match_mode: substring
@@ -65,15 +65,15 @@ The Terminal console output should look similar to this:
 ```text
 You're up and running! Both Dapr and your app logs will appear here.
 
-== APP == Saving Order: Order { orderId = 1 }
-== APP == Getting Order: Order { orderId = 1 }
-== APP == Deleting Order: Order { orderId = 1 }
-== APP == Saving Order: Order { orderId = 2 }
-== APP == Getting Order: Order { orderId = 2 }
-== APP == Deleting Order: Order { orderId = 2 }
-== APP == Saving Order: Order { orderId = 3 }
-== APP == Getting Order: Order { orderId = 3 }
-== APP == Deleting Order: Order { orderId = 3 }
+Saving Order: Order { OrderId = 1 }
+Getting Order: {"orderId":1}
+Deleting Order: Order { OrderId = 1 }
+Saving Order: Order { OrderId = 2 }
+Getting Order: {"orderId":2}
+Deleting Order: Order { OrderId = 2 }
+Saving Order: Order { OrderId = 3 }
+Getting Order: {"orderId":3}
+Deleting Order: Order { OrderId = 3 }
 ```
 
 2. Stop and clean up application processes

@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: fanoutfanin
+    appDirPath: fan_out_fan_in
+    appPort: 5256
+    daprHTTPPort: 3556
+    command: ["python3", "app.py"]
+    appLogDestination: console
+    daprdLogDestination: console

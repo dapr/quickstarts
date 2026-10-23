@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: chaining
+    appDirPath: TaskChaining
+    appPort: 5255
+    daprHTTPPort: 3555
+    command: ["dotnet", "run"]
+    appLogDestination: console
+    daprdLogDestination: console

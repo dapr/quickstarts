@@ -17,14 +17,13 @@ This quickstart includes one service:
 <!-- STEP
 name: Run and initialize PostgreSQL container
 expected_return_code:
-background: true
 sleep: 60
 timeout_seconds: 120
 -->
 
 ```bash
 cd ../../db
-docker compose up
+docker compose up -d
 ```
 
 <!-- END_STEP -->
@@ -40,14 +39,15 @@ name: Install Java dependencies
 ```bash
 cd ./batch
 mvn clean install
+cd ..
 ```
 
 <!-- END_STEP -->
-3. Run the java service app with Dapr: 
+
+3. Run the Java service app with Dapr:
 
 <!-- STEP
 name: Run batch-sdk service
-working_dir: ./batch
 expected_stdout_lines:
   - 'insert into orders (orderid, customer, price) values (1, ''John Smith'', 100.32)'
   - 'insert into orders (orderid, customer, price) values (2, ''Jane Bond'', 15.4)'
@@ -56,11 +56,11 @@ expected_stdout_lines:
 expected_stderr_lines:
 output_match_mode: substring
 sleep: 11
-timeout_seconds: 30
+timeout_seconds: 60
 -->
-    
+
 ```bash
-dapr run --app-id batch-sdk --app-port 8080 --resources-path ../../../components -- java -jar target/BatchProcessingService-0.0.1-SNAPSHOT.jar
+dapr run -f .
 ```
 
 <!-- END_STEP -->

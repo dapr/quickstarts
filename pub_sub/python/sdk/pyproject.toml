@@ -1,0 +1,11 @@
+[project]
+name = "pub-sub-python-sdk"
+version = "0"
+description = "Dapr pub/sub quickstart (Python SDK)."
+requires-python = ">=3.11"
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["checkout", "order-processor", "order-processor-fastapi"]

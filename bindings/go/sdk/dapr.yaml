@@ -1,0 +1,7 @@
+version: 1
+apps:
+  - appID: batch-sdk
+    appDirPath: ./batch
+    appPort: 6004
+    command: ["go", "run", "."]
+    resourcesPath: ../../../components

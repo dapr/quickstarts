@@ -1,13 +1,14 @@
-﻿namespace WorkflowConsoleApp.Activities;
+﻿using WorkflowConsoleApp.Models.State;
+
+namespace WorkflowConsoleApp.Activities;
 
 using System.Threading.Tasks;
-using Dapr.Client;
 using Dapr.Workflow;
 using Models;
 using Microsoft.Extensions.Logging;
 using System;
 
-internal sealed partial class UpdateInventoryActivity(ILogger<UpdateInventoryActivity> logger, DaprClient daprClient) : WorkflowActivity<PaymentRequest, object?>
+internal sealed partial class UpdateInventoryActivity(ILogger<UpdateInventoryActivity> logger, IInventoryStore inventoryStore) : WorkflowActivity<PaymentRequest, object?>
 {
     private const string StoreName = "statestore";
 
@@ -19,7 +20,7 @@ internal sealed partial class UpdateInventoryActivity(ILogger<UpdateInventoryAct
         await Task.Delay(TimeSpan.FromSeconds(5));
 
         // Determine if there are enough Items for purchase
-        var (original, _) = await daprClient.GetStateAndETagAsync<OrderPayload>(StoreName, req.ItemBeingPurchased);
+        var (original, _) = await inventoryStore.GetStateAndETagAsync<OrderPayload>(req.ItemBeingPurchased);
         var newQuantity = original.Quantity - req.Amount;
             
         if (newQuantity < 0)
@@ -28,8 +29,8 @@ internal sealed partial class UpdateInventoryActivity(ILogger<UpdateInventoryAct
             throw new InvalidOperationException();
         }
 
-        // Update the statestore with the new amount of paper clips
-        await daprClient.SaveStateAsync(StoreName, req.ItemBeingPurchased,  new OrderPayload(Name: req.ItemBeingPurchased, TotalCost: req.Currency, Quantity: newQuantity));
+        // Update the state store with the new amount of paper clips
+        await inventoryStore.SaveStateAsync(req.ItemBeingPurchased,  new OrderPayload(Name: req.ItemBeingPurchased, TotalCost: req.Currency, Quantity: newQuantity));
         LogUpdatedInventory(logger, newQuantity, original.Name);
 
         return null;

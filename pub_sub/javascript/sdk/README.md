@@ -14,6 +14,10 @@ And one subscriber:
  
 - Node subscriber `order-processor`
 
+## Prerequisites
+
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). Both apps pin `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfiles.
+
 ## Run all apps with multi-app run template file:
 
 This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
@@ -26,10 +30,10 @@ name: Install Node dependencies
 
 ```bash
 cd ./order-processor
-npm install
+npm ci
 cd ..
 cd ./checkout
-npm install
+npm ci
 cd ..
 ```
 <!-- END_STEP -->
@@ -41,8 +45,8 @@ name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-sdk"'
   - 'Started Dapr with app id "checkout-sdk"'
-  - '== APP - checkout-sdk == Published data: {"orderId":1}'
-  - '== APP - order-processor-sdk == Subscriber received: {"orderId":1}'
+  - 'Published data: {"orderId":1}'
+  - 'Subscriber received: {"orderId":1}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -55,32 +59,38 @@ timeout_seconds: 30
 dapr run -f .
 ```
 
+<!-- END_STEP -->
+
 The terminal console output should look similar to this:
 
 ```text
-== APP - checkout-sdk == Published data: {"orderId":1}
-== APP - order-processor-sdk == Subscriber received: {"orderId":1}
-== APP - checkout-sdk == Published data: {"orderId":2}
-== APP - order-processor-sdk == Subscriber received: {"orderId":2}
-== APP - checkout-sdk == Published data: {"orderId":3}
-== APP - order-processor-sdk == Subscriber received: {"orderId":3}
-== APP - checkout-sdk == Published data: {"orderId":4}
-== APP - order-processor-sdk == Subscriber received: {"orderId":4}
-== APP - checkout-sdk == Published data: {"orderId":5}
-== APP - order-processor-sdk == Subscriber received: {"orderId":5}
-== APP - checkout-sdk == Published data: {"orderId":6}
-== APP - order-processor-sdk == Subscriber received: {"orderId":6}
-== APP - checkout-sdk == Published data: {"orderId":7}
-== APP - order-processor-sdk == Subscriber received: {"orderId":7}
-== APP - checkout-sdk == Published data: {"orderId":8}
-== APP - order-processor-sdk == Subscriber received: {"orderId":8}
-== APP - checkout-sdk == Published data: {"orderId":9}
-== APP - order-processor-sdk == Subscriber received: {"orderId":9}
-== APP - checkout-sdk == Published data: {"orderId":10}
-== APP - order-processor-sdk == Subscriber received: {"orderId":10}
+Published data: {"orderId":1}
+Subscriber received: {"orderId":1}
+Published data: {"orderId":2}
+Subscriber received: {"orderId":2}
+Published data: {"orderId":3}
+Subscriber received: {"orderId":3}
+Published data: {"orderId":4}
+Subscriber received: {"orderId":4}
+Published data: {"orderId":5}
+Subscriber received: {"orderId":5}
+Published data: {"orderId":6}
+Subscriber received: {"orderId":6}
+Published data: {"orderId":7}
+Subscriber received: {"orderId":7}
+Published data: {"orderId":8}
+Subscriber received: {"orderId":8}
+Published data: {"orderId":9}
+Subscriber received: {"orderId":9}
+Published data: {"orderId":10}
+Subscriber received: {"orderId":10}
 ```
 
 3. Stop and clean up application processes
+
+<!-- STEP
+name: Stop pub-sub services
+-->
 
 ```bash
 dapr stop -f .
@@ -89,7 +99,7 @@ dapr stop -f .
 
 ## Run a single app at a time with Dapr (Optional)
 
-An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- dotnet run` commands.  This next section covers how to do this. 
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- npm start` commands. This next section covers how to do this.
 
 ### Run Node message subscriber with Dapr
 
@@ -97,13 +107,13 @@ An alternative to running all or multiple applications at once is to run single 
 
 ```bash
 cd ./order-processor
-npm install
+npm ci
 ```
 
-2. Run the Node publisher app with Dapr: 
+2. Run the Node subscriber app with Dapr:
 
 ```bash
-dapr run --app-port 5002 --app-id order-processing-sdk --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
+dapr run --app-port 5002 --app-id order-processor-sdk --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
 ```
 
 ### Run Node message publisher with Dapr
@@ -112,7 +122,7 @@ dapr run --app-port 5002 --app-id order-processing-sdk --app-protocol http --dap
 
 ```bash
 cd ./checkout
-npm install
+npm ci
 ```
 
 2. Run the Node publisher app with Dapr: 

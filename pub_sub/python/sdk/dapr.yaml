@@ -4,8 +4,8 @@ common:
 apps:
   - appID: order-processor-sdk
     appDirPath: ./order-processor/
-    appPort: 6001
-    command: ["uvicorn", "app:app"]
+    appPort: 6002
+    command: ["uv", "run", "python", "app.py"]
   - appID: checkout-sdk
     appDirPath: ./checkout/
-    command: ["python3", "app.py"]
+    command: ["uv", "run", "python", "app.py"]

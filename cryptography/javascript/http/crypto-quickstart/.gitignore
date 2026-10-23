@@ -1,0 +1,6 @@
+# Output files
+encrypted.out
+decrypted.out.txt
+
+# Generated keys
+keys/

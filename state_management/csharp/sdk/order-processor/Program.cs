@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Dapr.Client;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
+using System;
 using System.Text.Json;
-using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Dapr.StateManagement.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-string DAPR_STORE_NAME = "statestore";
-var client = new DaprClientBuilder().Build();
-for (int i = 1; i <= 100; i++) {
-    var orderId = i;
-    var order = new Order(orderId);
+var builder = Host.CreateApplicationBuilder();
+builder.Services.AddDaprStateManagementClient()
+    .WithStateStore();
+var app = builder.Build();
+
+var stateStore = app.Services.GetRequiredService<IStateStore>();
+for (var i = 0; i <= 100; i++)
+{
+    var order = new Order(i);
 
     // Save state into the state store
-    await client.SaveStateAsync(DAPR_STORE_NAME, orderId.ToString(), order.ToString());
+    await stateStore.SaveStateAsync(order.OrderId.ToString(), order);
     Console.WriteLine("Saving Order: " + order);
 
     // Get state from the state store
-    var result = await client.GetStateAsync<string>(DAPR_STORE_NAME, orderId.ToString());
-    Console.WriteLine("Getting Order: " + result);
-    
+    var result = await stateStore.GetStateAsync<Order>(order.OrderId.ToString());
+    Console.WriteLine("Getting Order: " + JsonSerializer.Serialize(result));
+
     // Delete state from the state store
-    await client.DeleteStateAsync(DAPR_STORE_NAME, orderId.ToString());
+    await stateStore.DeleteStateAsync(order.OrderId.ToString());
     Console.WriteLine("Deleting Order: " + order);
-    
+
     await Task.Delay(TimeSpan.FromSeconds(5));
 }
 
-public record Order([property: JsonPropertyName("orderId")] int orderId);
+public sealed record Order([property: JsonPropertyName("orderId")] int OrderId);

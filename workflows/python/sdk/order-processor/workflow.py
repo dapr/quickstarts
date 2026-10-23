@@ -1,5 +1,4 @@
 from datetime import timedelta
-import logging
 import json
 
 from dapr.ext.workflow import DaprWorkflowContext, WorkflowActivityContext, WorkflowRuntime, when_any
@@ -12,8 +11,6 @@ from model import InventoryItem, Notification, InventoryRequest, OrderPayload, O
 store_name = "statestore"
 
 wfr = WorkflowRuntime()
-
-logging.basicConfig(level=logging.INFO)
 
 
 @wfr.workflow(name="order_processing_workflow")
@@ -78,19 +75,14 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
 @wfr.activity(name="notify_activity")
 def notify_activity(ctx: WorkflowActivityContext, input: Notification):
     """Defines Notify Activity. This is used by the workflow to send out a notification"""
-    # Create a logger
-    logger = logging.getLogger('NotifyActivity')
-    logger.info(input.message)
+    print(input.message, flush=True)
 
 
 @wfr.activity(name="process_payment_activity")
 def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest):
     """Defines Process Payment Activity.This is used by the workflow to process a payment"""
-    logger = logging.getLogger('ProcessPaymentActivity')
-    logger.info('Processing payment: '+f'{input.request_id}'+' for '
-                +f'{input.quantity}' +' ' +f'{input.item_being_purchased}'+' at '+f'{input.amount}'
-                +' USD')
-    logger.info(f'Payment for request ID {input.request_id} processed successfully')
+    print(f'Processing payment: {input.request_id} for {input.quantity} {input.item_being_purchased} at {input.amount} USD', flush=True)
+    print(f'Payment for request ID {input.request_id} processed successfully', flush=True)
 
 
 @wfr.activity(name="verify_inventory_activity")
@@ -98,16 +90,13 @@ def verify_inventory_activity(ctx: WorkflowActivityContext,
                               input: InventoryRequest) -> InventoryResult:
     """Defines Verify Inventory Activity. This is used by the workflow to verify if inventory
     is available for the order"""
-    logger = logging.getLogger('VerifyInventoryActivity')
-
-    logger.info('Verifying inventory for order '+f'{input.request_id}'+' of '
-                +f'{input.quantity}' +' ' +f'{input.item_name}')
+    print(f'Verifying inventory for order {input.request_id} of {input.quantity} {input.item_name}', flush=True)
     with DaprClient(f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}') as client:
         result = client.get_state(store_name, input.item_name)
     if result.data is None:
         return InventoryResult(False, None)
     res_json=json.loads(str(result.data.decode('utf-8')))
-    logger.info(f'There are {res_json["quantity"]} {res_json["name"]} available for purchase')
+    print(f'There are {res_json["quantity"]} {res_json["name"]} available for purchase', flush=True)
     inventory_item = InventoryItem(item_name=input.item_name,
                                   per_item_cost=res_json['per_item_cost'],
                                   quantity=res_json['quantity'])
@@ -124,10 +113,7 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
     """Defines Update Inventory Activity. This is used by the workflow to check if inventory
     is sufficient to fulfill the order and updates inventory by reducing order quantity from
     inventory."""
-    logger = logging.getLogger('UpdateInventoryActivity')
-
-    logger.info('Checking inventory for order ' +f'{input.request_id}'+' for '
-                +f'{input.quantity}' +' ' +f'{input.item_being_purchased}')
+    print(f'Checking inventory for order {input.request_id} for {input.quantity} {input.item_being_purchased}', flush=True)
     with DaprClient(f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}') as client:
         result = client.get_state(store_name, input.item_being_purchased)
         res_json=json.loads(str(result.data.decode('utf-8')))
@@ -138,7 +124,7 @@ def update_inventory_activity(ctx: WorkflowActivityContext,
                              +' could not be processed. Insufficient inventory.')
         new_val = f'{{"name": "{input.item_being_purchased}", "quantity": {str(new_quantity)}, "per_item_cost": {str(per_item_cost)}}}'
         client.save_state(store_name, input.item_being_purchased, new_val)
-        logger.info(f'There are now {new_quantity} {input.item_being_purchased} left in stock')
+        print(f'There are now {new_quantity} {input.item_being_purchased} left in stock', flush=True)
 
 
 
@@ -148,7 +134,4 @@ def request_approval_activity(ctx: WorkflowActivityContext,
     """Defines Request Approval Activity. This is used by the workflow to request approval
     for payment of an order. This activity is used only if the order total cost is greater than
     a particular threshold"""
-    logger = logging.getLogger('RequestApprovalActivity')
-
-    logger.info('Requesting approval for payment of '+f'{input["total_cost"]}'+' USD for '
-                +f'{input["quantity"]}' +' ' +f'{input["item_name"]}')
+    print(f'Requesting approval for payment of {input["total_cost"]} USD for {input["quantity"]} {input["item_name"]}', flush=True)

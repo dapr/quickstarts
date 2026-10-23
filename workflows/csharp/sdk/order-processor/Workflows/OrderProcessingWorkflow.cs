@@ -3,7 +3,6 @@
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Dapr.Workflow;
-using DurableTask.Core.Exceptions;
 using Activities;
 using Models;
 
@@ -64,7 +63,7 @@ internal sealed partial class OrderProcessingWorkflow : Workflow<OrderPayload, O
             await context.CallActivityAsync(nameof(UpdateInventoryActivity), paymentRequest);
             LogInventoryUpdate(logger, paymentRequest);
         }
-        catch (TaskFailedException)
+        catch (WorkflowTaskFailedException)
         {
             // Let them know their payment was processed, but there's insufficient inventory, so they're getting a refund
             await context.CallActivityAsync(nameof(NotifyActivity),

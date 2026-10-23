@@ -42,26 +42,26 @@ dapr run -f .
 The terminal console output should look similar to this:
 
 ```text
-== APP - checkout-sdk == Published data: Order { OrderId = 1 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 1 }
-== APP - checkout-sdk == Published data: Order { OrderId = 2 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 2 }
-== APP - checkout-sdk == Published data: Order { OrderId = 3 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 3 }
-== APP - checkout-sdk == Published data: Order { OrderId = 4 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 4 }
-== APP - checkout-sdk == Published data: Order { OrderId = 5 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 5 }
-== APP - checkout-sdk == Published data: Order { OrderId = 6 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 6 }
-== APP - checkout-sdk == Published data: Order { OrderId = 7 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 7 }
-== APP - checkout-sdk == Published data: Order { OrderId = 8 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 8 }
-== APP - checkout-sdk == Published data: Order { OrderId = 9 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 9 }
-== APP - checkout-sdk == Published data: Order { OrderId = 10 }
-== APP - order-processor-sdk == Subscriber received : Order { OrderId = 10 }
+Published data: Order { OrderId = 1 }
+Subscriber received : Order { OrderId = 1 }
+Published data: Order { OrderId = 2 }
+Subscriber received : Order { OrderId = 2 }
+Published data: Order { OrderId = 3 }
+Subscriber received : Order { OrderId = 3 }
+Published data: Order { OrderId = 4 }
+Subscriber received : Order { OrderId = 4 }
+Published data: Order { OrderId = 5 }
+Subscriber received : Order { OrderId = 5 }
+Published data: Order { OrderId = 6 }
+Subscriber received : Order { OrderId = 6 }
+Published data: Order { OrderId = 7 }
+Subscriber received : Order { OrderId = 7 }
+Published data: Order { OrderId = 8 }
+Subscriber received : Order { OrderId = 8 }
+Published data: Order { OrderId = 9 }
+Subscriber received : Order { OrderId = 9 }
+Published data: Order { OrderId = 10 }
+Subscriber received : Order { OrderId = 10 }
 ```
 
 2. Stop and clean up application processes

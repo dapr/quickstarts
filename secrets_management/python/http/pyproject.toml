@@ -1,0 +1,11 @@
+[project]
+name = "secrets-management-python-http"
+version = "0"
+description = "Dapr secrets management quickstart (Python HTTP)."
+requires-python = ">=3.11"
+dependencies = [
+    "requests",
+]
+
+[tool.uv]
+package = false
