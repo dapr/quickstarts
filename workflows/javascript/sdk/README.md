@@ -18,6 +18,8 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 
 ### Run the order processor workflow with multi-app-run
 
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile. Run the commands below from this README's directory (`workflows/javascript/sdk`).
+
 1. Open a new terminal window and install the dependencies: 
 
 <!-- STEP
@@ -25,13 +27,12 @@ name: build order-process app
 -->
 
 ```bash
-cd ./javascript/sdk
-npm install
+npm ci
 npm run build
 ```
 
 <!-- END_STEP -->
-2. Run the app 
+2. Run the app. Choose one entry point at a time; stop it with `dapr stop -f .` before starting another.
 
 - Entry point 1 : JavaScript console app
 <!-- STEP
@@ -39,7 +40,7 @@ name: Run order-processor service
 expected_stdout_lines:
   - 'Payment of 5000 for 1 car processed successfully'
   - 'there are now 9 car in stock'
-  - 'processed successfully!'
+  - 'Orchestration completed! Result: {"processed":true}'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
@@ -142,9 +143,79 @@ Orchestration completed! Result: {"processed":true}
 
 4. Stop Dapr workflow with CTRL-C or:
 
-```sh
+<!-- STEP
+name: Stop order-processor workflow
+-->
+
+```bash
 dapr stop -f .
 ```
+
+<!-- END_STEP -->
+
+### Run without Docker
+
+By default, the quickstart uses Redis in Docker as the workflow state store, and the Dapr Placement and Scheduler services in Docker. You can run the quickstart without Docker and Redis and instead run the Dapr binaries as processes, and use an SQLite file to keep the workflow state.
+
+Use this option when Docker is not available or not allowed, for example on a locked-down laptop, in a CI job, or in a dev container without Docker. It also starts faster, because it has fewer moving parts.
+
+The commands are for Linux and macOS, and for Windows (PowerShell).
+
+#### Prerequisites without Docker and Redis
+
+- [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/). You do not need `dapr init` with Docker. Step 1 installs the binaries.
+- [Node.js](https://nodejs.org/en/download/)
+- SQLite needs no install. `daprd` includes the SQLite state store.
+
+1. Install the Dapr binaries. This command installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin` (`$env:USERPROFILE\.dapr\bin` on Windows, with the `.exe` extension). It does not start them.
+
+    ```sh
+    dapr init --slim
+    ```
+
+2. Open a terminal in this quickstart directory and start the Scheduler service.
+
+    Linux and macOS:
+
+    ```sh
+    $HOME/.dapr/bin/scheduler --etcd-data-dir ./scheduler-data
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    & "$env:USERPROFILE\.dapr\bin\scheduler.exe" --etcd-data-dir .\scheduler-data --port 6060
+    ```
+
+    On Windows, `dapr run` connects to the Scheduler service on port 6060 and to the Placement service on port 6050. On Linux and macOS, it uses ports 50006 and 50005. For this reason, the Windows commands set `--port`.
+
+3. Open a second terminal in the same directory and start the Placement service. The Placement service and the Scheduler service both use ports 8080 and 9090 by default, so this command sets other ports.
+
+    Linux and macOS:
+
+    ```sh
+    $HOME/.dapr/bin/placement --healthz-port 8081 --metrics-port 9091
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    & "$env:USERPROFILE\.dapr\bin\placement.exe" --healthz-port 8081 --metrics-port 9091 --port 6050
+    ```
+
+    On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2. The Scheduler service then serves actor placement.
+
+4. Open a third terminal in the same directory, install the dependencies, build the app, and run it with the run file `dapr-sqlite.yaml`:
+
+    ```sh
+    npm install
+    npm run build
+    dapr run -f dapr-sqlite.yaml
+    ```
+
+`dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`components-sqlite`](../../components-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. The expected output is the same as in the steps above. The other run files in this folder, `dapr-AppWithExpressServer.yaml` and `dapr-AppWithDaprServer.yaml`, still use Redis.
+
+To start again with no workflow state, stop all processes and delete the `scheduler-data` folder and the `workflows.db` file in the `order-processor` folder.
 
 ### View workflow output with Zipkin
 

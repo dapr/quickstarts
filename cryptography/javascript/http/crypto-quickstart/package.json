@@ -1,0 +1,15 @@
+{
+    "name": "crypto-quickstart-http",
+    "version": "1.0.0",
+    "description": "Encrypt and decrypt buffers and files using Dapr's HTTP cryptography API",
+    "main": "index.mjs",
+    "type": "module",
+    "scripts": {
+        "start": "node index.mjs",
+        "start:dapr": "dapr run --app-id crypto-http --resources-path ../../../components/ -- npm start"
+    },
+    "engines": {
+        "node": ">=20"
+    },
+    "license": "Apache-2.0"
+}
