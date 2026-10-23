@@ -30,6 +30,7 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | [Resiliency](./resiliency) | Define and apply fault-tolerant policies (retries/back-offs, timeouts and circuit breakers) to your Dapr API requests |
 | [Jobs](./jobs) | Dapr Jobs enable you to manage and schedule tasks |
 | [Vector](./vector) | Store precomputed vectors and query similar records with metadata filters |
+| [Search](./search/csharp/http/) | Index documents and search their content using the Search API |
 
 ### Tutorials
 
