@@ -2,7 +2,7 @@
 
 In this quickstart, you'll store, download, overwrite, and delete a file using the Dapr Binary Store SDK for .NET.
 
-The Binary Store building block is available in Dapr runtime 1.19.0-rc.3 and later. This example uses the in-memory binary store component, so it does not require an external storage service and its files are discarded when the Dapr sidecar stops.
+The Binary Store building block is available in Dapr runtime 1.19.0 and later. This example uses the in-memory binary store component, so it does not require an external storage service and its files are discarded when the Dapr sidecar stops.
 
 > **Note:** This example uses the Dapr .NET SDK. If you are looking for the example using the HTTP API directly, [click here](../http/).
 
@@ -13,12 +13,6 @@ This quickstart includes one app:
 ## Run the app with the template file
 
 This section shows how to run the application using the [multi-app run template file](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) and Dapr CLI with `dapr run -f .`.
-
-If needed, initialize a compatible prerelease runtime before running the quickstart:
-
-```bash
-dapr init --runtime-version 1.19.0-rc.3
-```
 
 Open a new terminal window and run the multi-app run template:
 
