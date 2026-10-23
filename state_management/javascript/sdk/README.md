@@ -9,6 +9,9 @@ Visit [this](https://docs.dapr.io/developing-applications/building-blocks/state-
 This quickstart includes one Node.js service, `order-processor`, and pins `@dapr/dapr` to `3.19.0`.
 
 The service saves, gets, and deletes 100 individual orders. It then saves two orders, `bulk-1` and `bulk-2`, checks that they exist, and passes their keys to `client.state.deleteBulk`. Finally, it reads both keys again and checks that they are absent before printing `Bulk orders deleted: bulk-1, bulk-2`. Any failed operation or check makes the app exit with an error.
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). This sample pins `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfile.
+
+This section shows how to run applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.
 
 Bulk deletion is not a transaction. The SDK uses parallel per-key DELETE requests over HTTP (the default transport), because Dapr has no HTTP bulk-delete endpoint. With `DAPR_PROTOCOL=grpc`, it uses Dapr's `DeleteBulkState` RPC instead.
 
@@ -66,6 +69,7 @@ name: Stop order-processor service
 ```bash
 dapr stop -f .
 ```
+
 <!-- END_STEP -->
 
 ## Run individually (optional)
