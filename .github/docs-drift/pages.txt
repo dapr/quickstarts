@@ -1,0 +1,15 @@
+# Pages that the docs drift check compares with the READMEs of this repository.
+#
+# One line per page, three fields separated by "|":
+#   <docs branch> | <page path under daprdocs/content/en/> | <Tab>=<sample folder>, <Tab>=<sample folder>, ...
+#
+# <Tab> is the exact name in the {{% tab "<Tab>" %}} shortcode of the page.
+# <sample folder> is a folder of this repository. Its README.md holds the <!-- STEP --> blocks.
+# A page without language tabs uses the tab name "*" (the whole page is one tab).
+# Lines that start with "#" and empty lines are ignored.
+#
+# To add a page: add one line. Run `python3 .github/docs-drift/drift_check.py` and read the output.
+# A command that the page has and the README does not have makes the check fail.
+# An optional command that the README does not need goes in allow-list.txt.
+
+v1.19 | getting-started/quickstarts/workflow-quickstart.md | Python=workflows/python/sdk, JavaScript=workflows/javascript/sdk, .NET=workflows/csharp/sdk, Java=workflows/java/sdk, Go=workflows/go/sdk

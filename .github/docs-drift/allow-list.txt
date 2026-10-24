@@ -1,0 +1,11 @@
+# Commands that a docs page may have and a README does not need.
+#
+# One line per command, two fields separated by "|":
+#   <Tab or *> | <command, with single spaces>
+#
+# "*" means every tab of every page. Lines that start with "#" and empty lines are ignored.
+# Add a line only for an optional command (for example a tool that the reader may start).
+# Do not add a line to hide a command that the reader must run.
+
+# Optional Zipkin container for the trace view.
+* | docker run -d -p 9411:9411 openzipkin/zipkin
