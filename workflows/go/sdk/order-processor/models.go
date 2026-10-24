@@ -34,8 +34,15 @@ type PaymentRequest struct {
 	Quantity           int    `json:"quantity"`
 }
 
-type ApprovalRequired struct {
-	Approval bool `json:"approval"`
+type ApprovalRequest struct {
+	RequestID string `json:"request_id"`
+	ItemName  string `json:"item_name"`
+	Quantity  int    `json:"quantity"`
+	TotalCost int    `json:"total_cost"`
+}
+
+type ApprovalResponse struct {
+	Approved bool `json:"approved"`
 }
 
 type Notification struct {
