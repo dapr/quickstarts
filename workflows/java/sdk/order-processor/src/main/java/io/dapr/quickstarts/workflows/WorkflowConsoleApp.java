@@ -14,10 +14,14 @@
 package io.dapr.quickstarts.workflows;
 
 import java.time.Duration;
-import java.util.concurrent.TimeoutException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import io.dapr.client.DaprClient;
 import io.dapr.client.DaprClientBuilder;
+import io.dapr.client.domain.State;
 import io.dapr.quickstarts.workflows.activities.NotifyActivity;
 import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
 import io.dapr.quickstarts.workflows.activities.RequestApprovalActivity;
@@ -33,6 +37,12 @@ import io.dapr.workflows.runtime.WorkflowRuntimeBuilder;
 public class WorkflowConsoleApp {
 
   private static final String STATE_STORE_NAME = "statestore";
+  private static final String ITEM_NAME = "cars";
+  private static final int PER_ITEM_COST = 5000;
+  private static final int ORDER_QUANTITY = 2;
+
+  // Keep a reference so the log level stays set.
+  private static final Logger DURABLE_TASK_LOGGER = Logger.getLogger("io.dapr.durabletask");
 
   /**
    * The main method of this console app.
@@ -41,8 +51,18 @@ public class WorkflowConsoleApp {
    * @throws Exception An Exception.
    */
   public static void main(String[] args) throws Exception {
+    // Hide the internal SDK messages. Keep the warnings.
+    DURABLE_TASK_LOGGER.setLevel(Level.WARNING);
+
     System.out.println("*** Welcome to the Dapr Workflow console app sample!");
     System.out.println("*** Using this app, you can place orders that start workflows.");
+
+    String orderId = System.getenv("ORDER_ID");
+    if (orderId == null || orderId.isBlank()) {
+      orderId = "order-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+    }
+    System.out.println("Order ID: " + orderId);
+
     // Wait for the sidecar to become available
     Thread.sleep(5 * 1000);
 
@@ -59,72 +79,52 @@ public class WorkflowConsoleApp {
     System.out.println("Start workflow runtime");
     runtime.start(false);
 
-    InventoryItem inventory = prepareInventoryAndOrder();
+    restockInventoryIfAbsent();
 
     DaprWorkflowClient workflowClient = new DaprWorkflowClient();
     try (workflowClient) {
-      executeWorkflow(workflowClient, inventory);
+      executeWorkflow(workflowClient, orderId);
+    }
+    System.exit(0);
+  }
+
+  private static void executeWorkflow(DaprWorkflowClient workflowClient, String orderId) throws Exception {
+    // Look for an instance with this ID. A restart finds the instance that the first run started.
+    // A missing instance comes back as a status with an empty name.
+    WorkflowInstanceStatus existing = workflowClient.getInstanceState(orderId, false);
+    if (existing == null || existing.getName() == null || existing.getName().isEmpty()) {
+      OrderPayload order = new OrderPayload();
+      order.setItemName(ITEM_NAME);
+      order.setQuantity(ORDER_QUANTITY);
+      order.setTotalCost(ORDER_QUANTITY * PER_ITEM_COST);
+      workflowClient.scheduleNewWorkflow(OrderProcessingWorkflow.class, order, orderId);
+      System.out.printf("Started order %s.%n", orderId);
+    } else if (existing.isCompleted()) {
+      System.out.printf("Workflow completed: %s%n", existing.getRuntimeStatus().name());
+      return;
+    } else {
+      System.out.printf("Order %s is already running. Waiting for it to finish.%n", orderId);
+    }
+
+    WorkflowInstanceStatus status = workflowClient.waitForInstanceCompletion(orderId, Duration.ofMinutes(15), true);
+    if (status != null) {
+      System.out.printf("Workflow completed: %s%n", status.getRuntimeStatus().name());
+    } else {
+      System.out.printf("Order %s not found%n", orderId);
     }
   }
 
-  private static void executeWorkflow(DaprWorkflowClient workflowClient, InventoryItem inventory) {
-    System.out.println("==========Begin the purchase of item:==========");
-    String itemName = inventory.getName();
-    int orderQuantity = inventory.getQuantity();
-    int totalCost = orderQuantity * inventory.getPerItemCost();
-    OrderPayload order = new OrderPayload();
-    order.setItemName(itemName);
-    order.setQuantity(orderQuantity);
-    order.setTotalCost(totalCost);
-    System.out.println("Starting order workflow, purchasing " + orderQuantity + " of " + itemName);
-
-    String instanceId = workflowClient.scheduleNewWorkflow(OrderProcessingWorkflow.class, order);
-    System.out.printf("Scheduled new workflow instance of OrderProcessingWorkflow with instance ID: %s%n",
-        instanceId);
-
-    try {
-      workflowClient.waitForInstanceStart(instanceId, Duration.ofSeconds(10), false);
-      System.out.printf("Workflow instance %s started%n", instanceId);
-    } catch (TimeoutException e) {
-      System.out.printf("Workflow instance %s did not start within 10 seconds%n", instanceId);
+  private static void restockInventoryIfAbsent() {
+    DaprClient daprClient = new DaprClientBuilder().build();
+    // Write the inventory only when it is not there yet, so a restart does not restock.
+    State<InventoryItem> current = daprClient.getState(STATE_STORE_NAME, ITEM_NAME, InventoryItem.class).block();
+    if (current != null && current.getValue() != null) {
       return;
     }
-
-    try {
-      WorkflowInstanceStatus workflowStatus = workflowClient.waitForInstanceCompletion(instanceId,
-          Duration.ofSeconds(30),
-          true);
-      if (workflowStatus != null) {
-        System.out.printf("Workflow instance completed, out is: %s%n",
-            workflowStatus.getSerializedOutput());
-      } else {
-        System.out.printf("Workflow instance %s not found%n", instanceId);
-      }
-    } catch (TimeoutException e) {
-      System.out.printf("Workflow instance %s did not complete within 30 seconds%n", instanceId);
-    }
-
-  }
-
-  private static InventoryItem prepareInventoryAndOrder() {
-    // prepare 10 cars in inventory
     InventoryItem inventory = new InventoryItem();
-    inventory.setName("cars");
-    inventory.setPerItemCost(5000);
+    inventory.setName(ITEM_NAME);
+    inventory.setPerItemCost(PER_ITEM_COST);
     inventory.setQuantity(10);
-    DaprClient daprClient = new DaprClientBuilder().build();
-    restockInventory(daprClient, inventory);
-
-    // prepare order for 1 car
-    InventoryItem order = new InventoryItem();
-    order.setName("cars");
-    order.setPerItemCost(5000);
-    order.setQuantity(1);
-    return order;
-  }
-
-  private static void restockInventory(DaprClient daprClient, InventoryItem inventory) {
-    String key = inventory.getName();
-    daprClient.saveState(STATE_STORE_NAME, key, inventory).block();
+    daprClient.saveState(STATE_STORE_NAME, ITEM_NAME, inventory).block();
   }
 }
