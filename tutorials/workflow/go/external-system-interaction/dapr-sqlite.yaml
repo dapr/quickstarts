@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources-sqlite
+apps:
+  - appID: externalevents
+    appDirPath: externalevents
+    appPort: 5258
+    daprHTTPPort: 3558
+    command: ["go", "run", "."]
+    appLogDestination: console
+    daprdLogDestination: console
