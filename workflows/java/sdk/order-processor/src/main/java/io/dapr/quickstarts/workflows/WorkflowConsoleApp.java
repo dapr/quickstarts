@@ -33,6 +33,8 @@ import io.dapr.workflows.client.DaprWorkflowClient;
 import io.dapr.workflows.client.WorkflowInstanceStatus;
 import io.dapr.workflows.runtime.WorkflowRuntime;
 import io.dapr.workflows.runtime.WorkflowRuntimeBuilder;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 
 public class WorkflowConsoleApp {
 
@@ -91,7 +93,7 @@ public class WorkflowConsoleApp {
   private static void executeWorkflow(DaprWorkflowClient workflowClient, String orderId) throws Exception {
     // Look for an instance with this ID. A restart finds the instance that the first run started.
     // A missing instance comes back as a status with an empty name.
-    WorkflowInstanceStatus existing = workflowClient.getInstanceState(orderId, false);
+    WorkflowInstanceStatus existing = getInstanceStateWhenReady(workflowClient, orderId);
     if (existing == null || existing.getName() == null || existing.getName().isEmpty()) {
       OrderPayload order = new OrderPayload();
       order.setItemName(ITEM_NAME);
@@ -111,6 +113,22 @@ public class WorkflowConsoleApp {
       System.out.printf("Workflow completed: %s%n", status.getRuntimeStatus().name());
     } else {
       System.out.printf("Order %s not found%n", orderId);
+    }
+  }
+
+  // Right after the sidecar starts, its workflow runtime can answer UNAVAILABLE.
+  // Try again every second, for up to 60 seconds.
+  private static WorkflowInstanceStatus getInstanceStateWhenReady(DaprWorkflowClient workflowClient, String orderId)
+      throws InterruptedException {
+    for (int attempt = 1; ; attempt++) {
+      try {
+        return workflowClient.getInstanceState(orderId, false);
+      } catch (StatusRuntimeException e) {
+        if (e.getStatus().getCode() != Status.Code.UNAVAILABLE || attempt >= 60) {
+          throw e;
+        }
+        Thread.sleep(1000);
+      }
     }
   }
 
