@@ -1,0 +1,38 @@
+name: Docs drift check
+
+# Compares the shell commands of the Dapr docs quickstart pages with the READMEs in this repository.
+# The pages are listed in .github/docs-drift/pages.txt.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every Monday at 06:00 UTC.
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    name: Check docs pages for command drift
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compare the docs pages with the READMEs
+        run: python3 .github/docs-drift/drift_check.py --tsv drift.tsv
+
+      - name: Upload the result rows
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-drift
+          path: drift.tsv
+          if-no-files-found: ignore
