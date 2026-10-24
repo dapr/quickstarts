@@ -41,7 +41,7 @@ set -u
 
 LANG_=${1:-}
 TOPIC=${2:-}
-[ -n "$LANG_" ] && [ -n "$TOPIC" ] || { echo "usage: $0 <python|csharp|go|java> <topic>" >&2; exit 2; }
+[ -n "$LANG_" ] && [ -n "$TOPIC" ] || { echo "usage: $0 <python|csharp|go|java|javascript> <topic>" >&2; exit 2; }
 
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 DIR=$HERE/$LANG_/$TOPIC
@@ -132,6 +132,14 @@ case "$LANG_" in
     ;;
   go)
     ( cd "$APP" && go build ./... ) > "$LOGDIR/build.log" 2>&1 || { show_logs; fail "go build failed"; }
+    ;;
+  javascript)
+    for p in $(find "$APP" -maxdepth 2 -name package.json -not -path '*/node_modules/*' | sort); do
+      d=$(dirname "$p")
+      ( cd "$d" && if [ -f package-lock.json ]; then npm ci; else npm install; fi \
+          && if grep -q '"build"' package.json; then npm run build; fi ) > "$LOGDIR/build-$(basename "$d").log" 2>&1 \
+        || { show_logs; fail "npm install or npm run build failed in $d"; }
+    done
     ;;
 esac
 
