@@ -9,6 +9,6 @@ Start with the quickstart for your language in the [workflows](../../workflows) 
 | [Python](./python/README.md) | Workflow basics, task chaining, fan-out/fan-in, monitor, external events, child workflows, resiliency and compensation, combined patterns, workflow management, versioning, history propagation, challenges and tips |
 | [.NET (C#)](./csharp/README.md) | Workflow basics, task chaining, fan-out/fan-in, monitor, external events, child workflows, resiliency and compensation, combined patterns, workflow management, versioning, history propagation, challenges and tips |
 | [Java](./java/README.md) | Workflow basics, task chaining, fan-out/fan-in, monitor, external events, child workflows, resiliency and compensation, combined patterns, workflow management, versioning, history propagation, challenges and tips |
-| [Go](./go/README.md) | History propagation |
+| [Go](./go/README.md) | Workflow basics, task chaining, fan-out/fan-in, monitor, external events, child workflows, resiliency and compensation, combined patterns, workflow management, versioning, history propagation, challenges and tips |
 
 To learn about the workflow features, concepts, and patterns, see the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/workflow/).
