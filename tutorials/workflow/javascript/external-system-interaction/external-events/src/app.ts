@@ -2,11 +2,13 @@ import { DaprWorkflowClient, WorkflowRuntime } from "@dapr/dapr";
 import express from "express";
 import { Order, externalEventsWorkflow, processOrder, requestApproval, sendNotification } from "./externalEventsWorkflow";
 
-const workflowRuntime = new WorkflowRuntime()
-  .registerWorkflow(externalEventsWorkflow)
-  .registerActivity(requestApproval)
-  .registerActivity(sendNotification)
-  .registerActivity(processOrder);
+function createWorkflowRuntime(): WorkflowRuntime {
+  return new WorkflowRuntime()
+    .registerWorkflow(externalEventsWorkflow)
+    .registerActivity(requestApproval)
+    .registerActivity(sendNotification)
+    .registerActivity(processOrder);
+}
 
 const app = express();
 app.use(express.json());
@@ -33,7 +35,11 @@ const server = app.listen(5258, () => {
   console.log("Listening on port 5258");
 });
 
+let workflowRuntime = createWorkflowRuntime();
+let stopping = false;
+
 async function stop() {
+  stopping = true;
   server.close();
   await workflowRuntime.stop();
   await workflowClient.stop();
@@ -42,9 +48,28 @@ async function stop() {
 process.once("SIGTERM", () => { void stop(); });
 process.once("SIGINT", () => { void stop(); });
 
-workflowRuntime.start().then(() => {
-  console.log("Workflow runtime started");
-}).catch((error) => {
+/*
+ * The app and the Dapr sidecar start at the same time. The sidecar can open its gRPC port
+ * after the app is ready, so the workflow runtime tries again until the sidecar answers.
+ */
+async function startWorkflowRuntime() {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await workflowRuntime.start();
+      console.log("Workflow runtime started");
+      return;
+    } catch (error) {
+      if (stopping || attempt === 30) {
+        throw error;
+      }
+      await workflowRuntime.stop().catch(() => undefined);
+      workflowRuntime = createWorkflowRuntime();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
+}
+
+startWorkflowRuntime().catch((error) => {
   console.error(error);
   process.exit(1);
 });

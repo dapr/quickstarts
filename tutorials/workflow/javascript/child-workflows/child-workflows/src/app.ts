@@ -2,11 +2,13 @@ import { DaprWorkflowClient, WorkflowRuntime } from "@dapr/dapr";
 import express from "express";
 import { activity1, activity2, childWorkflow, parentWorkflow } from "./parentChildWorkflow";
 
-const workflowRuntime = new WorkflowRuntime()
-  .registerWorkflow(parentWorkflow)
-  .registerWorkflow(childWorkflow)
-  .registerActivity(activity1)
-  .registerActivity(activity2);
+function createWorkflowRuntime(): WorkflowRuntime {
+  return new WorkflowRuntime()
+    .registerWorkflow(parentWorkflow)
+    .registerWorkflow(childWorkflow)
+    .registerActivity(activity1)
+    .registerActivity(activity2);
+}
 
 const app = express();
 app.use(express.json());
@@ -31,7 +33,11 @@ const server = app.listen(5259, () => {
   console.log("Listening on port 5259");
 });
 
+let workflowRuntime = createWorkflowRuntime();
+let stopping = false;
+
 async function stop() {
+  stopping = true;
   server.close();
   await workflowRuntime.stop();
   await workflowClient.stop();
@@ -40,9 +46,28 @@ async function stop() {
 process.once("SIGTERM", () => { void stop(); });
 process.once("SIGINT", () => { void stop(); });
 
-workflowRuntime.start().then(() => {
-  console.log("Workflow runtime started");
-}).catch((error) => {
+/*
+ * The app and the Dapr sidecar start at the same time. The sidecar can open its gRPC port
+ * after the app is ready, so the workflow runtime tries again until the sidecar answers.
+ */
+async function startWorkflowRuntime() {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await workflowRuntime.start();
+      console.log("Workflow runtime started");
+      return;
+    } catch (error) {
+      if (stopping || attempt === 30) {
+        throw error;
+      }
+      await workflowRuntime.stop().catch(() => undefined);
+      workflowRuntime = createWorkflowRuntime();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
+}
+
+startWorkflowRuntime().catch((error) => {
   console.error(error);
   process.exit(1);
 });
