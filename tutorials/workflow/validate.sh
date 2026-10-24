@@ -131,7 +131,7 @@ case "$LANG_" in
     done
     ;;
   go)
-    ( cd "$APP" && go build ./... ) > "$LOGDIR/build.log" 2>&1 || { show_logs; fail "go build failed"; }
+    ( cd "$APP" && go build -o /dev/null ./... ) > "$LOGDIR/build.log" 2>&1 || { show_logs; fail "go build failed"; }
     ;;
 esac
 
