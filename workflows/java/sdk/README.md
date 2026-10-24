@@ -16,7 +16,21 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 
 ### Run the order processor workflow
 
-1. Open a new terminal window and navigate to `order-processor` directory: 
+The app places one order for 2 cars at $5,000 each. The total is $10,000, so the workflow waits for your approval. You stop the app while it waits, start it again, and then approve the order. The workflow continues from where it stopped.
+
+1. Set an order ID. The app uses it as the workflow instance ID. Use the same terminal for all the steps below.
+
+    ```bash
+    export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+    ```
+
+    On Windows (PowerShell):
+
+    ```powershell
+    $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+    ```
+
+2. Build the app, and then run it with Dapr:
 
 <!-- STEP
 name: Install Java dependencies
@@ -29,87 +43,89 @@ cd ..
 ```
 
 <!-- END_STEP -->
-2. Run the console app with Dapr: 
 
 <!-- STEP
 name: Run order-processor service
+env:
+  ORDER_ID: order-validate
 expected_stdout_lines:
-  - 'there are now 9 cars left in stock'
-  - 'Workflow instance completed, out is: {"processed":true}'
+  - 'Order ID: order-validate'
+  - 'Started order order-validate.'
+  - 'Approval requested for order order-validate. Waiting for approval.'
+  - 'there are now 8 cars left in stock'
+  - 'Workflow completed: COMPLETED'
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 15
+sleep: 20
 timeout_seconds: 120
 -->
-    
+
 ```bash
 dapr run -f .
 ```
 
 <!-- END_STEP -->
 
-3. Expected output. The instance ID, the dates, the times and the ports differ on each run:
+    The log shows the order ID, the start of the order, the activities before the approval, and then that the workflow waits for approval. The instance ID, the dates and the ports differ on each run:
 
-```
-*** Welcome to the Dapr Workflow console app sample!
-*** Using this app, you can place orders that start workflows.
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Workflow: OrderProcessingWorkflow
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Activity: NotifyActivity
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Activity: ProcessPaymentActivity
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Activity: RequestApprovalActivity
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Activity: VerifyInventoryActivity
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Activity: UpdateInventoryActivity
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - List of registered workflows: [io.dapr.quickstarts.workflows.OrderProcessingWorkflow]
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - List of registered activities: [io.dapr.quickstarts.workflows.activities.NotifyActivity, io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity, io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity, io.dapr.quickstarts.workflows.activities.RequestApprovalActivity, io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity]
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Successfully built dapr workflow runtime
-Start workflow runtime
-Oct 24, 2026 12:37:00 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
-INFO: Durable Task worker is connecting to sidecar at 127.0.0.1:44409.
-==========Begin the purchase of item:==========
-Starting order workflow, purchasing 1 of cars
-Oct 24, 2026 12:37:00 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
-INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Starting Workflow: io.dapr.quickstarts.workflows.OrderProcessingWorkflow
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Instance ID(order ID): cb027210-b3e3-4521-ab1e-c37404f3dac5
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Current Orchestration Time: 2026-10-24T00:37:00.408Z
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Received Order: OrderPayload [itemName=cars, totalCost=5000, quantity=1]
-Scheduled new workflow instance of OrderProcessingWorkflow with instance ID: cb027210-b3e3-4521-ab1e-c37404f3dac5
-Oct 24, 2026 12:37:00 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
-INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.NotifyActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=5000, quantity=1]
-Workflow instance cb027210-b3e3-4521-ab1e-c37404f3dac5 started
-Oct 24, 2026 12:37:00 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
-INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
-Oct 24, 2026 12:37:00 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
-INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verifying inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5' of 1 cars
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - There are 10 cars available for purchase
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verified inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5' of 1 cars
-Oct 24, 2026 12:37:02 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
-INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
-Oct 24, 2026 12:37:02 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
-INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: cb027210-b3e3-4521-ab1e-c37404f3dac5 for 1 cars at $5000
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID 'cb027210-b3e3-4521-ab1e-c37404f3dac5' processed successfully
-Oct 24, 2026 12:37:09 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
-INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
-Oct 24, 2026 12:37:09 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
-INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5' of 1 cars
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5': there are now 9 cars left in stock
-there are now 9 cars left in stock
-Oct 24, 2026 12:37:11 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
-INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
-Oct 24, 2026 12:37:11 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
-INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.NotifyActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
-[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : cb027210-b3e3-4521-ab1e-c37404f3dac5
-Oct 24, 2026 12:37:11 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
-INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
-Workflow instance completed, out is: {"processed":true}
+    ```
+    *** Welcome to the Dapr Workflow console app sample!
+    *** Using this app, you can place orders that start workflows.
+    Order ID: order-20261024-003700
+    Start workflow runtime
+    Started order order-20261024-003700.
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=10000, quantity=2]
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verifying inventory for order 'order-20261024-003700' of 2 cars
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - There are 10 cars available for purchase
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verified inventory for order 'order-20261024-003700' of 2 cars
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.RequestApprovalActivity - Requesting approval for order: order-20261024-003700
+    Approval requested for order order-20261024-003700. Waiting for approval.
+    ```
+
+3. Stop the app with CTRL-C.
+
+4. Start the app again in the same terminal. `ORDER_ID` is still set, so the app finds the order that is already running:
+
+    ```bash
+    dapr run -f .
+    ```
+
+    The log shows `Order order-20261024-003700 is already running. Waiting for it to finish.` The activities before the approval do not run again.
+
+5. In a second terminal, approve the order. Use the order ID that the app printed:
+
+<!-- STEP
+name: Approve the order
+expected_stdout_lines:
+  - "raised event 'ApprovalEvent' successfully"
+expected_stderr_lines:
+output_match_mode: substring
+-->
+
+```bash
+dapr workflow raise-event order-validate/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
-4. Stop Dapr workflow with CTRL-C or:
+<!-- END_STEP -->
+
+    To reject the order, send `{"approved": false}`. If you send no answer in 10 minutes, the workflow cancels the order.
+
+6. The first terminal shows the payment, the inventory update and the end of the workflow:
+
+    ```
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: order-20261024-003700 for 2 cars at $10000
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID 'order-20261024-003700' processed successfully
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order 'order-20261024-003700' of 2 cars
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order 'order-20261024-003700': there are now 8 cars left in stock
+    there are now 8 cars left in stock
+    [pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : order-20261024-003700
+    Workflow completed: COMPLETED
+    ```
+
+    The steps that finished before you stopped the app did not run again. The workflow continued from its history. Dapr kept the history while the app was off. A step that was running when you stopped the app can run again.
+
+7. Stop Dapr workflow with CTRL-C or:
 
 ```sh
 dapr stop -f .
@@ -167,16 +183,21 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
 
     On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2. The Scheduler service then serves actor placement.
 
-4. Open a third terminal in the same directory, build the app, and run it with the run file `dapr-sqlite.yaml`:
+4. Open a third terminal in the same directory. Set an order ID, build the app, and run it with the run file `dapr-sqlite.yaml`:
 
     ```sh
+    export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
     cd ./order-processor
     mvn clean install
     cd ..
     dapr run -f dapr-sqlite.yaml
     ```
 
-`dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`components-sqlite`](../../components-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. The expected output is the same as in the steps above.
+    On Windows (PowerShell), set the order ID with `$env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"`.
+
+5. Follow steps 3 to 6 of the section above. Stop the app with CTRL-C, start it again with `dapr run -f dapr-sqlite.yaml`, approve the order from a second terminal, and see the workflow finish. The log is the same as in the steps above.
+
+`dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`components-sqlite`](../../components-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`.
 
 To start again with no workflow state, stop all processes and delete the `scheduler-data` folder and the `workflows.db` file in the `order-processor/target` folder.
 
@@ -194,18 +215,19 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 <img src="img/workflow-trace-spans-zipkin.png">
 
-### What happened? 
+### What happened?
 
 When you ran `dapr run -f .`:
 
-1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `d1bf548b-c854-44af-978e-90c61ed88e3c`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
-4. The `VertifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
-5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `d1bf548b-c854-44af-978e-90c61ed88e3c` and confirms if successful.
-7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `d1bf548b-c854-44af-978e-90c61ed88e3c` has completed.
-9. The workflow terminates as completed and the orderResult is set to processed.
+1. The app read the order ID from `ORDER_ID`. When `ORDER_ID` is not set, the app makes an ID from the date and the time.
+2. The app looked for a workflow instance with that ID. It found none, so it scheduled `OrderProcessingWorkflow` for an order of 2 cars. The total cost is 10000.
+3. The app wrote the inventory (10 cars) to the state store, because the inventory key was not there.
+4. The `NotifyActivity` workflow activity sends a notification saying the app received an order for 2 cars.
+5. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
+6. The total cost of the order is over 5000, so the workflow calls the `RequestApprovalActivity` activity. The activity prints that it waits for approval. The workflow then waits for the external event `ApprovalEvent`, for up to 10 minutes.
+7. When you started the app again, it found the instance with the same ID, and did not schedule a new one. It did not write the inventory again, because the inventory key was already there.
+8. The `dapr workflow raise-event` command sent `ApprovalEvent` with `{"approved": true}`. The workflow continued from its history.
+9. The `ProcessPaymentActivity` workflow activity processes the payment, and the `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars (8).
+10. The `NotifyActivity` workflow activity sends a notification saying that the order is complete. The workflow ends as completed and the app prints `Workflow completed: COMPLETED`.
 
-> **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `RequestApprovalActivity` activity nor wait for an approval event. Since the quickstart is a console application, it can't accept incoming events easily. If you want to test this scenario, convert the console app to a service and use the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request) via HTTP/gRPC or via the Dapr Workflow client to send an event to the workflow instance.
+If you start the app with the ID of an order that ended, the app prints the status of that order and exits.
