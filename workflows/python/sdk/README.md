@@ -79,22 +79,23 @@ uv run dapr run -f .
     Order <id> is already running. Waiting for it to finish.
     ```
 
-6. In a second terminal, approve the order. Use the order ID that the app printed.
+6. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
 <!-- STEP
 name: Approve the order
+env:
+  ORDER_ID: order-validate
 expected_stdout_lines:
   - "raised event 'ApprovalEvent' successfully"
 output_match_mode: substring
 -->
 
 ```sh
-dapr workflow raise-event order-validate/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
 <!-- END_STEP -->
 
-    For your own order, replace `order-validate` with your order ID.
 
 7. The first terminal shows the payment, the inventory update, and the end of the workflow:
 
@@ -190,10 +191,10 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
     uv run dapr run -f dapr-sqlite.yaml
     ```
 
-7. In a fourth terminal, approve the order:
+7. In a fourth terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
     ```sh
-    dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+    dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
     ```
 
     The terminal of the app shows `Workflow completed: COMPLETED`.

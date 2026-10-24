@@ -94,15 +94,17 @@ Approval requested for order order-20261024-101500. Waiting for approval.
 
     The log shows `Order order-20261024-101500 is already running. Waiting for it to finish.` The app does not start a new order and does not add stock again. The steps before the approval do not run again.
 
-6. In a second terminal, approve the order. Use the order ID that the app printed:
+6. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
 <!-- STEP
 name: Approve the order
+env:
+  ORDER_ID: order-validate
 sleep: 15
 -->
 
 ```bash
-dapr workflow raise-event order-validate/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
 <!-- END_STEP -->
@@ -259,7 +261,7 @@ The workflow waits for **`ApprovalEvent`** with an **`{ "approved": true }`** or
 Send the approval with the Dapr CLI, as in step 6:
 
 ```bash
-dapr workflow raise-event <ORDER_ID>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
 You can also call `DaprWorkflowClient.raiseEvent(orderId, "ApprovalEvent", { approved: true })` from a client connected to the same sidecar. See the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request).
@@ -352,10 +354,10 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
 
     The log shows `Order <id> is already running. Waiting for it to finish.` The steps before the approval do not run again.
 
-8. In a fourth terminal, approve the order. Use the order ID that the app printed:
+8. In a fourth terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
     ```sh
-    dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+    dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
     ```
 
 9. The first terminal shows the payment, the inventory update, and `Workflow completed: COMPLETED`.

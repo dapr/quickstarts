@@ -93,10 +93,12 @@ dapr run -f .
 
     The log shows `Order order-20261024-003700 is already running. Waiting for it to finish.` The activities before the approval do not run again.
 
-5. In a second terminal, approve the order. Use the order ID that the app printed:
+5. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
 <!-- STEP
 name: Approve the order
+env:
+  ORDER_ID: order-validate
 expected_stdout_lines:
   - "raised event 'ApprovalEvent' successfully"
 expected_stderr_lines:
@@ -104,7 +106,7 @@ output_match_mode: substring
 -->
 
 ```bash
-dapr workflow raise-event order-validate/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
 <!-- END_STEP -->

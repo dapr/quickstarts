@@ -92,10 +92,12 @@ dapr run -f .
 
     The log shows `Order <id> is already running. Waiting for it to finish.` The activities before the approval do not run again.
 
-6. In a second terminal, approve the order. Use the order ID that the app printed.
+6. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
 <!-- STEP
 name: Approve the order
+env:
+  ORDER_ID: order-validate
 expected_stdout_lines:
   - "Workflow 'order-validate' raised event 'ApprovalEvent' successfully"
 output_match_mode: substring
@@ -103,7 +105,7 @@ sleep: 5
 -->
 
 ```bash
-dapr workflow raise-event order-validate/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
 <!-- END_STEP -->
@@ -203,10 +205,10 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
 
 5. Stop the app with Ctrl+C. Start it again in the same terminal with `dapr run -f dapr-sqlite.yaml`. The log shows `Order <id> is already running. Waiting for it to finish.` The activities before the approval do not run again.
 
-6. In a second terminal, approve the order. Use the order ID that the app printed.
+6. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
 
     ```sh
-    dapr workflow raise-event <id>/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+    dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
     ```
 
     The first terminal shows the payment, the inventory update, and `Workflow completed: COMPLETED`. The finished steps did not run again, and the workflow continued from its history. A step that was in progress when you stopped the app can run again.
