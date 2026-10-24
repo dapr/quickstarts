@@ -96,7 +96,7 @@ Key symbols exported from `dapr.ext.workflow`:
 
 Requires Dapr `1.18+`.
 
-Install the Python dependencies:
+Create a virtual environment and install the Python dependencies with [uv](https://docs.astral.sh/uv/):
 
 <!-- STEP
 name: Install dependencies
@@ -108,7 +108,7 @@ timeout_seconds: 180
 -->
 
 ```bash
-pip3 install -r requirements.txt && echo "patient-intake deps OK"
+uv venv && uv pip install -r requirements.txt && echo "patient-intake deps OK"
 ```
 
 <!-- END_STEP -->
@@ -132,7 +132,7 @@ sleep: 15
 -->
 
 ```bash
-dapr run -f .
+uv run dapr run -f .
 ```
 
 <!-- END_STEP -->

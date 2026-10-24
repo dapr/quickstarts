@@ -26,14 +26,15 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/monitor-pattern/monitor` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/monitor-pattern` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r monitor/requirements.txt
     ```
 
-3. Navigate one level up to the `monitor-pattern` folder and use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file
 
     <!-- STEP
     name: Run multi app run template
@@ -47,7 +48,7 @@ graph LR
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
@@ -76,12 +77,12 @@ graph LR
     curl --request GET --url http://localhost:3557/v1.0/workflows/dapr/<INSTANCEID>
     ```
 
-    Where `<INSTANCEID>` is the workflow instance ID you received in the `Location` header in the previous step.
+    Where `<INSTANCEID>` is the workflow instance ID you received in the `instance_id` property of the response in the previous step.
 
     The expected serialized output of the workflow is:
 
     ```txt
-    "\"Status is healthy after checking 3 times.\""
+    "\"Status is healthy after 3 times.\""
     ```
 
     *The actual number of checks can vary since some randomization is used in the `check_status` activity.*
