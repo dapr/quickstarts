@@ -8,6 +8,8 @@
 [![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/daprdev?logo=x&style=flat)](https://x.com/daprdev)
 <!-- END_IGNORE -->
 
+[Dapr](https://dapr.io) is a portable runtime that gives your applications APIs for durable workflows, AI, messaging, state and more, in any language; this repository holds small, runnable samples for each of those APIs.
+
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr-cli/) instructions.
 
 ### Quickstarts
@@ -16,13 +18,13 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 
 | Dapr Quickstart | Description |
 |:--------:|:--------:|
-| [Workflow](./workflows) | Dapr Workflow enables you to create long running, fault-tolerant, stateful applications |
-| [AI](./AI) | Create AI agents and apps that are durable, fault-tolerant with built-in synchronous and asynchronous messaging |
+| [Workflow](./workflows) | Durable execution with Dapr Workflow: the workflow saves its progress as it runs, so a long-running, stateful process picks up where it left off after a crash or restart |
+| [AI](./AI) | A durable AI workflow that has an LLM (OpenAI, Gemini or Anthropic) review a contract and pauses for human approval when the risk is high |
+| [Conversation](./conversation) | Send prompts to large language models (LLMs) from different providers through one consistent API, including tool calling |
 | [Publish and Subscribe](./pub_sub) | Asynchronous communication between two services using messaging |
-| [AI](./AI) | Agentic building blocks including durable workflows, eventing, authentication and state persistence |
 | [Service Invocation](./service_invocation) | Synchronous communication between two services using HTTP |
 | [State Management](./state_management/) | Store a service's data as key/value pairs in supported state stores |
-| [Search](./search/) | Index documents and search their content |
+| [Search](./search/) | Index documents and search their content using the Search API (C# only) |
 | [Bindings](./bindings/) | Work with external systems using input bindings to respond to events and output bindings to call operations |
 | [Secrets Management](./secrets_management/) | Securely fetch secrets |
 | [Actors](./actors) | Create stateful, long running objects with identity |
@@ -30,7 +32,8 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | [Cryptography](./cryptography) | Perform cryptographic operations without exposing keys to your application |
 | [Resiliency](./resiliency) | Define and apply fault-tolerant policies (retries/back-offs, timeouts and circuit breakers) to your Dapr API requests |
 | [Jobs](./jobs) | Dapr Jobs enable you to manage and schedule tasks |
-| [Search](./search/csharp/http/) | Index documents and search their content using the Search API |
+
+The SDK quickstarts use the Dapr SDKs for [Python](https://github.com/dapr/python-sdk), [Go](https://github.com/dapr/go-sdk), [.NET](https://github.com/dapr/dotnet-sdk), [Java](https://github.com/dapr/java-sdk) and [JavaScript](https://github.com/dapr/js-sdk). To build AI agents on top of Dapr, see [Dapr Agents](https://github.com/dapr/dapr-agents).
 
 ### Tutorials
 
