@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: artemis
+type: Opaque
+stringData:
+  # Demo credentials only. Use a real secret store in production.
+  username: artemis
+  password: artemis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: artemis
+  labels:
+    app: artemis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: artemis
+  template:
+    metadata:
+      labels:
+        app: artemis
+    spec:
+      containers:
+      - name: artemis
+        image: apache/activemq-artemis:latest
+        ports:
+        - containerPort: 5672
+          name: amqp
+        - containerPort: 8161
+          name: console
+        env:
+        - name: ARTEMIS_USER
+          valueFrom:
+            secretKeyRef:
+              name: artemis
+              key: username
+        - name: ARTEMIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: artemis
+              key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: artemis
+  labels:
+    app: artemis
+spec:
+  selector:
+    app: artemis
+  ports:
+  - name: amqp
+    port: 5672
+    targetPort: 5672
+  - name: console
+    port: 8161
+    targetPort: 8161
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+spec:
+  type: pubsub.amqp
+  version: v1
+  metadata:
+  - name: url
+    value: amqp://artemis:5672
+  - name: username
+    secretKeyRef:
+      name: artemis
+      key: username
+  - name: password
+    secretKeyRef:
+      name: artemis
+      key: password
+  - name: topicAddressPrefix
+    value: multicast://
+  - name: queueAddressPrefix
+    value: anycast://
+auth:
+  secretStore: kubernetes
