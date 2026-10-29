@@ -1,6 +1,6 @@
 version: 1
 common:
-  resourcesPath: ../../components
+  resourcesPath: ../../resources
 apps:
   - appID: patient-intake
     appDirPath: ./patient-intake/

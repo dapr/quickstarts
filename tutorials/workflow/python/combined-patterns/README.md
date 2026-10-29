@@ -58,15 +58,11 @@ graph LR
 ## Run the tutorial
 
 1. Use a terminal to navigate to the `tutorials/workflow/python/combined-patterns` folder.
-2. Install the dependencies using pip:
+2. Create a virtual environment and install the dependencies of both apps with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    cd workflow_app
-    pip3 install -r requirements.txt
-    cd ..
-    cd shipping_app
-    pip3 install -r requirements.txt
-    cd ..
+    uv venv
+    uv pip install -r workflow_app/requirements.txt -r shipping_app/requirements.txt
     ```
 
 3. Use the Dapr CLI to run the Dapr Multi-App run file. This starts both applications `order-workflow` and `shipping` with the Dapr components in the [resources](./resources) folder.
@@ -84,7 +80,7 @@ graph LR
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
@@ -142,7 +138,7 @@ graph LR
     The expected serialized output of the workflow is:
 
     ```txt
-    {\"is_success\":true,\"message\":\"Order b0d38481-5547-411e-ae7b-255761cce17a processed successfully.\"}"
+    "{\"is_success\": true, \"message\": \"Order b0d38481-5547-411e-ae7b-255761cce17a processed successfully.\"}"
     ```
 
     *If the order-workflow.http is used, the order_id is generated when making the request and is different each time.*

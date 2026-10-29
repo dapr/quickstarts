@@ -36,14 +36,15 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/external-system-interaction/external_events` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/external-system-interaction` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r external_events/requirements.txt
     ```
 
-3. Navigate one level back to the `external-system-interaction` folder and use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file
 
     <!-- STEP
     name: Run multi app run template
@@ -57,7 +58,7 @@ graph LR
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
@@ -92,7 +93,7 @@ graph LR
     The app logs should look similar to the following:
 
     ```text
-   Received order: Order { id = b7dd836b-e913-4446-9912-d400befebec5, description = Rubber ducks, quantity = 100, total_price = 500.0 }.
+    Received order: Order(id='b7dd836b-e913-4446-9912-d400befebec5', description='Rubber ducks', quantity=100, total_price=500.0)
     ```
 
 6. Use the POST request in the [`externalevents.http`](./externalevents.http) file to send an `approval-event` to the workflow, or use this cURL command:

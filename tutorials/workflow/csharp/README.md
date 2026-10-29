@@ -10,7 +10,7 @@ Before you start, it's recommended to read though the Dapr docs to get familiar 
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/) & [Initialization](https://docs.dapr.io/getting-started/install-dapr-selfhost/)
-- [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
 - Optional: An IDE such as [VSCode](https://code.visualstudio.com/download) with a [REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
 
 ### Without Docker, with SQLite
@@ -18,7 +18,7 @@ Before you start, it's recommended to read though the Dapr docs to get familiar 
 To run the tutorials without Docker, see [Run the tutorials without Docker](#run-the-tutorials-without-docker). You need:
 
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/). You do not need `dapr init` with Docker. Step 1 of the section installs the binaries.
-- [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0)
 - SQLite needs no install. `daprd` includes the SQLite state store.
 - Optional: An IDE such as [VSCode](https://code.visualstudio.com/download) with a [REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
 
@@ -32,7 +32,9 @@ To run the tutorials without Docker, see [Run the tutorials without Docker](#run
 - [Child Workflows](./child-workflows/README.md)
 - [Resiliency & Compensation](./resiliency-and-compensation/README.md)
 - [Combined Patterns](./combined-patterns/README.md)
-- [WorkflowManagement](./workflow-management/README.md)
+- [Workflow Management](./workflow-management/README.md)
+- [Versioning](./versioning/Versioning/README.md)
+- [History Propagation](./history-propagation/README.md)
 - [Challenges & Tips](./challenges-tips/README.md)
 
 ## Run the tutorials without Docker
@@ -41,7 +43,7 @@ By default, the tutorials use Redis in Docker as the workflow state store, and t
 
 Use this option when Docker is not available or not allowed, for example on a locked-down laptop, in a CI job, or in a dev container without Docker. It also starts faster, because it has fewer moving parts.
 
-The [Combined Patterns](./combined-patterns/README.md) tutorial also uses Redis for pub/sub, so it does not run this way. The [History Propagation](./history-propagation/README.md) and Versioning tutorials do not have a `dapr-sqlite.yaml` file. The commands are for Linux and macOS, and for Windows (PowerShell).
+The [Combined Patterns](./combined-patterns/README.md) tutorial also uses Redis for pub/sub, so it does not run this way. The commands are for Linux and macOS, and for Windows (PowerShell).
 
 1. Install the Dapr binaries. This command installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin` (`$env:USERPROFILE\.dapr\bin` on Windows, with the `.exe` extension). It does not start them.
 
