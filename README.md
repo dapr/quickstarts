@@ -32,6 +32,7 @@ Pick a building block API (for example, PubSub, state management, etc) and rapid
 | [Cryptography](./cryptography) | Perform cryptographic operations without exposing keys to your application |
 | [Resiliency](./resiliency) | Define and apply fault-tolerant policies (retries/back-offs, timeouts and circuit breakers) to your Dapr API requests |
 | [Jobs](./jobs) | Dapr Jobs enable you to manage and schedule tasks |
+| [Dapr MCP server](./dapr-mcp-server) | Give AI agents Dapr's building blocks as tools through the Dapr MCP server |
 
 The SDK quickstarts use the Dapr SDKs for [Python](https://github.com/dapr/python-sdk), [Go](https://github.com/dapr/go-sdk), [.NET](https://github.com/dapr/dotnet-sdk), [Java](https://github.com/dapr/java-sdk) and [JavaScript](https://github.com/dapr/js-sdk). To build AI agents on top of Dapr, see [Dapr Agents](https://github.com/dapr/dapr-agents).
 
