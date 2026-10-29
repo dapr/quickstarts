@@ -16,7 +16,23 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 
 ### Run the order processor workflow
 
-1. Open a new terminal window and navigate to `order-processor` directory: 
+The app orders 2 cars at 5,000 each, so the total is 10,000. An order over 5,000 needs an approval, so the workflow waits for you to approve it. While it waits, you stop the app and start it again. The workflow continues from its saved history.
+
+1. Open a terminal in this quickstart directory and set an order ID. The app uses it as the workflow instance ID.
+
+    Linux and macOS:
+
+    ```sh
+    export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+    ```
+
+2. Build the app:
 
 <!-- STEP
 name: Install Dotnet dependencies
@@ -29,188 +45,85 @@ dotnet build
 ```
 
 <!-- END_STEP -->
-2. Run the console app with Dapr. Note that you may need to run `cd ..` to move the working directory up one to 
-'/workflows/csharp/sdk': 
+
+3. Run the app with Dapr. Note that you may need to run `cd ..` to move the working directory up one to
+'/workflows/csharp/sdk':
 
 <!-- STEP
 name: Run order-processor service
 expected_stdout_lines:
-  - "      There are: 10 Cars available for purchase"
-  - "Workflow Status: Completed"
+  - "Order ID: order-validate"
+  - "Started order order-validate."
+  - "Approval requested for order order-validate. Waiting for approval."
+  - "Workflow completed: COMPLETED"
 expected_stderr_lines:
 output_match_mode: substring
 background: true
-sleep: 15
-timeout_seconds: 120
+sleep: 30
+timeout_seconds: 180
+env:
+  ORDER_ID: order-validate
 -->
-    
+
 ```bash
 dapr run -f .
 ```
 
 <!-- END_STEP -->
 
-3. Expected output
+    The log shows `Order ID: <id>`, `Started order <id>.`, the activities before the approval, and then the request for approval:
 
-```
-Starting workflow 571a6e25 purchasing 1 Cars
-info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[40]
-      Scheduling new OrderProcessingWorkflow orchestration with instance ID '571a6e25' and 45 bytes of input data.
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/StartInstance
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/StartInstance
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 3045.9209ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 3046.0945ms - 200
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 3016.1346ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 3016.3572ms - 200
-info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[42]
-      Waiting for instance '571a6e25' to start.
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceStart
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceStart
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 2.9095ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 3.0445ms - 200
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 99.446ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 99.5407ms - 200
-Your workflow has started. Here is the status of the workflow: Running
-info: Microsoft.DurableTask.Client.Grpc.GrpcDurableTaskClient[43]
-      Waiting for instance '571a6e25' to complete, fail, or terminate.
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceCompletion
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/WaitForInstanceCompletion
-info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
-      Presenting notification Notification { Message = Received order 571a6e25 for 1 Cars at $5000 }
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 1.6785ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 1.7869ms - 200
-info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[2013970020]
-      Received request ID '571a6e25' for 1 Cars at $5000
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 1.1947ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 1.3293ms - 200
-info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1478802116]
-      Reserving inventory for order request ID '571a6e25' of 1 Cars
-info: WorkflowConsoleApp.Activities.VerifyInventoryActivity[1130866279]
-      There are: 10 Cars available for purchase
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 1.8534ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 2.0077ms - 200
-info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[1162731597]
-      Checked inventory for request ID 'InventoryRequest { RequestId = 571a6e25, ItemName = Cars, Quantity = 1 }'
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 1.1851ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 1.3742ms - 200
-info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[340284070]
-      Processing payment: request ID '571a6e25' for 1 Cars at $5000
-info: WorkflowConsoleApp.Activities.ProcessPaymentActivity[1851315765]
-      Payment for request ID '571a6e25' processed successfully
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 0.8249ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 0.9595ms - 200
-info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[340284070]
-      Processed payment request as there's sufficient inventory to proceed: PaymentRequest { RequestId = 571a6e25, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 0.4457ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 0.5267ms - 200
-info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[2144991393]
-      Checking inventory for request ID '571a6e25' for 1 Cars
-info: WorkflowConsoleApp.Activities.UpdateInventoryActivity[1901852920]
-      There are now 9 Cars left in stock
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 0.6012ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 0.7097ms - 200
-info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[96138418]
-      Updating available inventory for PaymentRequest { RequestId = 571a6e25, ItemBeingPurchased = Cars, Amount = 1, Currency = 5000 }
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 0.469ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 0.5431ms - 200
-info: WorkflowConsoleApp.Activities.NotifyActivity[1985924262]
-      Presenting notification Notification { Message = Order 571a6e25 has completed! }
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteActivityTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 0.494ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 0.5685ms - 200
-info: WorkflowConsoleApp.Workflows.OrderProcessingWorkflow[510392223]
-      Order 571a6e25 has completed
-info: System.Net.Http.HttpClient.Default.LogicalHandler[100]
-      Start processing HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[100]
-      Sending HTTP request POST http://localhost:37355/TaskHubSidecarService/CompleteOrchestratorTask
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 1.6353ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 1.7546ms - 200
-info: System.Net.Http.HttpClient.Default.ClientHandler[101]
-      Received HTTP response headers after 15807.213ms - 200
-info: System.Net.Http.HttpClient.Default.LogicalHandler[101]
-      End processing HTTP request after 15807.3675ms - 200
-Workflow Status: Completed
+    ```
+    Order ID: order-20261024-101500
+    Started order order-20261024-101500.
+    Presenting notification Notification { Message = Received order order-20261024-101500 for 2 Cars at $10000 }
+    Reserving inventory for order request ID 'order-20261024-101500' of 2 Cars
+    There are: 10 Cars available for purchase
+    Approval requested for order order-20261024-101500. Waiting for approval.
+    ```
+
+4. Stop the app with Ctrl+C.
+
+5. Start the app again in the same terminal. `ORDER_ID` is still set.
+
+    ```sh
+    dapr run -f .
+    ```
+
+    The log shows `Order <id> is already running. Waiting for it to finish.` The activities before the approval do not run again.
+
+6. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
+
+<!-- STEP
+name: Approve the order
+env:
+  ORDER_ID: order-validate
+expected_stdout_lines:
+  - "Workflow 'order-validate' raised event 'ApprovalEvent' successfully"
+output_match_mode: substring
+sleep: 5
+-->
+
+```bash
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
-4. Stop Dapr workflow with CTRL-C or:
+<!-- END_STEP -->
 
-```sh
-dapr stop -f .
-```
+7. The first terminal shows the payment, the inventory update, and the end of the workflow:
+
+    ```
+    Order order-20261024-101500 is already running. Waiting for it to finish.
+    Processing payment: request ID 'order-20261024-101500' for 2 Cars at $10000
+    Payment for request ID 'order-20261024-101500' processed successfully
+    There are now 8 Cars left in stock
+    Presenting notification Notification { Message = Order order-20261024-101500 has completed! }
+    Workflow completed: COMPLETED
+    ```
+
+The steps that finished before you stopped the app, the received order, the inventory check, and the request for approval, did not run again. The workflow continued from its history. A step that was in progress when you stopped the app can run again.
+
+To stop the Dapr processes that `dapr run -f .` started, press Ctrl+C or run `dapr stop -f .`.
 
 ### Run without Docker
 
@@ -264,7 +177,21 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
 
     On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2. The Scheduler service then serves actor placement.
 
-4. Open a third terminal in the same directory, build the app, and run it with the run file `dapr-sqlite.yaml`:
+4. Open a third terminal in the same directory and set an order ID:
+
+    Linux and macOS:
+
+    ```sh
+    export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+    ```
+
+    Then build the app and run it with the run file `dapr-sqlite.yaml`:
 
     ```sh
     cd ./order-processor
@@ -273,6 +200,18 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
     cd ..
     dapr run -f dapr-sqlite.yaml
     ```
+
+    The log shows `Order ID: <id>`, `Started order <id>.`, the activities before the approval, and then `Approval requested for order <id>. Waiting for approval.`
+
+5. Stop the app with Ctrl+C. Start it again in the same terminal with `dapr run -f dapr-sqlite.yaml`. The log shows `Order <id> is already running. Waiting for it to finish.` The activities before the approval do not run again.
+
+6. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
+
+    ```sh
+    dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+    ```
+
+    The first terminal shows the payment, the inventory update, and `Workflow completed: COMPLETED`. The finished steps did not run again, and the workflow continued from its history. A step that was in progress when you stopped the app can run again.
 
 `dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`components-sqlite`](../../components-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. The expected output is the same as in the steps above.
 
@@ -296,14 +235,13 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 
 When you ran `dapr run -f .`:
 
-1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `571a6e25`) and the workflow is scheduled.
-3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
-4. The `VerifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
-5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `571a6e25` and confirms if successful.
-7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `571a6e25` has completed.
-9. The workflow terminates as completed and the OrderResult is set to processed.
-
-> **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `RequestApprovalActivity` activity nor wait for an approval event. Since the quickstart is a console application, it can't accept incoming events easily. If you want to test this scenario, convert the console app to a service and use the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request) via HTTP/gRPC or via the Dapr Workflow client to send an event to the workflow instance.
+1. The app read `ORDER_ID` and used it as the workflow instance ID. Without `ORDER_ID`, it uses `order-` and the local date and time.
+2. The app wrote the inventory (10 cars) to the state store only because it was not there yet. A restart does not restock.
+3. The app asked the Dapr sidecar for the state of the instance. The instance did not exist, so the app scheduled the workflow for an order of 2 cars at 5000 each.
+4. The `NotifyActivity` workflow activity sent a notification for the new order.
+5. The `VerifyInventoryActivity` workflow activity checked the inventory data and found enough cars.
+6. The total cost of the order is 10000, which is over 5000, so the workflow called the `RequestApprovalActivity` activity and then waited for the `ApprovalEvent` event. The wait times out after 10 minutes.
+7. When you started the app again, the instance existed and was not finished, so the app did not schedule a new one. It waited for the instance to finish.
+8. The `dapr workflow raise-event` command sent `ApprovalEvent` with `{"approved": true}`. The workflow continued.
+9. The `ProcessPaymentActivity` workflow activity processed the payment, and the `UpdateInventoryActivity` workflow activity updated the inventory.
+10. The `NotifyActivity` workflow activity sent a notification that the order completed. The workflow ended as `COMPLETED`, and the app printed `Workflow completed: COMPLETED`.

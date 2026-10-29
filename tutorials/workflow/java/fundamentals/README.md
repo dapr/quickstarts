@@ -4,7 +4,7 @@ This tutorial covers the fundamentals of authoring Dapr Workflows. For more info
 
 ## Inspect the code
 
-Open the [`BasicWorkflow.java`](src/main/java/io/dapr/springboot/examples/basic/BasicWorkflow.java) file in the `tutorials/workflow/java/task-chaining/src/main/java/io/dapr/springboot/examples/wfp/chain` folder. This file contains the definition for the workflow.
+Open the [`BasicWorkflow.java`](src/main/java/io/dapr/springboot/examples/basic/BasicWorkflow.java) file in the `tutorials/workflow/java/fundamentals/src/main/java/io/dapr/springboot/examples/basic` folder. This file contains the definition for the workflow.
 
 The workflow consists of two activities: `Activity1` and `Activity2`, which are called in sequence, where the result of Activity1 is used as an input for Activity2. You can find the Activity definitions in the `activities` folder.
 
@@ -37,20 +37,20 @@ graph LR
     curl -i --request POST "http://localhost:8080/start?input=One"
     ```
 
-   The input for the workflow is a string with the value `This`. The expected app logs are as follows:
+   The input for the workflow is a string with the value `One`. The expected app logs are as follows:
 
     ```text
-    i.d.springboot.examples.basic.Activity1  : io.dapr.springboot.examples.basic.Activity1 : Received input: One
-    i.d.springboot.examples.basic.Activity2  : io.dapr.springboot.examples.basic.Activity2 : Received input: One Two
+    i.d.s.e.basic.activities.Activity1       : io.dapr.springboot.examples.basic.activities.Activity1 : Received input: One
+    i.d.s.e.basic.activities.Activity2       : io.dapr.springboot.examples.basic.activities.Activity2 : Received input: One Two
     ```
 
-5. Use the GET request in the [`fundamentals.http`](./fundamentals.http) file to get the status of the workflow, or use this cURL command:
+4. Use the GET request in the [`fundamentals.http`](./fundamentals.http) file to get the status of the workflow, or use this cURL command:
 
     ```bash
     curl --request GET --url http://localhost:8080/output
     ```
    
-6. The expected serialized output of the workflow is:
+5. The expected serialized output of the workflow is:
 
     ```txt
     One Two Three

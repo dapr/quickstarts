@@ -1,6 +1,6 @@
 # Dapr workflows
 
-Run an order-processing workflow using the Dapr JavaScript SDK. Like the [C# quickstart](../../csharp/sdk/README.md), this sample seeds a state store, schedules an order, waits for it to start, and checks its completion and result.
+Run an order-processing workflow using the Dapr JavaScript SDK. The sample seeds a state store, starts an order that needs approval, and waits for it to finish. You can stop and restart the app while the order waits, and the workflow continues from its history.
 
 See the [Dapr workflow overview](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/) for background.
 
@@ -18,7 +18,19 @@ The workflow uses five activities:
 
 Open a terminal in `workflows/javascript/sdk`. Run all the following commands from that directory.
 
-1. Install the pinned dependencies and build the TypeScript app:
+1. Set an order ID. The app uses it as the workflow instance ID:
+
+    ```bash
+    export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+    ```
+
+2. Install the pinned dependencies and build the TypeScript app:
 
 <!-- STEP
 name: Build order processor
@@ -31,19 +43,23 @@ npm run build
 
 <!-- END_STEP -->
 
-2. Run the console app with Dapr:
+3. Run the console app with Dapr:
 
 <!-- STEP
 name: Run order processor
+env:
+  ORDER_ID: order-validate
 expected_stdout_lines:
   - 'Workflow runtime started successfully'
-  - 'Workflow started with the expected order'
+  - 'Order ID: order-validate'
+  - 'Started order order-validate.'
+  - 'Received order order-validate for 2 car at a total cost of 10000'
   - 'There are 10 car in stock'
-  - 'Payment of 5000 for 1 car processed successfully'
-  - 'there are now 9 car in stock'
+  - 'Approval requested for order order-validate. Waiting for approval.'
+  - 'Payment of 10000 for 2 car processed successfully'
+  - 'there are now 8 car in stock'
   - 'processed successfully!'
-  - 'Workflow Status: COMPLETED'
-  - 'Workflow result: {"processed":true}'
+  - 'Workflow completed: COMPLETED'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
@@ -58,19 +74,55 @@ dapr run -f .
 
 <!-- END_STEP -->
 
-The app purchases one car for 5000 from an initial stock of ten. The order does not require approval. The output includes:
+The app orders two cars at 5000 each, a total of 10000. An order over 5000 needs approval, so the workflow waits. The log shows these app lines, with SDK log lines between them. The order ID is the one that you set:
 
 ```text
-Workflow started with the expected order
+Order ID: order-20261024-101500
+Started order order-20261024-101500.
+Received order order-20261024-101500 for 2 car at a total cost of 10000
 There are 10 car in stock
-Payment of 5000 for 1 car processed successfully
-Workflow Status: COMPLETED
-Workflow result: {"processed":true}
+Approval requested for order order-20261024-101500. Waiting for approval.
 ```
 
-Order IDs and SDK logs vary. The README validation checks stable messages, including the remaining stock of nine and the deserialized workflow result, rather than a particular ID or log format. The app rejects missing states, unsuccessful terminal statuses, mismatched input, and an unprocessed result instead of reporting them as success.
+4. Stop the app with Ctrl+C. The order is still waiting for approval.
 
-3. Stop the multi-app runner:
+5. Start the app again in the same terminal. `ORDER_ID` is still set:
+
+    ```bash
+    dapr run -f .
+    ```
+
+    The log shows `Order order-20261024-101500 is already running. Waiting for it to finish.` The app does not start a new order and does not add stock again. The steps before the approval do not run again.
+
+6. In a second terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
+
+<!-- STEP
+name: Approve the order
+env:
+  ORDER_ID: order-validate
+sleep: 15
+-->
+
+```bash
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+```
+
+<!-- END_STEP -->
+
+7. The first terminal shows the payment, the inventory update, and the last line:
+
+    ```text
+    Payment of 10000 for 2 car processed successfully
+    Inventory updated for order-20261024-101500, there are now 8 car in stock
+    Order order-20261024-101500 processed successfully!
+    Workflow completed: COMPLETED
+    ```
+
+In step 5, the steps that finished before the stop (the notification, the inventory check, and the approval request) did not run again. The workflow continued from its history. A step that was in progress when you stopped the app can run again.
+
+The app waits up to 10 minutes for the approval. If the approval does not arrive, the workflow does not process the order. The app waits up to 15 minutes for the workflow to end. To start a new order, set a new `ORDER_ID`. If you start the app with an `ORDER_ID` whose workflow already ended, the app prints `Workflow completed: <status>` and exits.
+
+8. Stop the multi-app runner:
 
 <!-- STEP
 name: Stop order processor
@@ -191,29 +243,30 @@ dapr stop -f dapr-AppWithDaprServer.yaml
 <!-- END_STEP -->
 ### What happened?
 
-1. The worker connects to Dapr before the app schedules the workflow.
-2. The app saves ten cars in `statestore`, then schedules an order for one car.
-3. The app waits for the workflow to start and reads its typed input with `getInput<OrderPayload>()`.
-4. The workflow notifies the user, verifies inventory, processes payment, updates inventory, and sends a completion notification.
-5. The app waits for completion, compares `runtimeStatus` with `WorkflowRuntimeStatus.COMPLETED`, and reads the typed result with `getOutput<OrderResult>()`.
+1. The worker connects to Dapr before the app starts the workflow.
+2. The app saves ten cars in `statestore` only when the inventory is absent. A restart does not add stock again.
+3. The app reads `ORDER_ID` and gets the state of the workflow instance with that ID. When the instance does not exist, the app schedules it with `scheduleNewWorkflow`. When the instance is running, the app waits for it. When the instance ended, the app prints its status and exits.
+4. The workflow notifies the user, verifies inventory, and requests approval because the total is over 5000. It then waits for the external event `ApprovalEvent`.
+5. After the approval, the workflow processes payment, updates inventory, and sends a completion notification.
+6. The app waits for the workflow to end and prints `Workflow completed: <status>`.
 
-Workflow code is a generator that yields durable tasks, not ordinary JavaScript promises. It uses `ctx.logger` for replay-safe logging; activity logs use `console.log` because activities are not replayed with the workflow history.
+Workflow code is a generator that yields durable tasks, not ordinary JavaScript promises. The workflow function does not print, because Dapr runs it again from its history when the app restarts. Activity logs use `console.log` because an activity that finished is not run again.
 
-As in the C# sample, insufficient inventory or a rejected approval returns `{ "processed": false }`. If updating inventory fails after payment, the workflow reports that a refund is needed and returns an unprocessed result. Payment and refund notifications are simulations, not real financial transactions.
+Insufficient inventory or a rejected approval returns `{ "processed": false }`. If updating inventory fails after payment, the workflow reports that a refund is needed and returns an unprocessed result. Payment and refund notifications are simulations, not real financial transactions.
 
 ### Approval events
 
-The default order and README checks exercise the successful purchase without approval, matching the C# quickstart. To explore approval, change the order in `orderProcessor.ts` to two cars costing 10000. The workflow then waits for **`ApprovalEvent`** with an **`{ "isApproved": true }`** or **`{ "isApproved": false }`** payload.
+The workflow waits for **`ApprovalEvent`** with an **`{ "approved": true }`** or **`{ "approved": false }`** payload. The wait uses the SDK's durable `waitForExternalEvent` timeout (`timeoutInSeconds: 600`), rather than manually racing a timer. An unanswered approval times out after 10 minutes and fails the workflow. A rejection completes the workflow with an unprocessed result.
 
-This uses the SDK's durable `waitForExternalEvent` timeout (`timeoutInSeconds: 30`), rather than manually racing a timer. As in C#, an unanswered approval times out and fails the workflow. A rejection completes the workflow with an unprocessed result, which the sample app reports as an error.
-
-With either service template, use the logged workflow instance ID to send approval from another terminal within 30 seconds:
+Send the approval with the Dapr CLI, as in step 6:
 
 ```bash
-curl --fail --request POST --header "Content-Type: application/json" --data '{"isApproved":true}' http://localhost:3500/v1.0/workflows/dapr/INSTANCE_ID/raiseEvent/ApprovalEvent
+dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
 ```
 
-You can also call `DaprWorkflowClient.raiseEvent(instanceId, "ApprovalEvent", { isApproved: true })` from a client connected to the same sidecar. See the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request).
+You can also call `DaprWorkflowClient.raiseEvent(orderId, "ApprovalEvent", { approved: true })` from a client connected to the same sidecar. See the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request).
+
+The Express and DaprServer templates start a different order: one car for 5000. This order does not need approval.
 
 ### Run without Docker
 
@@ -267,13 +320,49 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
 
     On Dapr 1.19 and later, you can skip this step. Then add `--placement-enabled=true` to the Scheduler command in step 2. The Scheduler service then serves actor placement.
 
-4. Open a third terminal in the same directory, install the dependencies, build the app, and run it with the run file `dapr-sqlite.yaml`:
+4. Open a third terminal in the same directory and set an order ID:
+
+    Linux and macOS:
+
+    ```sh
+    export ORDER_ID=order-$(date +%Y%m%d-%H%M%S)
+    ```
+
+    Windows (PowerShell):
+
+    ```powershell
+    $env:ORDER_ID = "order-$(Get-Date -Format yyyyMMdd-HHmmss)"
+    ```
+
+5. Install the dependencies, build the app, and run it with the run file `dapr-sqlite.yaml`:
 
     ```sh
     npm install
     npm run build
     dapr run -f dapr-sqlite.yaml
     ```
+
+    The log shows `Order ID: <id>`, `Started order <id>.`, the steps before the approval, and `Approval requested for order <id>. Waiting for approval.`
+
+6. Stop the app with Ctrl+C.
+
+7. Start the app again in the same terminal. `ORDER_ID` is still set:
+
+    ```sh
+    dapr run -f dapr-sqlite.yaml
+    ```
+
+    The log shows `Order <id> is already running. Waiting for it to finish.` The steps before the approval do not run again.
+
+8. In a fourth terminal, set `ORDER_ID` to the order ID that the app printed (`export ORDER_ID=<id>`, or `$env:ORDER_ID = "<id>"` in PowerShell). Then approve the order:
+
+    ```sh
+    dapr workflow raise-event $ORDER_ID/ApprovalEvent --app-id order-processor --input '{"approved": true}'
+    ```
+
+9. The first terminal shows the payment, the inventory update, and `Workflow completed: COMPLETED`.
+
+The steps that finished before the stop did not run again. The workflow continued from its history in the SQLite file. A step that was in progress when you stopped the app can run again.
 
 `dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`components-sqlite`](../../components-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. The expected output is the same as in the steps above. The other run files in this folder, `dapr-AppWithExpressServer.yaml` and `dapr-AppWithDaprServer.yaml`, still use Redis.
 
