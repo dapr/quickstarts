@@ -185,64 +185,195 @@ jobs:
       #     pushd tutorials/observability
       #     make validate
       #     popd
-      # Validation for workflows is intentionally commented out.
-      # Mechanical markdown is not able to invoke the workflow services.
-      # Once this feature has been added to Mechanical Markdown the 
-      # workflow validations can be enabled.
-      #- name: Validate workflow/csharp/child-workflows
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/child-workflows
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/combined-patterns
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/combined-patterns
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/external-system-interaction
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/external-system-interaction
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/fan-out-fan-in
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/fan-out-fan-in
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/fundamentals
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/fundamentals
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/monitor-pattern
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/monitor-pattern
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/resiliency-and-compensation
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/resiliency-and-compensation
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/task-chaining
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/task-chaining
-      #    make validate
-      #    popd
-      #- name: Validate workflow/csharp/workflow-management
-      #  if: matrix.os == 'ubuntu-latest'
-      #  run: |
-      #    pushd tutorials/workflow/csharp/workflow-management
-      #    make validate
-      #    popd
       #- name: Linkcheck README.md
       #  run: |
       #    make validate
+
+  # Validation of the workflow tutorials. Mechanical Markdown cannot drive their long-running
+  # services, so tutorials/workflow/validate.sh starts each tutorial, sends the requests of its
+  # .http file and checks every workflow instance through the Dapr workflow API.
+  # The challenges-tips tutorials are excluded: they hold code snippets only and have nothing to run.
+  workflow-tutorials:
+    name: Workflow tutorial ${{ matrix.lang }}/${{ matrix.topic }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { lang: python, topic: child-workflows }
+          - { lang: python, topic: external-system-interaction }
+          - { lang: python, topic: fan-out-fan-in }
+          - { lang: python, topic: fundamentals }
+          - { lang: python, topic: history-propagation }
+          - { lang: python, topic: monitor-pattern }
+          - { lang: python, topic: resiliency-and-compensation }
+          - { lang: python, topic: task-chaining }
+          - { lang: python, topic: versioning }
+          - { lang: python, topic: workflow-management }
+          - { lang: csharp, topic: child-workflows }
+          - { lang: csharp, topic: external-system-interaction }
+          - { lang: csharp, topic: fan-out-fan-in }
+          - { lang: csharp, topic: fundamentals }
+          - { lang: csharp, topic: history-propagation }
+          - { lang: csharp, topic: monitor-pattern }
+          - { lang: csharp, topic: resiliency-and-compensation }
+          - { lang: csharp, topic: task-chaining }
+          - { lang: csharp, topic: versioning }
+          - { lang: csharp, topic: workflow-management }
+          - { lang: go, topic: history-propagation }
+          - { lang: java, topic: child-workflows }
+          - { lang: java, topic: external-system-interactions }
+          - { lang: java, topic: fan-out-fan-in }
+          - { lang: java, topic: fundamentals }
+          - { lang: java, topic: history-propagation }
+          - { lang: java, topic: monitor-pattern }
+          - { lang: java, topic: resiliency-and-compensation }
+          - { lang: java, topic: task-chaining }
+          - { lang: java, topic: versioning }
+          - { lang: java, topic: workflow-management }
+          - { lang: java, topic: combined-patterns }
+          - { lang: javascript, topic: child-workflows }
+          - { lang: javascript, topic: external-system-interaction }
+          - { lang: javascript, topic: fan-out-fan-in }
+          - { lang: javascript, topic: fundamentals }
+          - { lang: javascript, topic: monitor-pattern }
+          - { lang: javascript, topic: resiliency-and-compensation }
+          - { lang: javascript, topic: task-chaining }
+          - { lang: javascript, topic: versioning }
+          - { lang: javascript, topic: workflow-management }
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Load environment variables
+        uses: artursouza/export-env-action@v2
+        with:
+          envFile: './.github/env/global.env'
+          expand: 'true'
+      - name: Install uv
+        if: matrix.lang == 'python'
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Install .NET
+        if: matrix.lang == 'csharp'
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Set up Go ${{ env.GOVER }}
+        if: matrix.lang == 'go'
+        uses: actions/setup-go@v7
+        with:
+          go-version: ${{ env.GOVER }}
+          cache: false
+      - name: Set up Node.js 24
+        if: matrix.lang == 'javascript'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Set up OpenJDK 17
+        if: matrix.lang == 'java'
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Set up Dapr CLI
+        run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
+      - name: Install the Dapr binaries
+        # Java tutorials start Dapr with Testcontainers and need no local Dapr runtime.
+        if: matrix.lang != 'java'
+        run: |
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          dapr init --slim --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr --version
+      - name: Start the Scheduler and Placement services
+        # The commands of "Run the tutorials without Docker" in the language README.
+        if: matrix.lang != 'java'
+        run: |
+          mkdir -p "$RUNNER_TEMP/scheduler-data"
+          nohup "$HOME/.dapr/bin/scheduler" --etcd-data-dir "$RUNNER_TEMP/scheduler-data" > "$RUNNER_TEMP/scheduler.log" 2>&1 &
+          nohup "$HOME/.dapr/bin/placement" --healthz-port 8081 --metrics-port 9091 > "$RUNNER_TEMP/placement.log" 2>&1 &
+          for port in 8080 8081; do
+            curl --silent --fail --retry 30 --retry-connrefused --retry-delay 1 "http://localhost:$port/healthz" > /dev/null
+          done
+      - name: Validate workflow/${{ matrix.lang }}/${{ matrix.topic }}
+        run: bash tutorials/workflow/validate.sh ${{ matrix.lang }} ${{ matrix.topic }}
+
+  # combined-patterns uses Redis for pub/sub, so these topics run with a Redis service container.
+  workflow-tutorials-redis:
+    name: Workflow tutorial ${{ matrix.lang }}/${{ matrix.topic }} (Redis)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { lang: python, topic: combined-patterns }
+          - { lang: csharp, topic: combined-patterns }
+          - { lang: javascript, topic: combined-patterns }
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Load environment variables
+        uses: artursouza/export-env-action@v2
+        with:
+          envFile: './.github/env/global.env'
+          expand: 'true'
+      - name: Install uv
+        if: matrix.lang == 'python'
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Install .NET
+        if: matrix.lang == 'csharp'
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Set up Go ${{ env.GOVER }}
+        if: matrix.lang == 'go'
+        uses: actions/setup-go@v7
+        with:
+          go-version: ${{ env.GOVER }}
+          cache: false
+      - name: Set up Node.js 24
+        if: matrix.lang == 'javascript'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Set up OpenJDK 17
+        if: matrix.lang == 'java'
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Set up Dapr CLI
+        run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
+      - name: Install the Dapr binaries
+        # Java tutorials start Dapr with Testcontainers and need no local Dapr runtime.
+        if: matrix.lang != 'java'
+        run: |
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          dapr init --slim --runtime-version=${{ env.DAPR_RUNTIME_VERSION }}
+          dapr --version
+      - name: Start the Scheduler and Placement services
+        # The commands of "Run the tutorials without Docker" in the language README.
+        if: matrix.lang != 'java'
+        run: |
+          mkdir -p "$RUNNER_TEMP/scheduler-data"
+          nohup "$HOME/.dapr/bin/scheduler" --etcd-data-dir "$RUNNER_TEMP/scheduler-data" > "$RUNNER_TEMP/scheduler.log" 2>&1 &
+          nohup "$HOME/.dapr/bin/placement" --healthz-port 8081 --metrics-port 9091 > "$RUNNER_TEMP/placement.log" 2>&1 &
+          for port in 8080 8081; do
+            curl --silent --fail --retry 30 --retry-connrefused --retry-delay 1 "http://localhost:$port/healthz" > /dev/null
+          done
+      - name: Validate workflow/${{ matrix.lang }}/${{ matrix.topic }}
+        run: bash tutorials/workflow/validate.sh ${{ matrix.lang }} ${{ matrix.topic }}

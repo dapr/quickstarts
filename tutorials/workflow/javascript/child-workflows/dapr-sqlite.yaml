@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources-sqlite
+apps:
+  - appID: childworkflows
+    appDirPath: child-workflows
+    appPort: 5259
+    daprHTTPPort: 3559
+    command: ["node", "dist/app.js"]
+    appLogDestination: console
+    daprdLogDestination: console

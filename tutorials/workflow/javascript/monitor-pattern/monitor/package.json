@@ -1,0 +1,23 @@
+{
+  "name": "dapr-workflow-monitor-pattern",
+  "version": "1.0.0",
+  "description": "Dapr Workflow monitor pattern with the Dapr JavaScript SDK",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/app.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@dapr/dapr": "3.19.0",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.4"
+  }
+}
