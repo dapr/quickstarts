@@ -14,7 +14,7 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 - ProcessPaymentActivity: This activity is responsible for processing and authorizing the payment.
 - UpdateInventoryActivity: This activity updates the state store with the new remaining inventory value.
 
-### Run the order processor workflow with multi-app-run
+### Run the order processor workflow
 
 1. Open a new terminal window and navigate to `order-processor` directory: 
 
@@ -49,7 +49,7 @@ dapr run -f .
 
 <!-- END_STEP -->
 
-3. Expected output
+3. Expected output. The instance ID, the dates, the times and the ports differ on each run:
 
 ```
 *** Welcome to the Dapr Workflow console app sample!
@@ -61,29 +61,51 @@ dapr run -f .
 [main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Activity: VerifyInventoryActivity
 [main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Registered Activity: UpdateInventoryActivity
 [main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - List of registered workflows: [io.dapr.quickstarts.workflows.OrderProcessingWorkflow]
-[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - List of registered activites: [io.dapr.quickstarts.workflows.activities.NotifyActivity, io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity, io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity, io.dapr.quickstarts.workflows.activities.RequestApprovalActivity, io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity]
+[main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - List of registered activities: [io.dapr.quickstarts.workflows.activities.NotifyActivity, io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity, io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity, io.dapr.quickstarts.workflows.activities.RequestApprovalActivity, io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity]
 [main] INFO io.dapr.workflows.runtime.WorkflowRuntimeBuilder - Successfully built dapr workflow runtime
 Start workflow runtime
-Feb 12, 2025 2:44:13 PM com.microsoft.durabletask.DurableTaskGrpcWorker startAndBlock
-INFO: Durable Task worker is connecting to sidecar at 127.0.0.1:39261.
+Oct 24, 2026 12:37:00 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
+INFO: Durable Task worker is connecting to sidecar at 127.0.0.1:44409.
 ==========Begin the purchase of item:==========
 Starting order workflow, purchasing 1 of cars
-scheduled new workflow instance of OrderProcessingWorkflow with instance ID: d1bf548b-c854-44af-978e-90c61ed88e3c
-[Thread-0] INFO io.dapr.workflows.WorkflowContext - Starting Workflow: io.dapr.quickstarts.workflows.OrderProcessingWorkflow
-[Thread-0] INFO io.dapr.workflows.WorkflowContext - Instance ID(order ID): d1bf548b-c854-44af-978e-90c61ed88e3c
-[Thread-0] INFO io.dapr.workflows.WorkflowContext - Current Orchestration Time: 2025-02-12T14:44:18.154Z
-[Thread-0] INFO io.dapr.workflows.WorkflowContext - Received Order: OrderPayload [itemName=cars, totalCost=5000, quantity=1]
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=5000, quantity=1]
-workflow instance d1bf548b-c854-44af-978e-90c61ed88e3c started
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verifying inventory for order 'd1bf548b-c854-44af-978e-90c61ed88e3c' of 1 cars
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - There are 10 cars available for purchase
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verified inventory for order 'd1bf548b-c854-44af-978e-90c61ed88e3c' of 1 cars
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: d1bf548b-c854-44af-978e-90c61ed88e3c for 1 cars at $5000
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID 'd1bf548b-c854-44af-978e-90c61ed88e3c' processed successfully
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order 'd1bf548b-c854-44af-978e-90c61ed88e3c' of 1 cars
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order 'd1bf548b-c854-44af-978e-90c61ed88e3c': there are now 9 cars left in stock
+Oct 24, 2026 12:37:00 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
+INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Starting Workflow: io.dapr.quickstarts.workflows.OrderProcessingWorkflow
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Instance ID(order ID): cb027210-b3e3-4521-ab1e-c37404f3dac5
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Current Orchestration Time: 2026-10-24T00:37:00.408Z
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.OrderProcessingWorkflow - Received Order: OrderPayload [itemName=cars, totalCost=5000, quantity=1]
+Scheduled new workflow instance of OrderProcessingWorkflow with instance ID: cb027210-b3e3-4521-ab1e-c37404f3dac5
+Oct 24, 2026 12:37:00 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
+INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.NotifyActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Received Order: OrderPayload [itemName=cars, totalCost=5000, quantity=1]
+Workflow instance cb027210-b3e3-4521-ab1e-c37404f3dac5 started
+Oct 24, 2026 12:37:00 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
+INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
+Oct 24, 2026 12:37:00 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
+INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verifying inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5' of 1 cars
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - There are 10 cars available for purchase
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.VerifyInventoryActivity - Verified inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5' of 1 cars
+Oct 24, 2026 12:37:02 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
+INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
+Oct 24, 2026 12:37:02 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
+INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Processing payment: cb027210-b3e3-4521-ab1e-c37404f3dac5 for 1 cars at $5000
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity - Payment for request ID 'cb027210-b3e3-4521-ab1e-c37404f3dac5' processed successfully
+Oct 24, 2026 12:37:09 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
+INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
+Oct 24, 2026 12:37:09 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
+INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updating inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5' of 1 cars
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.UpdateInventoryActivity - Updated inventory for order 'cb027210-b3e3-4521-ab1e-c37404f3dac5': there are now 9 cars left in stock
 there are now 9 cars left in stock
-[Thread-0] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : d1bf548b-c854-44af-978e-90c61ed88e3c
+Oct 24, 2026 12:37:11 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
+INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
+Oct 24, 2026 12:37:11 AM io.dapr.durabletask.DurableTaskGrpcWorker startAndBlock
+INFO: Processing activity request: io.dapr.quickstarts.workflows.activities.NotifyActivity for instance: cb027210-b3e3-4521-ab1e-c37404f3dac5, gRPC thread context: {}
+[pool-2-thread-1] INFO io.dapr.quickstarts.workflows.activities.NotifyActivity - Order completed! : cb027210-b3e3-4521-ab1e-c37404f3dac5
+Oct 24, 2026 12:37:11 AM io.dapr.durabletask.orchestration.TaskOrchestrationFactories getOrchestrationFactory
+INFO: Get orchestration factory for io.dapr.quickstarts.workflows.OrderProcessingWorkflow version
 Workflow instance completed, out is: {"processed":true}
 ```
 

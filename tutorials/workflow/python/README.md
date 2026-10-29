@@ -11,6 +11,7 @@ Before you start, it's recommended to read though the Dapr docs to get familiar 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/) & [Initialization](https://docs.dapr.io/getting-started/install-dapr-selfhost/)
 - [Python 3](https://www.python.org/downloads/)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/). Each tutorial uses `uv` to create a virtual environment and install the dependencies. A system Python that follows PEP 668 blocks `pip install` outside a virtual environment.
 - Optional: An IDE such as [VSCode](https://code.visualstudio.com/download) with a [REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
 
 ### Without Docker, with SQLite
@@ -19,6 +20,7 @@ To run the tutorials without Docker, see [Run the tutorials without Docker](#run
 
 - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/). You do not need `dapr init` with Docker. Step 1 of the section installs the binaries.
 - [Python 3](https://www.python.org/downloads/)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/). Each tutorial uses `uv` to create a virtual environment and install the dependencies. A system Python that follows PEP 668 blocks `pip install` outside a virtual environment.
 - SQLite needs no install. `daprd` includes the SQLite state store.
 - Optional: An IDE such as [VSCode](https://code.visualstudio.com/download) with a [REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client).
 
@@ -32,7 +34,9 @@ To run the tutorials without Docker, see [Run the tutorials without Docker](#run
 - [Child Workflows](./child-workflows/README.md)
 - [Resiliency & Compensation](./resiliency-and-compensation/README.md)
 - [Combined Patterns](./combined-patterns/README.md)
-- [WorkflowManagement](./workflow-management/README.md)
+- [Workflow Management](./workflow-management/README.md)
+- [Versioning](./versioning/README.md)
+- [History Propagation](./history-propagation/README.md)
 - [Challenges & Tips](./challenges-tips/README.md)
 
 ## Run the tutorials without Docker
@@ -84,7 +88,7 @@ The [Combined Patterns](./combined-patterns/README.md) tutorial also uses Redis 
 4. Follow the steps in the README of the tutorial, but start the app with the run file `dapr-sqlite.yaml` instead of `dapr.yaml`. For example, in the `fundamentals` folder:
 
     ```bash
-    dapr run -f dapr-sqlite.yaml
+    uv run dapr run -f dapr-sqlite.yaml
     ```
 
     `dapr-sqlite.yaml` is the same as `dapr.yaml`, but its `resourcesPath` points to the [`resources-sqlite`](../resources-sqlite/) folder. That folder has a SQLite state store with `actorStateStore` set to `"true"`. `dapr run` connects to the Placement and Scheduler services on their default ports: 50005 and 50006 on Linux and macOS, 6050 and 6060 on Windows. The Windows commands above set these ports.
