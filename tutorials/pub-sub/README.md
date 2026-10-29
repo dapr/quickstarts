@@ -14,7 +14,7 @@ And three subscribers:
 - Python subscriber
 - C# subscriber
 
-Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case you'll use [Apache ActiveMQ Artemis](https://activemq.apache.org/components/artemis/) through Dapr's AMQP 1.0 pub/sub component (`pubsub.amqp`, Dapr 1.19 or later). The following architecture diagram illustrates how components interconnect locally (the diagram still shows Redis; the broker is now Artemis):
+Dapr uses pluggable message buses to enable pub-sub, and delivers messages to subscribers in a [Cloud Events](https://github.com/cloudevents/spec) compliant message envelope. in this case you'll use Redis Streams (enabled in Redis versions => 5). The following architecture diagram illustrates how components interconnect locally:
 
 ![Architecture Diagram](./img/Local_Architecture_Diagram.png)
 
@@ -24,8 +24,7 @@ Dapr allows you to deploy the same microservices from your local machines to the
 
 ### Prerequisites to run locally
 
-- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr-cli/) (runtime 1.19 or later)
-- [Docker](https://docs.docker.com/get-docker/), to run the Artemis broker
+- [Dapr CLI with Dapr initialized](https://docs.dapr.io/getting-started/install-dapr-cli/)
 - [Node.js version 14 or greater](https://nodejs.org/en/) and/or [Python 3.4 or greater](https://www.python.org/) and/or [Asp.Net Core 6](https://dotnet.microsoft.com/download/dotnet/6.0): You can run this quickstart with one or both or all microservices
 
 ### Prerequisites to Run in Kubernetes
@@ -37,25 +36,6 @@ Dapr allows you to deploy the same microservices from your local machines to the
 In order to run the pub/sub quickstart locally, each of the microservices need to run with Dapr. Start by running message subscribers. 
 
 > **Note**: These instructions deploy a Node subscriber and a Python subscriber, but if you don't have either Node or Python, feel free to run just one.
-
-### Start the Artemis broker
-
-Run Artemis in Docker. Port 5672 is AMQP and 8161 is the web console (http://localhost:8161, user `artemis`, password `artemis`):
-
-<!-- STEP
-name: Start Artemis broker
-expected_stderr_lines:
-output_match_mode: substring
-sleep: 20
--->
-
-```bash
-docker run -d -p 5672:5672 -p 8161:8161 --env ARTEMIS_USER=artemis --env ARTEMIS_PASSWORD=artemis --name artemis apache/activemq-artemis:latest
-```
-
-<!-- END_STEP -->
-
-The pub/sub component lives in [`components/pubsub.yaml`](./components/pubsub.yaml). Every `dapr run` command below passes `--resources-path ../components` so Dapr uses it instead of the default Redis component.
 
 ### Clone the quickstarts repository
 Clone this quickstarts repository to your local machine:
@@ -103,7 +83,7 @@ sleep: 5
 -->
 
 ```bash
-dapr run --app-id node-subscriber --resources-path ../components --app-port 3000 node app.js
+dapr run --app-id node-subscriber --app-port 3000 node app.js
 ```
 
 <!-- END_STEP -->
@@ -150,7 +130,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id python-subscriber --resources-path ../components --app-port 5001 uv run python app.py
+dapr run --app-id python-subscriber --app-port 5001 uv run python app.py
 ```
 
 <!-- END_STEP -->
@@ -193,7 +173,7 @@ sleep: 10
 -->
     
 ```bash
-dapr run --app-id csharp-subscriber --resources-path ../components --app-port 5009 dotnet run csharp-subscriber.csproj
+dapr run --app-id csharp-subscriber --app-port 5009 dotnet run csharp-subscriber.csproj
 ```
 
 <!-- END_STEP -->
@@ -247,7 +227,7 @@ env:
 -->
 
 ```bash
-dapr run --app-id react-form --resources-path ../components --app-port 8080 npm run start
+dapr run --app-id react-form --app-port 8080 npm run start
 ```
 
 <!-- END_STEP -->
@@ -346,57 +326,91 @@ dapr stop --app-id react-form
 
 <!-- END_STEP -->
 
-4. If you want more insights into the messages flowing through Artemis, keep going.  If you want to deploy this same application to Kubernetes,  jump to the [Run in Kubernetes](#Run-in-Kubernetes). Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
+4. If you want more insights into the Cloud Events being published on Redis streams, keep going.  If you want to deploy this same application to Kubernetes,  jump to the [Run in Kubernetes](#Run-in-Kubernetes). Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
 
-## Insights into the messages on Artemis
-To watch the messages, open the Artemis web console at http://localhost:8161 (user `artemis`, password `artemis`) and browse the `A`, `B` and `C` addresses under the `multicast` routing type. Each subscriber gets its own queue, so you can see the per-subscriber message counts there.
+## Optional: use ActiveMQ Artemis instead of Redis
 
-You can also stop the broker when you are done:
+Dapr lets you change the message broker without changing any app code. The [`components/pubsub.yaml`](./components/pubsub.yaml) file defines the same `pubsub` component, but as type `pubsub.amqp` pointing at [Apache ActiveMQ Artemis](https://activemq.apache.org/components/artemis/). This needs Dapr 1.19 or later.
 
-<!-- STEP
-name: Stop Artemis broker
-expected_stdout_lines:
-  - "artemis"
-expected_stderr_lines:
-output_match_mode: substring
--->
+1. Start Artemis in Docker:
+
+```bash
+docker run -d -p 5672:5672 -p 8161:8161 --env ARTEMIS_USER=artemis --env ARTEMIS_PASSWORD=artemis --name artemis apache/activemq-artemis:latest
+```
+
+2. Run the apps as described above, adding `--resources-path ../components` to each `dapr run` command. For example:
+
+```bash
+dapr run --app-id node-subscriber --resources-path ../components --app-port 3000 node app.js
+```
+
+Dapr now loads the Artemis component instead of the default Redis one. The apps send and receive messages exactly as before.
+
+3. When you're done, stop Artemis:
 
 ```bash
 docker rm -f artemis
 ```
 
-<!-- END_STEP -->
+## Insights into the Cloud Events being published on Redis streams
+If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that are being published on [Redis stream](https://redis.io/docs/data-types/streams/), follow the below steps: 
+
+1. Redis is running inside of a docker container, so to access it via CLI, pass the following command to a new terminal:
+
+
+```bash
+docker exec -it dapr_redis redis-cli
+```
+
+
+2. There can be multiple items/orders/messages inside a Redis stream. It is possible to get the number of orders inside a stream by using the `XLEN` command:
+
+
+```bash
+XLEN orders
+```
+
+
+3. To show the details of each order in the Redis stream events, use the `XRANGE` command. Specify two IDs, start and end. The range returned includes the elements having `start` or `end` as ID. The two special IDs - and + respectively mean the smallest and the greatest ID possible. Add an optional `COUNT` option at the end to get the first N items only. For example, the command shows the first 2 events.
+
+
+```bash
+XRANGE orders - + Count 2
+```
+
+
 
 ## Run in Kubernetes
 
-To run the same code in Kubernetes, you'll deploy an Artemis broker alongside the microservices. You'll be using the same microservices, but ultimately the architecture is a bit different: 
+To run the same code in Kubernetes, first set up a Redis store and then deploy the microservices. You'll be using the same microservices, but ultimately the architecture is a bit different: 
 
 ![Architecture Diagram](./img/K8s_Architecture_Diagram.png)
 
-### Artemis broker
+### Set up a Redis store
 
-The `deploy/artemis.yaml` file creates everything the messaging layer needs: a Secret with the broker credentials, an Artemis Deployment and Service, and the Dapr `pubsub` component (`pubsub.amqp`) pointing at `amqp://artemis:5672`. You don't need to apply it separately, as it is covered in the next step.
+Dapr uses pluggable message buses to enable pub-sub, in this case Redis Streams (enabled in Redis version 5 and above) is used. You'll install Redis into the cluster using helm, but keep in mind that you could use whichever Redis host you like, as long as the version is greater than 5.
 
-> **Note:** the demo credentials in `artemis.yaml` are plain text. In a production-grade application, follow [secret management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) instructions to securely manage your secrets.
+1. Follow [these steps](https://docs.dapr.io/getting-started/tutorials/configure-state-pubsub/) to create a Redis store using Helm. 
+   > **Note**: Currently the version of Redis supported by Azure Redis Cache is less than 5, so using Azure Redis Cache will not work.
+2. Once your store is created, add the keys to the `redis.yaml` file in the `deploy` directory. Don't worry about applying the `redis.yaml`, as it will be covered in the next step. 
+   > **Note:** the `redis.yaml` file provided in this quickstart takes plain text secrets. In a production-grade application, follow [secret management](https://docs.dapr.io/developing-applications/building-blocks/secrets/) instructions to securely manage your secrets.
 
 ### Deploy assets
 
-Now you can deploy the assets.
+Now that the Redis store is set up, you can deploy the assets.
 
 1. In your CLI window, navigate to the deploy directory
-2. To deploy the publisher and three subscriber microservices, as well as the Artemis broker and Dapr component, run:
+2. To deploy the publisher and three subscriber microservices, as well as the redis configuration you set up in the last step, run:
 
 <!-- STEP
 name: Deploy to k8s
 working_dir: deploy
 expected_stdout_lines:
-  - "deployment.apps/artemis created"
   - "deployment.apps/csharp-subscriber created"
   - "deployment.apps/node-subscriber created"
   - "deployment.apps/python-subscriber created"
   - "service/react-form created"
   - "deployment.apps/react-form created"
-  - 'deployment "artemis" successfully rolled out'
   - 'deployment "node-subscriber" successfully rolled out'
   - 'deployment "python-subscriber" successfully rolled out'
   - 'deployment "csharp-subscriber" successfully rolled out'
@@ -408,10 +422,6 @@ kubectl apply -f .
 ```
 
 Kubernetes deployments are asyncronous. This means you'll need to wait for the deployment to complete before moving on to the next steps. You can do so with the following command:
-
-```bash
-kubectl rollout status deploy/artemis
-```
 
 ```bash
 kubectl rollout status deploy/node-subscriber
@@ -559,7 +569,6 @@ Once you're done, you can spin down your Kubernetes resources by navigating to t
 name: Cleanup
 working_dir: deploy
 expected_stdout_lines:
-  - 'deployment.apps "artemis" deleted'
   - 'deployment.apps "csharp-subscriber" deleted'
   - 'deployment.apps "node-subscriber" deleted'
   - 'deployment.apps "python-subscriber" deleted'
