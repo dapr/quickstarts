@@ -4,6 +4,8 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. You
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
+The Node app forwards the incoming `traceparent` header when persisting an order through the Dapr state API. This keeps service invocation and state persistence in the same distributed trace. Requests without this header continue to work.
+
 ## Prerequisites
 
 This quickstart requires you to have the following installed on your machine:
@@ -413,3 +415,21 @@ Now that you're successfully working with Dapr, you probably want to update the 
 ## Next steps
 
 - Explore additional [quickstarts](../../README.md#quickstarts) and deploy them locally or on Kubernetes.
+
+## Testing trace context propagation
+
+For contributors with Node.js installed, run the isolated handler tests below. They check that both tutorials forward `traceparent`, omit it when absent, and preserve state persistence error handling. These tests do not require a running Dapr sidecar or Kubernetes cluster.
+
+<!-- STEP
+name: Test trace context propagation
+expected_stdout_lines:
+  - "hello-world: trace propagation, missing header, and persistence failure passed"
+  - "hello-kubernetes: trace propagation, missing header, and persistence failure passed"
+output_match_mode: substring
+-->
+
+```bash
+node ../tests/trace-context.test.js
+```
+
+<!-- END_STEP -->
