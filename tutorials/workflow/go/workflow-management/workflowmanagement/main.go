@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/dapr/durabletask-go/api"
 	"github.com/dapr/durabletask-go/workflow"
 	"github.com/dapr/go-sdk/client"
 )
@@ -66,6 +67,10 @@ func main() {
 	mux.HandleFunc("GET /status/{instance_id}", func(w http.ResponseWriter, req *http.Request) {
 		meta, err := wfClient.FetchWorkflowMetadata(req.Context(), req.PathValue("instance_id"),
 			workflow.WithFetchPayloads(true))
+		if errors.Is(err, api.ErrInstanceNotFound) {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

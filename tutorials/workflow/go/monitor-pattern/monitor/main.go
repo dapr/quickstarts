@@ -49,8 +49,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /start/{counter}", func(w http.ResponseWriter, req *http.Request) {
 		counter, err := strconv.Atoi(req.PathValue("counter"))
-		if err != nil {
-			http.Error(w, "the counter must be an integer", http.StatusBadRequest)
+		if err != nil || counter < 0 {
+			http.Error(w, "the counter must be an integer of 0 or more", http.StatusBadRequest)
 			return
 		}
 		instanceID, err := wfClient.ScheduleWorkflow(req.Context(), "MonitorWorkflow",
