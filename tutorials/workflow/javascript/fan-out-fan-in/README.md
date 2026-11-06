@@ -11,7 +11,7 @@ graph LR
    SW((Start
    Workflow))
    subgraph for each word in the input
-    GWL[get_word_length]
+    GWL[getWordLength]
    end
    SHORT[Select the
    shortest word]

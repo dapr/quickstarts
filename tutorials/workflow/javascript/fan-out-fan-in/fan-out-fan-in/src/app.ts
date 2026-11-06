@@ -19,7 +19,12 @@ const workflowClient = new DaprWorkflowClient();
 
 app.post("/start", async (req, res, next) => {
   try {
-    const instanceId = await workflowClient.scheduleNewWorkflow(fanoutfaninWorkflow, req.body);
+    const words = req.body;
+    if (!Array.isArray(words) || words.length === 0 || !words.every((word) => typeof word === "string")) {
+      res.status(422).json({ error: "The body must be a JSON array of one or more strings" });
+      return;
+    }
+    const instanceId = await workflowClient.scheduleNewWorkflow(fanoutfaninWorkflow, words);
     res.status(202).json({ instance_id: instanceId });
   } catch (error) {
     next(error);

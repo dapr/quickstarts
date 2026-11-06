@@ -20,7 +20,12 @@ const workflowClient = new DaprWorkflowClient();
 
 app.post("/start/:input", async (req, res, next) => {
   try {
-    const instanceId = await workflowClient.scheduleNewWorkflow(resiliencyAndCompensationWorkflow, Number(req.params.input));
+    const input = Number(req.params.input);
+    if (!Number.isInteger(input)) {
+      res.status(422).json({ error: "The input must be an integer" });
+      return;
+    }
+    const instanceId = await workflowClient.scheduleNewWorkflow(resiliencyAndCompensationWorkflow, input);
     res.status(202).json({ instance_id: instanceId });
   } catch (error) {
     next(error);
