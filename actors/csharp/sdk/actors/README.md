@@ -13,7 +13,7 @@ Let's take a look at the Dapr [Actors building block](https://docs.dapr.io/devel
 For this example, you will need:
 
 - [Dapr CLI and initialized environment](https://docs.dapr.io/getting-started).
-- [.NET 8 SDK](https://dotnet.microsoft.com/download).
+- [.NET 10 SDK](https://dotnet.microsoft.com/download).
 - Docker Desktop
 
 ### Step 2: Set up the environment
@@ -26,7 +26,7 @@ git clone https://github.com/dapr/quickstarts.git
 
 ### Step 3: Run the service app
 
-In a new terminal window, navigate to the `actors/csharp/sdk/service` directory and restore dependencies:
+In a new terminal window, navigate to the `actors/csharp/sdk/actors/service` directory and restore dependencies:
 
 
 Run the `SmartDevice.Service`, which will start service itself and the Dapr sidecar:
@@ -43,7 +43,7 @@ sleep: 30
 -->
 ```bash
 cd service
-dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-port 56001 --resources-path ../../../resources -- dotnet run --urls=http://localhost:5001/
+dapr run --app-id actorservice --app-port 5001 --app-protocol http --dapr-http-port 56001 --resources-path ../../../../resources -- dotnet run --urls=http://localhost:5001/
 ```
 <!-- END_STEP -->
 
@@ -71,7 +71,7 @@ info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
 
 ### Step 4: Run the client app
 
-In a new terminal instance, navigate to the `actors/csharp/sdk/client` directory and install the dependencies:
+In a new terminal instance, navigate to the `actors/csharp/sdk/actors/client` directory and install the dependencies:
 
 Then run the client app:
 <!-- STEP
@@ -116,14 +116,14 @@ Device 2 state: Location: Second Floor, Status: Ready
 
 <!-- STEP
 expected_stdout_lines: 
-  - '✅  app stopped successfully: actorservice'
+  - 'app stopped successfully: actorservice'
 expected_stderr_lines:
 name: Shutdown dapr
+output_match_mode: substring
 -->
 
 ```bash
 dapr stop --app-id actorservice
-(lsof -iTCP -sTCP:LISTEN -P | grep :5001) | awk '{print $2}' | xargs -r kill
 ```
 
 <!-- END_STEP -->

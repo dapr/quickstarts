@@ -109,10 +109,14 @@ jobs:
               then
                 echo "$building_block/csharp/$variant does not exist."
               else
-                pushd $building_block/csharp/$variant
-                echo "Validating $building_block/csharp/$variant quickstart"
-                make validate 
-                popd
+                quickstart_dirs=$(find "$building_block/csharp/$variant" -name makefile -exec dirname {} \;)
+                for quickstart_dir in $quickstart_dirs
+                do
+                  pushd $quickstart_dir
+                  echo "Validating $quickstart_dir quickstart"
+                  make validate
+                  popd
+                done
               fi
             done
           done
