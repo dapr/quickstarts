@@ -1,126 +1,113 @@
-# Dapr pub/sub
+# Dapr pub/sub over HTTP
 
-In this quickstart, you'll create a publisher microservice and a subscriber microservice to demonstrate how Dapr enables a publish-subcribe pattern. The publisher will generate messages of a specific topic, while subscribers will listen for messages of specific topics. See [Why Pub-Sub](#why-pub-sub) to understand when this pattern might be a good choice for your software architecture.
+Publish orders from `checkout` and receive them in `order-processor` using Dapr's HTTP APIs, without installing the Dapr SDK.
 
-Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
+Learn more about [Dapr pub/sub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/).
 
-> **Note:** This example leverages HTTP `requests` only.  If you are looking for the example using the Dapr Client SDK (recommended) [click here](../sdk/).
+> **Note:** For the SDK equivalents and the new features in `@dapr/dapr` 3.19.0, see the [SDK quickstart](../sdk).
 
-This quickstart includes one publisher:
+## What this example demonstrates
 
-- Node client message generator `checkout` 
+Checkout publishes orders 1-5 individually to `POST /v1.0/publish/orderpubsub/orders`, then orders 6-10 to the stable `POST /v1.0/publish/bulk/orderpubsub/orders` API. Each bulk entry has an `entryId`, `event`, and `contentType`. The stable endpoint requires Dapr 1.17 or newer; unlike the SDK, this example does not select an older alpha endpoint.
 
-And one subscriber: 
- 
-- Node subscriber `order-processor`
+Bulk publishing can partially fail. HTTP errors, including partial-failure responses, terminate the publisher with a nonzero exit code and include the response details. Bulk publishing does not require bulk subscribing: the subscriber advertises its `orders` route at `/dapr/subscribe` and receives individual CloudEvents. It responds with `SUCCESS` after handling each event or `RETRY` on a processing exception. Delivery is at least once; real handlers must tolerate duplicates.
 
-## Run all apps with multi-app run template file:
+**Dynamic streaming subscriptions are gRPC-only.** The SDK's new `subscribeStream` API has no HTTP equivalent, and changing `/dapr/subscribe` after startup does not create a streaming subscription. Try the [SDK streaming example](../sdk#dynamic-streaming-subscriptions) for runtime subscribe/close behavior without an application server.
 
-This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
+## Prerequisites
 
-1. Install dependencies: 
+- Node.js 20 or newer and npm.
+- Dapr CLI and an initialized Dapr runtime **1.17 or newer**, which provides the [stable bulk publish API](https://github.com/dapr/dapr/releases/tag/v1.17.0).
+- Redis at `localhost:6379`, normally provisioned by `dapr init`.
+
+Run the following commands from this directory.
+
+The JavaScript SDK version **3.19.0** adds SDK access to existing runtime capabilities; it does not require a matching runtime version. This HTTP example does not depend on the SDK.
+
+## Run with multi-app template (`dapr run -f .`)
+
+1. Install dependencies:
 
 <!-- STEP
 name: Install Node dependencies
 -->
 
 ```bash
-cd ./order-processor
-npm install
-cd ..
-cd ./checkout
-npm install
+npm ci --prefix ./order-processor &&
+npm ci --prefix ./checkout
 ```
 <!-- END_STEP -->
 
-2. Open a new terminal window and run the multi app run template:
+2. Start the publisher and subscriber:
 
 <!-- STEP
 name: Run multi app run template
 expected_stdout_lines:
   - 'Started Dapr with app id "order-processor-http"'
   - 'Started Dapr with app id "checkout-http"'
-  - 'Published data: {"orderId":10}'
-  - 'Subscriber received: { orderId: 10 }'
+  - 'Published data: {"orderId":1}'
+  - 'Published data: {"orderId":5}'
+  - 'Bulk published orders: 6,7,8,9,10'
+  - 'Subscriber received: {"orderId":1}'
+  - 'Subscriber received: {"orderId":2}'
+  - 'Subscriber received: {"orderId":3}'
+  - 'Subscriber received: {"orderId":4}'
+  - 'Subscriber received: {"orderId":5}'
+  - 'Subscriber received: {"orderId":6}'
+  - 'Subscriber received: {"orderId":7}'
+  - 'Subscriber received: {"orderId":8}'
+  - 'Subscriber received: {"orderId":9}'
+  - 'Subscriber received: {"orderId":10}'
 expected_stderr_lines:
 output_match_mode: substring
 match_order: none
 background: true
-sleep: 15
-timeout_seconds: 30
+sleep: 20
+timeout_seconds: 45
 -->
 
 ```bash
 dapr run -f .
 ```
+<!-- END_STEP -->
 
-The terminal console output should look similar to this:
+Output includes the following lines. Message ordering and duplicate deliveries can vary.
 
 ```text
 Published data: {"orderId":1}
-Subscriber received: { orderId: 1 }
-Published data: {"orderId":2}
-Subscriber received: { orderId: 2 }
-Published data: {"orderId":3}
-Subscriber received: { orderId: 3 }
-Published data: {"orderId":4}
-Subscriber received: { orderId: 4 }
-Published data: {"orderId":5}
-Subscriber received: { orderId: 5 }
-Published data: {"orderId":6}
-Subscriber received: { orderId: 6 }
-Published data: {"orderId":7}
-Subscriber received: { orderId: 7 }
-Published data: {"orderId":8}
-Subscriber received: { orderId: 8 }
-Published data: {"orderId":9}
-Subscriber received: { orderId: 9 }
-Published data: {"orderId":10}
-Subscriber received: { orderId: 10 }
+Subscriber received: {"orderId":1}
+Bulk published orders: 6,7,8,9,10
+Subscriber received: {"orderId":10}
 ```
 
-3. Stop and clean up application processes
+3. Stop the applications:
+
+<!-- STEP
+name: Stop multi app run template
+-->
 
 ```bash
 dapr stop -f .
 ```
 <!-- END_STEP -->
 
-## Run a single app at a time with Dapr (Optional)
+## Run individually (optional)
 
-An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- npm run start` commands.  This next section covers how to do this. 
-
-### Run Node message subscriber with Dapr
-
-1. Install dependencies: 
+After installing dependencies, start the subscriber in one terminal:
 
 ```bash
 cd ./order-processor
-npm install
+npm run start:dapr
 ```
 
-2. Run the Node publisher app with Dapr: 
-    
-```bash
-dapr run --app-port 5003 --app-id order-processing-http --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
-```
-
-### Run Node message publisher with Dapr
-
-1. Install dependencies: 
+Then start the publisher in another terminal:
 
 ```bash
 cd ./checkout
-npm install
+npm run start:dapr
 ```
 
-2. Run the Node publisher app with Dapr: 
-    
-```bash
-dapr run --app-id checkout-http --app-protocol http --dapr-http-port 3500 --resources-path ../../../components -- npm run start
-```
-
-### Stop the apps and clean up
+These scripts use `--resources-path ../../../components` relative to their app folders and the same app IDs as `dapr.yaml`. Stop the applications when finished:
 
 ```bash
 dapr stop --app-id checkout-http
