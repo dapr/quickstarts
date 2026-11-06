@@ -22,14 +22,18 @@
 #      the `###` request blocks, the `# @name` names, and the `{{var}}`, `{{$guid}}`,
 #      `{{name.response.headers.X}}` and `{{name.response.body.<path>}}` references.
 #   4. Checks every instance that a request started through GET /v1.0/workflows/dapr/<id>.
-#      An instance must reach COMPLETED. An instance that the .http file purges must be gone.
+#      An instance must reach COMPLETED. An instance that the .http file purges must be COMPLETED
+#      before the purge (TERMINATED when the file terminates it first), and after the purge a
+#      daprd must answer that it does not know the instance.
 #   5. Stops everything that it started and prints one RESULT line per instance.
-# A topic with no .http file (an app that runs its scenarios and exits) is checked on the app output.
+# history-propagation has no .http file: the app runs its scenarios and exits, and the script
+# checks the app output. Any other topic must have a .http file.
 #
 # It does not start the Dapr control plane. Before a python, csharp or go topic, the Scheduler and
 # Placement services must run (the "Run the tutorials without Docker" section of the language
 # README starts them) and, for combined-patterns, Redis on localhost:6379.
 # Java topics start their own Dapr with Testcontainers and need a running Docker daemon.
+# The script needs bash, curl and python3. It runs on Linux and macOS.
 #
 # Environment:
 #   VALIDATE_RUN_FILE  force the run file (default: dapr-sqlite.yaml when present, otherwise dapr.yaml)
@@ -55,6 +59,8 @@ fail() { say "FAIL: $*"; exit 1; }
 
 # One process group per started app, so that cleanup stops the children too.
 PIDS=()
+TC_BEFORE=""        # java: the Testcontainers containers that existed before this run
+TC_PROPS_BACKUP=""  # java: set when this run changed ~/.testcontainers.properties
 cleanup() {
   local p
   for p in "${PIDS[@]:-}"; do [ -n "$p" ] && kill -INT -- "-$p" 2>/dev/null; done
@@ -66,19 +72,34 @@ cleanup() {
   done
   for p in "${PIDS[@]:-}"; do [ -n "$p" ] && kill -9 -- "-$p" 2>/dev/null; done
   if [ "$LANG_" = java ] && command -v docker > /dev/null 2>&1; then
-    local c; c=$(docker ps -aq --filter label=org.testcontainers=true 2>/dev/null)
+    # Remove only the Testcontainers containers that this run created.
+    local c
+    c=$(comm -13 <(printf '%s\n' "$TC_BEFORE" | sort) \
+                 <(docker ps -aq --no-trunc --filter label=org.testcontainers=true 2>/dev/null | sort))
     [ -n "$c" ] && docker rm -f $c > /dev/null 2>&1
   fi
+  # Undo the Testcontainers reuse setting that this run added.
+  case "$TC_PROPS_BACKUP" in
+    "") ;;
+    none) rm -f "$HOME/.testcontainers.properties" ;;
+    *) cp "$TC_PROPS_BACKUP" "$HOME/.testcontainers.properties" ;;
+  esac
   return 0
 }
 trap cleanup EXIT
 trap 'exit 130' INT TERM
 
 # start <name> <folder> <command...>: run a command in its own process group, log to $LOGDIR/<name>.log.
+# macOS has no setsid command. There, python3 (which this script needs anyway) starts the session.
+if command -v setsid > /dev/null 2>&1; then
+  new_session() { exec setsid "$@"; }
+else
+  new_session() { exec python3 -c 'import os, sys; os.setsid(); os.execvp(sys.argv[1], sys.argv[1:])' "$@"; }
+fi
 start() {
   local name=$1 dir=$2; shift 2
   say "start $name in ${dir#$HERE/}: $*"
-  ( cd "$dir" && exec setsid "$@" ) > "$LOGDIR/$name.log" 2>&1 < /dev/null &
+  ( cd "$dir" && new_session "$@" ) > "$LOGDIR/$name.log" 2>&1 < /dev/null &
   PIDS+=("$!")
 }
 
@@ -136,10 +157,21 @@ case "$LANG_" in
 esac
 
 if [ "$LANG_" = java ]; then
+  if command -v docker > /dev/null 2>&1; then
+    TC_BEFORE=$(docker ps -aq --no-trunc --filter label=org.testcontainers=true 2>/dev/null)
+  fi
   if [ -d "$APP/workflow-app" ] && [ -d "$APP/shipping-app" ]; then
     # The README of combined-patterns: reuse the Testcontainers Dapr containers across the two apps.
-    grep -qs 'testcontainers.reuse.enable=true' "$HOME/.testcontainers.properties" 2>/dev/null \
-      || echo 'testcontainers.reuse.enable=true' >> "$HOME/.testcontainers.properties"
+    # The setting is for this run only: cleanup puts the user's file back.
+    if ! grep -qs 'testcontainers.reuse.enable=true' "$HOME/.testcontainers.properties"; then
+      if [ -f "$HOME/.testcontainers.properties" ]; then
+        TC_PROPS_BACKUP=$LOGDIR/testcontainers.properties.orig
+        cp "$HOME/.testcontainers.properties" "$TC_PROPS_BACKUP"
+      else
+        TC_PROPS_BACKUP=none
+      fi
+      echo 'testcontainers.reuse.enable=true' >> "$HOME/.testcontainers.properties"
+    fi
     # Start the second app after the first one is up, as the README does: both apps create the
     # same Testcontainers network and Redis container.
     start workflow-app "$APP/workflow-app" mvn clean -Dspring-boot.run.arguments="--reuse=true" spring-boot:test-run
@@ -168,8 +200,10 @@ else
   WAIT=180
 fi
 
-# --- A topic with no .http file runs its scenarios and exits (history propagation).
+# --- history-propagation has no .http file: the app runs its scenarios and exits.
+# The expected output lines below belong to that topic only.
 if [ -z "$HTTP_FILE" ]; then
+  [ "$TOPIC" = history-propagation ] || fail "no .http file in ${APP#$HERE/}, and no expected app output is defined for $TOPIC"
   say "no .http file in ${APP#$HERE/}: checking the app output"
   APPLOG=$LOGDIR/app.log
   end=$(( $(date +%s) + 300 ))
@@ -334,10 +368,9 @@ def dapr_ports():
                 ports += re.findall(r"(\d+)->3500/tcp", line)
     else:
         ports += [p for p in PORTS_ARG.split(",") if p]
-    for v in list(variables.values()):
-        m = re.match(r"^http://localhost:(\d+)$", v)
-        if m and "daprHost" in [k for k, val in variables.items() if val == v]:
-            ports.append(m.group(1))
+    m = re.match(r"^http://localhost:(\d+)$", variables.get("daprHost", ""))
+    if m:
+        ports.append(m.group(1))
     return list(dict.fromkeys(ports))
 
 
@@ -363,6 +396,21 @@ def status_of(iid):
     return None, None
 
 
+def gone(iid):
+    """True when at least one daprd answers and no daprd knows the instance.
+
+    A connection error is not an answer, so a stopped daprd does not count as "gone".
+    """
+    answered = False
+    for port in dapr_ports():
+        code, _ = raw_get("http://localhost:%s/v1.0/workflows/dapr/%s" % (port, iid))
+        if code == 200:
+            return False
+        if code:
+            answered = True
+    return answered
+
+
 def wait_status(iid, want, timeout):
     end = time.time() + timeout
     st = None
@@ -375,7 +423,7 @@ def wait_status(iid, want, timeout):
 
 
 # ---------------------------------------------------------------- the run
-instances = []   # {"id", "cands", "purged", "label"}
+instances = []   # {"id", "cands", "purged", "terminated", "pre_purge"}
 START_RE = re.compile(r"/start(-[A-Za-z]+)?(/|\?|$)")
 
 
@@ -446,8 +494,12 @@ for req in requests:
             if target and target["id"]:
                 st = wait_status(target["id"], want, 60)
                 log("before %s: instance %s is %s" % (key, target["id"], st))
+                if key == "purge":
+                    target["pre_purge"] = st
                 if key == "raiseEvent" or key == "event":
                     time.sleep(1)
+            if key == "terminate" and target:
+                target["terminated"] = True
             if key == "purge" and target:
                 target["purged"] = True
             break
@@ -476,7 +528,7 @@ for req in requests:
                     break
             else:
                 time.sleep(1)
-        inst = {"id": found, "cands": cands, "purged": False}
+        inst = {"id": found, "cands": cands, "purged": False, "terminated": False, "pre_purge": None}
         instances.append(inst)
         log("started instance %s (candidates %s)" % (found or "NOT FOUND", cands))
     time.sleep(1)
@@ -492,10 +544,15 @@ for inst in instances:
         failures += 1
         continue
     if inst["purged"]:
+        # Before the purge, the instance must be COMPLETED, or TERMINATED when the .http file
+        # terminated it. After the purge, a daprd must answer and not know the instance.
+        want = "TERMINATED" if inst["terminated"] else "COMPLETED"
         time.sleep(2)
-        port, st = status_of(inst["id"])
-        ok = st is None
-        print("[validate] RESULT %s instance=%s status=%s expected=purged %s" % (TOPIC, iid, st or "gone", "PASS" if ok else "FAIL"), flush=True)
+        is_gone = gone(inst["id"])
+        after = "gone" if is_gone else (status_of(inst["id"])[1] or "no daprd answered")
+        ok = is_gone and inst["pre_purge"] == want
+        print("[validate] RESULT %s instance=%s before-purge=%s expected=%s after-purge=%s expected=gone %s"
+              % (TOPIC, iid, inst["pre_purge"], want, after, "PASS" if ok else "FAIL"), flush=True)
     else:
         st = wait_status(inst["id"], "COMPLETED|FAILED|TERMINATED", TIMEOUT)
         ok = st == "COMPLETED"
