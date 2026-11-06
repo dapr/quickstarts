@@ -138,7 +138,7 @@ The console app closes its worker and clients after completion. To run the execu
 
 ### Run as a service
 
-The same workflow can also be hosted by Express, either directly or through `DaprServer`. Both entry points share the console app's workflow registration and order lifecycle. Install and build as above first; the templates run the compiled app directly so Dapr manages the Node.js process without an intervening npm process. Run only one template at a time because the service templates use the same ports and app ID.
+The same workflow can also be hosted by Express, either directly or through `DaprServer`. Both entry points share the console app's workflow registration. Each request runs one small order (1 car, total 5000) to the end. The total is not over the approval threshold, so the HTTP call returns the result without an approval step. Install and build as above first; the templates run the compiled app directly so Dapr manages the Node.js process without an intervening npm process. Run only one template at a time because the service templates use the same ports and app ID.
 
 #### Express
 

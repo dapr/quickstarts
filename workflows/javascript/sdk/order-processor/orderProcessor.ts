@@ -54,6 +54,9 @@ export async function runOrder(workflowClient: DaprWorkflowClient, signal?: Abor
   console.log(`Workflow completed: ${WorkflowRuntimeStatus[completed.runtimeStatus]}`);
 }
 
+// Runs one order for the Express and DaprServer entry points and returns its result.
+// 1 car at 5000 is not over the approval threshold, so the HTTP request does not wait for approval.
+// The console app uses runOrder instead, which shows approval and restart.
 export async function processOrder(workflowClient: DaprWorkflowClient): Promise<string> {
   const inventory = new InventoryItem("car", 5000, 10);
   await daprClient.state.save(storeName, [{ key: inventory.itemName, value: inventory }]);
