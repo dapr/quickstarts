@@ -199,13 +199,13 @@ docker run -d -p 9411:9411 openzipkin/zipkin
 When you ran `dapr run -f .`:
 
 1. An OrderPayload is made containing one car.
-2. A unique order ID for the workflow is generated (in the above example, `d1bf548b-c854-44af-978e-90c61ed88e3c`) and the workflow is scheduled.
+2. A unique order ID for the workflow is generated (in the above example, `cb027210-b3e3-4521-ab1e-c37404f3dac5`) and the workflow is scheduled.
 3. The `NotifyActivity` workflow activity sends a notification saying an order for one car has been received.
 4. The `VertifyInventoryActivity` workflow activity checks the inventory data, determines if you can supply the ordered item, and responds with the number of cars in stock. The inventory is sufficient so the workflow continues.
 5. The total cost of the order is 5000, so the workflow will not call the `RequestApprovalActivity` activity.
-6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `d1bf548b-c854-44af-978e-90c61ed88e3c` and confirms if successful.
+6. The `ProcessPaymentActivity` workflow activity begins processing payment for order `cb027210-b3e3-4521-ab1e-c37404f3dac5` and confirms if successful.
 7. The `UpdateInventoryActivity` workflow activity updates the inventory with the current available cars after the order has been processed.
-8. The `NotifyActivity` workflow activity sends a notification saying that order `d1bf548b-c854-44af-978e-90c61ed88e3c` has completed.
+8. The `NotifyActivity` workflow activity sends a notification saying that order `cb027210-b3e3-4521-ab1e-c37404f3dac5` has completed.
 9. The workflow terminates as completed and the orderResult is set to processed.
 
 > **Note:** This quickstart uses an OrderPayload of one car with a total cost of $5000. Since the total order cost is not over 5000, the workflow will not call the `RequestApprovalActivity` activity nor wait for an approval event. Since the quickstart is a console application, it can't accept incoming events easily. If you want to test this scenario, convert the console app to a service and use the [raise event API](https://docs.dapr.io/reference/api/workflow_api/#raise-event-request) via HTTP/gRPC or via the Dapr Workflow client to send an event to the workflow instance.
