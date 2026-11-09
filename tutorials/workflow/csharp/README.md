@@ -43,7 +43,7 @@ By default, the tutorials use Redis in Docker as the workflow state store, and t
 
 Use this option when Docker is not available or not allowed, for example on a locked-down laptop, in a CI job, or in a dev container without Docker. It also starts faster, because it has fewer moving parts.
 
-The [Combined Patterns](./combined-patterns/README.md) tutorial also uses Redis for pub/sub, so it does not run this way. The [History Propagation](./history-propagation/README.md) and Versioning tutorials do not have a `dapr-sqlite.yaml` file. The commands are for Linux and macOS, and for Windows (PowerShell).
+The [Combined Patterns](./combined-patterns/README.md) tutorial also uses Redis for pub/sub, so it does not run this way. The commands are for Linux and macOS, and for Windows (PowerShell).
 
 1. Install the Dapr binaries. This command installs `daprd`, `placement`, and `scheduler` in `$HOME/.dapr/bin` (`$env:USERPROFILE\.dapr\bin` on Windows, with the `.exe` extension). It does not start them.
 
