@@ -63,7 +63,7 @@ graph LR
     Since `1` is used as the input, the expected output of the workflow is:
 
     ```txt
-    "1"
+    1
     ```
 
 

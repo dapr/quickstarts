@@ -1,6 +1,6 @@
 # Dapr workflows
 
-In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow authoring client. The console app 
+In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow client. The console app 
 starts and manages an order processing workflow.
 The workflow management API provided by the Dapr client can also be used interchangeably with minor adjustments
 
@@ -20,7 +20,7 @@ inventory, their payment couldn't be processed, and more.
 
 ### Run the order processor workflow
 
-1. Open a new terminal window and navigate to `order-processor` directory.
+1. Open a new terminal window in this quickstart directory.
 2. Run the console app with Dapr: 
 <!-- STEP
 name: Running this example

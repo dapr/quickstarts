@@ -23,6 +23,8 @@ packages
 **/dist/
 Debug/
 **_example
+tutorials/workflow/go/history-propagation/dapr_example_patient_intake
+tutorials/workflow/go/history-propagation/patient-app
 
 # IDE generated files and directories
 *.iml

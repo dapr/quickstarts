@@ -24,14 +24,15 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/task-chaining/task_chaining` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/task-chaining` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r task_chaining/requirements.txt
     ```
 
-3. Navigate back one level to the `task-chaining` folder and use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file
 
     <!-- STEP
     name: Run multi app run template
@@ -45,7 +46,7 @@ graph LR
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
