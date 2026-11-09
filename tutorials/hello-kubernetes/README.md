@@ -4,7 +4,7 @@ This tutorial will get you up and running with Dapr in a Kubernetes cluster. You
 
 ![Architecture Diagram](./img/Architecture_Diagram.png)
 
-The Node app forwards the incoming `traceparent` header when persisting an order through the Dapr state API. This keeps service invocation and state persistence in the same distributed trace. Requests without this header continue to work.
+The Node app forwards the incoming `traceparent` header when persisting an order through the Dapr state API. This keeps both the service invocation and state calls in the same distributed trace. This is optional and requests without this header continue to work.
 
 ## Prerequisites
 
