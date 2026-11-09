@@ -77,7 +77,7 @@ graph LR
 5. The expected serialized output of the workflow is one string (the shortest) from the array.
 
     ```txt
-    "["is"]"
+    is
     ```
 
 6. Stop the application by pressing `Ctrl+C`.

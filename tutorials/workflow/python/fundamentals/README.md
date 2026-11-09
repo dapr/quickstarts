@@ -23,14 +23,15 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/fundamentals/basic` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/fundamentals` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r basic/requirements.txt
     ```
 
-3. Navigate one level back to the `fundamentals` folder and use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file
 
     <!-- STEP
     name: Run multi app run template
@@ -44,7 +45,7 @@ graph LR
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
