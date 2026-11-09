@@ -54,14 +54,18 @@ app.post('/neworder', async (req, res) => {
         value: data
     }];
 
+    // Preserve the incoming trace when calling Dapr's state API.
+    const headers = { "Content-Type": "application/json" };
+    if (req.headers.traceparent) {
+        headers.traceparent = req.headers.traceparent;
+    }
+
     try {
         const response = await fetch(stateUrl, {
             method: "POST",
             body: JSON.stringify(state),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
+            headers
+        });
         if (!response.ok) {
             throw "Failed to persist state.";
         }
@@ -75,6 +79,8 @@ app.post('/neworder', async (req, res) => {
 ```
 
 Here the app is exposing an endpoint that will receive and handle `neworder` messages. It first logs the incoming message, and then persist the order ID to the Redis store by posting a state array to the `/state/<state-store-name>` endpoint.
+
+The handler forwards the incoming `traceparent` header to the state API so that service invocation and state persistence belong to the same distributed trace. When no header is present, it is omitted from the outgoing request.
 
 Alternatively, you could have persisted the state by simply returning it with the response object:
 
@@ -446,3 +452,21 @@ Now that you've gotten Dapr running locally on your machine, consider these next
 - Run this hello world application in Kubernetes via the [Hello Kubernetes](../hello-kubernetes) quickstart.
 - Learn more about Dapr in the [Dapr Concepts](https://docs.dapr.io/concepts/) documentation.
 - Explore [Dapr concepts](https://docs.dapr.io/concepts/) such as building blocks and components in the Dapr documentation.
+
+## Testing trace context propagation
+
+For contributors with Node.js installed, run the isolated handler tests below. They check that both tutorials forward `traceparent`, omit it when absent, and preserve state persistence error handling. These tests do not require a running Dapr sidecar or Kubernetes cluster.
+
+<!-- STEP
+name: Test trace context propagation
+expected_stdout_lines:
+  - "hello-world: trace propagation, missing header, and persistence failure passed"
+  - "hello-kubernetes: trace propagation, missing header, and persistence failure passed"
+output_match_mode: substring
+-->
+
+```bash
+node ../tests/trace-context.test.js
+```
+
+<!-- END_STEP -->
