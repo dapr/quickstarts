@@ -1,0 +1,9 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: detached-app
+    appDirPath: ./
+    command: ["go", "run", "."]
+    appLogDestination: console
+    daprdLogDestination: console
