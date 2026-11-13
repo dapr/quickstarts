@@ -1,7 +1,7 @@
-import { Task, WorkflowActivityContext, WorkflowContext, DaprClient } from "@dapr/dapr";
-import { ApprovalResponse, InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest, OrderResult } from "./model";
+import { Task, WorkflowActivityContext, WorkflowContext, DaprClient, LogLevel } from "@dapr/dapr";
+import { ApprovalRequest, ApprovalResponse, InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest, OrderResult } from "./model";
 
-export const daprClient = new DaprClient();
+export const daprClient = new DaprClient({ logger: { level: LogLevel.Error } });
 export const storeName = "statestore";
 
 async function getInventory(itemName: string): Promise<InventoryItem | undefined> {
@@ -31,8 +31,8 @@ export const verifyInventoryActivity = async (_: WorkflowActivityContext, reques
   return new InventoryResult(inventory.quantity >= request.quantity, inventory);
 };
 
-export const requestApprovalActivity = async (_: WorkflowActivityContext, order: OrderPayload) => {
-  console.log(`Requesting approval for ${order.quantity} ${order.itemName} at a total cost of ${order.totalCost}`);
+export const requestApprovalActivity = async (_: WorkflowActivityContext, request: ApprovalRequest) => {
+  console.log(`Approval requested for order ${request.orderId}. Waiting for approval.`);
 };
 
 export const processPaymentActivity = async (_: WorkflowActivityContext, request: OrderPaymentRequest) => {
@@ -54,7 +54,6 @@ export function* orderProcessingWorkflow(
   order: OrderPayload,
 ): Generator<Task<unknown>, OrderResult, unknown> {
   const orderId = ctx.getWorkflowInstanceId();
-  ctx.logger.info(`Processing order ${orderId}...`);
 
   yield ctx.callActivity(notifyActivity, {
     message: `Received order ${orderId} for ${order.quantity} ${order.itemName} at a total cost of ${order.totalCost}`,
@@ -70,10 +69,13 @@ export function* orderProcessingWorkflow(
   }
 
   if (order.totalCost > 5000) {
-    yield ctx.callActivity(requestApprovalActivity, order);
-    const approvalTask = ctx.waitForExternalEvent<ApprovalResponse>("ApprovalEvent", { timeoutInSeconds: 30 });
+    yield ctx.callActivity(requestApprovalActivity, { orderId, order });
+    const approvalTask = ctx.waitForExternalEvent<ApprovalResponse>("ApprovalEvent", { timeoutInSeconds: 600 });
     yield approvalTask;
-    if (!approvalTask.getResult().isApproved) {
+    // The Dapr CLI sends the --input value as a JSON string, so accept a string or an object.
+    const reply = approvalTask.getResult();
+    const approval = typeof reply === "string" ? JSON.parse(reply) as ApprovalResponse : reply;
+    if (!approval?.approved) {
       yield ctx.callActivity(notifyActivity, { message: `Order ${orderId} was not approved` });
       return new OrderResult(false);
     }
@@ -96,6 +98,5 @@ export function* orderProcessingWorkflow(
   }
 
   yield ctx.callActivity(notifyActivity, { message: `Order ${orderId} processed successfully!` });
-  ctx.logger.info(`Order ${orderId} has completed`);
   return new OrderResult(true);
 }
