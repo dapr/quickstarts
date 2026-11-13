@@ -14,7 +14,7 @@ The quickstart contains 1 workflow to simulate purchasing items from a store, an
 - ProcessPaymentActivity: This activity is responsible for processing and authorizing the payment.
 - UpdateInventoryActivity: This activity updates the state store with the new remaining inventory value.
 
-### Run the order processor workflow with multi-app-run
+### Run the order processor workflow
 
 The app places one order for 2 cars at $5,000 each. The total is $10,000, so the workflow waits for your approval. You stop the app while it waits, start it again, and then approve the order. The workflow continues from where it stopped.
 

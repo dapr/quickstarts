@@ -1,6 +1,6 @@
 # Dapr workflows
 
-In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow authoring client. The console app 
+In this quickstart, you'll create a simple console application to demonstrate Dapr's workflow programming model and the workflow client. The console app 
 starts and manages an order processing workflow.
 The workflow management API provided by the Dapr client can also be used interchangeably with minor adjustments
 

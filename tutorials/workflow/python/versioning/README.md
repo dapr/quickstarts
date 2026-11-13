@@ -57,14 +57,15 @@ New workflow instances will execute the patched code path (`send_sms`) since the
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/versioning/versioning` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/versioning` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r versioning/requirements.txt
     ```
 
-3. Navigate back one level to the `versioning` folder. By default, the `dapr.yaml` file is set to run `before.py`:
+3. By default, the `dapr.yaml` file is set to run `before.py`:
 
     ```yaml
     command: ["python3", "before.py"]
@@ -86,7 +87,7 @@ New workflow instances will execute the patched code path (`send_sms`) since the
 4. Use the Dapr CLI to run the application:
 
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
 
 5. Use the POST request in the [`versioning.http`](./versioning.http) file to start the workflow, or use this cURL command:

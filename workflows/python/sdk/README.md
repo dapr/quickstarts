@@ -12,7 +12,7 @@ The quickstart contains 1 workflow (order_processing_workflow) which simulates p
 - process_payment_activity: This activity is responsible for processing and authorizing the payment.
 - verify_inventory_activity: This activity checks the state store to ensure that there is enough inventory present for purchase.
 - update_inventory_activity: This activity removes the requested items from the state store and updates the store with the new remaining inventory value.
-- requst_approval_activity: This activity seeks approval from Manager, if payment is greater than 50000 USD.
+- request_approval_activity: This activity seeks approval from Manager, if payment is greater than 5000 USD.
 
 ### Run the order processor workflow
 
@@ -209,7 +209,7 @@ For a more detailed view of the workflow activities (duration, progress etc.), t
 
 1. View Traces in Zipkin UI - In your browser go to http://localhost:9411 to view the workflow trace spans in the Zipkin web UI. The order-processor workflow should be viewable with the following output in the Zipkin web UI. Note: the [openzipkin/zipkin](https://hub.docker.com/r/openzipkin/zipkin/) docker container is launched on running `dapr init`. 
 
-**<ZIPKIN TRACE FOR PYTHON CONSOLE APP>**
+<img src="img/zipkin-trace-wf-order.png">
 
 ### What happened? 
 

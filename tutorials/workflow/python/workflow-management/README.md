@@ -13,18 +13,19 @@ For more information on workflow management, see the [Dapr docs](https://docs.da
 
 ## Inspect the code
 
-Open the `app.py` file in the `tutorials/workflow/python/workflow-management/workflow_-_management/workflow_management` folder. This file contains the endpoint definitions that use the workflow management API. The workflow that is being managed is named `never_ending_workflow` and is a counter that will keep running once it's started.
+Open the `app.py` file in the `tutorials/workflow/python/workflow-management/workflow_management` folder. This file contains the endpoint definitions that use the workflow management API. The workflow that is being managed is named `never_ending_workflow` and is a counter that will keep running once it's started.
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/workflow-management/workflow-management` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/workflow-management` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r workflow_management/requirements.txt
     ```
 
-3. Navigate one level back to the `workflow-management` folder and use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file
 
     <!-- STEP
     name: Run multi app run template
@@ -38,7 +39,7 @@ Open the `app.py` file in the `tutorials/workflow/python/workflow-management/wor
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
