@@ -73,6 +73,10 @@ jobs:
           dotnet-version: |
             8.0.x
             10.0.x
+      - name: Initialize .NET CLI
+        # Complete first-use setup before multi-app templates launch dotnet concurrently.
+        # Workaround for https://github.com/dotnet/runtime/issues/136236.
+        run: dotnet --help > /dev/null
       - name: Set up Dapr CLI - Mac/Linux
         if: matrix.os != 'windows-latest'
         run: wget -q ${{ env.DAPR_INSTALL_URL }}/install.sh -O - | /bin/bash -s ${{ env.DAPR_CLI_VERSION }}
