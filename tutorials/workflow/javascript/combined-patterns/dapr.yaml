@@ -1,0 +1,18 @@
+version: 1
+common:
+  resourcesPath: resources
+apps:
+  - appID: order-workflow
+    appDirPath: workflow-app
+    appPort: 5260
+    daprHTTPPort: 3560
+    command: ["node", "dist/app.js"]
+    appLogDestination: fileAndConsole
+    daprdLogDestination: fileAndConsole
+  - appID: shipping
+    appDirPath: shipping-app
+    appPort: 5261
+    daprHTTPPort: 3561
+    command: ["node", "dist/app.js"]
+    appLogDestination: console
+    daprdLogDestination: console

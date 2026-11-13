@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources-sqlite
+apps:
+  - appID: fanoutfanin
+    appDirPath: fan-out-fan-in
+    appPort: 5256
+    daprHTTPPort: 3556
+    command: ["node", "dist/app.js"]
+    appLogDestination: console
+    daprdLogDestination: console

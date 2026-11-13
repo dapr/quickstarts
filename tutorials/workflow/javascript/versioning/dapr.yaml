@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: versioning
+    appDirPath: versioning
+    appPort: 5263
+    daprHTTPPort: 3561
+    command: ["node", "dist/before.js"]
+    appLogDestination: console
+    daprdLogDestination: console
