@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../resources-sqlite
+apps:
+  - appID: patient-intake
+    appDirPath: ./patient-intake/
+    command: ["dotnet", "run"]
