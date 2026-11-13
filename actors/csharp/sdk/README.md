@@ -128,6 +128,23 @@ dapr stop --app-id actorservice
 
 <!-- END_STEP -->
 
+### Inspect actors with the Dapr Dev Dashboard
+
+The free [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) shows the actor types your app registered and the state each actor instance keeps, so you can follow how a device changes as reminders fire.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the service and client apps are running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Actors** page to see the `SmokeDetectorActor` and `ControllerActor` types registered by the `actorservice` app.
+3. Go to the **State** page and turn on **Show internal keys** to browse the actor state behind those instances.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
+
 ### What happened
 
 When you ran the client app:

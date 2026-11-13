@@ -31,3 +31,22 @@ Open the [`WorkflowManagementRestController.java`](src/main/java/io/dapr/springb
    - Terminating the workflow instance.
    - Purging the workflow instance.
 5. Stop the application by pressing `Ctrl+C`.
+
+## Manage the workflow with the Dapr Dev Dashboard
+
+The [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) is a free local tool that gives you a UI for the same workflow state these requests return.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the tutorial is running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Workflows** page and select the `NeverEndingWorkflow` instance you started.
+3. Watch the status and the event history change as you send the suspend, resume, and terminate requests. The dashboard can also terminate and purge an instance directly, without sending a request.
+
+This tutorial runs the app with Testcontainers. The dashboard discovers the Testcontainers-managed sidecar and reads the workflows through it, so no extra configuration is needed.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
