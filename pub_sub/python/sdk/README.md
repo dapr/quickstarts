@@ -93,6 +93,23 @@ dapr stop -f .
 ```
 <!-- END_STEP -->
 
+## Inspect subscriptions with the Dapr Dev Dashboard
+
+The free [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) shows the `orders` topic subscription on the `orderpubsub` component, and can publish test messages to it, so you can exercise the subscriber without running the publisher.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the apps are running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Subscriptions** page to see the subscription the order processor registered, including its pub/sub component, topic, and route.
+3. Publish a test message to the `orders` topic, then open the **Logs** page for the subscriber to watch it arrive.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
+
 ## Run a single app at a time with Dapr (Optional)
 
 An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- uv run python app.py` commands.  This next section covers how to do this. 

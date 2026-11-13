@@ -65,6 +65,23 @@ sleep: 60
 ```
 <!-- END_STEP -->
 
+## Inspect the state store with the Dapr Dev Dashboard
+
+The free [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) lists the records in the `statestore` component, so you can watch the state the order processor writes without adding code.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the app is running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **State** page. Dapr prefixes state keys with the app id, so the orders appear as `order-processor||1`, `order-processor||2`, and so on.
+3. This app saves each order and deletes it again in the same loop iteration, so refresh the page while it runs to watch one record at a time appear and disappear. Expand a row to see the full value, and use the **Decode base64** toggle if the value is encoded.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
+
 ## Run a single app at a time with Dapr (Optional)
 
 1. Open a new terminal window and navigate to `order-processor` directory:

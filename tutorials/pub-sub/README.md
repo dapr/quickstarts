@@ -328,6 +328,23 @@ dapr stop --app-id react-form
 
 4. If you want more insights into the Cloud Events being published on Redis streams, keep going.  If you want to deploy this same application to Kubernetes,  jump to the [Run in Kubernetes](#Run-in-Kubernetes). Otherwise, skip ahead to the [How it Works](#How-it-Works) section to understand the code!
 
+## Publish and inspect messages with the Dapr Dev Dashboard
+
+The free [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) shows the topics each subscriber registered, and can publish test messages to them, so you can exercise the subscribers without the React front end or the CLI.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the subscribers are running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Subscriptions** page. It lists the topics each subscriber registered on the `pubsub` component, which is a quick way to see why a message on topic B reaches only some of the apps.
+3. Publish a test message to a topic, then open the **Logs** page for a subscriber to watch it arrive.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
+
 ## Insights into the Cloud Events being published on Redis streams
 If you want to see the [Cloud Events](https://github.com/cloudevents/spec) that are being published on [Redis stream](https://redis.io/docs/data-types/streams/), follow the below steps: 
 

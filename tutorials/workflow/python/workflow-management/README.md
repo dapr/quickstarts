@@ -50,3 +50,20 @@ Open the `app.py` file in the `tutorials/workflow/python/workflow-management/wor
    - Terminating the workflow instance.
    - Purging the workflow instance.
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
+
+## Manage the workflow with the Dapr Dev Dashboard
+
+The [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) is a free local tool that gives you a UI for the same workflow state these requests return.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the tutorial is running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Workflows** page and select the `never_ending_workflow` instance you started.
+3. Watch the status and the event history change as you send the suspend, resume, and terminate requests. The dashboard can also terminate and purge an instance directly, without sending a request.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.

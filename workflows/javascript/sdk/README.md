@@ -279,6 +279,23 @@ The commands are for Linux and macOS, and for Windows (PowerShell).
 
 To start again with no workflow state, stop all processes and delete the `scheduler-data` folder and the `workflows.db` file in the `order-processor` folder.
 
+### Inspect the workflow with the Dapr Dev Dashboard
+
+The console output of this quickstart scrolls past once. The [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) is a free local tool that keeps the full event history of every workflow instance, so you can review a run after it has finished.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the quickstart is running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Workflows** page. The dashboard reads workflow state from the same state store this quickstart uses, so the instance started by the `order-processor` app is listed there.
+3. Select the instance to see its status, its input and output, and the event history of each activity.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
+
 ### View workflow traces
 
 If the Zipkin container installed by `dapr init` is running, open http://localhost:9411 and find the `order-processor` traces to inspect workflow and activity execution.
