@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: MCPServer
+metadata:
+  name: dapr
+spec:
+  endpoint:
+    # The sidecar starts dapr-mcp-server as a child process and speaks MCP to it over stdio.
+    stdio:
+      command: dapr-mcp-server
+      env:
+      # The MCP server calls Dapr through the same sidecar that started it.
+      # Keep this in step with daprGRPCPort in each quickstart's dapr.yaml.
+      - name: DAPR_GRPC_PORT
+        value: "50101"
+      - name: DAPR_MCP_SERVER_LOG_LEVEL
+        value: warn
+scopes:
+- preference-agent-langgraph-mcpserver
+- preference-agent-dapr-agents-mcpserver
+- preference-agent-openai-agents-mcpserver

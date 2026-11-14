@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: preference-agent-langgraph
+    appDirPath: ./agent/
+    command: ["uv", "run", "python", "app.py"]
