@@ -756,6 +756,10 @@ Pub-sub is generally used for large applications that need to be highly scalable
 
 Pub-sub allows us to completely decouple the components. Publishers need not be aware of any of their subscribers, nor must subscribers be aware of publishers. This allows developers to write leaner microservices that don't take an immediate dependency on each other.
 
+## Build and publish your own container images
+
+See the [container image build guide](../container-images.md) for this tutorial's application names and instructions for building images, pushing them to your own registry, and publishing single- or multi-architecture image manifests with the shared Make targets.
+
 ## Related links:
 
 - How to [setup a Dapr pub/sub](https://docs.dapr.io/developing-applications/building-blocks/pubsub/)

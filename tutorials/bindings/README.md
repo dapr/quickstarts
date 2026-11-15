@@ -486,6 +486,10 @@ while True:
     time.sleep(1)
 ```
 
+## Build and publish your own container images
+
+See the [container image build guide](../container-images.md) for this tutorial's application names and instructions for building images, pushing them to your own registry, and publishing single- or multi-architecture image manifests with the shared Make targets.
+
 ## Related links
 
 - Learn more about bindings in the [Dapr docs](https://docs.dapr.io/developing-applications/building-blocks/bindings/)

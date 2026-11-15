@@ -413,6 +413,10 @@ If you want to update the node app, you can do the following:
 7. Deploy your updated Dapr enabled app: `kubectl apply -f node.yaml`.
 
 
+## Build and publish your own container images
+
+See the [container image build guide](../container-images.md) for this tutorial's application names and instructions for building images, pushing them to your own registry, and publishing single- or multi-architecture image manifests with the shared Make targets.
+
 ## Related Links
 - [Secret store overview](https://kubernetes.io/docs/concepts/configuration/secret/)
 - [Secret store API reference](https://docs.dapr.io/reference/api/secrets_api/)

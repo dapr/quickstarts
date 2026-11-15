@@ -684,6 +684,10 @@ For more information on how to configure the files visit [How-To: Debug multiple
 **Note**: Dapr offers a preview [Dapr Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-dapr) for local development which enables users a variety of features related to better managing their Dapr applications and debugging of your Dapr applications for all supported Dapr languages which are .NET, Go, PHP, Python and Java.
 
 
+## Build and publish your own container images
+
+See the [container image build guide](../container-images.md) for this tutorial's application names and instructions for building images, pushing them to your own registry, and publishing single- or multi-architecture image manifests with the shared Make targets.
+
 ## Next Steps
 
 - Explore additional [quickstarts](../../README.md#quickstarts).
