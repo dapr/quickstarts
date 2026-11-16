@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources-sqlite
+apps:
+  - appID: monitor
+    appDirPath: monitor
+    appPort: 5257
+    daprHTTPPort: 3557
+    command: ["go", "run", "."]
+    appLogDestination: console
+    daprdLogDestination: console

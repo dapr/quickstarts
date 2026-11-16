@@ -1,0 +1,12 @@
+@apphost=http://localhost:5264
+
+### Start the resiliency_and_compensation workflow
+# @name startWorkflowRequest
+@input=1
+POST {{ apphost }}/start/{{input}}
+
+
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@daprHost=http://localhost:3564
+### Get the workflow status
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}

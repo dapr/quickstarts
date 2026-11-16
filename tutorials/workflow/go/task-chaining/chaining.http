@@ -1,0 +1,11 @@
+@apphost=http://localhost:5255
+
+### Start the task_chaining workflow
+# @name startWorkflowRequest
+POST {{ apphost }}/start
+
+
+@instanceId={{startWorkflowRequest.response.body.instance_id}}
+@daprHost=http://localhost:3555
+### Get the workflow status
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}
