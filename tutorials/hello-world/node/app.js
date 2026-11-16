@@ -47,13 +47,17 @@ app.post('/neworder', async (req, res) => {
         value: data
     }];
 
+    // Preserve the incoming trace when calling Dapr's state API.
+    const headers = { "Content-Type": "application/json" };
+    if (req.headers.traceparent) {
+        headers.traceparent = req.headers.traceparent;
+    }
+
     try {
         const response = await fetch(stateUrl, {
             method: "POST",
             body: JSON.stringify(state),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers
         });
         if (!response.ok) {
             throw "Failed to persist state.";
