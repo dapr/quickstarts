@@ -309,6 +309,23 @@ or use the Postman GUI
 
 This invokes the `/order` route, which calls out to the Redis store for the latest data. Observe the expected result!
 
+## Inspect the state store with the Dapr Dev Dashboard
+
+Instead of invoking the app to read the order back, you can look at the record in the state store directly. The free [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) lists the records of any connected state store.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the app is running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **State** page. The order is stored under the key `nodeapp||order`, because Dapr prefixes state keys with the app id.
+3. Expand the row to see the full value. You can also add and delete records from this page.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
+
 ## Step 6 - Run the Python app with Dapr
 
 Take a look at the Python App in the `./hello-world/python` directory to see how another application can invoke the Node App via Dapr without being aware of the destination's hostname or port. In the `app.py` file you can find the endpoint definition to call the Node App via Dapr.
