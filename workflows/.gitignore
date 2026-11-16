@@ -1,0 +1,6 @@
+# SQLite files from components-sqlite/state_sqlite.yaml
+*.db
+*.db-shm
+*.db-wal
+# Scheduler data when you run the Scheduler service as a process
+scheduler-data/

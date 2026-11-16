@@ -1,87 +1,58 @@
-import { DaprWorkflowClient, WorkflowRuntime, DaprClient } from "@dapr/dapr";
-import { InventoryItem, OrderPayload } from "./model";
-import { notifyActivity, orderProcessingWorkflow, processPaymentActivity, requestApprovalActivity, verifyInventoryActivity as verifyInventoryActivity, updateInventoryActivity } from "./orderProcessingWorkflow";
-import { DaprServer, CommunicationProtocolEnum } from "@dapr/dapr";
+import { DaprWorkflowClient, DaprServer, CommunicationProtocolEnum } from "@dapr/dapr";
 import express from "express";
-
-const daprHost = process.env.DAPR_HOST ?? "localhost"; // Dapr Sidecar Host
-const daprPort = process.env.DAPR_HTTP_PORT || "3500"; // Dapr Sidecar Port of this Example Server
+import { createWorkflowRuntime, processOrder } from "./orderProcessor";
+import { daprClient } from "./orderProcessingWorkflow";
 
 const app = express();
-
 const daprServer = new DaprServer({
-  serverHost:  "127.0.0.1", // App Host
-  serverPort: process.env.APP_PORT || "3000", // App Port
+  serverHost: "127.0.0.1",
+  serverPort: process.env.APP_PORT || "3000",
   serverHttp: app,
-  communicationProtocol: CommunicationProtocolEnum.HTTP, // Add this line
-  clientOptions: {
-    daprHost,
-    daprPort
+  communicationProtocol: CommunicationProtocolEnum.HTTP,
+});
+const workflowClient = new DaprWorkflowClient();
+const workflowWorker = createWorkflowRuntime();
+
+app.post("/start-workflow", async (_req, res, next) => {
+  try {
+    if (!workflowWorker.isReady) {
+      res.status(503).send("Workflow runtime is not ready");
+      return;
+    }
+    res.send(await processOrder(workflowClient));
+  } catch (error) {
+    next(error);
   }
 });
 
-const daprClient = new DaprClient();
-const workflowClient = new DaprWorkflowClient();
-const workflowWorker = new WorkflowRuntime();
-
-app.post("/start-workflow", async (req, res) => {
-
-  const storeName = "statestore";
-  const inventory = new InventoryItem("car", 5000, 10);
-  const key = inventory.itemName;
-
-  await daprClient.state.delete(storeName, key);
-  await daprClient.state.save(storeName, [
-    {
-      key: key,
-      value: inventory,
-    }
-  ]);
-
-  const order = new OrderPayload("car", 5000, 1);
-
-  // Schedule a new orchestration
-  try {
-    const id = await workflowClient.scheduleNewWorkflow(orderProcessingWorkflow, order);
-    console.log(`Orchestration scheduled with ID: ${id}`);
-
-    // Wait for orchestration completion
-    const state = await workflowClient.waitForWorkflowCompletion(id, undefined, 30);
-
-    var orchestrationResult = `Orchestration completed! Result: ${state?.serializedOutput}`;
-    console.log(orchestrationResult);
-  } catch (error) {
-    console.error("Error scheduling or waiting for orchestration:", error);
-    throw error;
-  }
-
-  res.send(orchestrationResult);
+app.use((error: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error("Order processing failed:", error);
+  res.status(500).send("Order processing failed");
 });
 
 async function start() {
-  workflowWorker
-    .registerWorkflow(orderProcessingWorkflow)
-    .registerActivity(notifyActivity)
-    .registerActivity(verifyInventoryActivity)
-    .registerActivity(requestApprovalActivity)
-    .registerActivity(processPaymentActivity)
-    .registerActivity(updateInventoryActivity);
-
-  // Wrap the worker startup in a try-catch block to handle any errors during startup
-  try {
-    await workflowWorker.start();
-    console.log("Workflow runtime started successfully");
-  } catch (error) {
-    console.error("Error starting workflow runtime:", error);
-  }
-
-  // Initialize subscriptions before the server starts, the Dapr sidecar uses it.
-  // This will also initialize the app server itself (removing the need for `app.listen` to be called).
   await daprServer.start();
-};
+  await workflowWorker.start();
+  console.log("Workflow runtime started successfully");
+}
 
-start().catch((e) => {
-  workflowWorker.stop();
-  console.error(e);
-  process.exit(1);
-});
+async function stop() {
+  await daprServer.stop();
+  await workflowWorker.stop();
+  await workflowClient.stop();
+  await daprClient.stop();
+  await daprServer.client.stop();
+}
+
+function fail(error: unknown) {
+  console.error(error);
+  process.exitCode = 1;
+}
+
+process.once("SIGTERM", () => { void stop().catch(fail); });
+process.once("SIGINT", () => { void stop().catch(fail); });
+
+start().catch(async (error) => {
+  fail(error);
+  await stop();
+}).catch(fail);

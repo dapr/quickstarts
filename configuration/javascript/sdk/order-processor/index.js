@@ -30,11 +30,10 @@ async function main() {
       }
     );
     // Unsubscribe to config updates and exit app after 20 seconds
-    setTimeout(() => {
-      stream.stop();
-      console.log("App unsubscribed to config changes");
-      process.exit(0);
-    }, 20000);
+    await new Promise((resolve) => setTimeout(resolve, 20000));
+    await stream.stop();
+    console.log("App unsubscribed to config changes");
+    process.exit(0);
   } catch (error) {
     console.log("Error subscribing to config updates, err:" + error);
     process.exit(1);

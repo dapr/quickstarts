@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "An example utilizing the Dapr JS-SDK to author workflow",
   "private": "true",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "npx tsc --outDir ./dist/",
     "start:order-process": "npm run build && node dist/app.js",
-    "start:order-process-with-dapr-server": "npm run build && node dist/appWithDaprServer.js",
-    "start:order-process-with-express-server": "npm run build && node dist/appWithExpressServer.js",
-    "start:dapr:order-process": "dapr run --app-id activity-sequence-workflow --app-protocol grpc --dapr-grpc-port 50001 --components-path ../../components npm run start:order-process"
+    "start:dapr:order-process": "dapr run --app-id order-processor --resources-path ../../components -- npm run start:order-process"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +20,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@dapr/dapr": "^3.18.0",
+    "@dapr/dapr": "3.19.0",
     "@types/node": "^18.16.3",
     "express": "^4.19.2"
   }

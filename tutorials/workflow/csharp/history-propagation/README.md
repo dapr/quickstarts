@@ -78,21 +78,25 @@ var history = ctx.GetPropagatedHistory();   // returns PropagatedHistory?
 if (history is not null)
 {
     // Filter to a specific ancestor workflow by name
-    var prescribeEntries = history.FilterByWorkflowName(nameof(PrescribeMedicationWorkflow));
+    var prescribeEntries = history.GetEventsByWorkflowName(nameof(PrescribeMedicationWorkflow));
 
-    // Inspect events within that ancestor's segment
-    var completedCount = prescribeEntries.Entries[0].Events
-        .Count(e => e.Kind == HistoryEventKind.TaskCompleted);
+    // Inspect completed activities within that ancestor's segments
+    var completedCount = prescribeEntries
+        .Sum(e => e.Activities.Count(a => a.Status == PropagatedHistoryStatus.Completed));
 }
 ```
 
 Key types in `Dapr.Workflow`:
 - `HistoryPropagationScope` — enum: `None`, `OwnHistory`, `Lineage`
 - `ChildWorkflowTaskOptions` — pass `PropagationScope` here
-- `PropagatedHistory` — call `.FilterByWorkflowName(name)`, `.FilterByAppId(id)`, `.FilterByInstanceId(id)`
-- `PropagatedHistoryEntry` — has `WorkflowName`, `AppId`, `InstanceId`, `Events`
-- `PropagatedHistoryEvent` — has `EventId`, `Kind` (`HistoryEventKind`), `Timestamp`
-- `HistoryEventKind` — enum including `TaskScheduled`, `TaskCompleted`, `TaskFailed`, etc.
+- `PropagatedHistory` — has `Events`; call `.GetEventsByWorkflowName(name)`, `.GetByAppId(id)`, `.GetByInstanceId(id)`
+- `PropagatedHistoryEvent` — has `Name`, `AppId`, `InstanceId`, `Activities`, `Workflows`
+- `PropagatedHistoryActivityResult` — has `Name`, `Status`, `Input`, `Output`, `FailureDetails`
+- `PropagatedHistoryWorkflowResult` — has `Name`, `Status`, `Output`, `FailureDetails`
+- `PropagatedHistoryStatus` — enum: `Pending`, `Completed`, `Failed`
+
+The demo's event counts sum the reconstructed activity and child-workflow
+records, rather than counting raw history events.
 
 > **Replay safety**: workflow code runs many times during durable execution.
 > Guard side-effecting calls — including `Console.WriteLine` — with
@@ -102,12 +106,12 @@ Key types in `Dapr.Workflow`:
 ## Running this example
 
  1. Requires Dapr `1.18.0+` (workflow history propagation),
- 2. `Dapr.Workflow 1.18.0+`, and the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+ 2. `Dapr.Workflow 1.19.0`, and the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
     (or newer). Redis is started automatically by `dapr init`.
  3. Build the example:
 
     ```bash
-    dotnet build ./order-processor
+    dotnet build ./patient-intake
     ```
 
  4. Run the demo:
@@ -117,6 +121,8 @@ name: Run history-propagation demo
 expected_stdout_lines:
   - "SCENARIO 1: lineage forwarded"
   - "[ComplianceAudit] APPROVED"
+  - "PatientIntake       Completed activities: 1"
+  - "PrescribeMedication Completed activities: 2"
   - "[DispenseMedication] DISPENSED"
   - "SCENARIO 2: lineage withheld"
   - "[DispenseMedication] REFUSED"

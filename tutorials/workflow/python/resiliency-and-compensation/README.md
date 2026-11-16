@@ -27,14 +27,15 @@ graph LR
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/resiliency-and-compensation/resiliency_and_compensation` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/resiliency-and-compensation` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r resiliency_and_compensation/requirements.txt
     ```
 
-3. Navigate one folder back to `resiliency-and-compensation` and use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file
 
     <!-- STEP
     name: Run multi app run template
@@ -48,7 +49,7 @@ graph LR
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
@@ -65,9 +66,9 @@ graph LR
 
     ```txt
     minus_one: Received input: 1.
-    division: Received divisor: 0.
-    division: Received divisor: 0.
-    division: Received divisor: 0.
+    division: Received input: 0.
+    division: Received input: 0.
+    division: Received input: 0.
     plus_one: Received input: 0.
     ```
 
@@ -88,7 +89,7 @@ graph LR
     The expected serialized custom status field of the workflow output is:
 
     ```txt
-    "\"Compensated minus_one activity with plus_one activity.\""
+    "Compensated minus_one activity with plus_one activity."
     ```
 
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.

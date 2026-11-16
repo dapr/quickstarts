@@ -14,6 +14,10 @@ And one subscriber:
  
 - Node subscriber `order-processor`
 
+## Prerequisites
+
+Use Node.js 22 or later and an initialized Dapr runtime (`dapr init`). Both apps pin `@dapr/dapr` to `3.19.0`; `npm ci` installs that version from the checked-in lockfiles.
+
 ## Run all apps with multi-app run template file:
 
 This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`.  This enables to you test the interactions between multiple applications.  
@@ -26,10 +30,10 @@ name: Install Node dependencies
 
 ```bash
 cd ./order-processor
-npm install
+npm ci
 cd ..
 cd ./checkout
-npm install
+npm ci
 cd ..
 ```
 <!-- END_STEP -->
@@ -54,6 +58,8 @@ timeout_seconds: 30
 ```bash
 dapr run -f .
 ```
+
+<!-- END_STEP -->
 
 The terminal console output should look similar to this:
 
@@ -82,14 +88,35 @@ Subscriber received: {"orderId":10}
 
 3. Stop and clean up application processes
 
+<!-- STEP
+name: Stop pub-sub services
+-->
+
 ```bash
 dapr stop -f .
 ```
 <!-- END_STEP -->
 
+## Inspect subscriptions with the Dapr Dev Dashboard
+
+The free [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) shows the `orders` topic subscription on the `orderpubsub` component, and can publish test messages to it, so you can exercise the subscriber without running the publisher.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the apps are running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Subscriptions** page to see the subscription the order processor registered, including its pub/sub component, topic, and route.
+3. Publish a test message to the `orders` topic, then open the **Logs** page for the subscriber to watch it arrive.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.
+
 ## Run a single app at a time with Dapr (Optional)
 
-An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- dotnet run` commands.  This next section covers how to do this. 
+An alternative to running all or multiple applications at once is to run single apps one-at-a-time using multiple `dapr run .. -- npm start` commands. This next section covers how to do this.
 
 ### Run Node message subscriber with Dapr
 
@@ -97,13 +124,13 @@ An alternative to running all or multiple applications at once is to run single 
 
 ```bash
 cd ./order-processor
-npm install
+npm ci
 ```
 
-2. Run the Node publisher app with Dapr: 
+2. Run the Node subscriber app with Dapr:
 
 ```bash
-dapr run --app-port 5002 --app-id order-processing-sdk --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
+dapr run --app-port 5002 --app-id order-processor-sdk --app-protocol http --dapr-http-port 3501 --resources-path ../../../components -- npm run start
 ```
 
 ### Run Node message publisher with Dapr
@@ -112,7 +139,7 @@ dapr run --app-port 5002 --app-id order-processing-sdk --app-protocol http --dap
 
 ```bash
 cd ./checkout
-npm install
+npm ci
 ```
 
 2. Run the Node publisher app with Dapr: 

@@ -1,0 +1,14 @@
+{
+  "name": "job-service",
+  "version": "1.0.0",
+  "description": "Handle Dapr job callbacks using the JavaScript SDK",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@dapr/dapr": "3.19.0"
+  }
+}

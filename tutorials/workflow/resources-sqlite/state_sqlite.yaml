@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.sqlite
+  version: v1
+  metadata:
+  # The file is created in the folder of the app (appDirPath in dapr.yaml).
+  - name: connectionString
+    value: "workflows.db"
+  - name: actorStateStore
+    value: "true"

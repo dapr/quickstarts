@@ -45,7 +45,50 @@ Before you file an issue, make sure you've checked the following:
     - Many changes to the Dapr runtime may require changes to the API. In that case, the best place to discuss the potential feature is the main [Dapr repo](https://github.com/dapr/dapr).
     - Other examples could include bindings, state stores or entirely new components.
 
+### Self-Assigning Issues
+
+Contributors can self-assign open issues in this repository using [dapr-bot](https://docs.dapr.io/contributing/daprbot/). Comment `/assign` on the issue you would like to work on, and `dapr-bot` (configured in [`.github/workflows/dapr-bot.yml`](https://github.com/dapr/quickstarts/blob/master/.github/workflows/dapr-bot.yml)) will automatically assign it to you. See the [Daprbot documentation](https://docs.dapr.io/contributing/daprbot/) for all supported commands.
+
 ## Contributing to Dapr
+
+### Contributing and Validating Quickstarts and Tutorials
+
+Every quickstart and tutorial `README.md` in this repository is an executable document validated in CI using [Mechanical Markdown (`mm.py`)](https://github.com/dapr/mechanical-markdown) via [`validate.mk`](validate.mk).
+
+#### Mechanical Markdown (`STEP`) Annotations
+
+Shell commands in quickstart `README.md` files are wrapped in `<!-- STEP ... -->` and `<!-- END_STEP -->` comment blocks so that CI can execute the sample end-to-end and assert on expected output:
+
+````markdown
+<!-- STEP
+name: Run multi app run template
+expected_stdout_lines:
+  - 'Published data: {"orderId":1}'
+  - 'Subscriber received: {"orderId":1}'
+expected_stderr_lines:
+output_match_mode: substring
+match_order: none
+background: true
+sleep: 15
+timeout_seconds: 30
+-->
+
+```bash
+dapr run -f .
+```
+
+<!-- END_STEP -->
+````
+
+When creating or updating a quickstart:
+1. Ensure each quickstart directory includes a `Makefile` that includes `validate.mk` (e.g., `include ../../../validate.mk`).
+2. Keep sample output deterministic so `expected_stdout_lines` assertions pass reliably across CI runs.
+3. Run validation locally from the quickstart directory before submitting your pull request:
+   ```bash
+   make validate
+   ```
+   (or `mm.py -l -s "bash -c" README.md` after installing `mechanical-markdown`).
+4. In GitHub Actions, building-block workflows under [`.github/workflows/`](.github/workflows/) automatically execute `make validate` across the target language matrix whenever files in that building block or tutorial change.
 
 This section describes the guidelines for contributing code / docs to Dapr.
 

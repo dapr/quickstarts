@@ -1,136 +1,101 @@
-import { Task, WorkflowActivityContext, WorkflowContext, TWorkflow, DaprClient } from "@dapr/dapr";
-import { InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest, OrderResult } from "./model";
+import { Task, WorkflowActivityContext, WorkflowContext, DaprClient } from "@dapr/dapr";
+import { ApprovalResponse, InventoryItem, InventoryRequest, InventoryResult, OrderNotification, OrderPayload, OrderPaymentRequest, OrderResult } from "./model";
 
-const daprClient = new DaprClient();
-const storeName = "statestore";
+export const daprClient = new DaprClient();
+export const storeName = "statestore";
 
-// Defines Notify Activity. This is used by the workflow to send out a notification
-export const notifyActivity = async (_: WorkflowActivityContext, orderNotification: OrderNotification) => {
-  console.log(orderNotification.message);
-  return;
+async function getInventory(itemName: string): Promise<InventoryItem | undefined> {
+  const result = await daprClient.state.get(storeName, itemName);
+  if (result == null || result === "") {
+    return undefined;
+  }
+  if (typeof result !== "object" || typeof result.itemName !== "string" ||
+      typeof result.perItemCost !== "number" || typeof result.quantity !== "number") {
+    throw new Error(`Invalid inventory for ${itemName}`);
+  }
+  return new InventoryItem(result.itemName, result.perItemCost, result.quantity);
+}
+
+export const notifyActivity = async (_: WorkflowActivityContext, notification: OrderNotification) => {
+  console.log(notification.message);
 };
 
-//Defines Verify Inventory Activity. This is used by the workflow to verify if inventory is available for the order
-export const verifyInventoryActivity = async (_: WorkflowActivityContext, inventoryRequest: InventoryRequest) => {
-  console.log(`Verifying inventory for ${inventoryRequest.requestId} of ${inventoryRequest.quantity} ${inventoryRequest.itemName}`);
-  const result = await daprClient.state.get(storeName, inventoryRequest.itemName);
-  if (result == undefined || result == null) {
+export const verifyInventoryActivity = async (_: WorkflowActivityContext, request: InventoryRequest) => {
+  console.log(`Verifying inventory for ${request.requestId} of ${request.quantity} ${request.itemName}`);
+  const inventory = await getInventory(request.itemName);
+  if (!inventory) {
+    console.log(`No inventory found for ${request.itemName}`);
     return new InventoryResult(false, undefined);
   }
-  const inventoryItem = result as InventoryItem;
-  console.log(`There are ${inventoryItem.quantity} ${inventoryItem.itemName} in stock`);
+  console.log(`There are ${inventory.quantity} ${inventory.itemName} in stock`);
+  return new InventoryResult(inventory.quantity >= request.quantity, inventory);
+};
 
-  if (inventoryItem.quantity >= inventoryRequest.quantity) {
-    return new InventoryResult(true, inventoryItem)
+export const requestApprovalActivity = async (_: WorkflowActivityContext, order: OrderPayload) => {
+  console.log(`Requesting approval for ${order.quantity} ${order.itemName} at a total cost of ${order.totalCost}`);
+};
+
+export const processPaymentActivity = async (_: WorkflowActivityContext, request: OrderPaymentRequest) => {
+  console.log(`Payment of ${request.amount} for ${request.quantity} ${request.itemBeingPurchased} processed successfully`);
+};
+
+export const updateInventoryActivity = async (_: WorkflowActivityContext, request: InventoryRequest) => {
+  const inventory = await getInventory(request.itemName);
+  if (!inventory || inventory.quantity < request.quantity) {
+    throw new Error(`Insufficient inventory for order ${request.requestId}`);
   }
-  return new InventoryResult(false, undefined);
-}
+  inventory.quantity -= request.quantity;
+  await daprClient.state.save(storeName, [{ key: request.itemName, value: inventory }]);
+  console.log(`Inventory updated for ${request.requestId}, there are now ${inventory.quantity} ${inventory.itemName} in stock`);
+};
 
-export const requestApprovalActivity = async (_: WorkflowActivityContext, orderPayLoad: OrderPayload) => {
-  console.log(`Requesting approval for order ${orderPayLoad.itemName}`);
-  return true;
-}
-
-export const processPaymentActivity = async (_: WorkflowActivityContext, orderPaymentRequest: OrderPaymentRequest) => {
-  console.log(`Processing payment for order ${orderPaymentRequest.itemBeingPurchased}`);
-  console.log(`Payment of ${orderPaymentRequest.amount} for ${orderPaymentRequest.quantity} ${orderPaymentRequest.itemBeingPurchased} processed successfully`);
-  return true;
-}
-
-export const updateInventoryActivity = async (_: WorkflowActivityContext, inventoryRequest: InventoryRequest) => {
-  console.log(`Updating inventory for ${inventoryRequest.requestId} of ${inventoryRequest.quantity} ${inventoryRequest.itemName}`);
-  const result = await daprClient.state.get(storeName, inventoryRequest.itemName);
-  if (result == undefined || result == null) {
-    return new InventoryResult(false, undefined);
-  }
-  const inventoryItem = result as InventoryItem;
-  inventoryItem.quantity = inventoryItem.quantity - inventoryRequest.quantity;
-  if (inventoryItem.quantity < 0) {
-    console.log(`Insufficient inventory for ${inventoryRequest.requestId} of ${inventoryRequest.quantity} ${inventoryRequest.itemName}`);
-    return new InventoryResult(false, undefined);
-  }
-  await daprClient.state.save(storeName, [
-    {
-      key: inventoryRequest.itemName,
-      value: inventoryItem,
-    }
-  ]);
-  console.log(`Inventory updated for ${inventoryRequest.requestId}, there are now ${inventoryItem.quantity} ${inventoryItem.itemName} in stock`);
-  return new InventoryResult(true, inventoryItem);
-}
-
-export const orderProcessingWorkflow: TWorkflow = async function* (ctx: WorkflowContext, orderPayLoad: OrderPayload): any {
+export function* orderProcessingWorkflow(
+  ctx: WorkflowContext,
+  order: OrderPayload,
+): Generator<Task<unknown>, OrderResult, unknown> {
   const orderId = ctx.getWorkflowInstanceId();
-  console.log(`Processing order ${orderId}...`);
+  ctx.logger.info(`Processing order ${orderId}...`);
 
-  const orderNotification: OrderNotification = {
-    message: `Received order ${orderId} for ${orderPayLoad.quantity} ${orderPayLoad.itemName} at a total cost of ${orderPayLoad.totalCost}`,
-  };
-  yield ctx.callActivity(notifyActivity, orderNotification);
+  yield ctx.callActivity(notifyActivity, {
+    message: `Received order ${orderId} for ${order.quantity} ${order.itemName} at a total cost of ${order.totalCost}`,
+  });
 
-  const inventoryRequest = new InventoryRequest(orderId, orderPayLoad.itemName, orderPayLoad.quantity);
-  const inventoryResult = yield ctx.callActivity(verifyInventoryActivity, inventoryRequest);
+  const inventoryRequest = new InventoryRequest(orderId, order.itemName, order.quantity);
+  const inventoryTask = ctx.callActivity<InventoryResult>(verifyInventoryActivity, inventoryRequest);
+  yield inventoryTask;
 
-  if (!inventoryResult.success) {
-    const orderNotification: OrderNotification = {
-      message: `Insufficient inventory for order ${orderId}`,
-    };
-    yield ctx.callActivity(notifyActivity, orderNotification);
+  if (!inventoryTask.getResult().success) {
+    yield ctx.callActivity(notifyActivity, { message: `Insufficient inventory for order ${orderId}` });
     return new OrderResult(false);
   }
 
-  if (orderPayLoad.totalCost > 5000) {
-    yield ctx.callActivity(requestApprovalActivity, orderPayLoad);
-    
-    const tasks: Task<any>[] = [];
-    const approvalEvent = ctx.waitForExternalEvent("approval_event");
-    tasks.push(approvalEvent);
-    const timeOutEvent = ctx.createTimer(30);
-    tasks.push(timeOutEvent);
-    const winner = yield ctx.whenAny(tasks);
-
-    if (winner == timeOutEvent) {
-      const orderNotification: OrderNotification = {
-        message: `Order ${orderId} has been cancelled due to approval timeout.`,
-      };
-      yield ctx.callActivity(notifyActivity, orderNotification);
-      return new OrderResult(false);
-    }
-    const approvalResult = approvalEvent.getResult();
-    if (!approvalResult) {
-      const orderNotification: OrderNotification = {
-        message: `Order ${orderId} was not approved.`,
-      };
-      yield ctx.callActivity(notifyActivity, orderNotification);
+  if (order.totalCost > 5000) {
+    yield ctx.callActivity(requestApprovalActivity, order);
+    const approvalTask = ctx.waitForExternalEvent<ApprovalResponse>("ApprovalEvent", { timeoutInSeconds: 30 });
+    yield approvalTask;
+    if (!approvalTask.getResult().isApproved) {
+      yield ctx.callActivity(notifyActivity, { message: `Order ${orderId} was not approved` });
       return new OrderResult(false);
     }
   }
 
-  const orderPaymentRequest = new OrderPaymentRequest(orderId, orderPayLoad.itemName, orderPayLoad.totalCost, orderPayLoad.quantity);
-  const paymentResult = yield ctx.callActivity(processPaymentActivity, orderPaymentRequest);
+  yield ctx.callActivity(processPaymentActivity,
+    new OrderPaymentRequest(orderId, order.itemName, order.totalCost, order.quantity));
 
-  if (!paymentResult) {
-    const orderNotification: OrderNotification = {
-      message: `Payment for order ${orderId} failed`,
-    };
-    yield ctx.callActivity(notifyActivity, orderNotification);
+  const updateTask = ctx.callActivity(updateInventoryActivity, inventoryRequest);
+  try {
+    yield updateTask;
+  } catch (error) {
+    // Only compensate an activity failure, not an unrelated workflow error.
+    if (!updateTask.isFailed) {
+      throw error;
+    }
+    ctx.logger.error(`Inventory update failed for order ${orderId}`, error);
+    yield ctx.callActivity(notifyActivity, { message: `Order ${orderId} failed! You are now getting a refund` });
     return new OrderResult(false);
   }
 
-  const updatedResult = yield ctx.callActivity(updateInventoryActivity, inventoryRequest);
-  if (!updatedResult.success) {
-    const orderNotification: OrderNotification = {
-      message: `Failed to update inventory for order ${orderId}`,
-    };
-    yield ctx.callActivity(notifyActivity, orderNotification);
-    return new OrderResult(false);
-  }
-
-  const orderCompletedNotification: OrderNotification = {
-    message: `Order ${orderId} processed successfully!`,
-  };
-  yield ctx.callActivity(notifyActivity, orderCompletedNotification);
-
-  console.log(`Order ${orderId} processed successfully!`);
+  yield ctx.callActivity(notifyActivity, { message: `Order ${orderId} processed successfully!` });
+  ctx.logger.info(`Order ${orderId} has completed`);
   return new OrderResult(true);
 }

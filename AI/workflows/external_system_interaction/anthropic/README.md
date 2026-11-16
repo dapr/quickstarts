@@ -119,3 +119,4 @@ Dapr Workflows gives your agent:
 ## 📚 Resources
 
 - [🧭 Dapr Workflow Documentation](https://docs.dapr.io/developing-applications/building-blocks/workflow/workflow-overview/)
+- [🧭 Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) — watch the workflow pause on `wait_for_external_event` and resume after approval, with the full event history of each run.

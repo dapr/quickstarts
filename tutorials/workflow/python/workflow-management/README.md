@@ -13,18 +13,19 @@ For more information on workflow management, see the [Dapr docs](https://docs.da
 
 ## Inspect the code
 
-Open the `app.py` file in the `tutorials/workflow/python/workflow-management/workflow_-_management/workflow_management` folder. This file contains the endpoint definitions that use the workflow management API. The workflow that is being managed is named `never_ending_workflow` and is a counter that will keep running once it's started.
+Open the `app.py` file in the `tutorials/workflow/python/workflow-management/workflow_management` folder. This file contains the endpoint definitions that use the workflow management API. The workflow that is being managed is named `never_ending_workflow` and is a counter that will keep running once it's started.
 
 ## Run the tutorial
 
-1. Use a terminal to navigate to the `tutorials/workflow/python/workflow-management/workflow-management` folder.
-2. Install the dependencies using pip:
+1. Use a terminal to navigate to the `tutorials/workflow/python/workflow-management` folder.
+2. Create a virtual environment and install the dependencies with [uv](https://docs.astral.sh/uv/):
 
     ```bash
-    pip3 install -r requirements.txt
+    uv venv
+    uv pip install -r workflow_management/requirements.txt
     ```
 
-3. Navigate one level back to the `workflow-management` folder and use the Dapr CLI to run the Dapr Multi-App run file
+3. Use the Dapr CLI to run the Dapr Multi-App run file
 
     <!-- STEP
     name: Run multi app run template
@@ -38,7 +39,7 @@ Open the `app.py` file in the `tutorials/workflow/python/workflow-management/wor
     timeout_seconds: 30
     -->
     ```bash
-    dapr run -f .
+    uv run dapr run -f .
     ```
     <!-- END_STEP -->
 
@@ -49,3 +50,20 @@ Open the `app.py` file in the `tutorials/workflow/python/workflow-management/wor
    - Terminating the workflow instance.
    - Purging the workflow instance.
 6. Stop the Dapr Multi-App run process by pressing `Ctrl+C`.
+
+## Manage the workflow with the Dapr Dev Dashboard
+
+The [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) is a free local tool that gives you a UI for the same workflow state these requests return.
+
+1. [Install the dashboard](https://github.com/diagridio/dev-dashboard#installation-instructions), then start it in a separate terminal while the tutorial is running:
+
+    ```sh
+    diagrid-dev-dashboard
+    ```
+
+    This opens http://localhost:9090 in your browser.
+
+2. Go to the **Workflows** page and select the `never_ending_workflow` instance you started.
+3. Watch the status and the event history change as you send the suspend, resume, and terminate requests. The dashboard can also terminate and purge an instance directly, without sending a request.
+
+The Dev Dashboard is a local development tool. It is not intended for Kubernetes, production, or any shared environment.

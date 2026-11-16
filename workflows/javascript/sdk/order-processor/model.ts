@@ -82,16 +82,8 @@ export class OrderPaymentRequest {
     }
 }
 
-export class ApprovalRequired {
-    approval: boolean;
-
-    constructor(approval: boolean) {
-        this.approval = approval;
-    }
-
-    toString(): string {
-        return `ApprovalRequired(approval=${this.approval})`;
-    }
+export interface ApprovalResponse {
+    isApproved: boolean;
 }
 
 export class OrderNotification {

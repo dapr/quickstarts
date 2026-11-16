@@ -183,7 +183,7 @@ public sealed class ComplianceAuditWorkflow : Workflow<PatientRecord, Compliance
 
         // Verify PrescribeMedication is present in the ancestor chain.
         var prescribeEntries = history.GetEventsByWorkflowName(nameof(PrescribeMedicationWorkflow));
-        if (prescribeEntries.Reverse().Count == 0)
+        if (prescribeEntries.Count == 0)
         {
             return Task.FromResult(new ComplianceResult(
                 Compliant: false,
@@ -193,17 +193,17 @@ public sealed class ComplianceAuditWorkflow : Workflow<PatientRecord, Compliance
         }
 
         // Verify the required activity completions are recorded in history events.
-        var intakeEntry = intakeEntries.Entries[0];
-        var prescribeEntry = prescribeEntries.Entries[0];
+        var intakeEntry = intakeEntries[0];
+        var prescribeEntry = prescribeEntries[0];
 
-        int intakeCompletedCount = intakeEntry.Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
-        int prescribeCompletedCount = prescribeEntry.Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
+        int intakeCompletedCount = intakeEntry.Activities.Count(a => a.Status == PropagatedHistoryStatus.Completed);
+        int prescribeCompletedCount = prescribeEntry.Activities.Count(a => a.Status == PropagatedHistoryStatus.Completed);
 
         if (!ctx.IsReplaying)
         {
             Console.WriteLine("  [ComplianceAudit] Verification:");
-            Console.WriteLine($"    PatientIntake       TaskCompleted events: {intakeCompletedCount} (expect >= 1: VerifyInsurance)");
-            Console.WriteLine($"    PrescribeMedication TaskCompleted events: {prescribeCompletedCount} (expect >= 2: CheckAllergies, ScreenDrugInteractions)");
+            Console.WriteLine($"    PatientIntake       Completed activities: {intakeCompletedCount} (expect >= 1: VerifyInsurance)");
+            Console.WriteLine($"    PrescribeMedication Completed activities: {prescribeCompletedCount} (expect >= 2: CheckAllergies, ScreenDrugInteractions)");
         }
 
         if (intakeCompletedCount == 0 || prescribeCompletedCount < 2)
@@ -214,10 +214,10 @@ public sealed class ComplianceAuditWorkflow : Workflow<PatientRecord, Compliance
                 Compliant: false,
                 RiskScore: 0.9,
                 Reason: "required upstream checks not completed in propagated history",
-                EventCount: history.Entries.Count));
+                EventCount: history.Events.Count));
         }
 
-        int totalEventCount = history.Entries.Sum(e => e.Events.Count);
+        int totalEventCount = history.Events.Sum(e => e.Activities.Count + e.Workflows.Count);
         double riskScore = rec.Dosage > 1000 ? 0.3 : 0.1;
         if (!ctx.IsReplaying)
             Console.WriteLine($"  [ComplianceAudit] APPROVED (risk={riskScore:F2}, total events inspected={totalEventCount})");
@@ -256,19 +256,19 @@ public sealed class DispenseMedicationWorkflow : Workflow<PatientRecord, Dispens
                 Reason: "missing lineage: no propagated history received from prescriber");
         }
 
-        int eventCount = history.Entries.Sum(e => e.Events.Count);
+        int eventCount = history.Events.Sum(e => e.Activities.Count + e.Workflows.Count);
 
         if (!ctx.IsReplaying)
         {
             // With OwnHistory only PrescribeMedication appears here — not PatientIntake.
-            foreach (var entry in history.Entries)
-                Console.WriteLine($"  [DispenseMedication]   workflow: name={entry.WorkflowName} app={entry.AppId} events={entry.Events.Count}");
+            foreach (var entry in history.Events)
+                Console.WriteLine($"  [DispenseMedication]   workflow: name={entry.Name} app={entry.AppId} activities={entry.Activities.Count}");
         }
 
         // Verify the prescriber's own history is present and shows both screens
-        // completed (CheckAllergies + ScreenDrugInteractions == 2 TaskCompleted).
-        var prescribeEntries = history.FilterByWorkflowName(nameof(PrescribeMedicationWorkflow));
-        if (prescribeEntries.Entries.Count == 0)
+        // completed (CheckAllergies + ScreenDrugInteractions == 2 completed activities).
+        var prescribeEntries = history.GetEventsByWorkflowName(nameof(PrescribeMedicationWorkflow));
+        if (prescribeEntries.Count == 0)
         {
             if (!ctx.IsReplaying)
                 Console.WriteLine($"  [DispenseMedication] REFUSED — propagated history is missing the PrescribeMedication lineage for {rec.PatientId}");
@@ -279,7 +279,7 @@ public sealed class DispenseMedicationWorkflow : Workflow<PatientRecord, Dispens
                 Reason: "missing lineage: PrescribeMedication not present in propagated history");
         }
 
-        int screensCompleted = prescribeEntries.Entries[0].Events.Count(e => e.Kind == HistoryEventKind.TaskCompleted);
+        int screensCompleted = prescribeEntries[0].Activities.Count(a => a.Status == PropagatedHistoryStatus.Completed);
         if (screensCompleted < 2)
         {
             if (!ctx.IsReplaying)
@@ -299,5 +299,5 @@ public sealed class DispenseMedicationWorkflow : Workflow<PatientRecord, Dispens
     }
 
     private static string DescribeHistory(PropagatedHistory? history) =>
-        history is null ? "none" : $"{history.Entries.Sum(e => e.Events.Count)} events";
+        history is null ? "none" : $"{history.Events.Sum(e => e.Activities.Count + e.Workflows.Count)} events";
 }
