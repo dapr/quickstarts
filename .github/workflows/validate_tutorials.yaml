@@ -233,6 +233,15 @@ jobs:
           - { lang: java, topic: versioning }
           - { lang: java, topic: workflow-management }
           - { lang: java, topic: combined-patterns }
+          - { lang: javascript, topic: child-workflows }
+          - { lang: javascript, topic: external-system-interaction }
+          - { lang: javascript, topic: fan-out-fan-in }
+          - { lang: javascript, topic: fundamentals }
+          - { lang: javascript, topic: monitor-pattern }
+          - { lang: javascript, topic: resiliency-and-compensation }
+          - { lang: javascript, topic: task-chaining }
+          - { lang: javascript, topic: versioning }
+          - { lang: javascript, topic: workflow-management }
     steps:
       - name: Check out code
         uses: actions/checkout@v7
@@ -257,6 +266,11 @@ jobs:
         with:
           go-version: ${{ env.GOVER }}
           cache: false
+      - name: Set up Node.js 24
+        if: matrix.lang == 'javascript'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
       - name: Set up OpenJDK 17
         if: matrix.lang == 'java'
         uses: actions/setup-java@v6
@@ -306,6 +320,7 @@ jobs:
         include:
           - { lang: python, topic: combined-patterns }
           - { lang: csharp, topic: combined-patterns }
+          - { lang: javascript, topic: combined-patterns }
     steps:
       - name: Check out code
         uses: actions/checkout@v7
@@ -330,6 +345,11 @@ jobs:
         with:
           go-version: ${{ env.GOVER }}
           cache: false
+      - name: Set up Node.js 24
+        if: matrix.lang == 'javascript'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
       - name: Set up OpenJDK 17
         if: matrix.lang == 'java'
         uses: actions/setup-java@v6
