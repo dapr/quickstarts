@@ -112,7 +112,7 @@ When adding code, hold to the patterns already present across the repo (browse a
 
 Workflows in `.github/workflows/validate_<lang>_quickstarts.yaml` run on PRs to `master`/`release-*`. Each installs the pinned Dapr CLI/runtime from `.github/env/global.env`, the language toolchain, and `mechanical-markdown`, then loops the building-block quickstarts running `make validate`. To reproduce a CI failure locally, `cd` into the failing quickstart directory and run `make validate`. The repo-root `make validate` link-checks the top-level `README.md`.
 
-`validate_tutorials.yaml` covers tutorials, but only `hello-world` and `hello-kubernetes` are actually enabled — the rest (including **all** of `tutorials/workflow/*`) are commented out because mechanical-markdown can't drive their long-running services. **Treat the workflow tutorials as untested by CI: validate them manually before relying on them.**
+`validate_tutorials.yaml` covers tutorials. The `hello-world` and `hello-kubernetes` jobs run the README with mechanical-markdown. The workflow tutorials (`tutorials/workflow/*`) run in a matrix job through `tutorials/workflow/validate.sh <lang> <topic>`, because mechanical-markdown cannot drive their long-running services: the script starts the tutorial, sends the requests of its `.http` file and checks the status of each workflow instance. To reproduce a failure locally, run the same script from the repo root.
 
 ## Contributing constraints
 
