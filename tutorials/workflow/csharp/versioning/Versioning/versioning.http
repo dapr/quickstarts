@@ -1,0 +1,10 @@
+@apphost=http://localhost:5087
+
+### Start the NotifyUserWorkflow workflow
+# @name startWorkflowRequest
+GET {{ apphost }}/start
+
+### Get the workflow status
+@instanceId={{startWorkflowRequest.response.body.*}}
+@daprHost=http://localhost:3500
+GET {{ daprHost }}/v1.0/workflows/dapr/{{ instanceId }}

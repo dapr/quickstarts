@@ -12,6 +12,8 @@
 
 If you are new to Dapr and haven't done so already, it is recommended you go through the Dapr [Getting Started](https://docs.dapr.io/getting-started/install-dapr-cli/) instructions.
 
+While you run these samples, the free [Dapr Dev Dashboard](https://docs.dapr.io/developing-applications/local-development/dapr-dev-dashboard/) gives you a live view of the apps, workflows, actors, subscriptions, components, state, and logs on your machine. It is an optional local development tool and works with every sample in this repository.
+
 ### Quickstarts
 
 Pick a building block API (for example, PubSub, state management, etc) and rapidly try it out in your favorite language SDK (recommended), or via HTTP. Visit the [Dapr Docs Quickstarts Guide](https://docs.dapr.io/getting-started/quickstarts/) for a comprehensive walkthrough of each example.
