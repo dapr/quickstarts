@@ -39,8 +39,8 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
     
     if order_payload["total_cost"] > 5000:
         yield ctx.call_activity(request_approval_activity, input=order_payload)
-        approval_task = ctx.wait_for_external_event("approval_event")
-        timeout_event = ctx.create_timer(timedelta(seconds=30))
+        approval_task = ctx.wait_for_external_event("ApprovalEvent")
+        timeout_event = ctx.create_timer(timedelta(minutes=10))
         winner = yield when_any([approval_task, timeout_event])
         if winner == timeout_event:
             yield ctx.call_activity(notify_activity, 
@@ -48,7 +48,10 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
                                                        +' has been cancelled due to approval timeout.'))
             return OrderResult(processed=False)
         approval_result = yield approval_task
-        if approval_result == False:
+        # The Dapr CLI can deliver the payload as a JSON string that holds the object.
+        while isinstance(approval_result, str):
+            approval_result = json.loads(approval_result)
+        if not approval_result.get('approved'):
             yield ctx.call_activity(notify_activity, input=Notification(
                 message=f'Order {order_id} was not approved'))
             return OrderResult(processed=False)    
@@ -134,4 +137,4 @@ def request_approval_activity(ctx: WorkflowActivityContext,
     """Defines Request Approval Activity. This is used by the workflow to request approval
     for payment of an order. This activity is used only if the order total cost is greater than
     a particular threshold"""
-    print(f'Requesting approval for payment of {input["total_cost"]} USD for {input["quantity"]} {input["item_name"]}', flush=True)
+    print(f'Approval requested for order {ctx.workflow_id}. Waiting for approval.', flush=True)

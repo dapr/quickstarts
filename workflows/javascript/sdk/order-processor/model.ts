@@ -83,7 +83,12 @@ export class OrderPaymentRequest {
 }
 
 export interface ApprovalResponse {
-    isApproved: boolean;
+    approved: boolean;
+}
+
+export interface ApprovalRequest {
+    orderId: string;
+    order: OrderPayload;
 }
 
 export class OrderNotification {
