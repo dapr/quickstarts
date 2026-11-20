@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appDirPath: ./search/
+    appID: search-sdk
+    command: ["npm", "run", "start"]

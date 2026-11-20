@@ -1,0 +1,17 @@
+{
+  "name": "search-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dapr Search JavaScript SDK quickstart",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@dapr/dapr": "3.19.0"
+  }
+}
