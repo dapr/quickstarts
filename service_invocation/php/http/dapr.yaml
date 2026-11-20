@@ -1,0 +1,9 @@
+version: 1
+apps:
+  - appID: order-processor
+    appDirPath: ./order-processor/
+    appPort: 8001
+    command: ["php", "app.php"]
+  - appID: checkout
+    appDirPath: ./checkout/
+    command: ["php", "app.php"]
