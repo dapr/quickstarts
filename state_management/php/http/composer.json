@@ -1,0 +1,9 @@
+{
+    "name": "dapr-quickstarts/state-management-php-http",
+    "description": "Dapr state management quickstart (PHP, plain HTTP).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "ext-curl": "*"
+    }
+}
