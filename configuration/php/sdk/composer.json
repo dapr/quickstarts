@@ -1,0 +1,10 @@
+{
+    "name": "dapr-quickstarts/configuration-php-sdk",
+    "description": "Dapr configuration quickstart (PHP SDK).",
+    "type": "project",
+    "require": {
+        "php": "^8.4",
+        "dapr/php-sdk": "dev-main",
+        "react/http": "^1.11"
+    }
+}
