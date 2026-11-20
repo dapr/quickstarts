@@ -1,0 +1,7 @@
+version: 1
+common:
+  resourcesPath: ../../components/
+apps:
+  - appID: vector-http
+    appDirPath: ./vector/
+    command: ["dotnet", "run", "--no-build"]
