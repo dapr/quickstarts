@@ -1,0 +1,18 @@
+version: 1
+common:
+  resourcesPath: resources
+apps:
+  - appID: order-workflow
+    appDirPath: workflowapp
+    appPort: 5260
+    daprHTTPPort: 3560
+    command: ["go", "run", "."]
+    appLogDestination: fileAndConsole
+    daprdLogDestination: fileAndConsole
+  - appID: shipping
+    appDirPath: shippingapp
+    appPort: 5261
+    daprHTTPPort: 3561
+    command: ["go", "run", "."]
+    appLogDestination: console
+    daprdLogDestination: console

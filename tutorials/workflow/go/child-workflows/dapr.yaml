@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: childworkflows
+    appDirPath: childworkflows
+    appPort: 5259
+    daprHTTPPort: 3559
+    command: ["go", "run", "."]
+    appLogDestination: console
+    daprdLogDestination: console

@@ -221,7 +221,16 @@ jobs:
           - { lang: csharp, topic: task-chaining }
           - { lang: csharp, topic: versioning }
           - { lang: csharp, topic: workflow-management }
+          - { lang: go, topic: child-workflows }
+          - { lang: go, topic: external-system-interaction }
+          - { lang: go, topic: fan-out-fan-in }
+          - { lang: go, topic: fundamentals }
           - { lang: go, topic: history-propagation }
+          - { lang: go, topic: monitor-pattern }
+          - { lang: go, topic: resiliency-and-compensation }
+          - { lang: go, topic: task-chaining }
+          - { lang: go, topic: versioning }
+          - { lang: go, topic: workflow-management }
           - { lang: java, topic: child-workflows }
           - { lang: java, topic: external-system-interactions }
           - { lang: java, topic: fan-out-fan-in }
@@ -306,6 +315,7 @@ jobs:
         include:
           - { lang: python, topic: combined-patterns }
           - { lang: csharp, topic: combined-patterns }
+          - { lang: go, topic: combined-patterns }
     steps:
       - name: Check out code
         uses: actions/checkout@v7
