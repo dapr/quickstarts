@@ -1,7 +1,6 @@
 package io.dapr.quickstarts.workflows;
 
 import java.time.Duration;
-import org.slf4j.Logger;
 
 import io.dapr.quickstarts.workflows.activities.NotifyActivity;
 import io.dapr.quickstarts.workflows.activities.ProcessPaymentActivity;
@@ -23,14 +22,9 @@ public class OrderProcessingWorkflow implements Workflow {
   @Override
   public WorkflowStub create() {
     return ctx -> {
-      Logger logger = ctx.getLogger();
       String orderId = ctx.getInstanceId();
-      logger.info("Starting Workflow: " + ctx.getName());
-      logger.info("Instance ID(order ID): " + orderId);
-      logger.info("Current Orchestration Time: " + ctx.getCurrentInstant());
 
       OrderPayload order = ctx.getInput(OrderPayload.class);
-      logger.info("Received Order: " + order.toString());
       OrderResult orderResult = new OrderResult();
       orderResult.setProcessed(false);
 
@@ -58,10 +52,10 @@ public class OrderProcessingWorkflow implements Workflow {
 
       // Require orders over a certain threshold to be approved
       if (order.getTotalCost() > 5000) {
-        ctx.callActivity(RequestApprovalActivity.class.getName(), order).await();
+        ctx.callActivity(RequestApprovalActivity.class.getName(), orderId).await();
 
-        ApprovalResponse approvalResponse = ctx.waitForExternalEvent("approvalEvent",
-          Duration.ofSeconds(30), ApprovalResponse.class).await();
+        ApprovalResponse approvalResponse = ctx.waitForExternalEvent("ApprovalEvent",
+          Duration.ofMinutes(10), ApprovalResponse.class).await();
         if (!approvalResponse.isApproved()) {
           notification.setMessage("Order " + order.getItemName() + " was not approved.");
           ctx.callActivity(NotifyActivity.class.getName(), notification).await();

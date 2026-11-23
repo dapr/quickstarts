@@ -9,14 +9,14 @@ internal sealed partial class RequestApprovalActivity(ILogger<RequestApprovalAct
 {
     public override async Task<object?> RunAsync(WorkflowActivityContext context, ApprovalRequest approvalRequest)
     {
-        LogRequestApproval(logger, approvalRequest);
-
         // Simulate slow processing & sending the approval to the recipient
         await Task.Delay(TimeSpan.FromSeconds(2));
+
+        LogRequestApproval(logger, approvalRequest.RequestId);
 
         return Task.FromResult<object?>(null);
     }
     
-    [LoggerMessage(LogLevel.Information, "Approval Request {approvalRequest}")]
-    static partial void LogRequestApproval(ILogger logger, ApprovalRequest approvalRequest);
+    [LoggerMessage(LogLevel.Information, "Approval requested for order {orderId}. Waiting for approval.")]
+    static partial void LogRequestApproval(ILogger logger, string orderId);
 }
