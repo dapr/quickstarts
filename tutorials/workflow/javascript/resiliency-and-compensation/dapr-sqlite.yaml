@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources-sqlite
+apps:
+  - appID: resiliency
+    appDirPath: resiliency-and-compensation
+    appPort: 5264
+    daprHTTPPort: 3564
+    command: ["node", "dist/app.js"]
+    appLogDestination: console
+    daprdLogDestination: console

@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ../../resources
+apps:
+  - appID: chaining
+    appDirPath: chaining
+    appPort: 5255
+    daprHTTPPort: 3555
+    command: ["node", "dist/app.js"]
+    appLogDestination: console
+    daprdLogDestination: console
