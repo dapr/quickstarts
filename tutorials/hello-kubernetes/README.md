@@ -406,6 +406,10 @@ Now that you're successfully working with Dapr, you probably want to update the 
 6. Update your .yaml file to reflect the new image name.
 7. Deploy your updated Dapr enabled app: `kubectl apply -f <YOUR APP NAME>.yaml`.
 
+## Build and publish your own container images
+
+See the [container image build guide](../container-images.md) for this tutorial's application names and instructions for building images, pushing them to your own registry, and publishing single- or multi-architecture image manifests with the shared Make targets.
+
 ## Related links
 
 - [Guidelines for production ready deployments on Kubernetes](https://docs.dapr.io/operations/hosting/kubernetes/kubernetes-production/)
